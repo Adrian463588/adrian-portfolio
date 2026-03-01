@@ -6,9 +6,15 @@ import { useEffect, useState } from "react";
 export function CursorSpotlight() {
   const cursorX = useMotionValue(-200);
   const cursorY = useMotionValue(-200);
-  const springConfig = { damping: 20, stiffness: 180 };
-  const springX = useSpring(cursorX, springConfig);
-  const springY = useSpring(cursorY, springConfig);
+
+  // Primary spotlight springs
+  const springX = useSpring(cursorX, { damping: 20, stiffness: 180 });
+  const springY = useSpring(cursorY, { damping: 20, stiffness: 180 });
+
+  // Secondary trailing dot springs — MUST be called unconditionally (Rules of Hooks)
+  const dotSpringX = useSpring(cursorX, { damping: 35, stiffness: 500 });
+  const dotSpringY = useSpring(cursorY, { damping: 35, stiffness: 500 });
+
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
@@ -32,6 +38,7 @@ export function CursorSpotlight() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [cursorX, cursorY]);
 
+  // All hooks are called above — conditional return is safe here
   if (!isVisible) return null;
 
   return (
@@ -53,8 +60,8 @@ export function CursorSpotlight() {
       <motion.div
         className="pointer-events-none fixed top-0 left-0 z-[56] h-2 w-2 rounded-full bg-cyan-400/50"
         style={{
-          x: useSpring(cursorX, { damping: 35, stiffness: 500 }),
-          y: useSpring(cursorY, { damping: 35, stiffness: 500 }),
+          x: dotSpringX,
+          y: dotSpringY,
           translateX: "-50%",
           translateY: "-50%",
         }}
