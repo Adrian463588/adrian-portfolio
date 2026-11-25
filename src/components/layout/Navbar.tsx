@@ -12,9 +12,10 @@ import { useMotion } from "@/context/MotionContext";
 const navLinks = [
   { href: "/#work", label: "Work", match: "work", idx: "01" },
   { href: "/projects/", label: "Projects", match: "projects", idx: "02" },
-  { href: "/#experience", label: "Experience", match: "experience", idx: "03" },
-  { href: "/#about", label: "About", match: "about", idx: "04" },
-  { href: "/#contact", label: "Contact", match: "contact", idx: "05" },
+  { href: "/resources/", label: "Resources", match: "resources", idx: "03" },
+  { href: "/#experience", label: "Experience", match: "experience", idx: "04" },
+  { href: "/#about", label: "About", match: "about", idx: "05" },
+  { href: "/#contact", label: "Contact", match: "contact", idx: "06" },
 ];
 
 export function Navbar() {
@@ -28,6 +29,7 @@ export function Navbar() {
   const closeReasonRef = useRef<"escape" | "button" | "link" | null>(null);
 
   const isProjectsRoute = pathname?.startsWith("/projects");
+  const isResourcesRoute = pathname?.startsWith("/resources");
 
   const closeOverlay = (reason: "escape" | "button" | "link") => {
     closeReasonRef.current = reason;
@@ -115,15 +117,17 @@ export function Navbar() {
           </Link>
 
           <div className="hidden items-center gap-1 lg:flex">
-            {navLinks.slice(0, 5).map((link) => {
-              const active = link.match === "projects" && isProjectsRoute;
+            {navLinks.slice(0, 6).map((link) => {
+              const active =
+                (link.match === "projects" && isProjectsRoute) ||
+                (link.match === "resources" && isResourcesRoute);
               return (
                 <Link
                   key={link.href}
                   href={link.href}
                   prefetch={false}
                   aria-current={active ? "page" : undefined}
-                  className={`group inline-flex min-h-[40px] items-center whitespace-nowrap px-3.5 py-2 text-sm font-medium transition-colors ${
+                  className={`group inline-flex min-h-[40px] items-center whitespace-nowrap px-3 py-2 text-sm font-medium transition-colors ${
                     active ? "text-[#65C8F5]" : "text-[#A7ADB7] hover:text-[#F2F0EC]"
                   }`}
                 >
@@ -197,7 +201,9 @@ export function Navbar() {
           <div className="mx-auto my-auto w-full max-w-[1280px] py-8">
             <ul className="divide-y divide-white/10 border-y border-white/10">
               {navLinks.map((link) => {
-                const active = link.match === "projects" && isProjectsRoute;
+                const active =
+                  (link.match === "projects" && isProjectsRoute) ||
+                  (link.match === "resources" && isResourcesRoute);
                 return (
                   <li key={link.href} className="overlay-nav-item">
                     <Link

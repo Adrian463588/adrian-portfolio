@@ -1,32 +1,38 @@
 import type { MetadataRoute } from "next";
 import { projects } from "@/data/projects";
+import { canonicalUrl, getLatestModifiedDate } from "@/lib/seo";
+import { getPublishedResources } from "@/lib/seo-resources";
 
 export const dynamic = "force-static";
 
-const BASE_URL = "https://adriansyahabidin.vercel.app";
-
 export default function sitemap(): MetadataRoute.Sitemap {
+  const latestModified = new Date(getLatestModifiedDate(projects));
+  const publishedResources = getPublishedResources();
+
   const staticRoutes: MetadataRoute.Sitemap = [
     {
-      url: `${BASE_URL}/`,
-      lastModified: new Date("2026-11-25"),
-      changeFrequency: "weekly",
-      priority: 1,
+      url: canonicalUrl("/"),
+      lastModified: latestModified,
     },
     {
-      url: `${BASE_URL}/projects/`,
-      lastModified: new Date("2026-11-25"),
-      changeFrequency: "weekly",
-      priority: 0.9,
+      url: canonicalUrl("/projects/"),
+      lastModified: latestModified,
+    },
+    {
+      url: canonicalUrl("/resources/"),
+      lastModified: latestModified,
     },
   ];
 
   const projectRoutes: MetadataRoute.Sitemap = projects.map((project) => ({
-    url: `${BASE_URL}/projects/${project.slug}/`,
-    lastModified: new Date(project.updatedAt || "2026-11-25"),
-    changeFrequency: "monthly",
-    priority: project.featured ? 0.85 : 0.7,
+    url: canonicalUrl(`/projects/${project.slug}/`),
+    ...(project.updatedAt ? { lastModified: new Date(project.updatedAt) } : {}),
   }));
 
-  return [...staticRoutes, ...projectRoutes];
+  const resourceRoutes: MetadataRoute.Sitemap = publishedResources.map((resource) => ({
+    url: canonicalUrl(`/resources/${resource.slug}/`),
+    lastModified: new Date(resource.reviewedAt),
+  }));
+
+  return [...staticRoutes, ...projectRoutes, ...resourceRoutes];
 }

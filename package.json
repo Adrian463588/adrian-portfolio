@@ -11,7 +11,12 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "validate:assets": "node scripts/validate-assets.mjs",
-    "sync:github": "node scripts/sync-github.mjs"
+    "sync:github": "node scripts/sync-github.mjs",
+    "seo:validate": "node scripts/seo-cli.mjs --validate",
+    "seo:audit": "node scripts/seo-cli.mjs --audit",
+    "seo:keywords": "node scripts/seo-cli.mjs --keywords",
+    "seo:links": "node scripts/seo-cli.mjs --links",
+    "seo:report": "node scripts/seo-cli.mjs --report"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

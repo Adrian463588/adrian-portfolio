@@ -1,0 +1,58 @@
+{
+  "generatedAt": "2026-11-25T18:07:07.768Z",
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "publishedCount": 7,
+    "gatedCount": 2
+  },
+  "keywords": [
+    {
+      "clusterId": "qa-devops-automation",
+      "name": "QA Test Automation & Multi-Framework Engineering",
+      "keywords": 2,
+      "published": 2,
+      "gated": 0
+    },
+    {
+      "clusterId": "biosignal-mobile-ai",
+      "name": "On-Device PPG Biosignal ML & Wear OS Architecture",
+      "keywords": 1,
+      "published": 1,
+      "gated": 0
+    },
+    {
+      "clusterId": "offline-first-android",
+      "name": "Offline-First Android & Local RAG Architecture",
+      "keywords": 2,
+      "published": 1,
+      "gated": 1
+    },
+    {
+      "clusterId": "specialty-coffee-science",
+      "name": "Specialty Coffee Extraction Math & Android Logging",
+      "keywords": 2,
+      "published": 2,
+      "gated": 0
+    },
+    {
+      "clusterId": "perfumery-formulation",
+      "name": "Perfumery Dilution, Mass Balance & Concentration",
+      "keywords": 2,
+      "published": 1,
+      "gated": 1
+    }
+  ],
+  "audit": {
+    "ready": true,
+    "pageCount": 81,
+    "jsonLdChecked": 81,
+    "sitemapUrls": 81,
+    "errors": []
+  },
+  "links": {
+    "valid": true,
+    "checkedLinks": 1724,
+    "errors": []
+  }
+}

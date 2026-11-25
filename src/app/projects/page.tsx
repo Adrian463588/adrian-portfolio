@@ -1,48 +1,39 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { SITE_CONFIG } from "@/config/site.config";
 import { projects } from "@/data/projects";
 import { ProjectExplorer } from "@/components/projects/ProjectExplorer";
+import { buildProjectsCollectionJsonLd, canonicalPath, canonicalUrl } from "@/lib/seo";
 
-const SITE_URL = "https://adriansyahabidin.vercel.app";
+const pageTitle = `${SITE_CONFIG.projectsTitle} | ${SITE_CONFIG.name}`;
 
 export const metadata: Metadata = {
-  title: "Projects",
-  description:
-    "Explore open-source software, test automation frameworks, DevOps setups, Android apps, and experiments by Adrian Syah Abidin.",
+  title: SITE_CONFIG.projectsTitle,
+  description: SITE_CONFIG.projectsDescription,
   alternates: {
-    canonical: "/projects/",
+    canonical: canonicalPath("/projects/"),
   },
   openGraph: {
-    title: "Projects | Adrian Syah Abidin",
-    description:
-      "Open-source projects across test automation, DevOps infrastructure, backend APIs, Android, and on-device AI.",
-    url: `${SITE_URL}/projects/`,
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Projects — Adrian Syah Abidin" }],
+    title: pageTitle,
+    description: SITE_CONFIG.projectsDescription,
+    type: "website",
+    locale: SITE_CONFIG.locale,
+    siteName: SITE_CONFIG.siteName,
+    url: canonicalUrl("/projects/"),
+    images: [SITE_CONFIG.ogImage],
   },
-};
-
-const projectsJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "CollectionPage",
-      "@id": `${SITE_URL}/projects/#collection`,
-      url: `${SITE_URL}/projects/`,
-      name: "Projects | Adrian Syah Abidin",
-      description: "Public engineering projects and technical experiments by Adrian Syah Abidin.",
-    },
-    {
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
-        { "@type": "ListItem", position: 2, name: "Projects", item: `${SITE_URL}/projects/` },
-      ],
-    },
-  ],
+  twitter: {
+    card: "summary_large_image",
+    title: pageTitle,
+    description: SITE_CONFIG.projectsDescription,
+    images: [SITE_CONFIG.ogImage],
+  },
 };
 
 export default function ProjectsPage() {
+  const projectsJsonLd = buildProjectsCollectionJsonLd(projects);
+
   return (
     <div className="min-h-[calc(100vh-68px)] bg-[#08090C]/82 px-6 py-12 backdrop-blur-[2px] sm:py-16">
       <script
