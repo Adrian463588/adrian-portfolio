@@ -29,3 +29,19 @@
 | Lighthouse (`/` Desktop & Mobile, `/projects/`, `/projects/android-stress-detection/`) | Chrome DevTools MCP | PASS | Accessibility 100 · Best Practices 100 · SEO 100 · Agentic Browsing 100 |
 | Core Web Vitals (`/`) | Chrome DevTools Trace | PASS | LCP `429 ms` (TTFB `10 ms`, Render delay `419 ms`) · CLS `0.00` |
 | Search Console & Vercel Prod | Remote domain | NOT VERIFIED | Verified cleanly on static `out/` build; Vercel deployment runs after git push |
+
+---
+
+# Verification Summary — V8 ParfumCreator Public Integration (`feat/portfolio-v8-parfumcreator-public` -> `main`)
+
+| Check | Command / Tool | Result | Notes |
+|-------|----------------|--------|-------|
+| Public Repo Check (No Auth) | REST API + HTML `HEAD` | PASS | `Adrian463588/ParfumCreator` HTTP `200`, `private: false`, `visibility: "public"`, `v1.3.1` |
+| Live GitHub Sync | `npm run sync:github` | PASS | `79` public repos synced including `ParfumCreator` (`0` duplicates) |
+| Case-Sensitive Asset Validation | `npm run validate:assets` | PASS | `30` referenced static assets verified in `public/` & `out/` |
+| ESLint & TypeScript | `npm run lint`, `npm run typecheck` | PASS | `0` errors, `0` warnings (`strict: true`) |
+| Unit Tests | `npm run test` (`vitest run`) | PASS | `3` files, `16` tests passed (V8 slot `05` public checks & ordering stability) |
+| Static Build | `npm run build` | PASS | `78` static routes exported (`71` `/projects/[slug]/` routes) |
+| Playwright E2E + `axe-core` | `npm run test:e2e` | PASS | `32 / 32` passed (`ParfumCreator` cover decoded, `GitHub` & `v1.3.1` `Release` CTAs, `0` private labels, SEO JSON-LD, `0` WCAG 2.2 AA violations) |
+| Lighthouse (`/projects/parfum-creator/`) | Chrome DevTools MCP | PASS | Accessibility 100 · Best Practices 100 · SEO 100 · Agentic Browsing 100 |
+| Vercel CLI / Live Deploy | Remote domain | NOT VERIFIED | `vercel` CLI absent locally; remote Vercel deploy triggers after `origin/main` push |

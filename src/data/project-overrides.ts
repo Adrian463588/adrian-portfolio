@@ -323,6 +323,96 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     ],
   },
 
+  ParfumCreator: {
+    repoName: "ParfumCreator",
+    id: "parfum-creator",
+    slug: "parfum-creator",
+    title: "ParfumCreator",
+    subtitle: "Local-First Android Perfume Formulation Studio",
+    seoTitle: "ParfumCreator — Android Perfume Formulation App",
+    seoDescription:
+      "Explore ParfumCreator, an Android application for perfume formulation, fragrance blending, and recipe development, built with Kotlin and Jetpack Compose.",
+    summary:
+      "An Android app for perfume formulation, fragrance blending, and recipe development, with on-device AI assistance.",
+    description:
+      "Built with Kotlin and Jetpack Compose, ParfumCreator combines fragrance formulation tools, recipe management, calculation utilities, and on-device AI assistance in a mobile application.",
+    category: "Android & Mobile Development",
+    secondaryCategories: ["AI & Machine Learning", "Cybersecurity"],
+    technologies: [
+      "Kotlin",
+      "Jetpack Compose",
+      "Local RAG",
+      "LiteRT-LM",
+      "Room",
+      "Android NDK (C++17)",
+      "Dagger Hilt",
+    ],
+    releaseUrl: "https://github.com/Adrian463588/ParfumCreator/releases/tag/v1.3.1",
+    screenshots: [
+      {
+        src: "/projects/parfum-creator-formula.webp",
+        alt: "ParfumCreator Formula Creator screen showing batch weight, concentration percentage, note architecture, and Fragrance Wheel direction",
+        width: 1080,
+        height: 2340,
+        caption: "Formula Creator v1.3.1 with mass concentration, note architecture, and 4-axis Fragrance Wheel",
+      },
+      {
+        src: "/projects/parfum-creator-templates.webp",
+        alt: "ParfumCreator recipe template browser displaying searchable natural and catalog study blends",
+        width: 1080,
+        height: 2340,
+        caption: "Recipe templates sheet covering 232 natural, catalog oil, and starter formulas",
+      },
+      {
+        src: "/projects/parfum-creator-library.webp",
+        alt: "ParfumCreator Ingredient Library screen listing natural oils and fragrance oil catalog entries",
+        width: 1080,
+        height: 2340,
+        caption: "Searchable catalog of 2,046+ natural and fragrance oil ingredients with density metadata",
+      },
+      {
+        src: "/projects/parfum-creator-chat.webp",
+        alt: "ParfumCreator ParfumAI on-device chat assistant showing local RAG status and grounded fallback",
+        width: 1080,
+        height: 2340,
+        caption: "On-device ParfumAI assistant backed by MiniLM 384-d RAG and optional web fallback",
+      },
+    ],
+    personalContribution:
+      "Sole developer and architect: built Clean Architecture + MVVM modules, NDK C++17 native formula math, 232 recipe templates, 2,046+ ingredient catalog, on-device MiniLM RAG, and Gemma 4 LiteRT-LM integration.",
+    projectStatus: "released",
+    projectOrigin: "original",
+    tier: "featured",
+    featured: true,
+    editorialOrder: 4,
+    problemStatement:
+      "Perfume formulation workflows often rely on spreadsheets or cloud utilities that separate ingredient density math, fragrance note proportions, and technical reference notes across disconnected tools.",
+    proposedSolution:
+      "Built a local-first Android application combining mass/volume dilution calculators, searchable natural and catalog oil inventories, batch-scalable templates, and on-device MiniLM retrieval in Room.",
+    architectureSummary:
+      "Clean Architecture and MVVM across Kotlin, Jetpack Compose Material 3, Dagger Hilt, Room v3 (formulas, ingredient catalogs, and 384-d RAG vectors), DataStore, WorkManager SAF downloads, and JNI C++17 native library libparfume_core.so.",
+    implementedFeatures: [
+      "Formula Creator computing batch weight, concentration (w/w), Top/Heart/Base note architecture, heuristic SPL index, and 4-axis Fragrance Wheel direction",
+      "232 study recipe templates (100 natural, 100 fragrance oil, 32 starter) with batch scaling and explicit catalog SKU binding",
+      "Searchable library of 2,046+ natural essential oils, absolutes, resins, and catalog oils with CSV import and custom ingredients",
+      "Local MiniLM (all-MiniLM-L6-v2.tflite, 384-d) document indexing over SAF PDF/TXT/MD/CSV/JSON files paired with Gemma 4 LiteRT-LM and opt-in HTTPS-allowlisted lookup",
+    ],
+    engineeringChallenges: [
+      "Handling unit conversions across gram, milligram, and milliliter inputs using ingredient density metadata inside C++17 JNI helpers",
+      "Keeping uploaded documents and chat history local while verifying multi-gigabyte LiteRT-LM model bundles by byte size and SHA-256 checksum",
+    ],
+    testingStrategy:
+      "188 JVM unit tests passing across 19 suites with zero Android Lint errors on v1.3.1, alongside instrumentation tests for recipe templates and headless emulator flows.",
+    securityConsiderations:
+      "OWASP MASVS-RESILIENCE C++17 checks (ptrace/TracerPid/maps), AndroidKeyStore AES-256 GCM encryption, allowBackup disabled, cleartext traffic disabled, R8 minification, and opt-in allowlisted HTTPS fallback (off by default).",
+    resultsAndLimitations:
+      "Published v1.3.1 debug APK (SHA-256 verified). Built-in 200 study recipes represent experimental concentrates rather than skin-ready retail perfumes or supplier originals; the app does not validate IFRA safety limits, and local Gemma 4 inference requires downloading ~2.4–3.4 GB model files via SAF.",
+    sourceReferences: [
+      "https://github.com/Adrian463588/ParfumCreator",
+      "https://github.com/Adrian463588/ParfumCreator/releases/tag/v1.3.1",
+    ],
+  },
+
   Task5ManageDashboardMonitoring: {
     repoName: "Task5ManageDashboardMonitoring",
     id: "dual-vm-observability-stack",

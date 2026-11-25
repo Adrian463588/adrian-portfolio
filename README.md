@@ -24,7 +24,7 @@ Editorial ordering on `/` and `/projects/` is pinned via `FEATURED_PROJECT_ORDER
 | `02` | **QuranPlus** | Offline-first Android 30 Juz Quran, 9-kitab Hadith search, Tahsin drills, and `sqlite-vec` / LiteRT-LM on-device RAG. |
 | `03` | **Coffee Creator** | Offline-first Kotlin & Jetpack Compose brewing lab with extraction calculators, haptic pour-over timer, and CVA cupping forms. |
 | `04` | **AdzanPlus** | Shared Kotlin Multiplatform (`core-astronomy`, `core-prayer`) offline prayer times, Qibla compass, and Jetpack Glance widgets. |
-| `05` | **ParfumCreator** *(Private Repository)* | High-level public-safe summary (`visibility: "private-summary"`); source code, internal formulas, and external repo links are intentionally omitted. |
+| `05` | **ParfumCreator** | Local-first Android perfumery studio with 232 study templates, 2,046+ ingredients, C++17 NDK math, and on-device MiniLM RAG + LiteRT-LM (`v1.3.1`). |
 | `06` | **AutomatePlus** *(+ additional featured projects)* | Rust, Tauri 2 & TypeScript multi-platform SDET workbench compiling `SessionIR` flows into Playwright, Selenium, Appium, and k6 suites. |
 
 Enterprise engineering engagements at **Berijalan Techno Center — ACC Group** (*Archer Upgrade*, *STNK Alignment*, *Advanced Joint Finance Parameter*) are presented strictly as non-interactive experience records under `#experience` without exposing internal URLs, schemas, or proprietary artifacts.
