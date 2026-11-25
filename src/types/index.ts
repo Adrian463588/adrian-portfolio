@@ -23,7 +23,7 @@ export type ProjectOrigin =
   | "bootcamp"
   | "academic"
   | "experiment";
-export type EnterpriseVisibility = "public-sanitized" | "confidential";
+export type EnterpriseVisibility = "public-sanitized" | "confidential" | "private-summary";
 export type ProjectStatus =
   | "active"
   | "released"
@@ -78,7 +78,10 @@ export interface Project {
   conceptualFlow?: ConceptualFlowStep[];
   tier: ProjectTier;
   featured: boolean;
+  flagship?: boolean;
   editorialOrder?: number;
+  seoTitle?: string;
+  seoDescription?: string;
   updatedAt: string;
   license?: string;
   language?: string;

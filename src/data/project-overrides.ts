@@ -1,7 +1,7 @@
 import type { ProjectOverride } from "@/types";
 
 export const projectOverrides: Record<string, ProjectOverride> = {
-  // === TIER 1: FEATURED PROJECTS (8) ===
+  // === TIER 1: FEATURED PROJECTS ===
   AutomatePlus: {
     repoName: "AutomatePlus",
     id: "automate-plus",
@@ -38,7 +38,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     projectOrigin: "original",
     tier: "featured",
     featured: true,
-    editorialOrder: 1,
+    editorialOrder: 5,
     problemStatement:
       "QA teams often maintain separate, fragile scripts across browser, Android device farm, and API load-testing tools with hidden cloud dependencies.",
     proposedSolution:
@@ -73,8 +73,9 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     slug: "quran-plus",
     title: "QuranPlus",
     subtitle: "Offline-First Android Quran, Hadith & On-Device RAG Companion",
+    seoTitle: "QuranPlus — Offline Quran & AI Android App",
     summary:
-      "Offline-first Android app for reading the Quran, exploring Hadith, and using local study tools.",
+      "Offline-first Android app combining complete 30 Juz Quran reading, 9-kitab Hadith search, Tahsin drills, and on-device sqlite-vec RAG.",
     description:
       "Offline-first Android application delivering complete 114-surah Quran text, word-by-word reading tools, Hadith search across 9 collections, Tahsin drills, Dzikir & Hizib, and local semantic AI retrieval without network dependency.",
     category: "Android & Mobile Development",
@@ -104,7 +105,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     projectOrigin: "original",
     tier: "featured",
     featured: true,
-    editorialOrder: 3,
+    editorialOrder: 1,
     problemStatement:
       "Islamic reference apps commonly rely on cloud APIs for semantic search and Q&A, failing offline and risking ungrounded LLM hallucinations on religious texts.",
     proposedSolution:
@@ -164,7 +165,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     projectOrigin: "original",
     tier: "featured",
     featured: true,
-    editorialOrder: 7,
+    editorialOrder: 8,
     problemStatement:
       "Most exam prep apps conflate TOEFL ITP, TOEFL iBT, and IELTS scoring/question formats and fail in offline study environments.",
     proposedSolution:
@@ -223,7 +224,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     projectOrigin: "original",
     tier: "featured",
     featured: true,
-    editorialOrder: 5,
+    editorialOrder: 7,
     problemStatement:
       "International travelers frequently lose reliable connectivity while needing real-time bilingual voice translation and text recognition.",
     proposedSolution:
@@ -267,7 +268,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     projectOrigin: "original",
     tier: "featured",
     featured: true,
-    editorialOrder: 8,
+    editorialOrder: 9,
     problemStatement:
       "Cloud health chatbots introduce privacy exposure for patient queries and risk unverified advice when offline or ungrounded.",
     proposedSolution:
@@ -287,8 +288,9 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     slug: "adzan-plus",
     title: "AdzanPlus",
     subtitle: "Offline-First Prayer Times, Astronomy & Glance Widget Suite",
+    seoTitle: "AdzanPlus — Prayer Times & Adhan Reminders",
     summary:
-      "Clean Architecture + KMP astronomy Android app calculating real-time prayer schedules, Dhuha windows, Qibla compass bearing, and Jetpack Glance widgets offline.",
+      "Offline-first Android prayer schedule app using shared Kotlin Multiplatform astronomy modules, Qibla compass, Dhuha timing, and Jetpack Glance widgets.",
     description:
       "MIT-licensed Kotlin & Jetpack Compose prayer reminder suite powered by shared multiplatform astronomical calculation modules (core-astronomy, core-prayer) with zero server dependency.",
     category: "Android & Mobile Development",
@@ -307,8 +309,9 @@ export const projectOverrides: Record<string, ProjectOverride> = {
       "Built shared core-astronomy and core-prayer calculation modules, Material 3 UI, Jetpack Glance home widgets, haptic reminders, and anti-leakage security checks.",
     projectStatus: "released",
     projectOrigin: "original",
-    tier: "catalog",
-    featured: false,
+    tier: "featured",
+    featured: true,
+    editorialOrder: 3,
     implementedFeatures: [
       "Real-time on-device solar/astronomical hisab calculations including Dhuha",
       "Precision Qibla compass and configurable pre-adhan heads-up alerts (5–30 min)",
@@ -354,7 +357,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     projectOrigin: "original",
     tier: "featured",
     featured: true,
-    editorialOrder: 2,
+    editorialOrder: 6,
     problemStatement:
       "Co-locating monitoring tools on the same VM as the application causes observability blind spots whenever the target host faces resource exhaustion.",
     proposedSolution:
@@ -390,7 +393,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     projectOrigin: "original",
     tier: "featured",
     featured: true,
-    editorialOrder: 6,
+    editorialOrder: 10,
     sourceReferences: [
       "https://github.com/Adrian463588/hsk1vocab",
       "https://hsk1vocab.edgeone.dev/",
@@ -573,7 +576,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     projectOrigin: "original",
     tier: "featured",
     featured: true,
-    editorialOrder: 4,
+    editorialOrder: 11,
     sourceReferences: ["https://github.com/Adrian463588/Task12ManageKubernetesAutoscallingKubernetes"],
   },
 
@@ -814,30 +817,78 @@ export const projectOverrides: Record<string, ProjectOverride> = {
 
   "android-stress-detection": {
     repoName: "android-stress-detection",
-    id: "android-wear-stress-assistant",
-    slug: "android-wear-stress-assistant",
-    title: "Android & Wear OS Decision-Support Suite",
-    subtitle: "Real-Time PPG ONNX Inference, Psychometrics & OWASP MASVS Hardening",
+    id: "android-stress-detection",
+    slug: "android-stress-detection",
+    title: "Android Stress Detection",
+    subtitle: "Wearable PPG Signal Processing, On-Device ONNX Inference & Decision Support",
+    seoTitle: "Android Stress Detection — PPG & Wear OS Research",
     summary:
-      "Offline-first Android phone + Galaxy Watch app running ONNX PPG inference, Sherpa-ONNX audio prosody, psychometric assessments, local RAG counselor, and OWASP MASVS hardening.",
+      "Wearable PPG signal processing and on-device ONNX stress detection across Android and Galaxy Watch, paired with local AI counseling and signal quality gating.",
     description:
-      "Dual-module Android + Wear OS application integrating wearable PPG signals with local ONNX Runtime inference, R8 release hardening, and automated publication-safety checks.",
-    category: "Android & Mobile Development",
-    secondaryCategories: ["AI & Machine Learning", "Cybersecurity"],
-    technologies: ["Kotlin", "Jetpack Compose", "Wear OS", "ONNX Runtime", "Sherpa-ONNX", "OWASP MASVS", "R8"],
+      "Dual-module Kotlin, Jetpack Compose, and Wear OS research prototype recording multi-channel PPG from Samsung Galaxy Watch and running channel-independent ONNX Runtime inference locally on Android, with explicit abstain logic when signal quality is insufficient.",
+    category: "Research & Academic Projects",
+    secondaryCategories: ["AI & Machine Learning", "Android & Mobile Development", "Cybersecurity"],
+    technologies: [
+      "Kotlin",
+      "Jetpack Compose",
+      "Wear OS",
+      "PPG Signal Processing",
+      "ONNX Runtime",
+      "LiteRT-LM",
+      "Sherpa-ONNX",
+      "Room",
+    ],
     hasCiWorkflow: true,
-    screenshots: [],
+    screenshots: [
+      {
+        src: "/projects/android-stress-detection-home.webp",
+        alt: "Android Stress Detection Home screen displaying separate Green and IR SQA results and cleaned PPG core waveform on Xiaomi v0.1.5",
+        width: 1080,
+        height: 2401,
+        caption: "Live Stress Monitoring Home UI showing separate Green/IR SQA results and cleaned PPG core waveform on Xiaomi v0.1.5",
+      },
+      {
+        src: "/projects/android-stress-detection-history.webp",
+        alt: "Android Stress Detection Session History calendar screen on Xiaomi v0.1.5",
+        width: 1080,
+        height: 2401,
+        caption: "Session History calendar view on Android v0.1.5",
+      },
+    ],
     personalContribution:
-      "Built phone and Wear OS app modules, ONNX inference wrappers, checksum-verified native asset provisioning, R8 hardening, and Git history publication-safety CI.",
+      "Built the multi-module Phone and Wear OS Kotlin apps, on-device signal gating and ONNX Runtime wrappers, local RAG AI+ counselor, Verbatim+ audio features, R8 hardening, and CI publication-safety scans.",
     projectStatus: "active",
     projectOrigin: "original",
-    tier: "catalog",
-    featured: false,
+    tier: "featured",
+    featured: true,
+    flagship: true,
+    editorialOrder: 0,
+    problemStatement:
+      "Wearable PPG recordings suffer from motion artifacts, cadence jitter, and transport gaps, while streaming physiological signals to cloud backends introduces acute privacy risks.",
+    proposedSolution:
+      "Split raw Galaxy Watch PPG acquisition from Android-side validation, SQA/MADC gating, and channel-independent Green/IR ONNX Runtime inference so the app abstains with INSUFFICIENT_SIGNAL rather than fabricating predictions.",
+    architectureSummary:
+      "Four-module Gradle architecture (app, wear, shared, inference) using MVVM + unidirectional Flow, Google Play Services Wear Data Layer, Room persistence, local Gemma/LiteRT-LM counseling, and Sherpa-ONNX speech components.",
+    implementedFeatures: [
+      "Samsung Galaxy Watch PPG recording over Wear Data Layer with independent Green and IR channel evaluation",
+      "On-device signal quality assessment (SQA/MADC), 240s anchor core windowing, and strict abstain handling on insufficient signal",
+      "Local ONNX Runtime inference locked to validated biosignal pipeline contracts (ECG used only as offline research validation reference)",
+      "Five-tab Jetpack Compose interface (Home, History, Verbatim+, AI+ local RAG counselor, Profile) with R8 release hardening and SHA-256 asset verification",
+    ],
+    engineeringChallenges: [
+      "Preventing silent false outputs under PPG motion noise, cadence jitter, or transport gaps by enforcing fail-closed abstain states",
+      "Enforcing publication-safety and zero-PII guardrails across Git history while managing large native ML runtimes",
+    ],
+    testingStrategy:
+      "868 JVM unit tests passing across app (796), inference (34), and shared (38) modules on v0.1.5, alongside ktlint, detekt, production lint, Gitleaks full-history scan, and physical Xiaomi device UI smoke verification.",
     securityConsiderations:
-      "Implements OWASP MASVS hardening, SHA-256 verification for downloaded binary packs, and CI secret/identity scanning across reachable Git history.",
+      "OWASP MASVS hardening, R8 minification on release builds, SHA-256 verification for Sherpa-ONNX binary artifacts, and automated CI scanning across reachable Git history to prevent secret or participant identity exposure.",
     resultsAndLimitations:
-      "Internal engineering research preview; explicitly framed as decision-support software rather than a validated clinical diagnostic device.",
-    sourceReferences: ["https://github.com/Adrian463588/android-stress-detection"],
+      "This project is an experimental research prototype for stress monitoring and decision support, not a medical diagnostic tool. Phone v0.1.5 and Watch v0.1.1 are internal debug previews; full-channel Watch acceptance remains partial due to diagnostic Red timestamp conflicts, and AI+ local corpus/web citations are not clinically validated.",
+    sourceReferences: [
+      "https://github.com/Adrian463588/android-stress-detection",
+      "https://github.com/Adrian463588/biosignal-stress-pipeline",
+    ],
   },
 
   "coffee-creator": {
@@ -846,8 +897,9 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     slug: "coffee-creator",
     title: "Coffee Creator",
     subtitle: "Offline-First Tactile Android Coffee Laboratory",
+    seoTitle: "Coffee Creator — Coffee Brewing Android App",
     summary:
-      "Native Kotlin + Jetpack Compose coffee brewing lab featuring extraction science calculators, haptic pour-over chronometer, CVA cupping forms, and local RAG guide.",
+      "Offline-first Kotlin and Jetpack Compose coffee brewing companion with extraction calculators, haptic pour-over timer, CVA cupping forms, and local RAG.",
     description:
       "Material 3 offline-first Android app adopting a tactile industrial UI with Room persistence, benchmark modules, OpenSpec specs, and physical-device test captures.",
     category: "Android & Mobile Development",
@@ -867,8 +919,9 @@ export const projectOverrides: Record<string, ProjectOverride> = {
       "Developed coffee science formulas, Room database schema, direct hardware haptic timer cues, CVA sensory evaluation screens, and v1.14.7 release artifacts.",
     projectStatus: "released",
     projectOrigin: "original",
-    tier: "catalog",
-    featured: false,
+    tier: "featured",
+    featured: true,
+    editorialOrder: 2,
     sourceReferences: [
       "https://github.com/Adrian463588/coffee-creator",
       "https://github.com/Adrian463588/coffee-creator/releases/tag/v1.14.7",

@@ -26,15 +26,18 @@ export async function generateMetadata({
     };
   }
 
+  const metaTitle = project.seoTitle || project.title;
+  const metaDescription = project.seoDescription || project.summary;
+
   return {
-    title: project.title,
-    description: project.summary,
+    title: metaTitle,
+    description: metaDescription,
     alternates: {
       canonical: `/projects/${project.slug}/`,
     },
     openGraph: {
-      title: `${project.title} — Adrian Syah Abidin`,
-      description: project.summary,
+      title: `${metaTitle} — Adrian Syah Abidin`,
+      description: metaDescription,
       url: `https://adriansyahabidin.vercel.app/projects/${project.slug}/`,
       images: project.screenshots[0]
         ? [
@@ -50,7 +53,7 @@ export async function generateMetadata({
               url: "/og-image.png",
               width: 1200,
               height: 630,
-              alt: `${project.title} — Adrian Syah Abidin`,
+              alt: `${metaTitle} — Adrian Syah Abidin`,
             },
           ],
     },

@@ -27,6 +27,7 @@ export function CaseStudyDetail({
   nextProject,
 }: CaseStudyDetailProps) {
   const isEnterprise = project.projectOrigin === "professional";
+  const isPrivateSummary = project.visibility === "private-summary";
   const isEditorialDeep = project.tier === "featured" || isEnterprise;
   const isArchive = project.tier === "archive";
   const actions = getProjectActions(project);
@@ -51,6 +52,8 @@ export function CaseStudyDetail({
         <header className="space-y-5 border-b border-white/10 pb-8">
           <div className="flex flex-wrap items-center gap-2">
             <Badge label={project.category} variant="accent" />
+            {project.flagship && <Badge label="Flagship Research" variant="accent" />}
+            {isPrivateSummary && <Badge label="Private Repository" />}
             {isEnterprise && <Badge label="Enterprise Work" variant="accent" />}
             {project.projectOrigin === "fork" && (
               <Badge label="Extended Fork" variant="warning" />
@@ -135,7 +138,9 @@ export function CaseStudyDetail({
           <p className="font-mono text-xs text-[#A7ADB7]">
             {isEnterprise
               ? "Sanitized public disclosure — internal repositories and employer data omitted"
-              : `Updated ${project.updatedAt}`}
+              : isPrivateSummary
+                ? "Private repository — high-level overview only; source code and internal assets are not published"
+                : `Updated ${project.updatedAt}`}
             {!isEnterprise && project.language ? ` · ${project.language}` : ""}
           </p>
         </header>
@@ -462,24 +467,30 @@ export function CaseStudyDetail({
           )}
 
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-            <div className="space-y-1">
-              <p className="text-xs font-medium uppercase tracking-wider text-[#A7ADB7]">
-                {isEnterprise ? "Company Website" : "Related Links"}
-              </p>
-              <div className="flex flex-wrap gap-3">
-                {project.sourceReferences.map((url) => (
-                  <a
-                    key={url}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="link-underline break-all font-mono text-xs text-[#65C8F5]"
-                  >
-                    {url}
-                  </a>
-                ))}
+            {project.sourceReferences.length > 0 ? (
+              <div className="space-y-1">
+                <p className="text-xs font-medium uppercase tracking-wider text-[#A7ADB7]">
+                  {isEnterprise ? "Company Website" : "Related Links"}
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {project.sourceReferences.map((url) => (
+                    <a
+                      key={url}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="link-underline break-all font-mono text-xs text-[#65C8F5]"
+                    >
+                      {url}
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : (
+              <p className="text-xs text-[#A7ADB7]">
+                Private summary — public links intentionally omitted.
+              </p>
+            )}
 
             <Link
               href="/projects/"

@@ -39,10 +39,34 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     const h1 = page.locator("h1");
     await expect(h1).toHaveText("Adrian Syah Abidin");
 
-    // Selected Work shows 6 flagship case studies initially
+    // Selected Work shows 6 curated projects in V6 editorial order
     const workSection = page.locator("#work");
     await expect(workSection).toBeVisible();
-    await expect(workSection.locator("article")).toHaveCount(6);
+    const workArticles = workSection.locator("article");
+    await expect(workArticles).toHaveCount(6);
+
+    const orderedHeadings = await workSection.locator("article h3").allInnerTexts();
+    expect(orderedHeadings.map((t) => t.trim())).toEqual([
+      "Android Stress Detection",
+      "QuranPlus",
+      "Coffee Creator",
+      "AdzanPlus",
+      "ParfumCreator",
+      "AutomatePlus",
+    ]);
+
+    const flagshipCard = workArticles.first();
+    await expect(flagshipCard).toContainText("Flagship Research");
+    await expect(flagshipCard.getByRole("link", { name: /GitHub/i })).toHaveCount(1);
+
+    const parfumCard = workArticles.nth(4);
+    await expect(parfumCard).toContainText("ParfumCreator");
+    await expect(parfumCard.getByRole("link", { name: /Case Study/i })).toHaveAttribute(
+      "href",
+      "/projects/parfum-creator/"
+    );
+    await expect(parfumCard.getByRole("link", { name: /GitHub/i })).toHaveCount(0);
+    await expect(parfumCard.getByRole("link", { name: /Live Demo/i })).toHaveCount(0);
 
     // Ensure contact section at bottom is immediately rendered at opacity 1 without scroll locks
     const contactOpacity = await page
@@ -50,10 +74,10 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       .evaluate((el) => getComputedStyle(el).opacity);
     expect(Number(contactOpacity)).toBe(1);
 
-    // Real images load with non-zero naturalWidth after scrolling into view
+    // Real images on public screenshot projects (01-04 + 06 = 5) load with non-zero naturalWidth
     const images = workSection.locator("img");
     const imgCount = await images.count();
-    expect(imgCount).toBe(6);
+    expect(imgCount).toBe(5);
     for (let i = 0; i < imgCount; i++) {
       const img = images.nth(i);
       await img.scrollIntoViewIfNeeded();
@@ -252,7 +276,7 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
     const homeResults = await collectImageStates("img");
-    expect(homeResults.length).toBeGreaterThanOrEqual(7);
+    expect(homeResults.length).toBe(6);
     for (const r of homeResults) {
       expect(r.complete && r.naturalWidth > 0, `Homepage image failed: ${JSON.stringify(r)}`).toBe(true);
     }
@@ -372,7 +396,12 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
   test("all public project routes in sitemap return HTTP 200 cleanly and Berijalan stays excluded", async ({
     request,
   }) => {
-    for (const slug of ["archer-upgrade", "stnk-alignment", "advanced-joint-finance-parameter"]) {
+    for (const slug of [
+      "archer-upgrade",
+      "stnk-alignment",
+      "advanced-joint-finance-parameter",
+      "android-wear-stress-assistant",
+    ]) {
       const res = await request.get(`/projects/${slug}/`);
       expect(res.status()).toBe(404);
     }
@@ -381,7 +410,16 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     const projectLocs = [...sitemapXml.matchAll(/<loc>https:\/\/adriansyahabidin\.vercel\.app(\/projects\/[^<]+\/)<\/loc>/g)].map(
       (m) => m[1]
     );
-    expect(projectLocs.length).toBe(70);
+    expect(projectLocs.length).toBe(71);
+    for (const pinned of [
+      "/projects/android-stress-detection/",
+      "/projects/quran-plus/",
+      "/projects/coffee-creator/",
+      "/projects/adzan-plus/",
+      "/projects/parfum-creator/",
+    ]) {
+      expect(projectLocs).toContain(pinned);
+    }
 
     for (const pathname of projectLocs) {
       const res = await request.get(pathname);
@@ -421,7 +459,8 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await expect.poll(async () => page.evaluate(() => window.scrollY)).toBeLessThan(80);
 
     // 5. Verified Live Demo external link metadata on Featured project
-    const demoLink = page.locator("#work").getByRole("link", { name: /Live demo for HSK 1 Vocabulary Master/i });
+    await page.goto("/projects/hsk1-vocabulary-master/", { waitUntil: "domcontentloaded" });
+    const demoLink = page.getByRole("link", { name: /Live Demo/i });
     await expect(demoLink).toHaveAttribute("href", "https://hsk1vocab.edgeone.dev/");
     await expect(demoLink).toHaveAttribute("target", "_blank");
     await expect(demoLink).toHaveAttribute("rel", /noopener/);
@@ -507,15 +546,51 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     expect(sitemapRes.status()).toBe(200);
     const sitemapText = await sitemapRes.text();
     expect(sitemapText).toContain("https://adriansyahabidin.vercel.app/");
+    expect(sitemapText).toContain("https://adriansyahabidin.vercel.app/projects/android-stress-detection/");
+    expect(sitemapText).toContain("https://adriansyahabidin.vercel.app/projects/parfum-creator/");
     expect(sitemapText).toContain("https://adriansyahabidin.vercel.app/projects/automate-plus/");
     expect(sitemapText).not.toContain("archer-upgrade");
     expect(sitemapText).not.toContain("stnk-alignment");
     expect(sitemapText).not.toContain("advanced-joint-finance-parameter");
   });
 
-  test("personal detail routes resolve cleanly on static reload and preserve fork credit", async ({
+  test("personal detail routes resolve cleanly on static reload, enforce V6 flagship & private rules, and preserve fork credit", async ({
     page,
   }) => {
+    await page.goto("/projects/android-stress-detection/", { waitUntil: "networkidle" });
+    await expect(page).toHaveTitle(/Android Stress Detection — PPG & Wear OS Research/);
+    await expect(page.locator("h1")).toHaveText("Android Stress Detection");
+    await expect(page.getByText("Flagship Research", { exact: true })).toBeVisible();
+    await expect(page.locator("article")).toContainText(/not a medical diagnostic tool/i);
+    const stressImgs = page.locator("article img");
+    await expect(stressImgs).toHaveCount(2);
+    for (let i = 0; i < 2; i++) {
+      const img = stressImgs.nth(i);
+      await img.scrollIntoViewIfNeeded();
+      await expect
+        .poll(async () => img.evaluate((el: HTMLImageElement) => (el.complete ? el.naturalWidth : 0)))
+        .toBeGreaterThan(0);
+    }
+
+    await page.goto("/projects/parfum-creator/", { waitUntil: "networkidle" });
+    await expect(page.locator("h1")).toHaveText("ParfumCreator");
+    await expect(page.getByText("Private Repository", { exact: true })).toBeVisible();
+    await expect(
+      page.locator("article").getByRole("link", { name: /Source code|GitHub|Live Demo|Release/i })
+    ).toHaveCount(0);
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await expect(page.locator("h1")).toHaveText("ParfumCreator");
+
+    for (const check of [
+      { slug: "quran-plus", title: "QuranPlus", seo: /QuranPlus — Offline Quran & AI Android App/ },
+      { slug: "coffee-creator", title: "Coffee Creator", seo: /Coffee Creator — Coffee Brewing Android App/ },
+      { slug: "adzan-plus", title: "AdzanPlus", seo: /AdzanPlus — Prayer Times & Adhan Reminders/ },
+    ]) {
+      await page.goto(`/projects/${check.slug}/`, { waitUntil: "domcontentloaded" });
+      await expect(page).toHaveTitle(check.seo);
+      await expect(page.locator("h1")).toHaveText(check.title);
+    }
+
     await page.goto("/projects/automate-plus/", { waitUntil: "domcontentloaded" });
     await expect(page.locator("h1")).toHaveText("AutomatePlus");
     await page.reload({ waitUntil: "domcontentloaded" });
@@ -623,6 +698,8 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
   for (const route of [
     "/",
     "/projects/",
+    "/projects/android-stress-detection/",
+    "/projects/parfum-creator/",
     "/projects/automate-plus/",
     "/projects/heart-rate-monitor/",
   ]) {

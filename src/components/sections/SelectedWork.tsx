@@ -19,7 +19,38 @@ function EditorialMedia({
 }) {
   const leadShot = project.screenshots[0];
   const { detailUrl } = getProjectActions(project);
-  if (!leadShot || !detailUrl) return null;
+  if (!detailUrl) return null;
+
+  if (!leadShot) {
+    const isPrivateSummary = project.visibility === "private-summary";
+    return (
+      <Link
+        href={detailUrl}
+        prefetch={false}
+        data-cursor="work"
+        className="editorial-image-wrap block overflow-hidden bg-[#15171C]"
+      >
+        <div className="flex aspect-[16/10] w-full flex-col justify-between border border-white/10 bg-[#101217] p-6">
+          <div className="flex items-center justify-between gap-2 font-mono text-[11px] uppercase tracking-[0.16em] text-[#A7ADB7]">
+            <span>{isPrivateSummary ? "PRIVATE REPOSITORY" : "EDITORIAL OVERVIEW"}</span>
+            <span>{project.language || "Kotlin"}</span>
+          </div>
+          <div className="space-y-2">
+            <p className="font-display text-2xl font-bold tracking-tight text-[#F2F0EC]">
+              {project.title}
+            </p>
+            <p className="text-xs leading-relaxed text-[#A7ADB7]">
+              {project.subtitle || project.category}
+            </p>
+          </div>
+          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#65C8F5]">
+            {isPrivateSummary ? "Private overview · source omitted" : "View case study"}
+          </p>
+        </div>
+      </Link>
+    );
+  }
+
   const isPortrait = leadShot.height > leadShot.width;
 
   return (
@@ -116,7 +147,7 @@ export function SelectedWork() {
           <SectionHeader
             eyebrow="2020 — 2026"
             title="Selected Work."
-            description="Selected software projects across test automation, infrastructure, mobile engineering, and applied AI."
+            description="Flagship research and featured engineering projects across wearable biosignals, mobile apps, applied AI, and test automation."
             action={
               <Link
                 href="/projects/"
@@ -141,10 +172,18 @@ export function SelectedWork() {
                   </div>
 
                   <div className="min-w-0 space-y-5 lg:col-span-5">
-                    <div className="flex items-center gap-3 text-xs font-medium text-[#65C8F5]">
+                    <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-[#65C8F5]">
                       <span className="font-mono">01</span>
                       <span className="text-white/25">/</span>
-                      <span>{lead.category}</span>
+                      {lead.flagship ? (
+                        <>
+                          <span>Flagship Research</span>
+                          <span className="text-white/25">·</span>
+                          <span className="text-[#A7ADB7]">{lead.category}</span>
+                        </>
+                      ) : (
+                        <span>{lead.category}</span>
+                      )}
                     </div>
 
                     <h3 className="font-display break-words text-[clamp(1.75rem,3vw,2.5rem)] font-bold leading-[1.08] tracking-[-0.03em] text-[#F2F0EC]">

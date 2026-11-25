@@ -1,6 +1,12 @@
+import { curatedPrivateProjects } from "@/data/curated-projects";
 import githubSnapshot from "@/data/github-repositories.json";
 import { projectOverrides } from "@/data/project-overrides";
-import { mergeGitHubAndOverrides, validateProjects } from "@/lib/projects";
+import {
+  getApprovedEnterpriseProjects,
+  mergeGitHubAndOverrides,
+  sortProjectsEditorial,
+  validateProjects,
+} from "@/lib/projects";
 import type { GitHubSnapshotFile, Project } from "@/types";
 
 const snapshot = githubSnapshot as GitHubSnapshotFile;
@@ -16,7 +22,15 @@ export const githubProjects: Project[] = mergeGitHubAndOverrides(
   projectOverrides
 );
 
-export const projects: Project[] = githubProjects;
+const githubSlugs = new Set(githubProjects.map((project) => project.slug));
+const approvedPrivate = getApprovedEnterpriseProjects(curatedPrivateProjects).filter(
+  (project) => !githubSlugs.has(project.slug)
+);
+
+export const projects: Project[] = sortProjectsEditorial([
+  ...githubProjects,
+  ...approvedPrivate,
+]);
 
 const validation = validateProjects(projects);
 if (!validation.valid) {

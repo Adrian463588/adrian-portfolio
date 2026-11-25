@@ -55,17 +55,24 @@ export function ProjectCard({
             <Link
               href={actions.detailUrl ?? "/projects/"}
               prefetch={false}
+              data-cursor="work"
               className="flex aspect-[16/10] flex-col justify-between border border-white/10 bg-[#15171C]/70 px-5 py-5 transition-colors hover:border-white/25"
             >
               <div className="flex items-center justify-between gap-2 text-xs text-[#A7ADB7]">
                 <span>{project.language || "Open Source"}</span>
-                <span className="font-mono">{project.updatedAt}</span>
+                <span className="font-mono">
+                  {project.visibility === "private-summary" ? "PRIVATE" : project.updatedAt}
+                </span>
               </div>
               <p className="text-sm font-medium text-[#D6D9DF]">
                 {project.subtitle || project.category}
               </p>
               <p className="text-xs text-[#65C8F5]">
-                {project.projectOrigin === "fork" ? "Fork · Extended" : "Source Repository"}
+                {project.visibility === "private-summary"
+                  ? "Private Repository · Overview"
+                  : project.projectOrigin === "fork"
+                    ? "Fork · Extended"
+                    : "Source Repository"}
               </p>
             </Link>
           )}
@@ -73,6 +80,10 @@ export function ProjectCard({
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
               <span className="font-medium text-[#65C8F5]">{project.category}</span>
+              {project.flagship && <span className="text-[#D6D9DF]">· Flagship Research</span>}
+              {project.visibility === "private-summary" && (
+                <span className="text-[#A7ADB7]">· Private</span>
+              )}
               {project.projectOrigin === "professional" && (
                 <span className="text-[#A7ADB7]">· Professional</span>
               )}

@@ -57,6 +57,40 @@ export function isVerifiedLiveDemoUrl(value?: string, repoUrl?: string): boolean
   }
 }
 
+export const FLAGSHIP_PROJECT_SLUG = "android-stress-detection" as const;
+
+export const FEATURED_PROJECT_ORDER = [
+  "android-stress-detection",
+  "quran-plus",
+  "coffee-creator",
+  "adzan-plus",
+  "parfum-creator",
+] as const;
+
+export function getEditorialRank(project: Project): number {
+  const pinnedIndex = FEATURED_PROJECT_ORDER.indexOf(
+    project.slug as (typeof FEATURED_PROJECT_ORDER)[number]
+  );
+  if (pinnedIndex !== -1) {
+    return pinnedIndex;
+  }
+  if (project.editorialOrder !== undefined) {
+    return 100 + project.editorialOrder;
+  }
+  return Number.MAX_SAFE_INTEGER;
+}
+
+export function sortProjectsEditorial(items: Project[]): Project[] {
+  const tierScore = (t: ProjectTier) => (t === "featured" ? 0 : t === "catalog" ? 1 : 2);
+  return [...items].sort((a, b) => {
+    const diff = tierScore(a.tier) - tierScore(b.tier);
+    if (diff !== 0) return diff;
+    const rankDiff = getEditorialRank(a) - getEditorialRank(b);
+    if (rankDiff !== 0) return rankDiff;
+    return b.updatedAt.localeCompare(a.updatedAt);
+  });
+}
+
 export interface ProjectActionLinks {
   detailUrl?: string;
   repoUrl?: string;
@@ -68,6 +102,12 @@ export interface ProjectActionLinks {
 export function getProjectActions(project: Project): ProjectActionLinks {
   if (project.projectOrigin === "professional") {
     return {};
+  }
+
+  if (project.visibility === "private-summary") {
+    return {
+      detailUrl: project.slug ? `/projects/${project.slug}/` : undefined,
+    };
   }
 
   const repoUrl =
@@ -109,11 +149,23 @@ export function validateProjects(items: Project[]): ValidationResult {
 
     if (item.repositoryUrl && !isSafeHttpsUrl(item.repositoryUrl)) {
       errors.push(`Project "${item.id}" repositoryUrl must use https://`);
-    } else if (item.projectOrigin !== "professional" && !item.repositoryUrl) {
+    } else if (
+      item.projectOrigin !== "professional" &&
+      item.visibility !== "private-summary" &&
+      !item.repositoryUrl
+    ) {
       errors.push(`Project "${item.id}" repositoryUrl must use https://`);
     }
     if (item.projectOrigin === "professional" && item.publicDisclosureApproved !== true) {
       errors.push(`Professional project "${item.id}" must pass publicDisclosureApproved build gate`);
+    }
+    if (item.visibility === "private-summary") {
+      if (item.publicDisclosureApproved !== true) {
+        errors.push(`Private-summary project "${item.id}" must pass publicDisclosureApproved build gate`);
+      }
+      if (item.repositoryUrl || item.demoUrl || item.releaseUrl) {
+        errors.push(`Private-summary project "${item.id}" must not expose repositoryUrl, demoUrl, or releaseUrl`);
+      }
     }
     if (item.demoUrl && !isSafeHttpsUrl(item.demoUrl)) {
       errors.push(`Project "${item.id}" demoUrl must use https://`);
@@ -127,7 +179,7 @@ export function validateProjects(items: Project[]): ValidationResult {
     if (item.projectOrigin === "fork" && !item.upstreamCredit) {
       errors.push(`Fork project "${item.id}" must declare upstreamCredit`);
     }
-    if (item.sourceReferences.length === 0) {
+    if (item.visibility !== "private-summary" && item.sourceReferences.length === 0) {
       errors.push(`Project "${item.id}" must include at least one sourceReference`);
     }
   }
@@ -258,21 +310,17 @@ export function mergeGitHubAndOverrides(
     results.push(merged);
   }
 
-  return results.sort((a, b) => {
-    if (a.featured !== b.featured) return a.featured ? -1 : 1;
-    if (a.editorialOrder !== undefined && b.editorialOrder !== undefined) {
-      return a.editorialOrder - b.editorialOrder;
-    }
-    if (a.editorialOrder !== undefined) return -1;
-    if (b.editorialOrder !== undefined) return 1;
-    return b.updatedAt.localeCompare(a.updatedAt);
-  });
+  return sortProjectsEditorial(results);
 }
 
 export function getFeaturedProjects(items: Project[]): Project[] {
   return items
     .filter((p) => p.featured && p.tier === "featured" && p.projectOrigin !== "professional")
-    .sort((a, b) => (a.editorialOrder ?? 999) - (b.editorialOrder ?? 999));
+    .sort((a, b) => {
+      const rankDiff = getEditorialRank(a) - getEditorialRank(b);
+      if (rankDiff !== 0) return rankDiff;
+      return b.updatedAt.localeCompare(a.updatedAt);
+    });
 }
 
 export function getEnterpriseProjects(items: Project[]): Project[] {
@@ -359,15 +407,5 @@ export function filterProjects(items: Project[], state: ProjectFilterState): Pro
     return [...filtered].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   }
 
-  return [...filtered].sort((a, b) => {
-    const tierScore = (t: ProjectTier) => (t === "featured" ? 0 : t === "catalog" ? 1 : 2);
-    const diff = tierScore(a.tier) - tierScore(b.tier);
-    if (diff !== 0) return diff;
-    if (a.editorialOrder !== undefined && b.editorialOrder !== undefined) {
-      return a.editorialOrder - b.editorialOrder;
-    }
-    if (a.editorialOrder !== undefined) return -1;
-    if (b.editorialOrder !== undefined) return 1;
-    return b.updatedAt.localeCompare(a.updatedAt);
-  });
+  return sortProjectsEditorial(filtered);
 }
