@@ -4,13 +4,13 @@
 > **Methodology:** GitHub Spec Kit (`.specify/`, `specs/001-professional-portfolio/`, `specs/002-professional-experience/`, `specs/003-spatial-v3-redesign/`) + FigCraft MCP (`design/`)
 
 ## 1. Architecture & Constraints
-- **Stack:** Next.js 16 (App Router, `output: "export"`), TypeScript (`strict: true`), Tailwind CSS v4, GSAP (`gsap` / `@gsap/react`), Three.js / React Three Fiber, Lucide React.
+- **Stack:** Next.js 16 (App Router, `output: "export"`), TypeScript (`strict: true`), Tailwind CSS v4, GSAP (`gsap` / `@gsap/react`), Lenis, Three.js / React Three Fiber, Lucide React.
 - **Frontend-Only:** No runtime API routes, no database, no auth, no client-side secrets (`NEXT_PUBLIC_*` tokens forbidden).
 - **Testing:** Vitest (unit/data validation) + Playwright + `axe-core` (E2E, responsive, accessibility, WebGL fallback, reduced motion).
 
 ## 2. Design Source of Truth
 1. `.specify/memory/constitution.md`, `specs/001-professional-portfolio/`, `specs/002-professional-experience/`, & `specs/003-spatial-v3-redesign/`
-2. `docs/DESIGN_SYSTEM.md` & `design/tokens.json` (`Obsidian & Cyan`: `#08090B`, `#101216`, `#14161A`, `#F1F3F5`, `#A0A6B0`, `#00C8F5`, `#2563EB`, `Space Grotesk` + `Geist` + `Geist Mono`)
+2. `docs/DESIGN_SYSTEM.md` & `design/tokens.json` (`Obsidian & Arctic`: `#08090C`, `#15171C`, `#1C1F26`, `#F2F0EC`, `#A7ADB7`, `#65C8F5`, `Space Grotesk` + `Geist` + `Geist Mono`)
 3. Editable FigCraft canvas `design/portfolio.figcraft` and exports in `design/exports/`
 
 ## 3. Content & Security Rules

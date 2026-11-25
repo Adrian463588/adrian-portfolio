@@ -22,13 +22,13 @@ export function TimelineItem({
         <div className="min-w-0 space-y-1">
           <div className="flex flex-wrap items-baseline gap-2.5">
             {indexLabel && (
-              <span className="font-mono text-xs text-[#7A9BFF]">{indexLabel}</span>
+              <span className="font-mono text-xs text-[#65C8F5]">{indexLabel}</span>
             )}
-            <h3 className="font-display break-words text-xl font-bold tracking-tight text-[#F1F0EB] sm:text-2xl">
+            <h3 className="font-display break-words text-xl font-bold tracking-tight text-[#F2F0EC] sm:text-2xl">
               {hasGroupedRoles ? entry.organization : entry.title}
             </h3>
             {hasGroupedRoles && entry.corporateGroup && (
-              <span className="font-mono text-xs text-[#7A9BFF]">
+              <span className="text-xs font-medium text-[#65C8F5]">
                 {entry.corporateGroup}
               </span>
             )}
@@ -36,10 +36,10 @@ export function TimelineItem({
 
           {hasGroupedRoles ? (
             (entry.legalEntity || entry.industry) && (
-              <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[#A6A6A6]">
+              <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[#A7ADB7]">
                 {entry.legalEntity && (
-                  <span className="inline-flex items-center gap-1 text-[#D6D5CF]">
-                    <Building2 className="h-3.5 w-3.5 text-[#7A9BFF]" aria-hidden="true" />
+                  <span className="inline-flex items-center gap-1 text-[#D6D9DF]">
+                    <Building2 className="h-3.5 w-3.5 text-[#65C8F5]" aria-hidden="true" />
                     {entry.legalEntity}
                   </span>
                 )}
@@ -48,24 +48,24 @@ export function TimelineItem({
               </p>
             )
           ) : (
-            <p className="text-sm font-medium text-[#D6D5CF]">{entry.organization}</p>
+            <p className="text-sm font-medium text-[#D6D9DF]">{entry.organization}</p>
           )}
 
           {entry.location && (
-            <p className="inline-flex items-center gap-1 text-xs text-[#A6A6A6]">
+            <p className="inline-flex items-center gap-1 text-xs text-[#A7ADB7]">
               <MapPin className="h-3 w-3 shrink-0" aria-hidden="true" />
               <span>{entry.location}</span>
             </p>
           )}
         </div>
 
-        <span className="shrink-0 font-mono text-xs tracking-wide text-[#A6A6A6]">
+        <span className="shrink-0 font-mono text-xs tracking-wide text-[#A7ADB7]">
           {entry.dateRange}
         </span>
       </div>
 
       {entry.summary && (
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[#D6D5CF]">
+        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[#D6D9DF]">
           {entry.summary}
         </p>
       )}
@@ -76,35 +76,35 @@ export function TimelineItem({
             <div key={role.id} className="min-w-0 space-y-1.5">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span
-                  className={`font-mono text-[11px] uppercase tracking-wider ${
+                  className={`text-[11px] font-medium uppercase tracking-wider ${
                     role.employmentType === "freelance"
-                      ? "text-[#7A9BFF]"
-                      : "text-[#A6A6A6]"
+                      ? "text-[#65C8F5]"
+                      : "text-[#A7ADB7]"
                   }`}
                 >
                   {role.employmentLabel}
                 </span>
-                <span className="font-mono text-xs text-[#A6A6A6]">
+                <span className="font-mono text-xs text-[#A7ADB7]">
                   {role.dateRange}
                 </span>
               </div>
-              <h4 className="font-display break-words text-sm font-semibold text-[#F1F0EB]">
+              <h4 className="font-display break-words text-sm font-semibold text-[#F2F0EC]">
                 {role.title}
               </h4>
               {role.summary && (
-                <p className="text-xs leading-relaxed text-[#A6A6A6]">{role.summary}</p>
+                <p className="text-xs leading-relaxed text-[#A7ADB7]">{role.summary}</p>
               )}
             </div>
           ))}
         </div>
       )}
 
-      <ul className="mt-4 space-y-2 text-sm leading-relaxed text-[#A6A6A6]">
+      <ul className="mt-4 space-y-2 text-sm leading-relaxed text-[#A7ADB7]">
         {entry.bullets.map((bullet, idx) => (
           <li key={idx} className="flex items-start gap-2.5">
             <span
               aria-hidden="true"
-              className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-[#4169FF]"
+              className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-[#65C8F5]"
             />
             <span>{bullet}</span>
           </li>
@@ -113,15 +113,13 @@ export function TimelineItem({
 
       {linkedProjects.length > 0 && (
         <div className="mt-5 flex flex-wrap items-center gap-3">
-          <span className="font-mono text-[11px] uppercase tracking-wider text-[#A6A6A6]">
-            Enterprise Dossiers:
-          </span>
+          <span className="text-xs font-medium text-[#A7ADB7]">Case studies:</span>
           {linkedProjects.map((project) => (
             <Link
               key={project.slug}
               href={`/projects/${project.slug}/`}
               prefetch={false}
-              className="group inline-flex min-h-[36px] items-center gap-1 rounded-full border border-white/15 bg-[#151515]/80 px-3 py-1 text-xs font-medium text-[#F1F0EB] transition-colors hover:border-[#4169FF] hover:text-[#7A9BFF]"
+              className="active-press group inline-flex min-h-[36px] items-center gap-1 rounded-full border border-white/15 bg-[#15171C]/80 px-3 py-1 text-xs font-medium text-[#F2F0EC] transition-colors hover:border-[#65C8F5] hover:text-[#65C8F5]"
             >
               <span>{project.title.split(" — ")[0]}</span>
               <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -131,7 +129,7 @@ export function TimelineItem({
       )}
 
       {entry.technologies && entry.technologies.length > 0 && (
-        <p className="mt-4 font-mono text-xs leading-relaxed text-[#A6A6A6]">
+        <p className="mt-4 text-xs leading-relaxed text-[#A7ADB7]">
           {entry.technologies.join(" · ")}
         </p>
       )}
@@ -143,7 +141,7 @@ export function TimelineItem({
               href={entry.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex min-h-[36px] items-center gap-1 font-mono text-xs text-[#7A9BFF]"
+              className="link-underline group inline-flex min-h-[36px] items-center gap-1 text-xs font-medium text-[#65C8F5]"
             >
               <RollText>Company Website</RollText>
               <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -154,7 +152,7 @@ export function TimelineItem({
               href={entry.repoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex min-h-[36px] items-center gap-1 font-mono text-xs text-[#7A9BFF]"
+              className="link-underline group inline-flex min-h-[36px] items-center gap-1 text-xs font-medium text-[#65C8F5]"
             >
               <RollText>View repository</RollText>
               <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />

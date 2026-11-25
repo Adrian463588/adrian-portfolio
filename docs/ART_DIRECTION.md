@@ -1,21 +1,16 @@
-# V3 Art Direction & Design System — Spatial Engineering
+# V3 Art Direction — Digital Engineering · Kinetic Systems
 
 ## 1. Aesthetic Philosophy
-**Spatial Engineering** blends Swiss editorial grid discipline, Japanese minimalism, precision dark-chrome materiality, and fluid GLSL/Three.js motion: minimalist visual composition paired with high-craft interactive depth.
+**Digital Engineering — Kinetic Systems** merges Swiss editorial typography, minimalist negative space (`P5aholic`, `Pierre.io`, `RH Digital`), physically based liquid-chrome 3D sculpture, and custom GLSL noise depth.
 
-## 2. Core Tokens
-- **Obsidian Canvas:** `#080808`
-- **Graphite Surface:** `#151515`
-- **Silver Secondary Ink:** `#A6A6A6`
-- **Ivory Display & Primary Ink:** `#F1F0EB`
-- **Electric Accent:** `#4169FF` (highlight specular `#60A5FA` / `#00C8F5` in 3D reflections)
-- **Architectural Hairline:** `rgba(241, 240, 235, 0.10)`
-- **Typography:**
-  - `--font-display`: `Space Grotesk` (`-0.04em` tight display tracking, fluid `clamp()` scaling)
-  - `--font-sans`: `Geist` (`1.65` line height)
-  - `--font-mono`: `Geist Mono` (tabular numerals & sparse technical indices only)
+## 2. Palette Tokens (Obsidian / Arctic)
+- **Obsidian Canvas:** `#08090C`
+- **Graphite Surface:** `#15171C`
+- **Silver Secondary Ink:** `#A7ADB7`
+- **Ivory Display & Primary Ink:** `#F2F0EC`
+- **Arctic Accent:** `#65C8F5`
 
-## 3. Anti-AI-Slop Constraints
-- Zero SaaS hero pill walls, zero `"DEMAND RENDERED"` or internal sync timestamps (`STATIC SNAPSHOT SYNCED`, `ALL ELIGIBLE`, `ENGAGEMENT ORIGIN`) exposed as decorative chrome.
-- Asymmetric borderless gallery spreads for Selected Work; open hairline rows for Experience, Competencies, Credentials, and Archive Index.
-- Custom Chibi artwork ([professional-chibi.webp](file:///d:/SEMESTER12/adrian-portfolio/public/images/avatar/professional-chibi.webp)) integrated cleanly inside About/Personal Identity with layered parallax tilt — never inside formal Enterprise ACC/Berijalan compliance cards.
+## 3. Anti-AI-Slop Standards
+- Monochrome studio mark (`as.`), oversized typographic hero over unboxed full-bleed WebGL sculpture (no bordered 3D box, no `"DEMAND RENDERED"` caption).
+- Borderless editorial spread for top 6 Selected Works (`01..06`); open hairline architectural rows for Experience, Enterprise Work, Capabilities, Credentials, and `/projects/` Archive.
+- Plain language across controls (`All projects.`, `A collection of my work and experiments.`, `Type`, `Category`, `Featured`, `Filters`, `Gallery`, `Index`); zero internal catalog/sync phrasing (`Engagement Origin`, `All Eligible`, `Static snapshot synced`).

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-import { useMotionCapabilities } from "@/hooks/useMotionCapabilities";
+import { useMotion } from "@/context/MotionContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,10 +14,11 @@ export function SmoothScrollProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { isClient, reducedMotion } = useMotionCapabilities();
+  const { isClient, qualityMode } = useMotion();
   const pathname = usePathname();
   const progressBarRef = useRef<HTMLDivElement>(null);
-  const lenisRef = useRef<Lenis | null>(null);
+  const curtainRef = useRef<HTMLDivElement>(null);
+  const mountedPathRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!isClient) return;
@@ -32,7 +33,7 @@ export function SmoothScrollProvider({
       progressBarRef.current.style.transform = `scaleX(${ratio})`;
     };
 
-    if (reducedMotion) {
+    if (qualityMode === "reduced") {
       updateProgressNative();
       window.addEventListener("scroll", updateProgressNative, { passive: true });
       return () => {
@@ -42,11 +43,10 @@ export function SmoothScrollProvider({
 
     const lenis = new Lenis({
       autoRaf: false,
-      lerp: 0.1,
+      lerp: qualityMode === "balanced" ? 0.14 : 0.095,
       wheelMultiplier: 0.95,
       anchors: { offset: -68 },
     });
-    lenisRef.current = lenis;
 
     const onLenisScroll = (instance: Lenis) => {
       ScrollTrigger.update();
@@ -70,9 +70,8 @@ export function SmoothScrollProvider({
       gsap.ticker.remove(tick);
       lenis.off("scroll", onLenisScroll);
       lenis.destroy();
-      lenisRef.current = null;
     };
-  }, [isClient, reducedMotion]);
+  }, [isClient, qualityMode]);
 
   useEffect(() => {
     if (!isClient) return;
@@ -80,7 +79,29 @@ export function SmoothScrollProvider({
       progressBarRef.current.style.transform = "scaleX(0)";
     }
     ScrollTrigger.refresh();
-  }, [pathname, isClient]);
+
+    // Non-blocking lightweight route transition veil on route navigation only
+    if (mountedPathRef.current === null) {
+      mountedPathRef.current = pathname;
+      return;
+    }
+    if (mountedPathRef.current !== pathname) {
+      mountedPathRef.current = pathname;
+      if (qualityMode !== "reduced" && curtainRef.current) {
+        gsap.fromTo(
+          curtainRef.current,
+          { clipPath: "inset(0% 0% 0% 0%)", opacity: 0.92 },
+          {
+            clipPath: "inset(0% 0% 100% 0%)",
+            opacity: 0,
+            duration: 0.42,
+            ease: "power3.inOut",
+            overwrite: "auto",
+          }
+        );
+      }
+    }
+  }, [pathname, isClient, qualityMode]);
 
   return (
     <>
@@ -90,10 +111,18 @@ export function SmoothScrollProvider({
       >
         <div
           ref={progressBarRef}
-          className="h-full w-full origin-left bg-[#4169FF] transition-none will-change-transform"
+          className="h-full w-full origin-left bg-[#65C8F5] transition-none will-change-transform"
           style={{ transform: "scaleX(0)" }}
         />
       </div>
+
+      {/* Lightweight non-blocking masked route transition curtain */}
+      <div
+        ref={curtainRef}
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-40 bg-[#08090C] opacity-0"
+      />
+
       {children}
     </>
   );

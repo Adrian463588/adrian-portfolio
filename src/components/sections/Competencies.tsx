@@ -10,12 +10,12 @@ export function Competencies() {
   return (
     <section
       id="competencies"
-      className="border-t border-white/10 bg-[#080808]/75 px-6 py-20 sm:py-24"
+      className="border-t border-white/10 bg-[#08090C]/78 px-6 py-20 sm:py-24"
     >
       <div className="mx-auto max-w-[1280px]">
         <SectionHeader
-          eyebrow="Capabilities"
-          title="Technical Matrix"
+          eyebrow="04 / Capabilities"
+          title="Technical Matrix."
           description="Core engineering practices backed by enterprise quality engagements and shipped systems."
         />
 
@@ -32,32 +32,30 @@ export function Competencies() {
               >
                 <div className="space-y-3">
                   <div className="flex items-baseline gap-3">
-                    <span className="font-mono text-xs text-[#7A9BFF]">
+                    <span className="font-mono text-xs text-[#65C8F5]">
                       {String(index + 1).padStart(2, "0")}
                     </span>
-                    <h3 className="font-display text-lg font-bold tracking-tight text-[#F1F0EB] sm:text-xl">
+                    <h3 className="font-display text-lg font-bold tracking-tight text-[#F2F0EC] sm:text-xl">
                       {group.title}
                     </h3>
                   </div>
 
-                  <p className="text-sm leading-relaxed text-[#A6A6A6]">{group.summary}</p>
+                  <p className="text-sm leading-relaxed text-[#A7ADB7]">{group.summary}</p>
 
-                  <p className="font-mono text-xs leading-relaxed text-[#D6D5CF]">
+                  <p className="text-xs leading-relaxed text-[#D6D9DF]">
                     {group.skills.join(" · ")}
                   </p>
                 </div>
 
                 {linkedProjects.length > 0 && (
                   <div className="mt-5 flex flex-wrap items-center gap-2">
-                    <span className="font-mono text-[11px] uppercase tracking-wider text-[#A6A6A6]">
-                      Evidence:
-                    </span>
+                    <span className="text-xs text-[#A7ADB7]">Evidence:</span>
                     {linkedProjects.map((proj) => (
                       <Link
                         key={proj.slug}
                         href={`/projects/${proj.slug}/`}
                         prefetch={false}
-                        className="inline-flex min-h-[34px] items-center gap-1 rounded-full border border-white/12 bg-[#151515]/75 px-3 py-1 text-xs font-medium text-[#7A9BFF] transition-colors hover:border-[#4169FF] hover:text-[#F1F0EB]"
+                        className="active-press inline-flex min-h-[34px] items-center gap-1 rounded-full border border-white/12 bg-[#15171C]/75 px-3 py-1 text-xs font-medium text-[#65C8F5] transition-colors hover:border-[#65C8F5] hover:text-[#F2F0EC]"
                       >
                         <span>{proj.title.split(" — ")[0]}</span>
                         <ArrowUpRight className="h-3 w-3" aria-hidden="true" />

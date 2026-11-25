@@ -21,17 +21,17 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="border-t border-white/10 bg-[#080808]/85 px-6 py-24 sm:py-28"
+      className="border-t border-white/10 bg-[#08090C]/85 px-6 py-24 sm:py-28"
     >
       <div className="mx-auto max-w-[1280px]">
         <div className="max-w-3xl space-y-6">
-          <p className="font-mono text-xs tracking-[0.16em] text-[#7A9BFF] uppercase">
-            Contact
+          <p className="font-mono text-xs tracking-[0.12em] text-[#65C8F5] uppercase">
+            08 / Contact
           </p>
-          <h2 className="font-display text-[clamp(2rem,4.5vw,3.75rem)] font-bold leading-[1.05] tracking-[-0.03em] text-[#F1F0EB]">
+          <h2 className="font-display text-[clamp(2rem,4.5vw,3.75rem)] font-bold leading-[1.05] tracking-[-0.03em] text-[#F2F0EC]">
             Let&apos;s Connect on Engineering &amp; Quality Systems.
           </h2>
-          <p className="max-w-2xl text-sm leading-relaxed text-[#A6A6A6] sm:text-base">
+          <p className="max-w-2xl text-sm leading-relaxed text-[#A7ADB7] sm:text-base">
             Open to Software Engineering, QA/SDET, DevOps/DevSecOps, Financial Systems Technology,
             and Applied AI roles. Based in Yogyakarta, Indonesia — open to remote and global relocation.
           </p>
@@ -40,7 +40,7 @@ export function Contact() {
             <MagneticSurface>
               <a
                 href="mailto:adriansyah1230@gmail.com"
-                className="inline-flex min-h-[46px] items-center gap-2 rounded-full bg-[#F1F0EB] px-6 py-2.5 text-sm font-semibold text-[#080808] transition-colors hover:bg-[#7A9BFF]"
+                className="active-press inline-flex min-h-[46px] items-center gap-2 rounded-full bg-[#F2F0EC] px-6 py-2.5 text-sm font-semibold text-[#08090C] transition-colors hover:bg-[#65C8F5]"
               >
                 <Mail className="h-4 w-4" aria-hidden="true" />
                 <span>adriansyah1230@gmail.com</span>
@@ -50,7 +50,7 @@ export function Contact() {
             <button
               type="button"
               onClick={handleCopy}
-              className="inline-flex min-h-[46px] items-center gap-2 rounded-full border border-white/15 bg-[#151515]/85 px-5 py-2.5 font-mono text-xs font-medium text-[#F1F0EB] transition-colors hover:border-[#4169FF]"
+              className="active-press inline-flex min-h-[46px] items-center gap-2 rounded-full border border-white/15 bg-[#15171C]/85 px-5 py-2.5 text-xs font-medium text-[#F2F0EC] transition-colors hover:border-[#65C8F5]"
             >
               {copied ? (
                 <>
@@ -59,7 +59,7 @@ export function Contact() {
                 </>
               ) : (
                 <>
-                  <Copy className="h-4 w-4 text-[#A6A6A6]" aria-hidden="true" />
+                  <Copy className="h-4 w-4 text-[#A7ADB7]" aria-hidden="true" />
                   <span>Copy email</span>
                 </>
               )}
@@ -67,35 +67,35 @@ export function Contact() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-wrap gap-8 border-t border-white/10 pt-8 text-sm text-[#A6A6A6]">
+        <div className="mt-12 flex flex-wrap gap-8 border-t border-white/10 pt-8 text-sm text-[#A7ADB7]">
           <a
             href="https://www.linkedin.com/in/adrian-syah-abidin-0416b81b9/"
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex min-h-[44px] items-center gap-1.5 transition-colors hover:text-[#F1F0EB]"
+            className="link-underline group inline-flex min-h-[44px] items-center gap-1.5 transition-colors hover:text-[#F2F0EC]"
           >
             <RollText>LinkedIn</RollText>
-            <ArrowUpRight className="h-4 w-4 text-[#7A9BFF]" aria-hidden="true" />
+            <ArrowUpRight className="h-4 w-4 text-[#65C8F5]" aria-hidden="true" />
           </a>
 
           <a
             href="https://github.com/Adrian463588"
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex min-h-[44px] items-center gap-1.5 transition-colors hover:text-[#F1F0EB]"
+            className="link-underline group inline-flex min-h-[44px] items-center gap-1.5 transition-colors hover:text-[#F2F0EC]"
           >
             <RollText>GitHub (@Adrian463588)</RollText>
-            <ArrowUpRight className="h-4 w-4 text-[#7A9BFF]" aria-hidden="true" />
+            <ArrowUpRight className="h-4 w-4 text-[#65C8F5]" aria-hidden="true" />
           </a>
 
           <a
             href="https://medium.com/@adriansyah1230"
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex min-h-[44px] items-center gap-1.5 transition-colors hover:text-[#F1F0EB]"
+            className="link-underline group inline-flex min-h-[44px] items-center gap-1.5 transition-colors hover:text-[#F2F0EC]"
           >
             <RollText>Medium</RollText>
-            <ArrowUpRight className="h-4 w-4 text-[#7A9BFF]" aria-hidden="true" />
+            <ArrowUpRight className="h-4 w-4 text-[#65C8F5]" aria-hidden="true" />
           </a>
         </div>
       </div>

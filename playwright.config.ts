@@ -5,7 +5,7 @@ export default defineConfig({
   timeout: 30_000,
   expect: { timeout: 10_000 },
   fullyParallel: true,
-  workers: process.env.CI ? 2 : 4,
+  workers: 2,
   reporter: [["list"], ["html", { open: "never", outputFolder: "docs/evidence/test-results/playwright-html" }]],
   use: {
     baseURL: "http://127.0.0.1:4173",

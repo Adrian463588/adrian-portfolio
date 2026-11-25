@@ -1,16 +1,11 @@
-# V3 Motion System — GSAP, Lenis & Adaptive Micro-Interactions
+# V3 Motion System — GSAP, Lenis & Adaptive Quality
 
-## 1. Orchestration Architecture
-- **Scroll Smoothness:** Single centralized `Lenis` instance (`src/components/motion/SmoothScrollProvider.tsx`) driving native anchor/route scroll seamlessly and synchronized via `lenis.on("scroll", ScrollTrigger.update)` + `gsap.ticker`. Automatically disabled when `prefers-reduced-motion: reduce` is enabled.
-- **Scroll Choreography:**
-  - `ScrollTrigger` scrubbed camera transformation & GLSL horizon progress across Hero -> Selected Work -> Experience -> Enterprise -> About -> Contact.
-  - `clip-path` image wipe reveals and subtle GPU `yPercent` parallax on editorial project spreads and `ChibiShowcase`.
-- **Micro-Interactions:**
-  - Kinetic `RollText` hover/focus slide (`300ms cubic-bezier(0.22, 1, 0.36, 1)`).
-  - `MagneticSurface` desktop fine-pointer attraction on primary CTAs.
-  - Lightweight custom pointer cursor ring (`DesktopPointerCursor` on `@media (hover: hover) and (pointer: fine)` + reduced-motion off) providing subtle contextual feedback without hiding or breaking native controls.
-  - Top `1px` Electric Blue `#4169FF` scroll progress hairline & concise `clip-path` / transform route veil on navigation.
+## 1. Adaptive Quality Modes (`MotionContext`)
+- `cinematic`: Capable fine-pointer desktop contexts — full 220x48 Torus-Knot vertex morph, procedural GLSL backdrop, GPU vertical parallax, context cursor halo (`VIEW`), Lenis smooth scroll, staggered section choreography, and route transition veil.
+- `balanced`: Compact viewports / touch devices — reduced DPR `[1, 1.25]`, lower particle & geometry complexity, light touch-safe parallax, zero continuous cursor tracking.
+- `reduced`: OS `prefers-reduced-motion: reduce` or user-toggled `Reduced` mode — swaps WebGL scene immediately for static SVG `SpatialFallback`, disables Lenis smooth wheel, parallax, magnetic attraction, and overlays.
 
-## 2. Cleanup & Safety
-- All GSAP instances register inside `useGSAP()` scope or `gsap.matchMedia()` so unmount/resize/reduced-motion reverts cleanly without memory leaks or stale triggers.
-- Never animate root `#contact` or major sections from permanent `opacity: 0`.
+## 2. Orchestration & Ownership
+- **Scroll Smoothness:** Single centralized `Lenis` instance synced via `gsap.ticker` + `ScrollTrigger.update`, plus top `1.5px` `#65C8F5` Arctic scroll progress hairline.
+- **Section Choreography:** Distinct `clip-reveal`, `slide-right`, and `stagger-list` treatments (`SectionChoreography.tsx`) keeping all critical elements immediately visible (`opacity: 1`).
+- **Cleanup:** All GSAP scopes use `useGSAP` with automatic context reversion on unmount/quality toggle.

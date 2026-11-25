@@ -21,7 +21,7 @@ const viewports = [
 ];
 
 test.describe("Portfolio E2E, Accessibility & Resilience", () => {
-  test("homepage renders identity, 8 featured projects, and visible below-the-fold content without scroll traps", async ({
+  test("homepage renders identity, 6 flagship projects, quality switcher, and visible below-the-fold content without scroll traps", async ({
     page,
   }) => {
     const errors: string[] = [];
@@ -39,10 +39,10 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     const h1 = page.locator("h1");
     await expect(h1).toHaveText("Adrian Syah Abidin");
 
-    // Selected Work shows 8 featured case studies
+    // Selected Work shows 6 flagship case studies initially
     const workSection = page.locator("#work");
     await expect(workSection).toBeVisible();
-    await expect(workSection.locator("article")).toHaveCount(8);
+    await expect(workSection.locator("article")).toHaveCount(6);
 
     // Ensure contact section at bottom is immediately rendered at opacity 1 without scroll locks
     const contactOpacity = await page
@@ -53,7 +53,7 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     // Real images load with non-zero naturalWidth after scrolling into view
     const images = workSection.locator("img");
     const imgCount = await images.count();
-    expect(imgCount).toBe(8);
+    expect(imgCount).toBe(6);
     for (let i = 0; i < imgCount; i++) {
       const img = images.nth(i);
       await img.scrollIntoViewIfNeeded();
@@ -157,21 +157,23 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
   }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/projects/", { waitUntil: "networkidle" });
-    await expect(page.locator("h1")).toHaveText("Projects");
-    await expect(page.getByText(/ENGAGEMENT ORIGIN|ALL ELIGIBLE|STATIC SNAPSHOT SYNCED/i)).toHaveCount(0);
+    await expect(page.locator("h1")).toHaveText("All projects.");
+    await expect(
+      page.getByText(/ENGAGEMENT ORIGIN|ALL ELIGIBLE|STATIC SNAPSHOT SYNCED|REPOSITORY CATALOG|ENGINEERING PROJECT EXPLORER|ENGINEERING DOMAIN/i)
+    ).toHaveCount(0);
 
     // First gallery work renders immediately within initial desktop viewport
     const firstCardBox = await page.locator("article").first().boundingBox();
     expect(firstCardBox).toBeTruthy();
     expect(firstCardBox!.y).toBeLessThan(860);
 
-    // Compact Work Type selector filters enterprise dossiers
-    await page.getByLabel("Filter by work type").selectOption("professional");
+    // Inline Type tab filters enterprise dossiers
+    await page.getByRole("tab", { name: /^Professional$/i }).click();
     await expect(page.getByText(/Showing 3 of/i)).toBeVisible();
     await expect(page.getByText(/Archer Upgrade/i)).toBeVisible();
     await page.getByRole("button", { name: /Clear filters/i }).click();
 
-    const search = page.getByLabel("Search Projects");
+    const search = page.getByLabel("Search projects");
     await search.fill("cypress");
     await expect(page.getByText(/EverShop Cypress/i)).toBeVisible();
 
@@ -254,9 +256,15 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await expect(skip).toBeFocused();
   });
 
-  test("reduced-motion preference renders static geometric fallback", async ({ page }) => {
+  test("reduced-motion preference and runtime quality switcher render static geometric fallback", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/", { waitUntil: "networkidle" });
+    await expect(page.getByText(/REDUCED MOTION · STATIC GEOMETRY/i)).toBeAttached();
+    await expect(page.locator("canvas")).toHaveCount(0);
+
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.goto("/", { waitUntil: "networkidle" });
+    await page.getByRole("button", { name: /^Reduced$/i }).click();
     await expect(page.getByText(/REDUCED MOTION · STATIC GEOMETRY/i)).toBeAttached();
     await expect(page.locator("canvas")).toHaveCount(0);
   });

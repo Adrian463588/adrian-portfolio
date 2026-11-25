@@ -19,7 +19,11 @@ function hasWebGLSupport(): boolean {
   }
 }
 
-export function SpatialBackground() {
+interface SpatialBackgroundProps {
+  qualityMode: "cinematic" | "balanced";
+}
+
+export function SpatialBackground({ qualityMode }: SpatialBackgroundProps) {
   const pointerRef = useRef({ x: 0, y: 0 });
   const scrollProgressRef = useRef(0);
   const [webglAvailable] = useState(() => hasWebGLSupport());
@@ -69,16 +73,18 @@ export function SpatialBackground() {
     return <SpatialFallback reason="webgl-unavailable" />;
   }
 
+  const balancedOrCompact = qualityMode === "balanced" || isCompactViewport;
+
   return (
     <ThreeErrorBoundary fallback={<SpatialFallback reason="webgl-unavailable" />}>
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#080808]"
+        className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#08090C]"
       >
         <Canvas
           frameloop={isVisibleTab ? "always" : "never"}
-          dpr={isCompactViewport ? [1, 1.25] : [1, 1.5]}
-          camera={{ position: [0, 0, 8.4], fov: 48 }}
+          dpr={balancedOrCompact ? 1 : [1, 1.5]}
+          camera={{ position: [0, 0, 8.4], fov: 46 }}
           gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
           onCreated={({ gl }) => {
             gl.domElement.addEventListener("webglcontextlost", (e) => {
@@ -90,13 +96,13 @@ export function SpatialBackground() {
           <SpatialScene
             pointerTarget={pointerRef}
             scrollProgress={scrollProgressRef}
-            isCompactViewport={isCompactViewport}
+            isBalancedMode={balancedOrCompact}
           />
         </Canvas>
-        {/* Subtle bottom-top obsidian vignette so foreground typography keeps high WCAG contrast */}
+        {/* Subtle bottom-top obsidian vignette keeping hero & body text contrast accessible */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#080808]/35 via-transparent to-[#080808]/92"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#08090C]/30 via-transparent to-[#08090C]/90"
         />
       </div>
     </ThreeErrorBoundary>

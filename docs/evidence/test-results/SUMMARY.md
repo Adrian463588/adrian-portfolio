@@ -54,7 +54,7 @@
 
 ---
 
-## 5. V3 Verification — Immersive Spatial 3D & Editorial Redesign (`feat/v3-immersive-3d-redesign`)
+## 5. V3 Verification — Digital Engineering · Kinetic Systems (`feat/v3-immersive-3d-redesign`)
 
 > **Date:** 2026-11-25  
 > **Target Build:** Static Next.js 16 export (`out/`, 80/80 static pages)
@@ -65,9 +65,9 @@
 | TypeScript | `npm run typecheck` | PASS | `tsc --noEmit` strict mode, 0 errors |
 | Unit Tests | `npm run test` | PASS | Vitest: 3 files, 14/14 passed (`experience.test.ts`, `projects.test.ts`, `sync-github.test.ts`) |
 | Static Export Build | `npm run build` | PASS | Next.js `output: "export"` built 80/80 static pages in `out/` |
-| E2E & A11y Suite | `npm run test:e2e` | PASS | Playwright + `axe-core`: 27/27 tests passed (Section 14 asymmetric homepage & V3 sequence, Lenis+GSAP + parametric Chrome/GLSL 3D without debug labels, clean `Projects` heading with progressive `Filters` & `Index` mode, Chibi portrait in `#about`, zero horizontal overflow across 10 viewports `320px–1920px`, zero `axe` violations on 7 routes, reduced-motion & WebGL fallbacks) |
-| Confidentiality & Slop Scan | PowerShell scan across `745` `out/` files | PASS | Zero secret leaks and zero banned placeholder/jargon tokens (`All Eligible`, `Engagement Origin`, `DEMAND RENDERED`, `Static snapshot synced`, `All 73 Projects`) |
-| Lighthouse (`/` Desktop & Mobile) | Chrome DevTools MCP | PASS | Accessibility `100`, Best Practices `100`, SEO `100`, Agentic Browsing `100` (`57/57` passed, `0` failed) |
-| Lighthouse (`/projects/` Desktop) | Chrome DevTools MCP | PASS | Accessibility `100`, Best Practices `100`, SEO `100`, Agentic Browsing `100` (`55/55` passed, `0` failed) |
-| Performance Trace (`/` Lab, 1x CPU) | Chrome DevTools MCP | PASS | LCP `301 ms` (`TTFB: 6 ms`, `Render delay: 295 ms`), CLS `0.00` |
-| Unverified Items | Live remote deploy | NOT VERIFIED | Feature branch `feat/v3-immersive-3d-redesign` pushed for Preview/review; production `main` left untouched until authorization |
+| E2E & A11y Suite | `npm run test:e2e` | PASS | Playwright + `axe-core`: 27/27 tests passed (6-item asymmetric Selected Work spread, open Enterprise Case Study rows without card walls, Lenis + GSAP + procedural GLSL backdrop + liquid-chrome TorusKnot sculpture, `as.` brand mark + fullscreen nav overlay, adaptive `Cinematic/Balanced/Reduced` quality switcher, `All projects.` with progressive `Filters` popover & `Index` hover preview, Chibi portrait in `#about`, zero horizontal overflow across `320px–1920px`, zero `axe` violations across 7 routes) |
+| Confidentiality & Slop Scan | PowerShell scan across `747` `out/` files | PASS | Zero secret leaks and zero banned placeholder/jargon tokens (`All Eligible`, `Engagement Origin`, `DEMAND RENDERED`, `Static snapshot synced`, `All 73 Projects`, `Engineering Project Explorer`, `Repository Catalog`, `Engineering Domain`) |
+| Lighthouse (`/` Desktop & Mobile) | Chrome DevTools MCP | PASS | Accessibility `100`, Best Practices `100`, SEO `100`, Agentic Browsing `100` (`57/57` passed, `0` failed on both desktop and mobile) |
+| Lighthouse (`/projects/` Desktop) | Chrome DevTools MCP | PASS | Accessibility `100`, Best Practices `100`, SEO `100`, Agentic Browsing `100` (`56/56` passed, `0` failed) |
+| Performance Trace (`/` Lab, 1x CPU) | Chrome DevTools MCP | PASS | LCP `305 ms` (`TTFB: 9 ms`, `Render delay: 296 ms`), CLS `0.00` |
+| Unverified Items | Numeric Perf score / live prod | NOT VERIFIED | `chrome-devtools` MCP omits numeric Lighthouse Performance category score (0–100) and CrUX field INP; feature branch `feat/v3-immersive-3d-redesign` pushed cleanly without overwriting production `main` |

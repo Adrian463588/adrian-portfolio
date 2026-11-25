@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useMotionCapabilities } from "@/hooks/useMotionCapabilities";
+import { useMotion } from "@/context/MotionContext";
 import { SpatialFallback } from "@/components/three/SpatialFallback";
 
 const SpatialBackground = dynamic(
@@ -13,15 +13,15 @@ const SpatialBackground = dynamic(
 );
 
 export function SpatialWidget() {
-  const { isClient, reducedMotion } = useMotionCapabilities();
+  const { isClient, qualityMode } = useMotion();
 
   if (!isClient) {
     return <SpatialFallback reason="initializing" />;
   }
 
-  if (reducedMotion) {
+  if (qualityMode === "reduced") {
     return <SpatialFallback reason="reduced-motion" />;
   }
 
-  return <SpatialBackground />;
+  return <SpatialBackground qualityMode={qualityMode} />;
 }

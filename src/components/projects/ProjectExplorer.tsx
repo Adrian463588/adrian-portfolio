@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, LayoutGrid, List, RotateCcw, Search, SlidersHorizontal } from "lucide-react";
 import type { Project, ProjectCategory, ProjectTier } from "@/types";
@@ -13,7 +12,8 @@ import {
   type ProjectFilterState,
 } from "@/lib/projects";
 import { ProjectCard } from "@/components/projects/ProjectCard";
-import { useMotionCapabilities } from "@/hooks/useMotionCapabilities";
+import { ProjectHoverPreview } from "@/components/projects/ProjectHoverPreview";
+import { useMotion } from "@/context/MotionContext";
 
 interface ProjectExplorerProps {
   items: Project[];
@@ -24,7 +24,7 @@ type ViewMode = "gallery" | "index";
 
 export function ProjectExplorer({ items }: ProjectExplorerProps) {
   const pathname = usePathname();
-  const { canHover, reducedMotion } = useMotionCapabilities();
+  const { canHover, qualityMode } = useMotion();
 
   const availableCategories = useMemo(() => getAvailableCategories(items), [items]);
   const topTechnologies = useMemo(() => getTopTechnologies(items, 20), [items]);
@@ -38,10 +38,10 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("gallery");
   const [hoveredPreview, setHoveredPreview] = useState<{
-    project: Project;
+    project: Project | null;
     x: number;
     y: number;
-  } | null>(null);
+  }>({ project: null, x: 0, y: 0 });
 
   useEffect(() => {
     if (!window.location.search) return;
@@ -74,7 +74,10 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
         setTechnology(tech);
         setFiltersOpen(true);
       }
-      if (s === "recent") setSort("recent");
+      if (s === "recent") {
+        setSort("recent");
+        setFiltersOpen(true);
+      }
     });
     return () => cancelAnimationFrame(frame);
   }, [availableCategories]);
@@ -145,25 +148,25 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
   );
 
   const secondaryFilterCount =
-    (tier !== "all" ? 1 : 0) + (category !== "all" ? 1 : 0) + (technology !== "all" ? 1 : 0);
+    (tier !== "all" ? 1 : 0) +
+    (category !== "all" ? 1 : 0) +
+    (technology !== "all" ? 1 : 0) +
+    (sort !== "editorial" ? 1 : 0);
 
   const hasActiveFilter =
-    query.trim() !== "" ||
-    origin !== "all" ||
-    sort !== "editorial" ||
-    secondaryFilterCount > 0;
+    query.trim() !== "" || origin !== "all" || secondaryFilterCount > 0;
 
-  const originOptions: { id: OriginFilter; label: string }[] = (
+  const typeTabs: { id: OriginFilter; label: string }[] = (
     [
-      { id: "all" as const, label: `All (${counts.all})` },
-      { id: "professional" as const, label: `Professional (${counts.professional})` },
-      { id: "personal" as const, label: `Personal (${counts.personal})` },
-      { id: "academic" as const, label: `Academic (${counts.academic})` },
-      { id: "experiment" as const, label: `Experiments (${counts.experiment})` },
+      { id: "all" as const, label: "All" },
+      { id: "professional" as const, label: "Professional" },
+      { id: "personal" as const, label: "Personal" },
+      { id: "academic" as const, label: "Academic" },
+      { id: "experiment" as const, label: "Experiments" },
     ] satisfies { id: OriginFilter; label: string }[]
   ).filter((tab) => tab.id === "all" || counts[tab.id] > 0);
 
-  const tierTabs: { id: "all" | ProjectTier; label: string }[] = [
+  const scopeTabs: { id: "all" | ProjectTier; label: string }[] = [
     { id: "all", label: `All (${counts.all})` },
     { id: "featured", label: `Featured (${counts.featured})` },
     { id: "catalog", label: `Standard (${counts.catalog})` },
@@ -171,78 +174,64 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
   ];
 
   return (
-    <div className="space-y-6">
-      {/* Compact single-row editorial toolbar */}
-      <div className="flex flex-col gap-3 rounded-xl border border-white/10 bg-[#151515]/80 p-3 backdrop-blur-md lg:flex-row lg:items-center lg:justify-between">
-        <div className="relative min-w-0 flex-1">
-          <Search
-            aria-hidden="true"
-            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A6A6A6]"
-          />
-          <input
-            id="project-search"
-            aria-label="Search Projects"
-            type="search"
-            value={query}
-            onChange={(e) => {
-              const v = e.target.value;
-              setQuery(v);
-              updateUrl({ query: v });
-            }}
-            placeholder="Search projects, stack, or systems..."
-            className="min-h-[42px] w-full rounded-lg border border-white/10 bg-[#080808]/90 py-2 pl-9 pr-4 text-sm text-[#F1F0EB] placeholder:text-[#868686] focus:border-[#4169FF] focus:outline-none"
-          />
+    <div className="space-y-8">
+      {/* Compact borderless editorial toolbar — keeps first projects immediately visible */}
+      <div className="flex flex-col gap-4 border-b border-white/10 pb-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="Filter by type">
+          {typeTabs.map((tab) => {
+            const active = origin === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => {
+                  setOrigin(tab.id);
+                  updateUrl({ origin: tab.id });
+                }}
+                className={`active-press min-h-[38px] rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
+                  active
+                    ? "border-[#65C8F5] bg-[#65C8F5]/14 text-[#65C8F5]"
+                    : "border-white/12 bg-transparent text-[#A7ADB7] hover:border-white/25 hover:text-[#F2F0EC]"
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <label htmlFor="origin-filter" className="sr-only">
-            Filter by work type
-          </label>
-          <select
-            id="origin-filter"
-            aria-label="Filter by work type"
-            value={origin}
-            onChange={(e) => {
-              const v = e.target.value as OriginFilter;
-              setOrigin(v);
-              updateUrl({ origin: v });
-            }}
-            className="min-h-[42px] rounded-lg border border-white/10 bg-[#080808]/90 px-3 py-2 text-xs font-medium text-[#F1F0EB] focus:border-[#4169FF] focus:outline-none"
-          >
-            {originOptions.map((opt) => (
-              <option key={opt.id} value={opt.id}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-
-          <label htmlFor="sort-order" className="sr-only">
-            Sort Order
-          </label>
-          <select
-            id="sort-order"
-            aria-label="Sort Order"
-            value={sort}
-            onChange={(e) => {
-              const v = e.target.value === "recent" ? "recent" : "editorial";
-              setSort(v);
-              updateUrl({ sort: v });
-            }}
-            className="min-h-[42px] rounded-lg border border-white/10 bg-[#080808]/90 px-3 py-2 text-xs font-medium text-[#F1F0EB] focus:border-[#4169FF] focus:outline-none"
-          >
-            <option value="editorial">Featured first</option>
-            <option value="recent">Recently updated</option>
-          </select>
+        <div className="flex flex-wrap items-center gap-2.5">
+          <div className="relative min-w-0 flex-1 sm:w-56 sm:flex-initial">
+            <Search
+              aria-hidden="true"
+              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A7ADB7]"
+            />
+            <input
+              id="project-search"
+              aria-label="Search projects"
+              type="search"
+              value={query}
+              onChange={(e) => {
+                const v = e.target.value;
+                setQuery(v);
+                updateUrl({ query: v });
+              }}
+              placeholder="Search projects..."
+              className="min-h-[40px] w-full rounded-full border border-white/12 bg-[#15171C]/75 py-1.5 pl-9 pr-4 text-xs text-[#F2F0EC] placeholder:text-[#8E95A0] focus:border-[#65C8F5] focus:outline-none"
+            />
+          </div>
 
           <button
             type="button"
             aria-expanded={filtersOpen}
             aria-controls="more-filters-panel"
             onClick={() => setFiltersOpen((prev) => !prev)}
-            className={`inline-flex min-h-[42px] items-center gap-1.5 rounded-lg border px-3.5 py-2 text-xs font-medium transition-colors ${
+            className={`active-press inline-flex min-h-[40px] items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
               filtersOpen || secondaryFilterCount > 0
-                ? "border-[#4169FF] bg-[#4169FF]/15 text-[#8CA8FF]"
-                : "border-white/10 bg-[#080808]/90 text-[#F1F0EB] hover:border-white/25"
+                ? "border-[#65C8F5] bg-[#65C8F5]/14 text-[#65C8F5]"
+                : "border-white/12 bg-[#15171C]/75 text-[#F2F0EC] hover:border-white/25"
             }`}
           >
             <SlidersHorizontal className="h-3.5 w-3.5" aria-hidden="true" />
@@ -254,16 +243,16 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
           <div
             role="group"
             aria-label="Project presentation view"
-            className="inline-flex rounded-lg border border-white/10 bg-[#080808]/90 p-0.5"
+            className="inline-flex rounded-full border border-white/12 bg-[#15171C]/75 p-0.5"
           >
             <button
               type="button"
               aria-pressed={viewMode === "gallery"}
               onClick={() => setViewMode("gallery")}
-              className={`inline-flex min-h-[38px] items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+              className={`inline-flex min-h-[34px] items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                 viewMode === "gallery"
-                  ? "bg-white/12 text-[#F1F0EB]"
-                  : "text-[#A6A6A6] hover:text-[#F1F0EB]"
+                  ? "bg-[#F2F0EC] text-[#08090C]"
+                  : "text-[#A7ADB7] hover:text-[#F2F0EC]"
               }`}
             >
               <LayoutGrid className="h-3.5 w-3.5" aria-hidden="true" />
@@ -273,10 +262,10 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
               type="button"
               aria-pressed={viewMode === "index"}
               onClick={() => setViewMode("index")}
-              className={`inline-flex min-h-[38px] items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+              className={`inline-flex min-h-[34px] items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                 viewMode === "index"
-                  ? "bg-white/12 text-[#F1F0EB]"
-                  : "text-[#A6A6A6] hover:text-[#F1F0EB]"
+                  ? "bg-[#F2F0EC] text-[#08090C]"
+                  : "text-[#A7ADB7] hover:text-[#F2F0EC]"
               }`}
             >
               <List className="h-3.5 w-3.5" aria-hidden="true" />
@@ -290,10 +279,10 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
       {filtersOpen && (
         <div
           id="more-filters-panel"
-          className="grid grid-cols-1 gap-4 rounded-xl border border-white/10 bg-[#151515]/90 p-5 backdrop-blur-md lg:grid-cols-12"
+          className="grid grid-cols-1 gap-4 rounded-xl border border-white/12 bg-[#15171C]/95 p-5 backdrop-blur-md lg:grid-cols-12"
         >
           <div className="lg:col-span-4">
-            <label htmlFor="cat-filter" className="mb-1.5 block font-mono text-xs text-[#A6A6A6]">
+            <label htmlFor="cat-filter" className="mb-1.5 block text-xs font-medium text-[#A7ADB7]">
               Category
             </label>
             <select
@@ -304,7 +293,7 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
                 setCategory(v);
                 updateUrl({ category: v });
               }}
-              className="min-h-[42px] w-full rounded-lg border border-white/10 bg-[#080808] px-3 py-2 text-sm text-[#F1F0EB] focus:border-[#4169FF] focus:outline-none"
+              className="min-h-[42px] w-full rounded-lg border border-white/12 bg-[#08090C] px-3 py-2 text-sm text-[#F2F0EC] focus:border-[#65C8F5] focus:outline-none"
             >
               <option value="all">All categories</option>
               {availableCategories.map((cat) => (
@@ -316,7 +305,7 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
           </div>
 
           <div className="lg:col-span-4">
-            <label htmlFor="tech-filter" className="mb-1.5 block font-mono text-xs text-[#A6A6A6]">
+            <label htmlFor="tech-filter" className="mb-1.5 block text-xs font-medium text-[#A7ADB7]">
               Technology
             </label>
             <select
@@ -327,7 +316,7 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
                 setTechnology(v);
                 updateUrl({ technology: v });
               }}
-              className="min-h-[42px] w-full rounded-lg border border-white/10 bg-[#080808] px-3 py-2 text-sm text-[#F1F0EB] focus:border-[#4169FF] focus:outline-none"
+              className="min-h-[42px] w-full rounded-lg border border-white/12 bg-[#08090C] px-3 py-2 text-sm text-[#F2F0EC] focus:border-[#65C8F5] focus:outline-none"
             >
               <option value="all">All technologies</option>
               {topTechnologies.map((tech) => (
@@ -338,10 +327,29 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
             </select>
           </div>
 
+          <div className="lg:col-span-4">
+            <label htmlFor="sort-order" className="mb-1.5 block text-xs font-medium text-[#A7ADB7]">
+              Sort
+            </label>
+            <select
+              id="sort-order"
+              value={sort}
+              onChange={(e) => {
+                const v = e.target.value === "recent" ? "recent" : "editorial";
+                setSort(v);
+                updateUrl({ sort: v });
+              }}
+              className="min-h-[42px] w-full rounded-lg border border-white/12 bg-[#08090C] px-3 py-2 text-sm text-[#F2F0EC] focus:border-[#65C8F5] focus:outline-none"
+            >
+              <option value="editorial">Featured</option>
+              <option value="recent">Recently updated</option>
+            </select>
+          </div>
+
           <div className="lg:col-span-12">
-            <p className="mb-2 font-mono text-xs text-[#A6A6A6]">Scope</p>
-            <div role="tablist" aria-label="Project scope filter" className="flex flex-wrap gap-2">
-              {tierTabs.map((tab) => {
+            <p className="mb-2 text-xs font-medium text-[#A7ADB7]">Featured &amp; Archive</p>
+            <div role="tablist" aria-label="Filter by archive scope" className="flex flex-wrap gap-2">
+              {scopeTabs.map((tab) => {
                 const selected = tier === tab.id;
                 return (
                   <button
@@ -355,8 +363,8 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
                     }}
                     className={`min-h-[38px] rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
                       selected
-                        ? "border-[#4169FF] bg-[#4169FF]/15 text-[#8CA8FF]"
-                        : "border-white/10 bg-[#080808] text-[#A6A6A6] hover:border-white/25 hover:text-[#F1F0EB]"
+                        ? "border-[#65C8F5] bg-[#65C8F5]/14 text-[#65C8F5]"
+                        : "border-white/12 bg-[#08090C] text-[#A7ADB7] hover:border-white/25 hover:text-[#F2F0EC]"
                     }`}
                   >
                     {tab.label}
@@ -370,45 +378,45 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
 
       {/* Result count bar + contextual active filter reset */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="sr-only">Filtered Projects</h2>
-        <p aria-live="polite" className="font-mono text-xs text-[#A6A6A6]">
-          Showing <span className="font-semibold text-[#F1F0EB]">{filtered.length}</span> of{" "}
-          <span className="font-semibold text-[#F1F0EB]">{items.length}</span> works
+        <h2 className="sr-only">Projects</h2>
+        <p aria-live="polite" className="text-xs text-[#A7ADB7]">
+          Showing <span className="font-mono font-semibold text-[#F2F0EC]">{filtered.length}</span>{" "}
+          of <span className="font-mono font-semibold text-[#F2F0EC]">{items.length}</span> projects
         </p>
 
         {hasActiveFilter && (
           <button
             type="button"
             onClick={resetFilters}
-            className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-white/15 bg-[#151515] px-3.5 py-1.5 text-xs font-medium text-[#F1F0EB] transition-colors hover:border-[#4169FF] hover:text-[#7A9BFF]"
+            className="active-press inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-white/15 bg-[#15171C] px-3.5 py-1.5 text-xs font-medium text-[#F2F0EC] transition-colors hover:border-[#65C8F5] hover:text-[#65C8F5]"
           >
             <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-            Clear filters
+            <span>Clear filters</span>
           </button>
         )}
       </div>
 
-      {/* Gallery or Index View or Empty State */}
+      {/* Gallery, Editorial Index, or Empty State */}
       {filtered.length === 0 ? (
-        <div className="rounded-xl border border-white/10 bg-[#151515]/80 px-6 py-16 text-center">
-          <h2 className="font-display text-lg font-bold text-[#F1F0EB]">
+        <div className="border-y border-white/10 py-16 text-center">
+          <h2 className="font-display text-lg font-bold text-[#F2F0EC]">
             No matching projects found
           </h2>
-          <p className="mx-auto mt-2 max-w-md text-sm text-[#A6A6A6]">
-            No entries matched your current filter selection. Reset filters to browse all{" "}
-            {items.length} works.
+          <p className="mx-auto mt-2 max-w-md text-sm text-[#A7ADB7]">
+            No entries matched your current filter selection. Reset filters to view all{" "}
+            {items.length} projects.
           </p>
           <button
             type="button"
             onClick={resetFilters}
-            className="mt-6 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#F1F0EB] px-5 py-2.5 text-sm font-semibold text-[#080808] transition-colors hover:bg-[#7A9BFF]"
+            className="active-press mt-6 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#F2F0EC] px-5 py-2.5 text-sm font-semibold text-[#08090C] transition-colors hover:bg-[#65C8F5]"
           >
             <RotateCcw className="h-4 w-4" aria-hidden="true" />
-            Reset all filters
+            <span>Reset all filters</span>
           </button>
         </div>
       ) : viewMode === "gallery" ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((project, index) => (
             <ProjectCard
               key={project.id}
@@ -424,17 +432,15 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
             <div
               key={project.id}
               onPointerMove={(e) => {
-                if (!canHover || reducedMotion || e.pointerType === "touch") return;
-                if (project.screenshots[0]) {
-                  setHoveredPreview({ project, x: e.clientX + 24, y: e.clientY - 40 });
-                } else {
-                  setHoveredPreview(null);
-                }
+                if (!canHover || qualityMode === "reduced" || e.pointerType === "touch") return;
+                setHoveredPreview({ project, x: e.clientX, y: e.clientY });
               }}
-              onPointerLeave={() => setHoveredPreview(null)}
+              onPointerLeave={() =>
+                setHoveredPreview((prev) => ({ ...prev, project: null }))
+              }
               className="group grid grid-cols-1 gap-2 py-4 transition-colors hover:bg-white/[0.025] md:grid-cols-12 md:items-center md:gap-4"
             >
-              <span className="font-mono text-xs text-[#7A9BFF] md:col-span-1">
+              <span className="font-mono text-xs text-[#65C8F5] md:col-span-1">
                 {String(index + 1).padStart(2, "0")}
               </span>
 
@@ -442,23 +448,23 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
                 <Link
                   href={`/projects/${project.slug}/`}
                   prefetch={false}
-                  className="font-display block truncate text-base font-bold text-[#F1F0EB] transition-colors group-hover:text-[#7A9BFF]"
+                  className="font-display block truncate text-base font-bold text-[#F2F0EC] transition-colors group-hover:text-[#65C8F5]"
                 >
                   {project.title}
                 </Link>
                 {project.projectOrigin === "fork" && project.upstreamCredit && (
-                  <p className="truncate font-mono text-[11px] text-amber-300">
+                  <p className="truncate text-xs text-amber-300">
                     {project.upstreamCredit}
                   </p>
                 )}
               </div>
 
-              <span className="font-mono text-xs text-[#A6A6A6] md:col-span-3">
-                {project.projectOrigin === "professional" ? "Professional · " : ""}
+              <span className="text-xs text-[#A7ADB7] md:col-span-3">
+                {project.projectOrigin === "professional" ? "Professional Work · " : ""}
                 {project.category}
               </span>
 
-              <span className="truncate font-mono text-xs text-[#D6D5CF] md:col-span-2">
+              <span className="truncate text-xs text-[#D6D9DF] md:col-span-2">
                 {project.technologies.slice(0, 2).join(" · ")}
               </span>
 
@@ -467,7 +473,7 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
                   href={`/projects/${project.slug}/`}
                   prefetch={false}
                   aria-label={`Open case study for ${project.title}`}
-                  className="inline-flex min-h-[36px] items-center justify-end gap-1 font-mono text-xs text-[#7A9BFF]"
+                  className="inline-flex min-h-[36px] items-center justify-end gap-1 text-xs font-medium text-[#65C8F5]"
                 >
                   <span>Open</span>
                   <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -476,25 +482,11 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
             </div>
           ))}
 
-          {/* Floating desktop preview card when hovering Index rows with screenshots */}
-          {hoveredPreview && hoveredPreview.project.screenshots[0] && canHover && !reducedMotion && (
-            <div
-              aria-hidden="true"
-              className="pointer-events-none fixed z-40 hidden w-72 overflow-hidden rounded-xl border border-white/20 bg-[#080808] shadow-2xl lg:block"
-              style={{
-                left: `${Math.min(hoveredPreview.x, 1080)}px`,
-                top: `${Math.max(84, hoveredPreview.y)}px`,
-              }}
-            >
-              <Image
-                src={hoveredPreview.project.screenshots[0].src}
-                alt={hoveredPreview.project.screenshots[0].alt}
-                width={hoveredPreview.project.screenshots[0].width}
-                height={hoveredPreview.project.screenshots[0].height}
-                className="aspect-[16/10] w-full object-cover object-top"
-              />
-            </div>
-          )}
+          <ProjectHoverPreview
+            project={hoveredPreview.project}
+            pointerX={hoveredPreview.x}
+            pointerY={hoveredPreview.y}
+          />
         </div>
       )}
     </div>

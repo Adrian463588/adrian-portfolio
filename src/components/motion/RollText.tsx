@@ -14,7 +14,7 @@ export function RollText({ children, className }: RollTextProps) {
       </span>
       <span
         aria-hidden="true"
-        className="roll-text-clone pointer-events-none absolute inset-0 block translate-y-full text-[#7A9BFF] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        className="roll-text-clone pointer-events-none absolute inset-0 block translate-y-full text-[#65C8F5] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
       >
         {children}
       </span>
