@@ -1,19 +1,45 @@
 # Adrian Syah Abidin — Engineering Portfolio
 
-Frontend-only professional engineering portfolio showcasing software systems across **QA Automation / SDET**, **DevOps & DevSecOps**, **Backend Engineering**, **Android & Wear OS**, **On-Device Applied AI**, and **FinTech**. Built with Next.js 16 static export (`output: "export"`), TypeScript strict mode, Tailwind CSS v4, and bounded React Three Fiber 3D interaction.
+Static frontend-only engineering portfolio showcasing software work across **QA Automation / SDET**, **DevOps & DevSecOps**, **Backend & Financial Systems**, **Android & Wear OS Research**, and **On-Device Applied AI**. Built with Next.js 16 static export (`output: "export"`), strict TypeScript, Tailwind CSS v4 (`Obsidian & Arctic`), Three.js / React Three Fiber with custom GLSL shaders, GSAP, and Lenis.
 
-🌐 **Production Site:** [adriansyahabidin.vercel.app](https://adriansyahabidin.vercel.app)
+**Production Site:** [adriansyahabidin.vercel.app](https://adriansyahabidin.vercel.app)
+
+---
+
+## Preview
+
+| Flagship Research (`01 / Android Stress Detection`) | Curated Featured Grid & Private Summary (`04–06`) |
+| --- | --- |
+| ![Android Stress Detection flagship section on desktop](docs/evidence/v6/after/home-flagship-desktop.png) | ![Selected Work featured cards including private ParfumCreator summary](docs/evidence/v6/after/home-featured-grid-desktop.png) |
+
+---
+
+## Featured & Flagship Work (`Selected Work`)
+
+Editorial ordering on `/` and `/projects/` is pinned via `FEATURED_PROJECT_ORDER` in `src/lib/projects.ts` so `npm run sync:github` refreshes never displace flagship or curated work:
+
+| Slot | Project | Focus & Public Boundary |
+| --- | --- | --- |
+| `01` | **Android Stress Detection** *(Flagship Research)* | Wearable PPG signal processing & channel-independent on-device ONNX inference (`App` + `Wear OS`). Experimental decision-support prototype — not a medical diagnostic tool. |
+| `02` | **QuranPlus** | Offline-first Android 30 Juz Quran, 9-kitab Hadith search, Tahsin drills, and `sqlite-vec` / LiteRT-LM on-device RAG. |
+| `03` | **Coffee Creator** | Offline-first Kotlin & Jetpack Compose brewing lab with extraction calculators, haptic pour-over timer, and CVA cupping forms. |
+| `04` | **AdzanPlus** | Shared Kotlin Multiplatform (`core-astronomy`, `core-prayer`) offline prayer times, Qibla compass, and Jetpack Glance widgets. |
+| `05` | **ParfumCreator** *(Private Repository)* | High-level public-safe summary (`visibility: "private-summary"`); source code, internal formulas, and external repo links are intentionally omitted. |
+| `06` | **AutomatePlus** *(+ additional featured projects)* | Rust, Tauri 2 & TypeScript multi-platform SDET workbench compiling `SessionIR` flows into Playwright, Selenium, Appium, and k6 suites. |
+
+Enterprise engineering engagements at **Berijalan Techno Center — ACC Group** (*Archer Upgrade*, *STNK Alignment*, *Advanced Joint Finance Parameter*) are presented strictly as non-interactive experience records under `#experience` without exposing internal URLs, schemas, or proprietary artifacts.
 
 ---
 
 ## Architecture & Stack
 
-- **Framework:** Next.js 16 (App Router, `output: "export"`, static SSG `/projects/[slug]`)
+- **Framework:** Next.js 16 (App Router, `output: "export"`, `78` static routes including `71` eligible `/projects/[slug]/` pages)
 - **Language:** TypeScript (`strict: true`)
-- **Styling:** Tailwind CSS v4 (`Graphite & Ice Blue` semantic tokens)
-- **3D Experience:** Three.js + React Three Fiber (`frameloop="demand"`, client lazy-loaded, WebGL + reduced-motion fallback)
+- **Design Tokens & Typography:** Tailwind CSS v4 (`Obsidian & Arctic`: `#08090C`, `#15171C`, `#1C1F26`, `#F2F0EC`, `#A7ADB7`, `#65C8F5`; `Space Grotesk`, `Geist`, `Geist Mono`)
+- **3D & Shaders:** Three.js + React Three Fiber (`SpatialScene`, custom GLSL `atmosphereShader.ts` and `horizonGridShader.ts`, runtime `High` / `Balanced` / `Reduced` quality modes, WebGL & `prefers-reduced-motion` static geometry fallback)
+- **Motion & Microinteractions:** GSAP (`@gsap/react`) + Lenis smooth scroll (`portfolio:scroll-top` coordination) + native-scale desktop `VIEW` cursor
 - **Icons:** Lucide React
-- **Testing:** Vitest (unit & data invariants) + Playwright + `axe-core` (E2E, responsive, accessibility)
+- **Verification & QA:** Vitest (unit & ordering invariants), Playwright + `axe-core` (E2E, `320px`–`1920px` responsive overflow checks, WCAG 2.2 AA), and `scripts/validate-assets.mjs` (case-sensitive asset & binary header verification across `public/` and `out/`)
 
 ---
 
@@ -22,52 +48,57 @@ Frontend-only professional engineering portfolio showcasing software systems acr
 ```text
 adrian-portfolio/
 ├── design/                        # Design tokens and FigCraft source + exports
-├── docs/                          # Audit, PRD, Design System, Architecture, Evidence
-├── public/projects/               # WebP application screenshots
-├── scripts/sync-github.mjs        # Paginated offline GitHub snapshot generator
-├── specs/001-professional-portfolio/
+├── docs/                          # Audits (V3–V6), Design System, Architecture & Visual Evidence
+├── public/
+│   ├── images/avatar/             # WebP workstation illustrations
+│   ├── projects/                  # Verified local WebP project screenshots
+│   └── og-image.png               # Static 1200×630 Open Graph preview image
+├── scripts/
+│   ├── sync-github.mjs            # Paginated offline GitHub snapshot generator
+│   └── validate-assets.mjs        # Case-sensitive static asset & binary header validator
+├── specs/                         # GitHub Spec Kit specs (001 through 006)
 ├── src/
-│   ├── app/                       # App Router pages (/, /projects, /projects/[slug])
+│   ├── app/                       # App Router pages (/, /projects, /projects/[slug], sitemap, robots)
 │   ├── components/
+│   │   ├── avatar/                # ChibiShowcase
 │   │   ├── layout/                # Navbar, Footer
-│   │   ├── projects/              # ProjectCard, ProjectExplorer, CaseStudyDetail
-│   │   ├── sections/              # Homepage sections
-│   │   ├── three/                 # Bounded R3F Hero sculpture & fallbacks
-│   │   └── ui/                    # Badge, SectionHeader, TiltSurface, TimelineItem
-│   ├── data/
-│   │   ├── github-repositories.json  # Static GitHub API snapshot
-│   │   ├── project-overrides.ts      # Curated case studies & fork attribution
-│   │   └── projects.ts               # Validated merged dataset
-│   ├── lib/                       # Pure filtering, validation, utilities
+│   │   ├── motion/                # DesktopCursor, MagneticSurface, RollText, ScrollParallax, Lenis
+│   │   ├── projects/              # ProjectCard, ProjectExplorer, ProjectHoverPreview, CaseStudyDetail
+│   │   ├── sections/              # Homepage sections (Hero, SelectedWork, Experience, Competencies, etc.)
+│   │   ├── three/                 # SpatialWidget, SpatialBackground, SpatialScene, SpatialFallback
+│   │   └── ui/                    # Badge, ResilientImage, SectionHeader, TiltSurface, TimelineItem
+│   ├── context/                   # MotionContext (quality tiers & reduced-motion state)
+│   ├── data/                      # github-repositories.json, curated-projects.ts, project-overrides.ts, experience.ts
+│   ├── hooks/                     # Motion capability detection
+│   ├── lib/                       # Editorial ranking, filtering, URL safety, and catalog validation
+│   ├── shaders/                   # atmosphereShader.ts, horizonGridShader.ts
 │   └── types/                     # Domain TypeScript definitions
 └── tests/
-    ├── unit/                      # Vitest tests
-    └── e2e/                       # Playwright + axe-core tests
+    ├── unit/                      # Vitest suites
+    └── e2e/                       # Playwright + axe-core E2E & accessibility suite
 ```
 
 ---
 
-## Updating Projects from GitHub
+## Updating Projects & Verifying Locally
 
-Project metadata is synchronized offline so the deployed static frontend never calls GitHub APIs at runtime:
+Project metadata is synchronized offline so the exported static site never calls GitHub APIs at runtime:
 
-1. Sync public repositories from `@Adrian463588`:
+1. Sync public repositories from `@Adrian463588` (optionally set `GITHUB_TOKEN` locally; never commit tokens or use `NEXT_PUBLIC_*`):
    ```bash
    npm run sync:github
    ```
-   Optionally set `GITHUB_TOKEN` in your local shell environment (never commit tokens or use `NEXT_PUBLIC_*`) to increase API rate limits. If GitHub is unreachable, the existing snapshot in `src/data/github-repositories.json` is preserved.
-2. Add or refine curated case studies, categories, or screenshots in `src/data/project-overrides.ts`.
-3. Add WebP screenshots to `public/projects/` with explicit `width` and `height`.
-4. Verify and build:
+2. Curate flagship rankings, case study narratives, and screenshots in `src/data/project-overrides.ts`, `src/data/curated-projects.ts`, and `src/lib/projects.ts` (`FEATURED_PROJECT_ORDER`).
+3. Run the full verification pipeline:
    ```bash
+   npm run validate:assets
    npm run lint
    npm run typecheck
    npm run test
    npm run build
+   npm run validate:assets
    npm run test:e2e
    ```
-
----
 
 ## Local Development
 
