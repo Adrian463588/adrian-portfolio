@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, ArrowUpRight, ExternalLink, Github } from "lucide-react";
+import { ResilientImage } from "@/components/ui/ResilientImage";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { projects } from "@/data/projects";
 import { getFeaturedProjects, getProjectActions } from "@/lib/projects";
@@ -30,13 +30,15 @@ function EditorialMedia({
       className="editorial-image-wrap block overflow-hidden bg-[#15171C]"
     >
       <div className="relative flex aspect-[16/10] w-full items-center justify-center overflow-hidden bg-[#101217]">
-        <Image
+        <ResilientImage
           src={leadShot.src}
           alt={leadShot.alt}
           width={leadShot.width}
           height={leadShot.height}
           priority={priority}
-          loading={priority ? undefined : "eager"}
+          loading="eager"
+          fallbackTitle={project.title}
+          fallbackCategory={project.category}
           className={
             isPortrait
               ? "h-full w-full object-contain py-3"
@@ -107,7 +109,7 @@ export function SelectedWork() {
   return (
     <section
       id="work"
-      className="border-t border-white/10 bg-[#08090C]/78 px-6 py-24 sm:py-28"
+      className="border-t border-white/10 bg-[#08090C]/84 px-6 py-24 backdrop-blur-[2px] sm:py-28"
     >
       <div className="mx-auto max-w-[1280px] space-y-20">
         <div>

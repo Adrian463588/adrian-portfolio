@@ -36,7 +36,6 @@ const homeJsonLd = {
         "Software engineer with experience in enterprise software testing, Cypress automation, Jenkins CI integration, DevOps, and applied AI projects.",
       address: {
         "@type": "PostalAddress",
-        addressLocality: "Yogyakarta",
         addressCountry: "ID",
       },
       alumniOf: {

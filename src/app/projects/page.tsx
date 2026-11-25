@@ -44,7 +44,7 @@ const projectsJsonLd = {
 
 export default function ProjectsPage() {
   return (
-    <div className="px-6 py-12 sm:py-16">
+    <div className="min-h-[calc(100vh-68px)] bg-[#08090C]/82 px-6 py-12 backdrop-blur-[2px] sm:py-16">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(projectsJsonLd) }}

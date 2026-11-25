@@ -29,8 +29,7 @@ export function Contact() {
             Let&apos;s Work Together.
           </h2>
           <p className="max-w-2xl text-sm leading-relaxed text-[#A7ADB7] sm:text-base">
-            Open to Software Engineering, QA/SDET, and DevOps opportunities. Based in Yogyakarta,
-            Indonesia.
+            Open to Software Engineering, QA/SDET, and DevOps opportunities. Based in Indonesia.
           </p>
 
           <div className="flex flex-wrap items-center gap-3.5 pt-2">

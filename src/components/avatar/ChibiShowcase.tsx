@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useRef, useState } from "react";
+import { ResilientImage } from "@/components/ui/ResilientImage";
 import { useMotionCapabilities } from "@/hooks/useMotionCapabilities";
 import { cn } from "@/lib/utils";
 
@@ -64,12 +64,14 @@ export function ChibiShowcase({ compact = false, className }: ChibiShowcaseProps
 
       <figure className="relative overflow-hidden rounded-[30px] border border-white/10 bg-[#15171C] shadow-[0_24px_60px_-24px_rgba(0,0,0,0.9)]">
         <div className="relative aspect-square w-full overflow-hidden rounded-[30px]">
-          <Image
+          <ResilientImage
             src="/images/avatar/professional-chibi.webp"
-            alt="Illustrated chibi portrait of Adrian Syah Abidin coding on laptop with stack of DevSecOps, Android Compose, AI/LLM, QA Testing, and Cloud/K8s books, UGM crest, and Tugu Yogyakarta"
+            alt="Illustrated portrait of Adrian Syah Abidin."
             width={1000}
             height={1000}
             loading="eager"
+            fallbackTitle="Adrian Syah Abidin"
+            fallbackCategory="Software Engineer"
             className="h-full w-full scale-[1.055] object-cover transition-transform duration-500 ease-out group-hover:scale-[1.07]"
           />
 
@@ -87,7 +89,7 @@ export function ChibiShowcase({ compact = false, className }: ChibiShowcaseProps
         </div>
 
         <figcaption className="flex items-center justify-between border-t border-white/10 bg-[#08090C]/92 px-4 py-2.5 text-[11px] font-medium tracking-wider text-[#A7ADB7]">
-          <span>Yogyakarta · FT UGM</span>
+          <span>Indonesia · Universitas Gadjah Mada</span>
           <span className="text-[#65C8F5]">QA · DevOps · AI</span>
         </figcaption>
       </figure>

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import gsap from "gsap";
 import type { Project } from "@/types";
+import { ResilientImage } from "@/components/ui/ResilientImage";
 import { useMotion } from "@/context/MotionContext";
 
 interface ProjectHoverPreviewProps {
@@ -80,11 +80,14 @@ export function ProjectHoverPreview({
       {project && (
         shot ? (
           <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#08090C]">
-            <Image
+            <ResilientImage
               src={shot.src}
               alt={shot.alt}
               width={shot.width}
               height={shot.height}
+              loading="eager"
+              fallbackTitle={project.title}
+              fallbackCategory={project.category}
               className="h-full w-full object-cover object-top"
             />
           </div>

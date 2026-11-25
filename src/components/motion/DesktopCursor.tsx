@@ -1,67 +1,104 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useMotion } from "@/context/MotionContext";
 
 export function DesktopCursor() {
   const { isClient, canHover, qualityMode } = useMotion();
-  const ringRef = useRef<HTMLDivElement>(null);
-  const [cursorLabel, setCursorLabel] = useState<string>("");
+  const rootRef = useRef<HTMLDivElement>(null);
+  const dotRef = useRef<HTMLDivElement>(null);
+  const badgeRef = useRef<HTMLDivElement>(null);
 
   const enabled = isClient && canHover && qualityMode !== "reduced";
 
   useEffect(() => {
-    if (!enabled || !ringRef.current) return;
+    const root = rootRef.current;
+    const dot = dotRef.current;
+    const badge = badgeRef.current;
+    if (!enabled || !root || !dot || !badge) return;
 
-    const ring = ringRef.current;
-    const xTo = gsap.quickTo(ring, "x", { duration: 0.22, ease: "power3.out" });
-    const yTo = gsap.quickTo(ring, "y", { duration: 0.22, ease: "power3.out" });
+    const xTo = gsap.quickTo(root, "x", { duration: 0.2, ease: "power3.out" });
+    const yTo = gsap.quickTo(root, "y", { duration: 0.2, ease: "power3.out" });
     let visible = false;
+    let activeWork = false;
+    let lastX = -1;
+    let lastY = -1;
+
+    const hideAll = () => {
+      visible = false;
+      activeWork = false;
+      gsap.to([dot, badge], { opacity: 0, duration: 0.16, overwrite: "auto" });
+      gsap.to(badge, { scale: 0.78, duration: 0.16, overwrite: "auto" });
+    };
 
     const handleMove = (event: PointerEvent) => {
       if (event.pointerType !== "mouse") return;
+      lastX = event.clientX;
+      lastY = event.clientY;
       if (!visible) {
         visible = true;
-        gsap.set(ring, { x: event.clientX, y: event.clientY });
-        gsap.to(ring, { opacity: 1, duration: 0.2 });
+        gsap.set(root, { x: event.clientX, y: event.clientY });
       } else {
         xTo(event.clientX);
         yTo(event.clientY);
       }
 
       const target = event.target as HTMLElement | null;
+      const inModalOrInput = Boolean(
+        target?.closest("[role='dialog'], input, textarea, select")
+      );
+      if (inModalOrInput) {
+        if (visible) {
+          gsap.to([dot, badge], { opacity: 0, duration: 0.14, overwrite: "auto" });
+        }
+        return;
+      }
+
       const isWorkMedia = Boolean(target?.closest("[data-cursor='work']"));
-      const isInteractive = Boolean(
-        target?.closest("a, button, [role='button'], summary, input, select")
+      const isStandardInteractive = Boolean(
+        target?.closest("a, button, [role='button'], summary")
       );
 
-      setCursorLabel(isWorkMedia ? "VIEW" : "");
-
-      gsap.to(ring, {
-        scale: isWorkMedia ? 2.15 : isInteractive ? 0.5 : 0.42,
-        opacity: isWorkMedia ? 1 : isInteractive ? 0 : 0.65,
-        borderColor: isWorkMedia
-          ? "rgba(101, 200, 245, 0.85)"
-          : "rgba(101, 200, 245, 0.45)",
-        backgroundColor: isWorkMedia ? "rgba(8, 9, 12, 0.72)" : "transparent",
-        duration: 0.18,
-        overwrite: "auto",
-      });
+      if (isWorkMedia) {
+        if (!activeWork) {
+          activeWork = true;
+          gsap.to(dot, { opacity: 0, scale: 0.6, duration: 0.14, overwrite: "auto" });
+          gsap.to(badge, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out", overwrite: "auto" });
+        }
+      } else {
+        if (activeWork) {
+          activeWork = false;
+          gsap.to(badge, { opacity: 0, scale: 0.78, duration: 0.14, overwrite: "auto" });
+        }
+        gsap.to(dot, {
+          opacity: isStandardInteractive ? 0 : 0.65,
+          scale: isStandardInteractive ? 0.5 : 1,
+          duration: 0.16,
+          overwrite: "auto",
+        });
+      }
     };
 
-    const handleLeave = () => {
-      visible = false;
-      setCursorLabel("");
-      gsap.to(ring, { opacity: 0, duration: 0.2 });
+    const handleScroll = () => {
+      if (!activeWork || lastX < 0 || lastY < 0) return;
+      const hovered = document.elementFromPoint(lastX, lastY);
+      if (!hovered?.closest("[data-cursor='work']")) {
+        activeWork = false;
+        gsap.to(badge, { opacity: 0, scale: 0.78, duration: 0.14, overwrite: "auto" });
+      }
     };
 
     window.addEventListener("pointermove", handleMove, { passive: true });
-    document.addEventListener("mouseleave", handleLeave, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    document.addEventListener("mouseleave", hideAll, { passive: true });
+    window.addEventListener("blur", hideAll, { passive: true });
 
     return () => {
       window.removeEventListener("pointermove", handleMove);
-      document.removeEventListener("mouseleave", handleLeave);
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("mouseleave", hideAll);
+      window.removeEventListener("blur", hideAll);
     };
   }, [enabled]);
 
@@ -71,15 +108,27 @@ export function DesktopCursor() {
 
   return (
     <div
-      ref={ringRef}
+      ref={rootRef}
       aria-hidden="true"
-      className="pointer-events-none fixed top-0 left-0 z-50 -ml-4 -mt-4 flex h-8 w-8 items-center justify-center rounded-full border border-[#65C8F5]/45 opacity-0 will-change-transform"
+      className="pointer-events-none fixed top-0 left-0 z-50"
     >
-      {cursorLabel && (
-        <span className="font-mono text-[6px] font-semibold tracking-[0.14em] text-[#F2F0EC]">
-          {cursorLabel}
+      {/* Subtle ambient ring over non-interactive space */}
+      <div
+        ref={dotRef}
+        className="-ml-1.5 -mt-1.5 h-3 w-3 rounded-full border border-[#65C8F5]/55 opacity-0"
+      />
+
+      {/* Native-resolution VIEW badge rendered at <=1.0 scale to avoid text blur */}
+      <div
+        ref={badgeRef}
+        data-testid="cursor-view-badge"
+        style={{ transform: "scale(0.78)" }}
+        className="-ml-7 -mt-7 flex h-14 w-14 items-center justify-center rounded-full border border-[#65C8F5]/85 bg-[#08090C]/92 opacity-0 shadow-[0_8px_24px_rgba(0,0,0,0.55)]"
+      >
+        <span className="font-mono text-[11px] font-semibold tracking-[0.14em] text-[#F2F0EC]">
+          VIEW
         </span>
-      )}
+      </div>
     </div>
   );
 }

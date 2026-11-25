@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import {
   ArrowLeft,
   ArrowRight,
@@ -13,6 +12,7 @@ import {
 import type { Project } from "@/types";
 import { getProjectActions } from "@/lib/projects";
 import { Badge } from "@/components/ui/Badge";
+import { ResilientImage } from "@/components/ui/ResilientImage";
 import { ChoreographedBlock } from "@/components/motion/SectionChoreography";
 
 interface CaseStudyDetailProps {
@@ -32,7 +32,7 @@ export function CaseStudyDetail({
   const actions = getProjectActions(project);
 
   return (
-    <article className="px-6 py-12 sm:py-16">
+    <article className="min-h-[calc(100vh-68px)] bg-[#08090C]/84 px-6 py-12 backdrop-blur-[2px] sm:py-16">
       <div className="mx-auto max-w-[1000px] space-y-10">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs text-[#A7ADB7]">
@@ -244,11 +244,14 @@ export function CaseStudyDetail({
                     className="editorial-image-wrap group overflow-hidden bg-[#15171C]"
                   >
                     <div className="flex aspect-[16/10] w-full items-center justify-center overflow-hidden bg-[#08090C]">
-                      <Image
+                      <ResilientImage
                         src={shot.src}
                         alt={shot.alt}
                         width={shot.width}
                         height={shot.height}
+                        loading="eager"
+                        fallbackTitle={project.title}
+                        fallbackCategory={project.category}
                         className={
                           isPortrait
                             ? "h-full w-full object-contain py-3"

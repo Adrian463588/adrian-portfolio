@@ -10,10 +10,7 @@ export function Footer() {
   const { qualityMode, preference, setPreference, osReducedMotion } = useMotion();
 
   const handleBackToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: qualityMode === "reduced" ? "auto" : "smooth",
-    });
+    window.dispatchEvent(new CustomEvent("portfolio:scroll-top"));
   };
 
   const modes: { id: MotionPreference; label: string }[] = [
@@ -30,7 +27,7 @@ export function Footer() {
             &copy; {year} Adrian Syah Abidin
           </p>
           <p className="text-xs text-[#A7ADB7]">
-            Yogyakarta, Indonesia
+            Indonesia
           </p>
         </div>
 

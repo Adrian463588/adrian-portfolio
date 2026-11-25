@@ -1,8 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowUpRight, ExternalLink, Github, GitFork } from "lucide-react";
 import type { Project } from "@/types";
 import { getProjectActions } from "@/lib/projects";
+import { ResilientImage } from "@/components/ui/ResilientImage";
 import { TiltSurface } from "@/components/ui/TiltSurface";
 
 interface ProjectCardProps {
@@ -34,13 +34,15 @@ export function ProjectCard({
               className="editorial-image-wrap block overflow-hidden bg-[#15171C]"
             >
               <div className="relative flex aspect-[16/10] w-full items-center justify-center overflow-hidden bg-[#101217]">
-                <Image
+                <ResilientImage
                   src={leadShot.src}
                   alt={leadShot.alt}
                   width={leadShot.width}
                   height={leadShot.height}
                   priority={priorityImage}
-                  loading={priorityImage ? undefined : "eager"}
+                  loading="eager"
+                  fallbackTitle={project.title}
+                  fallbackCategory={project.category}
                   className={
                     isPortrait
                       ? "h-full w-full object-contain py-3"

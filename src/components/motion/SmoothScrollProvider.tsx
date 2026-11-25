@@ -34,10 +34,15 @@ export function SmoothScrollProvider({
     };
 
     if (qualityMode === "reduced") {
+      const onScrollTopReduced = () => {
+        window.scrollTo({ top: 0, behavior: "auto" });
+      };
       updateProgressNative();
       window.addEventListener("scroll", updateProgressNative, { passive: true });
+      window.addEventListener("portfolio:scroll-top", onScrollTopReduced);
       return () => {
         window.removeEventListener("scroll", updateProgressNative);
+        window.removeEventListener("portfolio:scroll-top", onScrollTopReduced);
       };
     }
 
@@ -56,7 +61,12 @@ export function SmoothScrollProvider({
       }
     };
 
+    const onScrollTop = () => {
+      lenis.scrollTo(0, { force: true });
+    };
+
     lenis.on("scroll", onLenisScroll);
+    window.addEventListener("portfolio:scroll-top", onScrollTop);
 
     const tick = (time: number) => {
       lenis.raf(time * 1000);
@@ -68,6 +78,7 @@ export function SmoothScrollProvider({
 
     return () => {
       gsap.ticker.remove(tick);
+      window.removeEventListener("portfolio:scroll-top", onScrollTop);
       lenis.off("scroll", onLenisScroll);
       lenis.destroy();
     };

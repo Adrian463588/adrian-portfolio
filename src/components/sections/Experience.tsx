@@ -28,7 +28,7 @@ export function Experience() {
   return (
     <section
       id="experience"
-      className="border-t border-white/10 bg-[#08090C]/75 px-6 py-20 backdrop-blur-[2px] sm:py-24"
+      className="border-t border-white/10 bg-[#08090C]/84 px-6 py-20 backdrop-blur-[2px] sm:py-24"
     >
       <div className="mx-auto grid max-w-[1280px] grid-cols-1 gap-12 lg:grid-cols-12">
         <div className="min-w-0 space-y-6 lg:col-span-4">

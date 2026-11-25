@@ -74,7 +74,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     title: "QuranPlus",
     subtitle: "Offline-First Android Quran, Hadith & On-Device RAG Companion",
     summary:
-      "Native Android companion combining 30 Juz Quran, 9-kitab Hadith, Tahsin/Tajwid, and offline on-device RAG using Jetpack Compose, LiteRT-LM, ONNX, and sqlite-vec.",
+      "Offline-first Android app for reading the Quran, exploring Hadith, and using local study tools.",
     description:
       "Offline-first Android application delivering complete 114-surah Quran text, word-by-word reading tools, Hadith search across 9 collections, Tahsin drills, Dzikir & Hizib, and local semantic AI retrieval without network dependency.",
     category: "Android & Mobile Development",
@@ -327,7 +327,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     title: "Dual-VM Monitoring & Alerting Stack",
     subtitle: "Prometheus, Grafana, Uptime Kuma & Terraform Infrastructure",
     summary:
-      "Two-VM infrastructure monitoring setup using Prometheus, Grafana, Alertmanager, Uptime Kuma, and Terraform.",
+      "Infrastructure monitoring and alerting using Prometheus, Grafana, Terraform, and Docker Compose.",
     description:
       "Automated infrastructure and monitoring stack separating target Nginx/Node Exporter hosts from a dedicated observability VM using Terraform, Docker Compose, and Bash provisioning.",
     category: "DevOps & DevSecOps",
@@ -882,7 +882,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     title: "SignalBooster",
     subtitle: "Android Connectivity Diagnostics, QoE Probe & Privacy Resilience",
     summary:
-      "MIT-licensed Kotlin + Hilt + Jetpack Compose Android app evaluating RF congestion, network QoE, telephony diagnostics, and privacy masking.",
+      "Android connectivity diagnostics app for monitoring network quality and signal performance.",
     description:
       "Local-first network diagnostics suite offering live QoE probes, crowd-band analysis, Shizuku capability inspection, and DevSecOps CI checks.",
     category: "Android & Mobile Development",
@@ -914,7 +914,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     title: "NotifPlus",
     subtitle: "Zero-Internet Privacy-First Notification History Archiver",
     summary:
-      "100% offline Android notification archiving app built with Kotlin, Jetpack Compose, Room, Hilt, and Material 3 without network permissions.",
+      "Offline Android app for saving and organizing notification history locally.",
     description:
       "Privacy-respecting local notification logger and media archiver enforcing zero-internet manifest guarantees and automated DevSecOps scanning.",
     category: "Android & Mobile Development",
@@ -977,10 +977,10 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     repoName: "TechnoLoyaltyProgram",
     id: "techno-loyalty-program",
     slug: "techno-loyalty-program",
-    title: "Berijalan Employee Loyalty Portal",
-    subtitle: "Monorepo Token & Reward System (Next.js, Express, Prisma, PostgreSQL)",
+    title: "Employee Loyalty Program Platform",
+    subtitle: "Token & Reward Management Monorepo (Next.js, Express, Prisma, PostgreSQL)",
     summary:
-      "Role-based employee loyalty portal across Optel and Techno divisions allowing Mitra, Team Leaders, and HC admins to audit shift tokens and reward redemptions.",
+      "Role-based employee loyalty platform built for managing shift tokens, audit logs, and reward redemptions across Optel and Techno divisions.",
     description:
       "Full-stack monorepo pairing a Next.js + NextAuth frontend with an Express + Prisma + PostgreSQL API, Cypress E2E test suite, and deployment CI.",
     category: "Frontend & Web Development",
@@ -991,7 +991,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     personalContribution:
       "Built Next.js frontend workflows, Express/Prisma API endpoints, TSV/XLSX template import handling, and Cypress test coverage.",
     projectStatus: "completed",
-    projectOrigin: "original",
+    projectOrigin: "bootcamp",
     tier: "catalog",
     featured: false,
     resultsAndLimitations:

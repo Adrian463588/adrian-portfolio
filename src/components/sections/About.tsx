@@ -7,13 +7,10 @@ export function About() {
   return (
     <section
       id="about"
-      className="border-t border-white/10 bg-[#08090C]/82 px-6 py-20 sm:py-24"
+      className="border-t border-white/10 bg-[#08090C]/88 px-6 py-20 backdrop-blur-[2px] sm:py-24"
     >
       <div className="mx-auto max-w-[1280px]">
-        <SectionHeader
-          title="About Me."
-          description="Beyond the code."
-        />
+        <SectionHeader title="About." />
 
         <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">

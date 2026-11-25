@@ -102,19 +102,16 @@ export function Navbar() {
             onClick={(e) => {
               if (pathname === "/") {
                 e.preventDefault();
-                window.scrollTo({
-                  top: 0,
-                  behavior: qualityMode === "reduced" ? "auto" : "smooth",
-                });
+                window.dispatchEvent(new CustomEvent("portfolio:scroll-top"));
               }
             }}
             className="group inline-flex min-h-[44px] shrink-0 items-baseline whitespace-nowrap font-display text-xl font-bold tracking-[-0.04em] text-[#F2F0EC] transition-colors hover:text-[#65C8F5]"
           >
-            <span>as</span>
+            <span>Adrian</span>
             <span className="text-[#65C8F5]" aria-hidden="true">
               .
             </span>
-            <span className="sr-only"> — Adrian Syah Abidin home</span>
+            <span className="sr-only"> — Home</span>
           </Link>
 
           <div className="hidden items-center gap-1 lg:flex">
@@ -138,7 +135,7 @@ export function Navbar() {
 
           <div className="flex shrink-0 items-center gap-3">
             <span className="hidden font-mono text-[11px] tracking-wider text-[#A7ADB7] xl:inline">
-              YOGYA · GMT+7
+              INDONESIA
             </span>
 
             <MagneticSurface>
@@ -183,7 +180,7 @@ export function Navbar() {
         >
           <div className="mx-auto flex w-full max-w-[1280px] items-center justify-between border-b border-white/10 pb-5">
             <span className="font-display text-xl font-bold tracking-[-0.04em] text-[#F2F0EC]">
-              as<span className="text-[#65C8F5]">.</span>
+              Adrian<span className="text-[#65C8F5]">.</span>
             </span>
             <button
               ref={closeBtnRef}

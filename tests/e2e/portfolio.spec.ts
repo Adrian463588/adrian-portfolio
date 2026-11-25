@@ -140,7 +140,7 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await expect(selectedProjectsList.locator("a, button")).toHaveCount(0);
 
     // Chibi workstation illustration renders cleanly in #about without clipping or broken load
-    const chibiImg = page.locator('#about img[alt*="Illustrated chibi portrait"]');
+    const chibiImg = page.locator('#about img[alt="Illustrated portrait of Adrian Syah Abidin."]');
     await chibiImg.scrollIntoViewIfNeeded();
     await expect
       .poll(async () =>
@@ -148,11 +148,21 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       )
       .toBeGreaterThan(0);
 
+    // Branding uses Adrian. and personal location uses Indonesia without YOGYA / GMT+7
+    await expect(
+      page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: /Adrian — Home/i })
+    ).toBeVisible();
+    await expect(page.getByText("INDONESIA", { exact: true })).toBeVisible();
+    await expect(page.locator("#about")).toContainText("Indonesia · Universitas Gadjah Mada");
+    await expect(page.locator("#contact")).toContainText("Based in Indonesia.");
+    for (const sel of ["header", "#about", "#contact", "footer"]) {
+      await expect(page.locator(sel)).not.toContainText(/YOGYA|Yogyakarta|GMT\+7/i);
+    }
     await expect(page.getByText(/DEMAND RENDERED/i)).toHaveCount(0);
     await expect(page.getByText(/All 73 Projects/i)).toHaveCount(0);
   });
 
-  test("projects page opens with V4 framing, hides removed enterprise routes, and strips dead Live Demo actions", async ({
+  test("projects page opens with V5 framing, hides removed enterprise routes, and strips dead Live Demo actions", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
@@ -172,8 +182,8 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await expect(page.getByText(/EverShop Cypress/i)).toBeVisible();
 
     // TechnoLoyaltyProgram must not show a dead sslip.io Live Demo link
-    await search.fill("Berijalan Employee Loyalty Portal");
-    const technoCard = page.locator("article").filter({ hasText: "Berijalan Employee Loyalty Portal" }).first();
+    await search.fill("Employee Loyalty Program Platform");
+    const technoCard = page.locator("article").filter({ hasText: "Employee Loyalty Program Platform" }).first();
     await expect(technoCard).toBeVisible();
     await expect(technoCard.getByRole("link", { name: /Live Demo/i })).toHaveCount(0);
     await expect(technoCard.getByRole("link", { name: /GitHub/i })).toHaveCount(1);
@@ -255,45 +265,131 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     }
   });
 
-  test("RollText links keep visible text inside container bounds on hover", async ({
+  test("RollText links keep visible text inside container bounds on hover, leave, and rapid sweep", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "networkidle" });
 
+    const nav = page.getByRole("navigation", { name: "Primary navigation" });
     const targets = [
       page.locator("#hero").getByRole("link", { name: /Get in Touch/i }),
       page.locator("#hero").getByRole("link", { name: /GitHub/i }),
-      page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Work" }),
+      page.locator("#hero").getByRole("link", { name: /LinkedIn/i }),
+      page.locator("#hero").getByRole("link", { name: /Medium/i }),
+      nav.getByRole("link", { name: "Work" }),
+      nav.getByRole("link", { name: "Projects" }),
+      nav.getByRole("link", { name: "Experience" }),
+      nav.getByRole("link", { name: "About" }),
+      nav.getByRole("link", { name: "Contact" }),
     ];
 
     for (const loc of targets) {
       await loc.hover();
-      await page.waitForTimeout(350);
-      const result = await loc.evaluate((el) => {
+      await page.waitForTimeout(340);
+      const hovered = await loc.evaluate((el) => {
         const container = el.querySelector(".roll-text");
         const clone = el.querySelector(".roll-text-clone");
         if (!container || !clone) return { ok: false, reason: "missing roll-text elements" };
         const cr = container.getBoundingClientRect();
         const cl = clone.getBoundingClientRect();
+        const opacity = parseFloat(getComputedStyle(clone).opacity || "1");
         const visibleInBounds =
           cl.top >= cr.top - 2 &&
           cl.bottom <= cr.bottom + 2 &&
-          cl.height > 8;
-        return { ok: visibleInBounds, crTop: cr.top, crBottom: cr.bottom, clTop: cl.top, clBottom: cl.bottom };
+          cl.height > 8 &&
+          opacity > 0.9;
+        return { ok: visibleInBounds, cr, cl, opacity };
       });
-      expect(result.ok, `RollText clone must stay visible inside bounds on hover: ${JSON.stringify(result)}`).toBe(true);
+      expect(hovered.ok, `Hover clone hidden or clipped: ${JSON.stringify(hovered)}`).toBe(true);
     }
+
+    // Move cursor to neutral space and verify primary label restores cleanly
+    await page.mouse.move(20, 200);
+    await page.waitForTimeout(340);
+    const restored = await targets[0].evaluate((el) => {
+      const container = el.querySelector(".roll-text");
+      const primary = el.querySelector(".roll-text-primary");
+      if (!container || !primary) return false;
+      const cr = container.getBoundingClientRect();
+      const pr = primary.getBoundingClientRect();
+      return pr.top >= cr.top - 2 && pr.bottom <= cr.bottom + 2;
+    });
+    expect(restored).toBe(true);
   });
 
-  test("internal Berijalan enterprise routes are excluded from public static export", async ({ request }) => {
+  test("custom VIEW cursor uses sharp native scale without blurring or covering text links", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "networkidle" });
+
+    const workMedia = page.locator("[data-cursor='work']").first();
+    await workMedia.scrollIntoViewIfNeeded();
+    await workMedia.hover();
+    await page.waitForTimeout(300);
+
+    const viewBadge = page.getByTestId("cursor-view-badge");
+    await expect(viewBadge).toBeVisible();
+    const stats = await viewBadge.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      const label = el.querySelector("span");
+      const labelStyle = label ? getComputedStyle(label) : null;
+      let scaleX = 1;
+      if (cs.transform && cs.transform !== "none") {
+        const m = new DOMMatrixReadOnly(cs.transform);
+        scaleX = Math.hypot(m.a, m.b);
+      }
+      return {
+        opacity: parseFloat(cs.opacity || "0"),
+        filter: cs.filter,
+        scaleX,
+        fontSize: labelStyle ? parseFloat(labelStyle.fontSize) : 0,
+        pointerEvents: getComputedStyle(el.parentElement!).pointerEvents,
+      };
+    });
+    expect(stats.opacity).toBeGreaterThan(0.9);
+    expect(stats.filter).toBe("none");
+    expect(stats.scaleX).toBeLessThanOrEqual(1.01);
+    expect(stats.fontSize).toBeGreaterThanOrEqual(11);
+    expect(stats.pointerEvents).toBe("none");
+  });
+
+  test("ResilientImage displays intentional fallback cleanly when a project thumbnail fails to load", async ({
+    page,
+  }) => {
+    await page.route("**/projects/automate-plus-workbench.webp", (route) =>
+      route.fulfill({ status: 404, body: "Not Found" })
+    );
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "load" });
+    const fallback = page.locator("#work [data-image-fallback='true']").first();
+    await fallback.scrollIntoViewIfNeeded();
+    await expect(fallback).toBeVisible();
+    await expect(fallback).toContainText("AutomatePlus");
+  });
+
+  test("all public project routes in sitemap return HTTP 200 cleanly and Berijalan stays excluded", async ({
+    request,
+  }) => {
     for (const slug of ["archer-upgrade", "stnk-alignment", "advanced-joint-finance-parameter"]) {
       const res = await request.get(`/projects/${slug}/`);
       expect(res.status()).toBe(404);
     }
+
+    const sitemapXml = await (await request.get("/sitemap.xml")).text();
+    const projectLocs = [...sitemapXml.matchAll(/<loc>https:\/\/adriansyahabidin\.vercel\.app(\/projects\/[^<]+\/)<\/loc>/g)].map(
+      (m) => m[1]
+    );
+    expect(projectLocs.length).toBe(70);
+
+    for (const pathname of projectLocs) {
+      const res = await request.get(pathname);
+      expect(res.status(), `Public route ${pathname} must return 200`).toBe(200);
+    }
   });
 
-  test("all interactive controls respond to real user clicks without WebGL/cursor obstruction", async ({
+  test("all interactive controls respond to real user clicks and cross-page anchor navigation works", async ({
     page,
     context,
   }) => {
@@ -305,8 +401,11 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await page.locator("#hero").getByRole("link", { name: /View My Work/i }).click();
     await expect.poll(async () => page.evaluate(() => window.scrollY)).toBeGreaterThan(250);
 
-    // 2. Brand logo returns cleanly to top of homepage (TC-FUNC-001)
-    await page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: /Adrian Syah Abidin home/i }).click();
+    // 2. Brand logo returns cleanly to top of homepage (TC-NAV-001)
+    await page
+      .getByRole("navigation", { name: "Primary navigation" })
+      .getByRole("link", { name: /Adrian — Home/i })
+      .click();
     await expect.poll(async () => page.evaluate(() => window.scrollY)).toBeLessThan(80);
 
     // 3. Copy email button copies address and displays feedback (TC-FUNC-007)
@@ -321,13 +420,13 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await backToTop.click();
     await expect.poll(async () => page.evaluate(() => window.scrollY)).toBeLessThan(80);
 
-    // 5. Verified Live Demo external link metadata on Featured project (TC-FUNC-010)
+    // 5. Verified Live Demo external link metadata on Featured project
     const demoLink = page.locator("#work").getByRole("link", { name: /Live demo for HSK 1 Vocabulary Master/i });
     await expect(demoLink).toHaveAttribute("href", "https://hsk1vocab.edgeone.dev/");
     await expect(demoLink).toHaveAttribute("target", "_blank");
     await expect(demoLink).toHaveAttribute("rel", /noopener/);
 
-    // 6. Top nav link to /projects/ + Case study + browser Back/Forward (TC-FUNC-009, TC-FUNC-014, TC-FUNC-015)
+    // 6. Top nav link to /projects/ + Case study + browser Back/Forward
     await page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Projects" }).click();
     await expect(page).toHaveURL(/\/projects\/?$/);
     await expect(page.locator("h1")).toHaveText("Projects.");
@@ -340,11 +439,23 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await page.goForward();
     await expect(page).toHaveURL(/\/projects\/automate-plus\/?$/);
 
-    // 7. Clicking brand logo from subpage navigates back to homepage
-    await page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: /Adrian Syah Abidin home/i }).click();
+    // 7. Cross-page anchor link (#contact) from project detail reaches homepage contact section (TC-NAV-014)
+    await page
+      .getByRole("navigation", { name: "Primary navigation" })
+      .getByRole("link", { name: "Contact" })
+      .click();
+    await expect(page).toHaveURL(/\/#contact$/);
+    await expect(page.locator("#contact")).toBeInViewport();
+
+    // 8. Clicking brand logo from subpage navigates back to homepage
+    await page.goto("/projects/automate-plus/", { waitUntil: "domcontentloaded" });
+    await page
+      .getByRole("navigation", { name: "Primary navigation" })
+      .getByRole("link", { name: /Adrian — Home/i })
+      .click();
     await expect(page).toHaveURL(/\/$/);
 
-    // 8. Mobile drawer link navigates without returning focus back to header toggle
+    // 9. Mobile drawer link navigates without returning focus back to header toggle
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/", { waitUntil: "networkidle" });
     await page.getByRole("button", { name: /Open navigation menu/i }).click();
