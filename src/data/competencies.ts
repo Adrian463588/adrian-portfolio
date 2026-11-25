@@ -15,7 +15,7 @@ export const competencies: CompetencyGroup[] = [
       "Cucumber (BDD)",
       "Manual Testing",
     ],
-    relatedProjectSlugs: ["archer-upgrade", "automate-plus", "demo-evershop-cypress"],
+    relatedProjectSlugs: ["automate-plus", "demo-evershop-cypress", "saucedemo-cypress-bdd-jenkins"],
   },
   {
     id: "devops-sec",
@@ -51,9 +51,9 @@ export const competencies: CompetencyGroup[] = [
       "Joint Financing",
     ],
     relatedProjectSlugs: [
-      "advanced-joint-finance-parameter",
-      "stnk-alignment",
       "ledger-scope",
+      "credit-risk-mlops",
+      "go-online-shop",
     ],
   },
   {

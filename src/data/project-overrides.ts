@@ -134,7 +134,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     title: "EnglishPrepAI",
     subtitle: "Offline TOEFL ITP, TOEFL iBT (2026) & IELTS Academic Prep",
     summary:
-      "100% offline Android test-prep suite supporting TOEFL ITP, 2026 TOEFL iBT, and IELTS Academic with Room FTS4, Media3, Gemma 4 (LiteRT-LM), and Whisper ONNX.",
+      "Offline Android application for TOEFL ITP, TOEFL iBT (2026), and IELTS Academic preparation using Room FTS4, Media3, Gemma 4, and Whisper ONNX.",
     description:
       "Native Kotlin & Jetpack Compose preparation platform implementing explicit structural rules for TOEFL ITP Level 1, post-2026 TOEFL iBT, and IELTS Academic without requiring INTERNET permission.",
     category: "Android & Mobile Development",
@@ -243,7 +243,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     id: "med-bot",
     slug: "med-bot",
     title: "MedBot",
-    subtitle: "Evidence-Gated On-Device Medical Assistant",
+    subtitle: "Offline Android Health Assistant",
     summary:
       "Local-first Android health assistant built with Kotlin, Jetpack Compose, LiteRT-LM model integrity verification, SAF storage, and clinical safety boundaries.",
     description:
@@ -327,7 +327,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     title: "Dual-VM Monitoring & Alerting Stack",
     subtitle: "Prometheus, Grafana, Uptime Kuma & Terraform Infrastructure",
     summary:
-      "Dual-VM DevOps observability deployment isolating Nginx workloads from Prometheus, Grafana, Alertmanager, and Uptime Kuma Discord alerting via Terraform and Docker Compose.",
+      "Two-VM infrastructure monitoring setup using Prometheus, Grafana, Alertmanager, Uptime Kuma, and Terraform.",
     description:
       "Automated infrastructure and monitoring stack separating target Nginx/Node Exporter hosts from a dedicated observability VM using Terraform, Docker Compose, and Bash provisioning.",
     category: "DevOps & DevSecOps",

@@ -43,6 +43,49 @@ function isSafeHttpsUrl(value: string): boolean {
   }
 }
 
+const BLOCKED_DEMO_HOSTS = [".sslip.io", "adrian-portfolio-plum.vercel.app"];
+
+export function isVerifiedLiveDemoUrl(value?: string, repoUrl?: string): boolean {
+  if (!value || !isSafeHttpsUrl(value)) return false;
+  if (repoUrl && value.replace(/\/$/, "") === repoUrl.replace(/\/$/, "")) return false;
+  try {
+    const host = new URL(value).hostname.toLowerCase();
+    if (host === "localhost" || host === "127.0.0.1") return false;
+    return !BLOCKED_DEMO_HOSTS.some((blocked) => host === blocked || host.endsWith(blocked));
+  } catch {
+    return false;
+  }
+}
+
+export interface ProjectActionLinks {
+  detailUrl?: string;
+  repoUrl?: string;
+  demoUrl?: string;
+  releaseUrl?: string;
+}
+
+/** Determine strictly verified navigation & external action links for a project. */
+export function getProjectActions(project: Project): ProjectActionLinks {
+  if (project.projectOrigin === "professional") {
+    return {};
+  }
+
+  const repoUrl =
+    project.repositoryUrl && isSafeHttpsUrl(project.repositoryUrl)
+      ? project.repositoryUrl
+      : undefined;
+
+  return {
+    detailUrl: project.slug ? `/projects/${project.slug}/` : undefined,
+    repoUrl,
+    demoUrl: isVerifiedLiveDemoUrl(project.demoUrl, repoUrl) ? project.demoUrl : undefined,
+    releaseUrl:
+      project.releaseUrl && isSafeHttpsUrl(project.releaseUrl)
+        ? project.releaseUrl
+        : undefined,
+  };
+}
+
 /** Validate unique IDs, slugs, URLs, and fork attribution invariants. */
 export function validateProjects(items: Project[]): ValidationResult {
   const errors: string[] = [];
@@ -159,7 +202,7 @@ function buildDefaultProject(repo: GitHubRepoSnapshot): Project {
     category,
     technologies: technologies.length > 0 ? technologies : ["Software Engineering"],
     repositoryUrl: repo.htmlUrl,
-    demoUrl: repo.homepage && isSafeHttpsUrl(repo.homepage) && repo.homepage !== repo.htmlUrl ? repo.homepage : undefined,
+    demoUrl: isVerifiedLiveDemoUrl(repo.homepage, repo.htmlUrl) ? repo.homepage : undefined,
     screenshots: [],
     personalContribution: repo.fork
       ? "Forked repository containing Adrian Syah Abidin's branch modifications and verification experiments."
@@ -203,6 +246,9 @@ export function mergeGitHubAndOverrides(
       id: rest.id || base.id,
       slug: rest.slug || base.slug,
       repositoryUrl: repo.htmlUrl,
+      demoUrl: isVerifiedLiveDemoUrl(rest.demoUrl ?? base.demoUrl, repo.htmlUrl)
+        ? rest.demoUrl ?? base.demoUrl
+        : undefined,
       updatedAt: rest.updatedAt || base.updatedAt,
       license: rest.license ?? base.license,
       language: rest.language ?? base.language,

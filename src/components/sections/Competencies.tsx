@@ -14,8 +14,8 @@ export function Competencies() {
     >
       <div className="mx-auto max-w-[1280px]">
         <SectionHeader
-          title="Technical Skills."
-          description="Tools and technologies I work with."
+          title="Skills & Technologies."
+          description="Core tools and technologies across testing, infrastructure, backend, mobile, and applied AI."
         />
 
         <div className="grid grid-cols-1 gap-x-12 gap-y-2 md:grid-cols-2">

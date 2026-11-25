@@ -1,6 +1,5 @@
 import githubSnapshot from "@/data/github-repositories.json";
 import { projectOverrides } from "@/data/project-overrides";
-import { enterpriseProjects } from "@/data/enterprise-projects";
 import { mergeGitHubAndOverrides, validateProjects } from "@/lib/projects";
 import type { GitHubSnapshotFile, Project } from "@/types";
 
@@ -17,8 +16,7 @@ export const githubProjects: Project[] = mergeGitHubAndOverrides(
   projectOverrides
 );
 
-export const projects: Project[] = [...enterpriseProjects, ...githubProjects];
-export { enterpriseProjects };
+export const projects: Project[] = githubProjects;
 
 const validation = validateProjects(projects);
 if (!validation.valid) {

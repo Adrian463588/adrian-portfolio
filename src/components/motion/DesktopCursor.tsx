@@ -33,20 +33,19 @@ export function DesktopCursor() {
       const target = event.target as HTMLElement | null;
       const isWorkMedia = Boolean(target?.closest("[data-cursor='work']"));
       const isInteractive = Boolean(
-        target?.closest("a, button, [role='button'], summary")
+        target?.closest("a, button, [role='button'], summary, input, select")
       );
 
       setCursorLabel(isWorkMedia ? "VIEW" : "");
 
       gsap.to(ring, {
-        scale: isWorkMedia ? 2.15 : isInteractive ? 1.55 : 1,
+        scale: isWorkMedia ? 2.15 : isInteractive ? 0.5 : 0.42,
+        opacity: isWorkMedia ? 1 : isInteractive ? 0 : 0.65,
         borderColor: isWorkMedia
           ? "rgba(101, 200, 245, 0.85)"
-          : isInteractive
-            ? "rgba(242, 240, 236, 0.55)"
-            : "rgba(101, 200, 245, 0.45)",
-        backgroundColor: isWorkMedia ? "rgba(8, 9, 12, 0.65)" : "transparent",
-        duration: 0.2,
+          : "rgba(101, 200, 245, 0.45)",
+        backgroundColor: isWorkMedia ? "rgba(8, 9, 12, 0.72)" : "transparent",
+        duration: 0.18,
         overwrite: "auto",
       });
     };

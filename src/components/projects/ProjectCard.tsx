@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, ExternalLink, Github, GitFork, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, ExternalLink, Github, GitFork } from "lucide-react";
 import type { Project } from "@/types";
+import { getProjectActions } from "@/lib/projects";
 import { TiltSurface } from "@/components/ui/TiltSurface";
 
 interface ProjectCardProps {
@@ -19,6 +20,7 @@ export function ProjectCard({
   const isPortrait = leadShot ? leadShot.height > leadShot.width : false;
   const visibleTech = project.technologies.slice(0, 3);
   const extraTechCount = project.technologies.length - visibleTech.length;
+  const actions = getProjectActions(project);
 
   return (
     <TiltSurface className="h-full min-w-0" maxTilt={featuredLead ? 2.5 : 3.5}>
@@ -26,7 +28,7 @@ export function ProjectCard({
         <div className="min-w-0 space-y-4">
           {leadShot ? (
             <Link
-              href={`/projects/${project.slug}/`}
+              href={actions.detailUrl ?? "/projects/"}
               prefetch={false}
               data-cursor="work"
               className="editorial-image-wrap block overflow-hidden bg-[#15171C]"
@@ -38,6 +40,7 @@ export function ProjectCard({
                   width={leadShot.width}
                   height={leadShot.height}
                   priority={priorityImage}
+                  loading={priorityImage ? undefined : "eager"}
                   className={
                     isPortrait
                       ? "h-full w-full object-contain py-3"
@@ -46,35 +49,9 @@ export function ProjectCard({
                 />
               </div>
             </Link>
-          ) : project.projectOrigin === "professional" ? (
-            <Link
-              href={`/projects/${project.slug}/`}
-              prefetch={false}
-              className="block space-y-2 border border-white/10 bg-gradient-to-br from-[#65C8F5]/[0.1] via-[#15171C] to-[#08090C] px-5 py-6 transition-colors hover:border-[#65C8F5]/45"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="text-[11px] font-medium uppercase tracking-wider text-[#65C8F5]">
-                  {project.organization || "Berijalan Techno Center"}
-                </span>
-                {project.hasCiWorkflow && (
-                  <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-300">
-                    <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
-                    Jenkins CI
-                  </span>
-                )}
-              </div>
-              {project.testingType && (
-                <p className="font-display text-sm font-semibold text-[#F2F0EC]">
-                  {project.testingType}
-                </p>
-              )}
-              {project.businessDomain && (
-                <p className="text-xs text-[#A7ADB7]">{project.businessDomain}</p>
-              )}
-            </Link>
           ) : (
             <Link
-              href={`/projects/${project.slug}/`}
+              href={actions.detailUrl ?? "/projects/"}
               prefetch={false}
               className="flex aspect-[16/10] flex-col justify-between border border-white/10 bg-[#15171C]/70 px-5 py-5 transition-colors hover:border-white/25"
             >
@@ -85,7 +62,9 @@ export function ProjectCard({
               <p className="text-sm font-medium text-[#D6D9DF]">
                 {project.subtitle || project.category}
               </p>
-              <p className="text-xs text-[#65C8F5]">{project.projectOrigin === "fork" ? "Fork · Extended" : "Source Repository"}</p>
+              <p className="text-xs text-[#65C8F5]">
+                {project.projectOrigin === "fork" ? "Fork · Extended" : "Source Repository"}
+              </p>
             </Link>
           )}
 
@@ -136,19 +115,23 @@ export function ProjectCard({
           </p>
 
           <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-medium">
-            <Link
-              href={`/projects/${project.slug}/`}
-              prefetch={false}
-              className="link-underline inline-flex min-h-[36px] items-center gap-1 font-semibold text-[#65C8F5] transition-colors hover:text-[#F2F0EC]"
-            >
-              <span>Case Study</span>
-              <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
-            </Link>
+            {actions.detailUrl ? (
+              <Link
+                href={actions.detailUrl}
+                prefetch={false}
+                className="link-underline inline-flex min-h-[36px] items-center gap-1 font-semibold text-[#65C8F5] transition-colors hover:text-[#F2F0EC]"
+              >
+                <span>Case Study</span>
+                <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+              </Link>
+            ) : (
+              <span />
+            )}
 
             <div className="flex items-center gap-4">
-              {project.demoUrl && (
+              {actions.demoUrl && (
                 <a
-                  href={project.demoUrl}
+                  href={actions.demoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="link-underline inline-flex min-h-[36px] items-center gap-1 text-[#F2F0EC] transition-colors hover:text-[#65C8F5]"
@@ -158,9 +141,9 @@ export function ProjectCard({
                   <span>Live Demo</span>
                 </a>
               )}
-              {project.repositoryUrl && (
+              {actions.repoUrl && (
                 <a
-                  href={project.repositoryUrl}
+                  href={actions.repoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="link-underline inline-flex min-h-[36px] items-center gap-1 text-[#A7ADB7] transition-colors hover:text-[#F2F0EC]"

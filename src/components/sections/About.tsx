@@ -25,15 +25,13 @@ export function About() {
           <div className="min-w-0 space-y-8 lg:col-span-7">
             <div className="space-y-4">
               <p className="text-base leading-relaxed text-[#F2F0EC] sm:text-lg">
-                I&apos;m an Information Technology student at Universitas Gadjah Mada (UGM) with
-                software testing and engineering experience across Berijalan Techno Center (ACC
-                Group), Qiscus, Tokopedia (ByteDance), and Bitbybit Studio.
+                I&apos;m a software engineer with an Information Technology background at
+                Universitas Gadjah Mada. My experience includes manual and automated testing,
+                enterprise financial applications, and CI integration using Cypress and Jenkins.
               </p>
               <p className="text-sm leading-relaxed text-[#A7ADB7] sm:text-base">
-                I enjoy building developer tools, experimenting with offline AI, exploring financial
-                systems (AOL UniPaaS, Magic xpa, Cypress, Jenkins CI), and writing software that
-                solves practical problems cleanly. Outside engineering, I enjoy coffee and learning
-                new tooling.
+                Outside professional work, I build software projects across backend systems,
+                DevOps infrastructure, Android apps, and on-device AI tools.
               </p>
             </div>
 

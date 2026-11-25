@@ -15,7 +15,7 @@ export const experiences: ExperienceEntry[] = [
     endDate: "2026-10",
     dateRange: "Mar 2026 – Oct 2026",
     summary:
-      "Tested enterprise automotive financing applications, automated web regression tests with Cypress, and integrated test execution into Jenkins CI pipelines. Contributed to quality assurance for legacy application modernization and financial workflows.",
+      "Tested enterprise automotive financing applications through manual testing, Cypress automation, and Jenkins CI integration.",
     roles: [
       {
         id: "berijalan-freelance",
@@ -40,25 +40,31 @@ export const experiences: ExperienceEntry[] = [
           "Practical software testing across enterprise financial systems, manual functional test cases, and web test automation.",
       },
     ],
-    projectIds: [
-      "archer-upgrade",
-      "stnk-alignment",
-      "advanced-joint-finance-parameter",
+    selectedProjects: [
+      {
+        id: "archer-upgrade",
+        title: "Archer Upgrade",
+        scope: "Cypress & Jenkins · React / AOL UniPaaS",
+        description:
+          "Automated testing for a React-based credit collection application modernized from AOL UniPaaS, using Cypress and Jenkins.",
+      },
+      {
+        id: "stnk-alignment",
+        title: "STNK Alignment",
+        scope: "AOL UniPaaS & Magic xpa",
+        description:
+          "Manual testing of vehicle registration workflows and application alignment across AOL UniPaaS and Magic xpa.",
+      },
+      {
+        id: "advanced-joint-finance-parameter",
+        title: "Advanced Joint Finance Parameter",
+        scope: "AOL UniPaaS",
+        description:
+          "Manual testing of enhanced joint financing parameters and business workflows in AOL UniPaaS.",
+      },
     ],
-    bullets: [
-      "Executed manual functional testing across automotive financing modules built on AOL UniPaaS and Magic xpa.",
-      "Wrote automated Cypress web test suites and integrated test runs into Jenkins CI pipelines.",
-      "Tested modernized React collection screens against legacy AOL UniPaaS parity.",
-      "Tested STNK registration alignment workflows and Joint Financing parameter configurations.",
-    ],
-    technologies: [
-      "Cypress",
-      "Jenkins",
-      "AOL UniPaaS",
-      "Magic xpa",
-      "React",
-      "Joint Financing",
-    ],
+    bullets: [],
+    technologies: ["Cypress", "Jenkins", "AOL UniPaaS", "Magic xpa"],
   },
   {
     id: "qiscus-qa",

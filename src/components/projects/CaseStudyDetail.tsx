@@ -11,6 +11,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import type { Project } from "@/types";
+import { getProjectActions } from "@/lib/projects";
 import { Badge } from "@/components/ui/Badge";
 import { ChoreographedBlock } from "@/components/motion/SectionChoreography";
 
@@ -28,6 +29,7 @@ export function CaseStudyDetail({
   const isEnterprise = project.projectOrigin === "professional";
   const isEditorialDeep = project.tier === "featured" || isEnterprise;
   const isArchive = project.tier === "archive";
+  const actions = getProjectActions(project);
 
   return (
     <article className="px-6 py-12 sm:py-16">
@@ -79,11 +81,11 @@ export function CaseStudyDetail({
             )}
           </div>
 
-          {(project.repositoryUrl || project.demoUrl || project.releaseUrl || isEnterprise) && (
+          {(actions.repoUrl || actions.demoUrl || actions.releaseUrl || isEnterprise) && (
             <div className="flex flex-wrap items-center gap-3 pt-1">
-              {project.repositoryUrl && (
+              {actions.repoUrl && (
                 <a
-                  href={project.repositoryUrl}
+                  href={actions.repoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="active-press inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#F2F0EC] px-5 py-2.5 text-sm font-semibold text-[#08090C] transition-colors hover:bg-[#65C8F5]"
@@ -93,9 +95,9 @@ export function CaseStudyDetail({
                 </a>
               )}
 
-              {project.demoUrl && (
+              {actions.demoUrl && (
                 <a
-                  href={project.demoUrl}
+                  href={actions.demoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="active-press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-white/15 bg-[#15171C] px-5 py-2.5 text-sm font-medium text-[#F2F0EC] transition-colors hover:border-[#65C8F5] hover:text-[#65C8F5]"
@@ -105,9 +107,9 @@ export function CaseStudyDetail({
                 </a>
               )}
 
-              {project.releaseUrl && (
+              {actions.releaseUrl && (
                 <a
-                  href={project.releaseUrl}
+                  href={actions.releaseUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="active-press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-white/15 bg-[#15171C] px-5 py-2.5 text-sm font-medium text-[#F2F0EC] transition-colors hover:border-[#65C8F5] hover:text-[#65C8F5]"

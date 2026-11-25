@@ -25,8 +25,14 @@ export function Navbar() {
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const wasOpenRef = useRef(false);
+  const closeReasonRef = useRef<"escape" | "button" | "link" | null>(null);
 
   const isProjectsRoute = pathname?.startsWith("/projects");
+
+  const closeOverlay = (reason: "escape" | "button" | "link") => {
+    closeReasonRef.current = reason;
+    setMenuOpen(false);
+  };
 
   useEffect(() => {
     if (menuOpen) {
@@ -60,9 +66,10 @@ export function Navbar() {
       }
     } else {
       document.body.style.overflow = "";
-      if (wasOpenRef.current) {
+      if (wasOpenRef.current && closeReasonRef.current !== "link") {
         toggleBtnRef.current?.focus();
       }
+      closeReasonRef.current = null;
     }
     wasOpenRef.current = menuOpen;
 
@@ -75,7 +82,7 @@ export function Navbar() {
     if (!menuOpen) return;
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setMenuOpen(false);
+        closeOverlay("escape");
       }
     };
     window.addEventListener("keydown", onKeyDown);
@@ -92,6 +99,15 @@ export function Navbar() {
           <Link
             href="/"
             prefetch={false}
+            onClick={(e) => {
+              if (pathname === "/") {
+                e.preventDefault();
+                window.scrollTo({
+                  top: 0,
+                  behavior: qualityMode === "reduced" ? "auto" : "smooth",
+                });
+              }
+            }}
             className="group inline-flex min-h-[44px] shrink-0 items-baseline whitespace-nowrap font-display text-xl font-bold tracking-[-0.04em] text-[#F2F0EC] transition-colors hover:text-[#65C8F5]"
           >
             <span>as</span>
@@ -172,7 +188,7 @@ export function Navbar() {
             <button
               ref={closeBtnRef}
               type="button"
-              onClick={() => setMenuOpen(false)}
+              onClick={() => closeOverlay("button")}
               aria-label="Close navigation overlay"
               className="active-press inline-flex min-h-[44px] min-w-[44px] items-center gap-2 rounded-full border border-white/15 bg-[#15171C] px-4 text-xs font-medium text-[#F2F0EC] transition-colors hover:border-[#65C8F5] hover:text-[#65C8F5]"
             >
@@ -190,7 +206,7 @@ export function Navbar() {
                     <Link
                       href={link.href}
                       prefetch={false}
-                      onClick={() => setMenuOpen(false)}
+                      onClick={() => closeOverlay("link")}
                       aria-current={active ? "page" : undefined}
                       className="group flex min-h-[56px] items-center justify-between py-4 transition-colors sm:py-5"
                     >

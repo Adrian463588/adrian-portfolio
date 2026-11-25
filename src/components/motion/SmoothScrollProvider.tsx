@@ -90,10 +90,10 @@ export function SmoothScrollProvider({
       if (qualityMode !== "reduced" && curtainRef.current) {
         gsap.fromTo(
           curtainRef.current,
-          { clipPath: "inset(0% 0% 0% 0%)", opacity: 0.92 },
+          { clipPath: "inset(0% 0% 0% 0%)", autoAlpha: 0.92 },
           {
             clipPath: "inset(0% 0% 100% 0%)",
-            opacity: 0,
+            autoAlpha: 0,
             duration: 0.42,
             ease: "power3.inOut",
             overwrite: "auto",
@@ -120,7 +120,7 @@ export function SmoothScrollProvider({
       <div
         ref={curtainRef}
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-40 bg-[#08090C] opacity-0"
+        className="pointer-events-none invisible fixed inset-0 z-40 bg-[#08090C] opacity-0"
       />
 
       {children}

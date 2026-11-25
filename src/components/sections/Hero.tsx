@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ArrowRight, ArrowUpRight, Check, Copy } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { MagneticSurface } from "@/components/motion/MagneticSurface";
 import { RollText } from "@/components/motion/RollText";
 import { useMotion } from "@/context/MotionContext";
@@ -12,7 +12,6 @@ import { useMotion } from "@/context/MotionContext";
 gsap.registerPlugin(useGSAP);
 
 export function Hero() {
-  const [copiedEmail, setCopiedEmail] = useState(false);
   const scopeRef = useRef<HTMLElement>(null);
   const { qualityMode } = useMotion();
 
@@ -36,16 +35,6 @@ export function Hero() {
     { scope: scopeRef, dependencies: [qualityMode] }
   );
 
-  const handleCopyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText("adriansyah1230@gmail.com");
-      setCopiedEmail(true);
-      window.setTimeout(() => setCopiedEmail(false), 2000);
-    } catch {
-      // Clipboard API unavailable in restricted contexts
-    }
-  };
-
   return (
     <section
       ref={scopeRef}
@@ -55,19 +44,20 @@ export function Hero() {
       <div className="mx-auto w-full max-w-[1280px]">
         <div className="max-w-3xl space-y-8">
           <p className="hero-entrance text-sm font-medium tracking-wide text-[#65C8F5]">
-            Software Engineer — Quality Engineering &amp; DevOps
+            Software Engineer
           </p>
 
-          <div className="space-y-5">
+          <div className="space-y-4">
             <h1 className="font-display text-[clamp(3rem,6.8vw,6.2rem)] font-bold leading-[0.98] tracking-[-0.045em] text-[#F2F0EC]">
               Adrian Syah Abidin
             </h1>
-            <p className="hero-entrance max-w-2xl text-[clamp(1.15rem,2.1vw,1.55rem)] leading-snug text-[#D6D9DF]">
-              I build software, automate testing, and work on{" "}
-              <span className="border-b-2 border-[#65C8F5] pb-0.5 text-[#F2F0EC]">
-                reliable systems
-              </span>
-              .
+            <p className="hero-entrance text-[clamp(1.2rem,2.2vw,1.65rem)] font-medium leading-snug text-[#F2F0EC]">
+              I build and test{" "}
+              <span className="border-b-2 border-[#65C8F5] pb-0.5">software</span>.
+            </p>
+            <p className="hero-entrance max-w-2xl text-sm leading-relaxed text-[#A7ADB7] sm:text-base">
+              Experience in quality engineering, test automation, and enterprise financial systems.
+              Building personal projects across DevOps, software development, and applied AI.
             </p>
           </div>
 
@@ -77,7 +67,7 @@ export function Hero() {
                 href="#work"
                 className="active-press inline-flex min-h-[46px] items-center gap-2 rounded-full bg-[#F2F0EC] px-6 py-2.5 text-sm font-semibold text-[#08090C] transition-colors hover:bg-[#65C8F5]"
               >
-                <span>View Work</span>
+                <span>View My Work</span>
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </a>
             </MagneticSurface>
@@ -90,27 +80,9 @@ export function Hero() {
                 <RollText>Get in Touch</RollText>
               </a>
             </MagneticSurface>
-
-            <button
-              type="button"
-              onClick={handleCopyEmail}
-              className="active-press inline-flex min-h-[46px] max-w-full items-center gap-2 rounded-full border border-white/10 bg-[#08090C]/75 px-4 py-2 text-xs text-[#A7ADB7] backdrop-blur-sm transition-colors hover:border-white/25 hover:text-[#F2F0EC]"
-            >
-              {copiedEmail ? (
-                <>
-                  <Check className="h-3.5 w-3.5 shrink-0 text-emerald-400" aria-hidden="true" />
-                  <span className="truncate text-emerald-300">Email copied</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                  <span className="truncate font-mono">adriansyah1230@gmail.com</span>
-                </>
-              )}
-            </button>
           </div>
 
-          <div className="hero-entrance flex flex-wrap items-center gap-7 border-t border-white/10 pt-6 text-sm text-[#A7ADB7]">
+          <div className="hero-entrance flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-white/10 pt-5 text-sm text-[#A7ADB7] sm:gap-x-7">
             <Link
               href="/projects/"
               prefetch={false}

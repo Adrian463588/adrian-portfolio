@@ -105,17 +105,19 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await expect(expSection.locator("article")).toHaveCount(12);
   });
 
-  test("homepage enforces V3 editorial IA sequence and renders 3 sanitized Enterprise Case Studies", async ({
+  test("homepage enforces V4 editorial IA sequence and renders Berijalan work strictly as non-interactive Experience info", async ({
     page,
   }) => {
     await page.goto("/", { waitUntil: "networkidle" });
+
+    // Standalone Enterprise Work section has been removed cleanly
+    await expect(page.locator("#enterprise-work")).toHaveCount(0);
 
     const orderedIds = [
       "hero",
       "work",
       "project-explorer",
       "experience",
-      "enterprise-work",
       "competencies",
       "certifications",
       "education",
@@ -130,13 +132,12 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       prevY = box!.y;
     }
 
-    const enterpriseSection = page.locator("#enterprise-work");
-    await expect(enterpriseSection.locator("article")).toHaveCount(3);
-    await expect(enterpriseSection).toContainText("Archer — Collection System Modernization");
-    await expect(enterpriseSection).toContainText("STNK Workflow Testing");
-    await expect(enterpriseSection).toContainText("Joint Financing — Parameter Validation");
-    await expect(enterpriseSection.locator("img")).toHaveCount(0);
-    await expect(enterpriseSection.getByRole("link", { name: /GitHub/i })).toHaveCount(0);
+    // Selected projects under Berijalan contain all 3 initiatives with zero clickable links or buttons
+    const selectedProjectsList = page.locator('[aria-label="Selected projects at Berijalan Techno Center"]');
+    await expect(selectedProjectsList).toContainText("Archer Upgrade");
+    await expect(selectedProjectsList).toContainText("STNK Alignment");
+    await expect(selectedProjectsList).toContainText("Advanced Joint Finance Parameter");
+    await expect(selectedProjectsList.locator("a, button")).toHaveCount(0);
 
     // Chibi workstation illustration renders cleanly in #about without clipping or broken load
     const chibiImg = page.locator('#about img[alt*="Illustrated chibi portrait"]');
@@ -147,66 +148,258 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       )
       .toBeGreaterThan(0);
 
-    // Full-bleed hero excludes boxed debug caption or hardcoded project count badges
     await expect(page.getByText(/DEMAND RENDERED/i)).toHaveCount(0);
     await expect(page.getByText(/All 73 Projects/i)).toHaveCount(0);
   });
 
-  test("projects page opens cleanly with progressive-disclosure filters and index mode", async ({
+  test("projects page opens with V4 framing, hides removed enterprise routes, and strips dead Live Demo actions", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/projects/", { waitUntil: "networkidle" });
-    await expect(page.locator("h1")).toHaveText("All projects.");
+    await expect(page.locator("h1")).toHaveText("Projects.");
+    await expect(page.getByRole("tab", { name: /^Professional$/i })).toHaveCount(0);
     await expect(
       page.getByText(/ENGAGEMENT ORIGIN|ALL ELIGIBLE|STATIC SNAPSHOT SYNCED|REPOSITORY CATALOG|ENGINEERING PROJECT EXPLORER|ENGINEERING DOMAIN/i)
     ).toHaveCount(0);
 
-    // First gallery work renders immediately within initial desktop viewport
     const firstCardBox = await page.locator("article").first().boundingBox();
     expect(firstCardBox).toBeTruthy();
     expect(firstCardBox!.y).toBeLessThan(860);
-
-    // Inline Type tab filters enterprise dossiers
-    await page.getByRole("tab", { name: /^Professional$/i }).click();
-    await expect(page.getByText(/Showing 3 of/i)).toBeVisible();
-    await expect(page.getByText(/Archer — Collection System Modernization/i)).toBeVisible();
-    await page.getByRole("button", { name: /Clear filters/i }).click();
 
     const search = page.getByLabel("Search projects");
     await search.fill("cypress");
     await expect(page.getByText(/EverShop Cypress/i)).toBeVisible();
 
+    // TechnoLoyaltyProgram must not show a dead sslip.io Live Demo link
+    await search.fill("Berijalan Employee Loyalty Portal");
+    const technoCard = page.locator("article").filter({ hasText: "Berijalan Employee Loyalty Portal" }).first();
+    await expect(technoCard).toBeVisible();
+    await expect(technoCard.getByRole("link", { name: /Live Demo/i })).toHaveCount(0);
+    await expect(technoCard.getByRole("link", { name: /GitHub/i })).toHaveCount(1);
+
     await search.fill("nonexistent-xyz-999");
     await expect(page.getByText(/No matching projects found/i)).toBeVisible();
     await page.getByRole("button", { name: /Reset all filters/i }).click();
 
-    // Progressive-disclosure Filters reveals Archive scope tab cleanly
     await page.getByRole("button", { name: /^Filters/i }).click();
     await page.getByRole("tab", { name: /^Archive/i }).click();
     await expect(page.getByText(/HeartRateMonitor \(Extended Fork\)/i)).toBeVisible();
     await expect(page.getByText(/aditydcp\/sample-wear-phone-app/i)).toBeVisible();
 
-    // Index presentation mode renders single-line typographic catalog rows
     await page.getByRole("button", { name: /^Index$/i }).click();
     await expect(page.getByRole("link", { name: /Open case study for HeartRateMonitor/i })).toBeVisible();
   });
 
-  test("enterprise detail routes resolve cleanly on static reload", async ({ page }) => {
-    await page.goto("/projects/archer-upgrade/", { waitUntil: "domcontentloaded" });
-    await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(page.getByRole("link", { name: /Source code/i })).toHaveCount(0);
-    await expect(page.getByText(/Illustrative · Non-Proprietary Diagram/i)).toBeVisible();
-    await expect(page.getByRole("link", { name: /Associated Experience/i })).toBeVisible();
+  test("all images across homepage and projects catalog load with valid dimensions", async ({
+    page,
+  }) => {
+    const collectImageStates = async (selector: string) =>
+      page.evaluate(async (sel) => {
+        const imgs = Array.from(document.querySelectorAll<HTMLImageElement>(sel));
+        for (const img of imgs) {
+          img.scrollIntoView({ behavior: "instant", block: "center" });
+          await new Promise((r) => requestAnimationFrame(r));
+        }
+        return Promise.all(
+          imgs.map(
+            (img) =>
+              new Promise<{ src: string | null; complete: boolean; naturalWidth: number }>(
+                (resolve) => {
+                  const done = () =>
+                    resolve({
+                      src: img.getAttribute("src"),
+                      complete: img.complete,
+                      naturalWidth: img.naturalWidth,
+                    });
+                  if (img.complete && img.naturalWidth > 0) {
+                    done();
+                    return;
+                  }
+                  const timer = window.setTimeout(done, 8000);
+                  img.addEventListener(
+                    "load",
+                    () => {
+                      window.clearTimeout(timer);
+                      done();
+                    },
+                    { once: true }
+                  );
+                  img.addEventListener(
+                    "error",
+                    () => {
+                      window.clearTimeout(timer);
+                      done();
+                    },
+                    { once: true }
+                  );
+                }
+              )
+          )
+        );
+      }, selector);
 
-    await page.goto("/projects/stnk-alignment/", { waitUntil: "domcontentloaded" });
-    await expect(page.locator("article")).toContainText("Magic xpa");
-    await expect(page.locator("article")).toContainText("AOL UniPaaS");
-    await expect(page.getByRole("link", { name: /Source code/i })).toHaveCount(0);
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "load" });
+    const homeResults = await collectImageStates("img");
+    expect(homeResults.length).toBeGreaterThanOrEqual(7);
+    for (const r of homeResults) {
+      expect(r.complete && r.naturalWidth > 0, `Homepage image failed: ${JSON.stringify(r)}`).toBe(true);
+    }
 
-    await page.goto("/projects/advanced-joint-finance-parameter/", { waitUntil: "domcontentloaded" });
-    await expect(page.locator("article")).toContainText("Joint Financing");
-    await expect(page.getByRole("link", { name: /Associated Experience/i })).toBeVisible();
+    await page.goto("/projects/", { waitUntil: "load" });
+    const catalogResults = await collectImageStates("article img");
+    expect(catalogResults.length).toBeGreaterThanOrEqual(10);
+    for (const r of catalogResults) {
+      expect(r.complete && r.naturalWidth > 0, `Catalog image failed: ${JSON.stringify(r)}`).toBe(true);
+    }
+  });
+
+  test("RollText links keep visible text inside container bounds on hover", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "networkidle" });
+
+    const targets = [
+      page.locator("#hero").getByRole("link", { name: /Get in Touch/i }),
+      page.locator("#hero").getByRole("link", { name: /GitHub/i }),
+      page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Work" }),
+    ];
+
+    for (const loc of targets) {
+      await loc.hover();
+      await page.waitForTimeout(350);
+      const result = await loc.evaluate((el) => {
+        const container = el.querySelector(".roll-text");
+        const clone = el.querySelector(".roll-text-clone");
+        if (!container || !clone) return { ok: false, reason: "missing roll-text elements" };
+        const cr = container.getBoundingClientRect();
+        const cl = clone.getBoundingClientRect();
+        const visibleInBounds =
+          cl.top >= cr.top - 2 &&
+          cl.bottom <= cr.bottom + 2 &&
+          cl.height > 8;
+        return { ok: visibleInBounds, crTop: cr.top, crBottom: cr.bottom, clTop: cl.top, clBottom: cl.bottom };
+      });
+      expect(result.ok, `RollText clone must stay visible inside bounds on hover: ${JSON.stringify(result)}`).toBe(true);
+    }
+  });
+
+  test("internal Berijalan enterprise routes are excluded from public static export", async ({ request }) => {
+    for (const slug of ["archer-upgrade", "stnk-alignment", "advanced-joint-finance-parameter"]) {
+      const res = await request.get(`/projects/${slug}/`);
+      expect(res.status()).toBe(404);
+    }
+  });
+
+  test("all interactive controls respond to real user clicks without WebGL/cursor obstruction", async ({
+    page,
+    context,
+  }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "networkidle" });
+
+    // 1. Hero CTAs work via genuine user clicks
+    await page.locator("#hero").getByRole("link", { name: /View My Work/i }).click();
+    await expect.poll(async () => page.evaluate(() => window.scrollY)).toBeGreaterThan(250);
+
+    // 2. Brand logo returns cleanly to top of homepage (TC-FUNC-001)
+    await page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: /Adrian Syah Abidin home/i }).click();
+    await expect.poll(async () => page.evaluate(() => window.scrollY)).toBeLessThan(80);
+
+    // 3. Copy email button copies address and displays feedback (TC-FUNC-007)
+    const copyBtn = page.locator("#contact").getByRole("button", { name: /adriansyah1230@gmail\.com/i });
+    await copyBtn.scrollIntoViewIfNeeded();
+    await copyBtn.click();
+    await expect(page.locator("#contact").getByText(/Copied address/i)).toBeVisible();
+
+    // 4. Footer Back to top button works cleanly
+    const backToTop = page.getByRole("button", { name: /Back to top/i });
+    await backToTop.scrollIntoViewIfNeeded();
+    await backToTop.click();
+    await expect.poll(async () => page.evaluate(() => window.scrollY)).toBeLessThan(80);
+
+    // 5. Verified Live Demo external link metadata on Featured project (TC-FUNC-010)
+    const demoLink = page.locator("#work").getByRole("link", { name: /Live demo for HSK 1 Vocabulary Master/i });
+    await expect(demoLink).toHaveAttribute("href", "https://hsk1vocab.edgeone.dev/");
+    await expect(demoLink).toHaveAttribute("target", "_blank");
+    await expect(demoLink).toHaveAttribute("rel", /noopener/);
+
+    // 6. Top nav link to /projects/ + Case study + browser Back/Forward (TC-FUNC-009, TC-FUNC-014, TC-FUNC-015)
+    await page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Projects" }).click();
+    await expect(page).toHaveURL(/\/projects\/?$/);
+    await expect(page.locator("h1")).toHaveText("Projects.");
+
+    await page.getByRole("link", { name: "AutomatePlus" }).first().click();
+    await expect(page).toHaveURL(/\/projects\/automate-plus\/?$/);
+    await expect(page.locator("h1")).toHaveText("AutomatePlus");
+    await page.goBack();
+    await expect(page).toHaveURL(/\/projects\/?$/);
+    await page.goForward();
+    await expect(page).toHaveURL(/\/projects\/automate-plus\/?$/);
+
+    // 7. Clicking brand logo from subpage navigates back to homepage
+    await page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: /Adrian Syah Abidin home/i }).click();
+    await expect(page).toHaveURL(/\/$/);
+
+    // 8. Mobile drawer link navigates without returning focus back to header toggle
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/", { waitUntil: "networkidle" });
+    await page.getByRole("button", { name: /Open navigation menu/i }).click();
+    const drawer = page.locator("#mobile-nav-drawer");
+    await expect(drawer).toBeVisible();
+    await drawer.getByRole("link", { name: /Experience/i }).click();
+    await expect(drawer).toBeHidden();
+    await expect.poll(async () => page.evaluate(() => window.scrollY)).toBeGreaterThan(400);
+  });
+
+  test("technical SEO tags, canonical URLs, JSON-LD, OG image, sitemap, and robots.txt are valid", async ({
+    page,
+    request,
+  }) => {
+    await page.goto("/", { waitUntil: "networkidle" });
+    await expect(page).toHaveTitle("Adrian Syah Abidin | Software & QA Automation Engineer");
+    await expect(page.locator('meta[name="keywords"]')).toHaveCount(0);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      "https://adriansyahabidin.vercel.app/"
+    );
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+      "content",
+      /\/og-image\.png$/
+    );
+
+    const homeLd = await page.locator('script[type="application/ld+json"]').first().textContent();
+    expect(homeLd).toBeTruthy();
+    const parsedHome = JSON.parse(homeLd!);
+    expect(JSON.stringify(parsedHome)).toContain("ProfilePage");
+    expect(JSON.stringify(parsedHome)).toContain("Person");
+    expect(JSON.stringify(parsedHome)).not.toContain("worksFor");
+
+    await page.goto("/projects/", { waitUntil: "domcontentloaded" });
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      "https://adriansyahabidin.vercel.app/projects/"
+    );
+
+    const ogRes = await request.get("/og-image.png");
+    expect(ogRes.status()).toBe(200);
+    expect(ogRes.headers()["content-type"]).toContain("image/png");
+
+    const robotsRes = await request.get("/robots.txt");
+    expect(robotsRes.status()).toBe(200);
+    expect(await robotsRes.text()).toContain("https://adriansyahabidin.vercel.app/sitemap.xml");
+
+    const sitemapRes = await request.get("/sitemap.xml");
+    expect(sitemapRes.status()).toBe(200);
+    const sitemapText = await sitemapRes.text();
+    expect(sitemapText).toContain("https://adriansyahabidin.vercel.app/");
+    expect(sitemapText).toContain("https://adriansyahabidin.vercel.app/projects/automate-plus/");
+    expect(sitemapText).not.toContain("archer-upgrade");
+    expect(sitemapText).not.toContain("stnk-alignment");
+    expect(sitemapText).not.toContain("advanced-joint-finance-parameter");
   });
 
   test("personal detail routes resolve cleanly on static reload and preserve fork credit", async ({
@@ -308,20 +501,17 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       );
       expect(overflowProjects).toBe(false);
 
-      await page.goto("/projects/archer-upgrade/", { waitUntil: "networkidle" });
-      const overflowEnterprise = await page.evaluate(
+      await page.goto("/projects/automate-plus/", { waitUntil: "networkidle" });
+      const overflowDetail = await page.evaluate(
         () => document.documentElement.scrollWidth > document.documentElement.clientWidth
       );
-      expect(overflowEnterprise).toBe(false);
+      expect(overflowDetail).toBe(false);
     });
   }
 
   for (const route of [
     "/",
     "/projects/",
-    "/projects/archer-upgrade/",
-    "/projects/stnk-alignment/",
-    "/projects/advanced-joint-finance-parameter/",
     "/projects/automate-plus/",
     "/projects/heart-rate-monitor/",
   ]) {

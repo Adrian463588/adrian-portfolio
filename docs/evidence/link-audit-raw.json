@@ -1,0 +1,596 @@
+[
+  {
+    "url": "https://github.com/Adrian463588",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588"
+  },
+  {
+    "url": "https://www.linkedin.com/in/adrian-syah-abidin-0416b81b9/",
+    "status": 999,
+    "ok": false,
+    "finalUrl": "https://www.linkedin.com/in/adrian-syah-abidin-0416b81b9"
+  },
+  {
+    "url": "https://medium.com/@adriansyah1230",
+    "status": 403,
+    "ok": false,
+    "finalUrl": "https://medium.com/@adriansyah1230"
+  },
+  {
+    "url": "https://berijalan.co.id/",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://berijalan.co.id/"
+  },
+  {
+    "url": "https://github.com/Adrian463588/Task5ManageDashboardMonitoring",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/Task5ManageDashboardMonitoring"
+  },
+  {
+    "url": "https://github.com/Adrian463588/finalproject-sb-go-70-Adrian",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/finalproject-sb-go-70-Adrian"
+  },
+  {
+    "url": "https://github.com/Adrian463588/AutomatePlus/releases/tag/v1.7.1",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/AutomatePlus/releases/tag/v1.7.1"
+  },
+  {
+    "url": "https://github.com/Adrian463588/AutomatePlus",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/AutomatePlus"
+  },
+  {
+    "url": "https://github.com/Adrian463588/QuranPlus/releases/tag/v1.0.13",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/QuranPlus/releases/tag/v1.0.13"
+  },
+  {
+    "url": "https://github.com/Adrian463588/QuranPlus",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/QuranPlus"
+  },
+  {
+    "url": "https://github.com/Adrian463588/EnglishPrepAI/releases/tag/v1.2.0",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/EnglishPrepAI/releases/tag/v1.2.0"
+  },
+  {
+    "url": "https://github.com/Adrian463588/EnglishPrepAI",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/EnglishPrepAI"
+  },
+  {
+    "url": "https://github.com/Adrian463588/ChatBuddy/releases/tag/v0.2.0",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/ChatBuddy/releases/tag/v0.2.0"
+  },
+  {
+    "url": "https://github.com/Adrian463588/ChatBuddy",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/ChatBuddy"
+  },
+  {
+    "url": "https://github.com/Adrian463588/MedBot",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/MedBot"
+  },
+  {
+    "url": "https://github.com/Adrian463588/AdzanPlus/releases/tag/v2.2.1",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/AdzanPlus/releases/tag/v2.2.1"
+  },
+  {
+    "url": "https://github.com/Adrian463588/AdzanPlus",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/AdzanPlus"
+  },
+  {
+    "url": "https://hsk1vocab.edgeone.dev/",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://hsk1vocab.edgeone.dev/"
+  },
+  {
+    "url": "https://github.com/Adrian463588/hsk1vocab",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/hsk1vocab"
+  },
+  {
+    "url": "https://github.com/Adrian463588/auu-ahh-cafe-menu",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/auu-ahh-cafe-menu"
+  },
+  {
+    "url": "https://github.com/Adrian463588/CreditRiskPrediction",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/CreditRiskPrediction"
+  },
+  {
+    "url": "https://github.com/Adrian463588/LedgerScope",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/LedgerScope"
+  },
+  {
+    "url": "https://github.com/Adrian463588/DemoEvershopCypress",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/DemoEvershopCypress"
+  },
+  {
+    "url": "https://github.com/Adrian463588/SauceDemoJerkins",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/SauceDemoJerkins"
+  },
+  {
+    "url": "https://github.com/Adrian463588/TMDB-QA-Testing",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/TMDB-QA-Testing"
+  },
+  {
+    "url": "https://github.com/Adrian463588/Task12ManageKubernetesAutoscallingKubernetes",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/Task12ManageKubernetesAutoscallingKubernetes"
+  },
+  {
+    "url": "https://github.com/Adrian463588/notes-app-performance-testing",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/notes-app-performance-testing"
+  },
+  {
+    "url": "https://github.com/Adrian463588/VideoEditorFree/releases/tag/v0.1.0",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/VideoEditorFree/releases/tag/v0.1.0"
+  },
+  {
+    "url": "https://github.com/Adrian463588/VideoEditorFree",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/VideoEditorFree"
+  },
+  {
+    "url": "https://github.com/Adrian463588/ScreenSharingWindowsInput/releases/tag/v1.5.0",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/ScreenSharingWindowsInput/releases/tag/v1.5.0"
+  },
+  {
+    "url": "https://github.com/Adrian463588/ScreenSharingWindowsInput",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/ScreenSharingWindowsInput"
+  },
+  {
+    "url": "https://github.com/Adrian463588/PPTController/releases/tag/v1.3.3",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/PPTController/releases/tag/v1.3.3"
+  },
+  {
+    "url": "https://github.com/Adrian463588/PPTController",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/PPTController"
+  },
+  {
+    "url": "https://github.com/Adrian463588/GoOnlineShop",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/GoOnlineShop"
+  },
+  {
+    "url": "https://github.com/Adrian463588/ForumAPI",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/ForumAPI"
+  },
+  {
+    "url": "https://github.com/Adrian463588/go-cv-ai-evaluator",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/go-cv-ai-evaluator"
+  },
+  {
+    "url": "https://github.com/Adrian463588/BookShelfAPI",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/BookShelfAPI"
+  },
+  {
+    "url": "https://github.com/Adrian463588/biosignal-stress-pipeline",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/biosignal-stress-pipeline"
+  },
+  {
+    "url": "https://github.com/Adrian463588/android-stress-detection",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/android-stress-detection"
+  },
+  {
+    "url": "https://github.com/Adrian463588/coffee-creator/releases/tag/v1.14.7",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/coffee-creator/releases/tag/v1.14.7"
+  },
+  {
+    "url": "https://github.com/Adrian463588/coffee-creator",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/coffee-creator"
+  },
+  {
+    "url": "https://github.com/Adrian463588/SignalBooster",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/SignalBooster"
+  },
+  {
+    "url": "https://github.com/Adrian463588/NotifPlus",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/NotifPlus"
+  },
+  {
+    "url": "https://plsqllearn.edgeone.dev/",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://plsqllearn.edgeone.dev/"
+  },
+  {
+    "url": "https://github.com/Adrian463588/plsqllearn",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/plsqllearn"
+  },
+  {
+    "url": "https://github.com/Adrian463588/TechnoLoyaltyProgram",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/TechnoLoyaltyProgram"
+  },
+  {
+    "url": "https://github.com/Adrian463588/SistemPOS",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/SistemPOS"
+  },
+  {
+    "url": "https://znlkostputri.edgeone.dev/",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://znlkostputri.edgeone.dev/"
+  },
+  {
+    "url": "https://github.com/Adrian463588/ZNLKostPutri",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/ZNLKostPutri"
+  },
+  {
+    "url": "https://fortuneteller.edgeone.dev/",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://fortuneteller.edgeone.dev/"
+  },
+  {
+    "url": "https://github.com/Adrian463588/FortuneTeller-",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/FortuneTeller-"
+  },
+  {
+    "url": "https://github.com/Adrian463588/CollectQuestionaireBFMSRQ",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/CollectQuestionaireBFMSRQ"
+  },
+  {
+    "url": "https://github.com/Adrian463588/CollectDataPPGECGWEB",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/CollectDataPPGECGWEB"
+  },
+  {
+    "url": "https://github.com/Adrian463588/wearquicknotes",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/wearquicknotes"
+  },
+  {
+    "url": "https://github.com/Adrian463588/HeartRateMonitor/releases/tag/v1.3.1",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/HeartRateMonitor/releases/tag/v1.3.1"
+  },
+  {
+    "url": "https://github.com/Adrian463588/HeartRateMonitor",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/HeartRateMonitor"
+  },
+  {
+    "url": "https://youtu.be/XGk-1T3N3SU",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://www.youtube.com/watch?v=XGk-1T3N3SU&feature=youtu.be"
+  },
+  {
+    "url": "https://github.com/Adrian463588/ProjectGame",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/ProjectGame"
+  },
+  {
+    "url": "https://github.com/Adrian463588/ProjectBlockChain",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/ProjectBlockChain"
+  },
+  {
+    "url": "https://github.com/Adrian463588/tugas-project-digital-skola-devops",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/tugas-project-digital-skola-devops"
+  },
+  {
+    "url": "https://github.com/Adrian463588/nearu",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/nearu"
+  },
+  {
+    "url": "https://github.com/Adrian463588/responsi-studi-kasus-1",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/responsi-studi-kasus-1"
+  },
+  {
+    "url": "https://github.com/Adrian463588/senpro-github-action",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/senpro-github-action"
+  },
+  {
+    "url": "https://m4nx9kc046wxksnhs6zfseor.34.128.73.127.sslip.io/",
+    "status": "ERR",
+    "ok": false,
+    "error": "This operation was aborted"
+  },
+  {
+    "url": "https://github.com/Adrian463588/Workflow-CI_SMSL",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/Workflow-CI_SMSL"
+  },
+  {
+    "url": "https://github.com/Adrian463588/Eksperimen_SML_AdrianSyahAbidin",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/Eksperimen_SML_AdrianSyahAbidin"
+  },
+  {
+    "url": "https://github.com/Adrian463588/adrian-portfolio",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/adrian-portfolio"
+  },
+  {
+    "url": "https://adrian-portfolio-plum.vercel.app",
+    "status": 404,
+    "ok": false,
+    "finalUrl": "https://adrian-portfolio-plum.vercel.app/"
+  },
+  {
+    "url": "https://github.com/Adrian463588/ShioCalculator",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/ShioCalculator"
+  },
+  {
+    "url": "https://github.com/Adrian463588/nusaguardai",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/nusaguardai"
+  },
+  {
+    "url": "https://github.com/Adrian463588/Tactical-Logistics-Mesh-Communication-System-TLCS-",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/Tactical-Logistics-Mesh-Communication-System-TLCS-"
+  },
+  {
+    "url": "https://github.com/Adrian463588/OpenMusic-API-v1",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/OpenMusic-API-v1"
+  },
+  {
+    "url": "https://github.com/Adrian463588/Adrian463588",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/Adrian463588"
+  },
+  {
+    "url": "https://github.com/Adrian463588/SignalIntelligence",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/SignalIntelligence"
+  },
+  {
+    "url": "https://github.com/Adrian463588/Super-Bird-Game",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/Super-Bird-Game"
+  },
+  {
+    "url": "https://github.com/Adrian463588/Rails-CV-Evaluator",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/Rails-CV-Evaluator"
+  },
+  {
+    "url": "https://github.com/Adrian463588/gke-praktikum-gitops",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/gke-praktikum-gitops"
+  },
+  {
+    "url": "https://github.com/Adrian463588/Testing_githubAction",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/Testing_githubAction"
+  },
+  {
+    "url": "https://github.com/Adrian463588/sb-go-quiz3",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/sb-go-quiz3"
+  },
+  {
+    "url": "https://github.com/Adrian463588/railway-101-sb-test",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/railway-101-sb-test"
+  },
+  {
+    "url": "https://github.com/Adrian463588/sb-go-batch-70Adrian",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/sb-go-batch-70Adrian"
+  },
+  {
+    "url": "https://github.com/Adrian463588/Cypress-101",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/Cypress-101"
+  },
+  {
+    "url": "https://github.com/Adrian463588/AND-101",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/AND-101"
+  },
+  {
+    "url": "https://github.com/Adrian463588/Login-Automation-NutaCloud",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/Login-Automation-NutaCloud"
+  },
+  {
+    "url": "https://github.com/Adrian463588/F-QAE24001120-synrgy7-adr-Appium-ch8",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/F-QAE24001120-synrgy7-adr-Appium-ch8"
+  },
+  {
+    "url": "https://github.com/Adrian463588/F-QAE24001120-synrgy7-adr-selenium-ch7",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/F-QAE24001120-synrgy7-adr-selenium-ch7"
+  },
+  {
+    "url": "https://github.com/Adrian463588/F-QAE24001120-synrgy7-adr-oop-ch5",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/F-QAE24001120-synrgy7-adr-oop-ch5"
+  },
+  {
+    "url": "https://github.com/Adrian463588/frontend-test",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/frontend-test"
+  },
+  {
+    "url": "https://github.com/Adrian463588/ProyekAkhirKotlin_Sanber",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/ProyekAkhirKotlin_Sanber"
+  },
+  {
+    "url": "https://github.com/Adrian463588/AroundWorld",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/AroundWorld"
+  },
+  {
+    "url": "https://github.com/Adrian463588/463588-Adrian-Syah-Abidin-ResponsiJuniorProject",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/463588-Adrian-Syah-Abidin-ResponsiJuniorProject"
+  },
+  {
+    "url": "https://github.com/Adrian463588/tugas1-sanbercode",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/tugas1-sanbercode"
+  },
+  {
+    "url": "https://github.com/Adrian463588/SanberCode_LaravelWeb",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/SanberCode_LaravelWeb"
+  },
+  {
+    "url": "https://github.com/Adrian463588/Tugas-Akhir-PBO",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/Tugas-Akhir-PBO"
+  },
+  {
+    "url": "https://github.com/Adrian463588/SistemPakar",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/SistemPakar"
+  },
+  {
+    "url": "https://github.com/Adrian463588/Program-Shortcut-link-website",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/Program-Shortcut-link-website"
+  },
+  {
+    "url": "https://github.com/Adrian463588/463588_TugasMachineLearning_KecerdasanBuatan2021",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/463588_TugasMachineLearning_KecerdasanBuatan2021"
+  },
+  {
+    "url": "https://github.com/Adrian463588/Afortunado",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/Afortunado"
+  },
+  {
+    "url": "https://github.com/Adrian463588/Projek_PBO_BookLoan",
+    "status": 200,
+    "ok": true,
+    "finalUrl": "https://github.com/Adrian463588/Projek_PBO_BookLoan"
+  }
+]

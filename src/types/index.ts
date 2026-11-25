@@ -137,6 +137,13 @@ export interface ExperienceRole {
   summary?: string;
 }
 
+export interface InformationalProjectEntry {
+  id: string;
+  title: string;
+  scope?: string;
+  description: string;
+}
+
 export interface ExperienceEntry {
   id: string;
   category: "professional" | "bootcamp" | "training";
@@ -152,6 +159,7 @@ export interface ExperienceEntry {
   endDate?: string;
   summary?: string;
   roles?: ExperienceRole[];
+  selectedProjects?: InformationalProjectEntry[];
   projectIds?: string[];
   bullets: string[];
   technologies?: string[];

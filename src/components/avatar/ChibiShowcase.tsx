@@ -69,6 +69,7 @@ export function ChibiShowcase({ compact = false, className }: ChibiShowcaseProps
             alt="Illustrated chibi portrait of Adrian Syah Abidin coding on laptop with stack of DevSecOps, Android Compose, AI/LLM, QA Testing, and Cloud/K8s books, UGM crest, and Tugu Yogyakarta"
             width={1000}
             height={1000}
+            loading="eager"
             className="h-full w-full scale-[1.055] object-cover transition-transform duration-500 ease-out group-hover:scale-[1.07]"
           />
 

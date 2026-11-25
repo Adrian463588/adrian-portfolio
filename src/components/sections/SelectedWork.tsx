@@ -3,7 +3,7 @@ import Image from "next/image";
 import { ArrowRight, ArrowUpRight, ExternalLink, Github } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { projects } from "@/data/projects";
-import { getFeaturedProjects } from "@/lib/projects";
+import { getFeaturedProjects, getProjectActions } from "@/lib/projects";
 import { RollText } from "@/components/motion/RollText";
 import { MagneticSurface } from "@/components/motion/MagneticSurface";
 import { ScrollParallax } from "@/components/motion/ScrollParallax";
@@ -18,12 +18,13 @@ function EditorialMedia({
   priority?: boolean;
 }) {
   const leadShot = project.screenshots[0];
-  if (!leadShot) return null;
+  const { detailUrl } = getProjectActions(project);
+  if (!leadShot || !detailUrl) return null;
   const isPortrait = leadShot.height > leadShot.width;
 
   return (
     <Link
-      href={`/projects/${project.slug}/`}
+      href={detailUrl}
       prefetch={false}
       data-cursor="work"
       className="editorial-image-wrap block overflow-hidden bg-[#15171C]"
@@ -35,6 +36,7 @@ function EditorialMedia({
           width={leadShot.width}
           height={leadShot.height}
           priority={priority}
+          loading={priority ? undefined : "eager"}
           className={
             isPortrait
               ? "h-full w-full object-contain py-3"
@@ -47,24 +49,29 @@ function EditorialMedia({
 }
 
 function EditorialMetaLinks({ project }: { project: Project }) {
+  const { detailUrl, demoUrl, repoUrl } = getProjectActions(project);
   return (
     <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-4 text-xs font-medium">
-      <Link
-        href={`/projects/${project.slug}/`}
-        prefetch={false}
-        className="link-underline inline-flex min-h-[36px] items-center gap-1 font-semibold text-[#65C8F5] transition-colors hover:text-[#F2F0EC]"
-      >
-        <span>Case Study</span>
-        <ArrowUpRight
-          className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-          aria-hidden="true"
-        />
-      </Link>
+      {detailUrl ? (
+        <Link
+          href={detailUrl}
+          prefetch={false}
+          className="link-underline inline-flex min-h-[36px] items-center gap-1 font-semibold text-[#65C8F5] transition-colors hover:text-[#F2F0EC]"
+        >
+          <span>Case Study</span>
+          <ArrowUpRight
+            className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            aria-hidden="true"
+          />
+        </Link>
+      ) : (
+        <span />
+      )}
 
       <div className="flex items-center gap-4">
-        {project.demoUrl && (
+        {demoUrl && (
           <a
-            href={project.demoUrl}
+            href={demoUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="link-underline inline-flex min-h-[36px] items-center gap-1 text-[#F2F0EC] transition-colors hover:text-[#65C8F5]"
@@ -74,9 +81,9 @@ function EditorialMetaLinks({ project }: { project: Project }) {
             <span>Live Demo</span>
           </a>
         )}
-        {project.repositoryUrl && (
+        {repoUrl && (
           <a
-            href={project.repositoryUrl}
+            href={repoUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="link-underline inline-flex min-h-[36px] items-center gap-1 text-[#A7ADB7] transition-colors hover:text-[#F2F0EC]"
@@ -268,7 +275,7 @@ export function SelectedWork() {
               All Projects.
             </h2>
             <p className="text-sm text-[#A7ADB7]">
-              Browse enterprise testing work, open-source software, and technical experiments.
+              Explore public repositories across test automation, infrastructure, mobile apps, and AI tools.
             </p>
           </div>
           <MagneticSurface>

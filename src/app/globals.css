@@ -52,6 +52,12 @@ body {
 }
 
 /* Kinetic roll text hover micro-interaction */
+.roll-text-primary {
+  transform: translateY(0%);
+}
+.roll-text-clone {
+  transform: translateY(100%);
+}
 .group:hover .roll-text-primary,
 .group:focus-visible .roll-text-primary,
 a:hover .roll-text-primary,

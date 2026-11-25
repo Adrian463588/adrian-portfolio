@@ -1,21 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { TimelineItem } from "@/components/ui/TimelineItem";
 import { ChoreographedBlock } from "@/components/motion/SectionChoreography";
 import { experiences } from "@/data/experience";
-import { projects } from "@/data/projects";
-import type { Project } from "@/types";
 
 type FilterMode = "professional" | "training" | "all";
 
 export function Experience() {
   const [filter, setFilter] = useState<FilterMode>("professional");
-
-  const projectMap = useMemo(
-    () => new Map<string, Project>(projects.map((p) => [p.slug, p])),
-    []
-  );
 
   const professionalCount = experiences.filter((e) => e.category === "professional").length;
   const trainingCount = experiences.length - professionalCount;
@@ -76,20 +69,13 @@ export function Experience() {
         </div>
 
         <ChoreographedBlock variant="stagger-list" className="min-w-0 lg:col-span-8">
-          {filtered.map((entry, idx) => {
-            const linkedProjects = (entry.projectIds ?? [])
-              .map((slug) => projectMap.get(slug))
-              .filter((p): p is Project => Boolean(p));
-
-            return (
-              <TimelineItem
-                key={entry.id}
-                entry={entry}
-                linkedProjects={linkedProjects}
-                indexLabel={String(idx + 1).padStart(2, "0")}
-              />
-            );
-          })}
+          {filtered.map((entry, idx) => (
+            <TimelineItem
+              key={entry.id}
+              entry={entry}
+              indexLabel={String(idx + 1).padStart(2, "0")}
+            />
+          ))}
         </ChoreographedBlock>
       </div>
     </section>

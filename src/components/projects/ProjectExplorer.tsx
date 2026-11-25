@@ -8,6 +8,7 @@ import type { Project, ProjectCategory, ProjectTier } from "@/types";
 import {
   filterProjects,
   getAvailableCategories,
+  getProjectActions,
   getTopTechnologies,
   type ProjectFilterState,
 } from "@/lib/projects";
@@ -446,7 +447,7 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
 
               <div className="min-w-0 md:col-span-5">
                 <Link
-                  href={`/projects/${project.slug}/`}
+                  href={getProjectActions(project).detailUrl ?? "/projects/"}
                   prefetch={false}
                   className="font-display block truncate text-base font-bold text-[#F2F0EC] transition-colors group-hover:text-[#65C8F5]"
                 >
@@ -460,7 +461,6 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
               </div>
 
               <span className="text-xs text-[#A7ADB7] md:col-span-3">
-                {project.projectOrigin === "professional" ? "Professional Work · " : ""}
                 {project.category}
               </span>
 
@@ -470,7 +470,7 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
 
               <div className="md:col-span-1 md:text-right">
                 <Link
-                  href={`/projects/${project.slug}/`}
+                  href={getProjectActions(project).detailUrl ?? "/projects/"}
                   prefetch={false}
                   aria-label={`Open case study for ${project.title}`}
                   className="inline-flex min-h-[36px] items-center justify-end gap-1 text-xs font-medium text-[#65C8F5]"

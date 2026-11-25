@@ -4,7 +4,9 @@ import {
   getApprovedEnterpriseProjects,
   getAvailableCategories,
   getFeaturedProjects,
+  getProjectActions,
   getProjectBySlug,
+  isVerifiedLiveDemoUrl,
   validateProjects,
 } from "@/lib/projects";
 import { projects } from "@/data/projects";
@@ -95,27 +97,22 @@ describe("projects catalog & domain logic", () => {
     }
   });
 
-  it("exposes three approved enterprise case studies separate from featured personal repos", () => {
-    const approved = getApprovedEnterpriseProjects(enterpriseProjectsCatalog);
-    expect(approved.map((p) => p.slug)).toEqual([
-      "archer-upgrade",
-      "stnk-alignment",
-      "advanced-joint-finance-parameter",
-    ]);
+  it("keeps internal Berijalan enterprise cases out of the public projects catalog and strips dead ephemeral demos", () => {
+    expect(projects.every((p) => p.projectOrigin !== "professional")).toBe(true);
+    expect(projects.length).toBe(70);
+    expect(getProjectBySlug(projects, "archer-upgrade")).toBeUndefined();
 
-    const featuredPersonal = getFeaturedProjects(projects);
-    expect(featuredPersonal.every((p) => p.projectOrigin !== "professional")).toBe(true);
-    expect(featuredPersonal.length).toBe(8);
+    const techno = getProjectBySlug(projects, "techno-loyalty-program");
+    expect(techno).toBeDefined();
+    expect(techno?.demoUrl).toBeUndefined();
+    expect(getProjectActions(techno!).demoUrl).toBeUndefined();
 
-    const professionalFiltered = filterProjects(projects, {
-      query: "",
-      tier: "all",
-      origin: "professional",
-      category: "all",
-      technology: "all",
-      sort: "editorial",
-    });
-    expect(professionalFiltered).toHaveLength(3);
+    const hsk = getProjectBySlug(projects, "hsk1-vocabulary-master");
+    expect(getProjectActions(hsk!).demoUrl).toBe("https://hsk1vocab.edgeone.dev/");
+    expect(isVerifiedLiveDemoUrl("https://tmp.34.128.73.127.sslip.io/")).toBe(false);
+
+    const enterpriseActions = getProjectActions(enterpriseProjectsCatalog[0]);
+    expect(enterpriseActions).toEqual({});
   });
 
   it("strictly filters unapproved enterprise items at build time via publicDisclosureApproved", () => {

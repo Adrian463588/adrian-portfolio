@@ -1,73 +1,16 @@
-# Verification & Evidence Summary
+# Verification Summary — V4 Refinement (`fix/portfolio-v4-functional-seo-refinement`)
 
-> **Date:** 2026-11-25  
-> **Target Build:** Static Next.js 16 export (`out/`, 77/77 static pages)
-
-## 1. Automated Verification Commands
-| Check | Command | Result | Details |
-|---|---|---|---|
-| Lint | `npm run lint` | PASS | 0 ESLint errors, 0 warnings |
-| TypeScript | `npm run typecheck` | PASS | `tsc --noEmit` strict mode, 0 errors |
-| Unit Tests | `npm run test` | PASS | Vitest: 2 test files, 8/8 tests passed (`projects.test.ts`, `sync-github.test.ts`) |
-| GitHub Sync | `npm run sync:github` | PASS | Paginated REST sync of 78 public repos for `Adrian463588` |
-| Static Export Build | `npm run build` | PASS | Next.js `output: "export"` generated 77/77 static pages (`/`, `/projects/`, 70 `/projects/[slug]/`, `/icon.svg`, `/robots.txt`, `/sitemap.xml`) |
-| E2E & A11y Suite | `npm run test:e2e` | PASS | Playwright + `axe-core`: 19/19 tests passed (`320px`–`1920px` zero overflow, zero `axe` violations across 4 routes, reduced-motion, WebGL fallback, keyboard & mobile focus, zero 404s, zero console errors) |
-
-## 2. Before vs After Audits (Chrome DevTools MCP)
-| Metric / Audit | Before (`https://adriansyahabidin.vercel.app/`) | After (`out/` static build via `127.0.0.1:4184`) |
-|---|---|---|
-| Lighthouse Accessibility (Desktop / Mobile) | 96 / 96 (failed `color-contrast` on 2 nodes; 7 nodes in full-page `axe-core`) | **100 / 100** (57/57 passed, 0 failed) |
-| Lighthouse Best Practices (Desktop / Mobile) | 100 / 100 | **100 / 100** |
-| Lighthouse SEO (Desktop / Mobile) | 100 / 100 | **100 / 100** |
-| Lighthouse Agentic Browsing (`/` and `/projects/`) | 100 (`/`) | **100** (`/`) & **100** (`/projects/`) |
-| Performance Trace LCP (Lab, 1x CPU) | 1311 ms (`Render delay: 1268 ms`) | **333 ms** (`Render delay: 326 ms`, `292 ms` on initial pass) |
-| Performance Trace CLS (Lab) | 0.00 (below-the-fold hidden at `opacity: 0` pre-scroll) | **0.00** (full content visible at `opacity: 1`) |
-| Console Errors / DevTools Issues | 0 runtime errors, `THREE.Clock` warn | **0 runtime errors**, **0 lazy-image issues**, upstream R3F v9 `THREE.Clock` warn |
-| Lighthouse Numeric Performance Category Score (0–100) | NOT VERIFIED (`chrome-devtools` MCP omits perf score; `npx lighthouse` skipped) | NOT VERIFIED (lab LCP `333 ms` & CLS `0.00` measured via Performance Trace) |
-| Field INP (p75 CrUX) | n/a (no CrUX data) | NOT VERIFIED (laboratory static test only; no field traffic) |
-
-## 3. Security & Privacy Audit
-- `out/` secret/PII scan (`gho_`, `ghp_`, `GITHUB_TOKEN`, `NEXT_PUBLIC_`, `participant`): 0 leaks.
-- `npm audit --omit=dev` (`docs/evidence/test-results/npm-audit.json`): reports 5 advisories (2 moderate, 2 high, 1 critical) within upstream runtime dependency trees (e.g. `next` / transitive dependencies); no custom credentials or raw HTML rendering exist in application code.
-- `vercel.json`: configured with `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`, and strict `Content-Security-Policy` headers.
-- Vercel CLI Preview Deployment: NOT VERIFIED (`vercel` CLI not installed globally in local environment).
-
----
-
-## 4. V2 Verification — Professional Experience & Enterprise Quality Engineering
-
-> **Date:** 2026-11-25  
-> **Target Build:** Static Next.js 16 export (`out/`, 80/80 static pages including 3 enterprise case study routes)
-
-| Check | Command / Tool | Result | Details |
-|---|---|---|---|
-| Lint | `npm run lint` | PASS | 0 ESLint errors, 0 warnings |
-| TypeScript | `npm run typecheck` | PASS | `tsc --noEmit` strict mode, 0 errors |
-| Unit Tests | `npm run test` | PASS | Vitest: 3 test files, 14/14 tests passed (`experience.test.ts`, `projects.test.ts`, `sync-github.test.ts`) |
-| Static Export Build | `npm run build` | PASS | Next.js `output: "export"` generated 80/80 static pages (`/`, `/projects/`, `/projects/archer-upgrade/`, `/projects/stnk-alignment/`, `/projects/advanced-joint-finance-parameter/`, 70 GitHub project pages, `/icon.svg`, `/robots.txt`, `/sitemap.xml`) |
-| E2E & A11y Suite | `npm run test:e2e` | PASS | Playwright + `axe-core`: 23/23 tests passed (Berijalan multi-role grouping, reverse-chronological sorting, 11-step V2 homepage IA order, 3 Enterprise Case Studies, `Professional Work` origin filtering, zero broken GitHub links, `320px–1920px` zero overflow, zero `axe` violations across all 7 tested routes, reduced-motion, WebGL fallback, keyboard & mobile focus) |
-| Confidentiality & Spelling Scan | PowerShell scan across 702 `out/` files | PASS | Zero confidential leaks (`sharepoint.com`, internal Jenkins domains, private IPs, raw SQL, test fixtures) and exact casing enforced (`Magic xpa`, `AOL UniPaaS`, `Joint Financing`) |
-| Lighthouse (`/` Desktop & Mobile) | Chrome DevTools MCP | PASS | Accessibility `100`, Best Practices `100`, SEO `100`, Agentic Browsing `100` (`57/57` passed, `0` failed) |
-| Lighthouse (`/projects/archer-upgrade/` Desktop) | Chrome DevTools MCP | PASS | Accessibility `100`, Best Practices `100`, SEO `100`, Agentic Browsing `100` (`51/51` passed, `0` failed) |
-| Performance Trace (`/` Lab, 1x CPU) | Chrome DevTools MCP | PASS | LCP `259 ms` (`TTFB: 5 ms`, `Render delay: 255 ms`), CLS `0.00` |
-| Unverified Internal Items | Employer internal docs / Vercel deploy | NOT VERIFIED | Official internal project titles beyond supplied names, split of projects per Berijalan period, quantitative outcomes, and live remote Vercel deployment status require user verification / dashboard publish |
-
----
-
-## 5. V3 Verification — Digital Engineering · Kinetic Systems (`feat/v3-immersive-3d-redesign`)
-
-> **Date:** 2026-11-25  
-> **Target Build:** Static Next.js 16 export (`out/`, 80/80 static pages)
-
-| Check | Command / Tool | Result | Details |
-|---|---|---|---|
-| Lint | `npm run lint` | PASS | 0 ESLint errors, 0 warnings |
-| TypeScript | `npm run typecheck` | PASS | `tsc --noEmit` strict mode, 0 errors |
-| Unit Tests | `npm run test` | PASS | Vitest: 3 files, 14/14 passed (`experience.test.ts`, `projects.test.ts`, `sync-github.test.ts`) |
-| Static Export Build | `npm run build` | PASS | Next.js `output: "export"` built 80/80 static pages in `out/` |
-| E2E & A11y Suite | `npm run test:e2e` | PASS | Playwright + `axe-core`: 27/27 tests passed (6-item diverse `Selected Work.` spread, simplified `Enterprise Work.` hairline rows, `Experience.`, `Technical Skills.`, `Certifications.` split Professional vs Courses, `About Me.` first-person narrative + Chibi parallax, `All projects.` progressive `Filters` & `Index` hover preview, 3-tier `CaseStudyDetail`, zero overflow across `320px–1920px`, zero `axe` violations across 7 routes) |
-| Confidentiality & Anti-Slop Scan | PowerShell scan across `747` `out/` files | PASS | Zero secret leaks; removed all flagged AI-slop copy/labels (`Career Ledger`, `Technical Matrix`, `Verification ID available upon request`, `Engagement Origin`, `All Eligible`, `Engineering Project Explorer`, `DEMAND RENDERED`, `Static snapshot synced`) |
-| Lighthouse (`/` Desktop & Mobile) | Chrome DevTools MCP | PASS | Accessibility `100`, Best Practices `100`, SEO `100`, Agentic Browsing `100` (`57/57` passed, `0` failed on both desktop and mobile) |
-| Lighthouse (`/projects/` Desktop) | Chrome DevTools MCP | PASS | Accessibility `100`, Best Practices `100`, SEO `100`, Agentic Browsing `100` (`56/56` passed, `0` failed) |
-| Performance Trace (`/` Lab, 1x CPU) | Chrome DevTools MCP | PASS | LCP `244 ms` (`TTFB: 5 ms`, `Render delay: 239 ms`), CLS `0.00` |
-| Owner-Verification / Unverified | Audit items / Vercel prod | NOT VERIFIED | Overlapping Bitbybit (`Nov 2024–Jul 2025`) & Tokopedia (`Feb 2025–Jun 2025`) dates and Alibaba ACA credential level (`docs/CONTENT_AUDIT.md`) left intact for owner confirmation; numeric Lighthouse Performance score (0–100) omitted by MCP audit; production `main` untouched (`feat/v3-immersive-3d-redesign` pushed cleanly) |
+| Check | Command / Tool | Result | Notes |
+|-------|----------------|--------|-------|
+| ESLint | `npm run lint` | PASS | 0 errors, 0 warnings |
+| TypeScript | `npm run typecheck` | PASS | 0 errors (`strict: true`) |
+| Unit Tests | `npm run test` (`vitest run`) | PASS | 3 files, 14 tests passed (`experience`, `projects`, `sync-github`) |
+| Static Build | `npm run build` | PASS | 77 static routes exported cleanly (`out/`) |
+| Bundle & Sitemap Check | `out/` inspection | PASS | 720 files, 72 sitemap URLs, 0 removed enterprise HTML routes, 0 `href=...sslip.io` links |
+| Playwright E2E + `axe-core` | `npm run test:e2e` | PASS | 28 / 28 passed (real clicks without `force: true`, `RollText` hover visibility, all homepage & catalog images decoded, SEO checks, 320px–1920px overflow, 0 WCAG 2.2 AA violations) |
+| Lighthouse Desktop (`/`) | Chrome DevTools MCP | PASS | Accessibility 100 · Best Practices 100 · SEO 100 · Agentic Browsing 100 (57/57 passed) |
+| Lighthouse Mobile (`/`) | Chrome DevTools MCP | PASS | Accessibility 100 · Best Practices 100 · SEO 100 · Agentic Browsing 100 (57/57 passed) |
+| Lighthouse Desktop (`/projects/`) | Chrome DevTools MCP | PASS | Accessibility 100 · Best Practices 100 · SEO 100 · Agentic Browsing 100 (56/56 passed) |
+| Core Web Vitals (`/`) | Chrome DevTools Trace | PASS | LCP `277 ms` (TTFB `8 ms`, Render delay `269 ms`) · CLS `0.00` |
+| External URL Audit | `docs/evidence/LINK_AUDIT_REPORT.md` | PASS | 95 HTTP 200 OK · 2 bot-shielded human profiles · 2 dead/excluded URLs stripped |
+| Search Console Indexing | Post-deploy manual step | NOT VERIFIED | Technical SEO ready; verification & sitemap submission occur after Vercel deploy |
