@@ -69,7 +69,13 @@ export const competencies: CompetencyGroup[] = [
       "Hilt",
       "Wear OS",
     ],
-    relatedProjectSlugs: ["quran-plus", "android-stress-detection", "english-prep-ai"],
+    relatedProjectSlugs: [
+      "android-stress-detection",
+      "quran-plus",
+      "coffee-creator",
+      "adzan-plus",
+      "parfum-creator",
+    ],
   },
   {
     id: "ai-systems",

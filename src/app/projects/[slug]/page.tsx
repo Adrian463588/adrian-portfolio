@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { SITE_CONFIG } from "@/config/site.config";
 import { projects } from "@/data/projects";
 import { getProjectBySlug } from "@/lib/projects";
+import {
+  buildProjectDetailJsonLd,
+  canonicalPath,
+  canonicalUrl,
+  selectRelatedProjects,
+} from "@/lib/seo";
+import { getResourcesForProject } from "@/lib/seo-resources";
 import { CaseStudyDetail } from "@/components/projects/CaseStudyDetail";
 
 export const dynamicParams = false;
@@ -28,39 +36,42 @@ export async function generateMetadata({
 
   const metaTitle = project.seoTitle || project.title;
   const metaDescription = project.seoDescription || project.summary;
+  const fullTitle = `${metaTitle} | ${SITE_CONFIG.name}`;
+  const image = project.screenshots[0]
+    ? {
+        url: project.screenshots[0].src,
+        width: project.screenshots[0].width,
+        height: project.screenshots[0].height,
+        alt: project.screenshots[0].alt,
+      }
+    : {
+        ...SITE_CONFIG.ogImage,
+        alt: `${metaTitle} — ${SITE_CONFIG.name}`,
+      };
 
   return {
     title: metaTitle,
     description: metaDescription,
     alternates: {
-      canonical: `/projects/${project.slug}/`,
+      canonical: canonicalPath(`/projects/${project.slug}/`),
     },
     openGraph: {
-      title: `${metaTitle} — Adrian Syah Abidin`,
+      title: fullTitle,
       description: metaDescription,
-      url: `https://adriansyahabidin.vercel.app/projects/${project.slug}/`,
-      images: project.screenshots[0]
-        ? [
-            {
-              url: project.screenshots[0].src,
-              width: project.screenshots[0].width,
-              height: project.screenshots[0].height,
-              alt: project.screenshots[0].alt,
-            },
-          ]
-        : [
-            {
-              url: "/og-image.png",
-              width: 1200,
-              height: 630,
-              alt: `${metaTitle} — Adrian Syah Abidin`,
-            },
-          ],
+      type: "article",
+      locale: SITE_CONFIG.locale,
+      siteName: SITE_CONFIG.siteName,
+      url: canonicalUrl(`/projects/${project.slug}/`),
+      images: [image],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: fullTitle,
+      description: metaDescription,
+      images: [image],
     },
   };
 }
-
-const SITE_URL = "https://adriansyahabidin.vercel.app";
 
 export default async function ProjectCaseStudyPage({
   params,
@@ -74,61 +85,22 @@ export default async function ProjectCaseStudyPage({
     notFound();
   }
 
-  const projectNode = project.repositoryUrl
-    ? {
-        "@type": "SoftwareSourceCode",
-        "@id": `${SITE_URL}/projects/${project.slug}/#software`,
-        name: project.title,
-        description: project.summary,
-        codeRepository: project.repositoryUrl,
-        programmingLanguage: project.language || project.technologies[0],
-        dateModified: project.updatedAt,
-        author: {
-          "@type": "Person",
-          name: "Adrian Syah Abidin",
-          url: `${SITE_URL}/`,
-        },
-      }
-    : {
-        "@type": "CreativeWork",
-        "@id": `${SITE_URL}/projects/${project.slug}/#work`,
-        name: project.title,
-        description: project.summary,
-        about: project.businessDomain || project.category,
-        dateModified: project.updatedAt,
-        author: {
-          "@type": "Person",
-          name: "Adrian Syah Abidin",
-          url: `${SITE_URL}/`,
-        },
-      };
-
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@graph": [
-      projectNode,
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
-          { "@type": "ListItem", position: 2, name: "Projects", item: `${SITE_URL}/projects/` },
-          {
-            "@type": "ListItem",
-            position: 3,
-            name: project.title,
-            item: `${SITE_URL}/projects/${project.slug}/`,
-          },
-        ],
-      },
-    ],
-  };
-
+  const structuredData = buildProjectDetailJsonLd(project);
   const currentIndex = projects.findIndex((p) => p.slug === project.slug);
   const prevItem = currentIndex > 0 ? projects[currentIndex - 1] : undefined;
   const nextItem =
     currentIndex >= 0 && currentIndex < projects.length - 1
       ? projects[currentIndex + 1]
       : undefined;
+  const related = selectRelatedProjects(projects, project, 3).map((item) => ({
+    slug: item.slug,
+    title: item.title,
+    category: item.category,
+  }));
+  const relatedResources = getResourcesForProject(project.slug).map((item) => ({
+    slug: item.slug,
+    title: item.title,
+  }));
 
   return (
     <>
@@ -140,6 +112,8 @@ export default async function ProjectCaseStudyPage({
         project={project}
         prevProject={prevItem ? { slug: prevItem.slug, title: prevItem.title } : undefined}
         nextProject={nextItem ? { slug: nextItem.slug, title: nextItem.title } : undefined}
+        relatedProjects={related}
+        relatedResources={relatedResources}
       />
     </>
   );

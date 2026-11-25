@@ -1,24 +1,31 @@
-# Technical SEO & Google Search Console Readiness Checklist
+# Technical SEO, Search Console & Crawler Readiness Checklist
 
-## Implemented On-Site Foundations
-- **Primary Host & Canonical Base:** `https://adriansyahabidin.vercel.app/` configured in `metadataBase` and explicit per-route `alternates.canonical` (`/` on homepage, `/projects/` on archive, `/projects/[slug]/` on project detail pages).
-- **Title & Meta Description:**
-  - Homepage: `Adrian Syah Abidin | Software & QA Automation Engineer`
-  - Description: concise human-written summary mentioning enterprise software testing, Cypress automation, DevOps, and personal projects (`<= 160` chars).
-  - Deprecated `<meta name="keywords">` removed cleanly.
-- **Open Graph & Twitter Preview:** Dedicated `1200x630` PNG (`public/og-image.png`) using Obsidian & Arctic brand typography.
-- **Structured Data (`JSON-LD`):**
-  - `/`: `@graph` combining `ProfilePage`, `Person` (excluding historical employers from active `worksFor`), and `WebSite`.
-  - `/projects/`: `@graph` combining `CollectionPage` and `BreadcrumbList`.
-  - `/projects/[slug]/`: `@graph` combining `BreadcrumbList` and `SoftwareSourceCode` / `CreativeWork`.
-- **Crawl Directives & Sitemap:**
-  - `/robots.txt` allows crawling and references `https://adriansyahabidin.vercel.app/sitemap.xml`.
-  - `/sitemap.xml` includes `/`, `/projects/`, and all 70 public repository case study pages with valid `lastModified` dates and excludes removed internal enterprise paths.
+## 1. Centralized Configuration (`src/config/site.config.ts` & `src/lib/seo.ts`)
+- **Production Origin:** `https://adriansyahabidin.vercel.app/` (`metadataBase`, self-referencing `alternates.canonical` across `/`, `/projects/`, and all `71` `/projects/[slug]/` routes).
+- **Homepage Metadata:**
+  - `<title>`: `Adrian Syah Abidin | Software & QA Automation Engineer`
+  - `<meta name="description">`: `"Software and QA Automation Engineer based in Indonesia. Explore my work in quality engineering, DevOps, Android development, applied AI, and enterprise financial systems."`
+  - Visible `Hero` eyebrow aligned to `Software & QA Automation Engineer` with single primary `<h1>Adrian Syah Abidin</h1>`.
+- **Route Metadata (`/projects/` & Case Studies):**
+  - `/projects/`: `Engineering Projects | Adrian Syah Abidin` + dedicated collection description and `CollectionPage` JSON-LD.
+  - Featured case studies (`android-stress-detection`, `quran-plus`, `coffee-creator`, `adzan-plus`, `parfum-creator`) expose unique `seoTitle`, `seoDescription`, self-referencing canonicals, Open Graph cards with project screenshots, and X/Twitter `summary_large_image` tags.
+- **Open Graph & Icons:** `en_US` locale, static `1200×630` PNG (`public/og-image.png`), vector SVG favicon (`src/app/icon.svg`).
 
-## Post-Deploy Verification (Owner Action in Google Search Console)
-1. Deploy production branch to `https://adriansyahabidin.vercel.app/`.
-2. Open [Google Search Console](https://search.google.com/search-console) for `https://adriansyahabidin.vercel.app/`.
-3. Verify property ownership (meta tag or DNS TXT record if not already verified).
-4. Submit `https://adriansyahabidin.vercel.app/sitemap.xml` under **Sitemaps**.
-5. Run **URL Inspection** on `/` and `/projects/` -> verify canonical, rendered DOM, and **Request Indexing**.
-6. Validate rich results (`Person` / `ProfilePage` / `BreadcrumbList`) at [Google Rich Results Test](https://search.google.com/test/rich-results).
+## 2. Structured Data Graph (`Schema.org`)
+- **`/`:** `@graph` linking `WebSite` (`#website`), `Person` (`#person` with `image`, `alumniOf`, verified issued `hasCredential` entries, and `sameAs` across GitHub, LinkedIn, and Medium; historical employers and unconfirmed pending credentials excluded), and `ProfilePage` (`#profilepage`, `dateModified` derived from real catalog updates).
+- **`/projects/`:** `CollectionPage` + `BreadcrumbList` linked to `#website` and `#person`.
+- **`/projects/[slug]/`:** `SoftwareSourceCode` (linking `codeRepository`, `programmingLanguage`, screenshot `image`, and optional SPDX `license` to `author: { "@id": "#person" }`) + `BreadcrumbList`.
+
+## 3. Sitemap, Robots & Crawler Policy
+- **`/robots.txt` (`src/app/robots.ts`):** `Allow: /` + `Sitemap: https://adriansyahabidin.vercel.app/sitemap.xml` (no `Disallow: /`, no blocking of JS/CSS/WebP assets).
+- **`/sitemap.xml` (`src/app/sitemap.ts`):** Derived cleanly from `projects` (`73` canonical HTTPS URLs total: `/`, `/projects/`, `71` `/projects/[slug]/` routes) with real `lastModified` dates and zero preview URLs, `#` fragments, query strings, or removed enterprise routes.
+- **AI Search & Training Crawler Policy:** Standard search/discovery crawlers (`Googlebot`, `Bingbot`, `OAI-SearchBot`, `PerplexityBot`) can read complete semantic HTML (`<h1>`, headings, experience, case studies, JSON-LD) in initial static HTML without depending on WebGL canvas rendering. We rely on canonical technical SEO and structured data rather than unrequired `llms.txt` hacks.
+- **Vercel Preview Noindex Preservation:** Production serves clean indexable HTML (`x-robots-tag: null`), while Vercel's built-in preview deployment `noindex` behavior remains untouched (`vercel.json` never overrides preview indexing headers).
+
+## 4. Search Engine Registration & Off-Page Checklist (Owner Actions)
+1. **Google Search Console (`https://search.google.com/search-console/`):**
+   - URL Prefix property: `https://adriansyahabidin.vercel.app/`
+   - HTML Verification Meta Tag configured in `src/app/layout.tsx`: `P4O6B5PWmL-5E0i5XRbfkOSaPcop92urgS2lk-IAZ5s` (already present in live HTML).
+   - Click **Verify** (do **not** remove the meta tag afterward), submit `sitemap.xml`, inspect `/` & flagship project URLs (`android-stress-detection`, `quran-plus`, `coffee-creator`, `parfum-creator`), and request indexing if needed.
+2. **Bing Webmaster Tools (`https://www.bing.com/webmasters/`):** Import from verified Google Search Console or verify cleanly, then submit `https://adriansyahabidin.vercel.app/sitemap.xml`.
+3. **Natural Off-Page Authority:** Keep `https://adriansyahabidin.vercel.app/` linked consistently from GitHub profile README, featured repository homepages, LinkedIn profile & Featured items, and Medium bio.

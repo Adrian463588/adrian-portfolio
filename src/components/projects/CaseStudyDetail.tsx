@@ -15,16 +15,31 @@ import { Badge } from "@/components/ui/Badge";
 import { ResilientImage } from "@/components/ui/ResilientImage";
 import { ChoreographedBlock } from "@/components/motion/SectionChoreography";
 
+interface RelatedProjectLink {
+  slug: string;
+  title: string;
+  category: string;
+}
+
+interface RelatedResourceLink {
+  slug: string;
+  title: string;
+}
+
 interface CaseStudyDetailProps {
   project: Project;
   prevProject?: { slug: string; title: string };
   nextProject?: { slug: string; title: string };
+  relatedProjects?: RelatedProjectLink[];
+  relatedResources?: RelatedResourceLink[];
 }
 
 export function CaseStudyDetail({
   project,
   prevProject,
   nextProject,
+  relatedProjects = [],
+  relatedResources = [],
 }: CaseStudyDetailProps) {
   const isEnterprise = project.projectOrigin === "professional";
   const isPrivateSummary = project.visibility === "private-summary";
@@ -429,8 +444,50 @@ export function CaseStudyDetail({
           </>
         )}
 
-        {/* Links, Neighbor Navigation & Back Nav */}
+        {/* Links, Related Work, Neighbor Navigation & Back Nav */}
         <footer className="space-y-6 border-t border-white/10 pt-8">
+          {relatedProjects.length > 0 && (
+            <div className="space-y-3 border-b border-white/10 pb-6">
+              <p className="font-mono text-xs uppercase tracking-wider text-[#A7ADB7]">
+                Related Projects
+              </p>
+              <div className="flex flex-wrap gap-2.5">
+                {relatedProjects.map((rel) => (
+                  <Link
+                    key={rel.slug}
+                    href={`/projects/${rel.slug}/`}
+                    prefetch={false}
+                    className="active-press inline-flex min-h-[38px] items-center gap-1.5 rounded-full border border-white/12 bg-[#15171C]/80 px-3.5 py-1.5 text-xs font-medium text-[#D6D9DF] transition-colors hover:border-[#65C8F5] hover:text-[#65C8F5]"
+                  >
+                    <span>{rel.title}</span>
+                    <ArrowRight className="h-3 w-3 text-[#65C8F5]" aria-hidden="true" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {relatedResources.length > 0 && (
+            <div className="space-y-3 border-b border-white/10 pb-6">
+              <p className="font-mono text-xs uppercase tracking-wider text-[#A7ADB7]">
+                Related Engineering Guides &amp; Tools
+              </p>
+              <div className="flex flex-wrap gap-2.5">
+                {relatedResources.map((res) => (
+                  <Link
+                    key={res.slug}
+                    href={`/resources/${res.slug}/`}
+                    prefetch={false}
+                    className="active-press inline-flex min-h-[38px] items-center gap-1.5 rounded-full border border-[#65C8F5]/25 bg-[#15171C]/80 px-3.5 py-1.5 text-xs font-medium text-[#F2F0EC] transition-colors hover:border-[#65C8F5] hover:text-[#65C8F5]"
+                  >
+                    <span>{res.title}</span>
+                    <ArrowRight className="h-3 w-3 text-[#65C8F5]" aria-hidden="true" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
           {(prevProject || nextProject) && (
             <div className="grid grid-cols-1 gap-4 border-b border-white/10 pb-6 sm:grid-cols-2">
               {prevProject ? (

@@ -306,6 +306,7 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       page.locator("#hero").getByRole("link", { name: /Medium/i }),
       nav.getByRole("link", { name: "Work" }),
       nav.getByRole("link", { name: "Projects" }),
+      nav.getByRole("link", { name: "Resources" }),
       nav.getByRole("link", { name: "Experience" }),
       nav.getByRole("link", { name: "About" }),
       nav.getByRole("link", { name: "Contact" }),
@@ -513,9 +514,21 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     page,
     request,
   }) => {
+    // Raw static HTML is readable by crawlers without executing WebGL or JS animations
+    const rawHomeHtml = await (await request.get("/")).text();
+    expect(rawHomeHtml).toContain("<html lang=\"en\"");
+    expect(rawHomeHtml).toContain("Adrian Syah Abidin");
+    expect(rawHomeHtml).toContain("Software &amp; QA Automation Engineer");
+    expect(rawHomeHtml).toContain("Android Stress Detection");
+    expect(rawHomeHtml).toContain("Berijalan Techno Center");
+    expect(rawHomeHtml).not.toMatch(/noindex/i);
+
     await page.goto("/", { waitUntil: "networkidle" });
     await expect(page).toHaveTitle("Adrian Syah Abidin | Software & QA Automation Engineer");
+    await expect(page.locator("#hero")).toContainText("Software & QA Automation Engineer");
     await expect(page.locator('meta[name="keywords"]')).toHaveCount(0);
+    await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute("content", "en_US");
+    await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute("content", "summary_large_image");
     await expect(page.locator('meta[name="google-site-verification"]')).toHaveAttribute(
       "content",
       "P4O6B5PWmL-5E0i5XRbfkOSaPcop92urgS2lk-IAZ5s"
@@ -532,15 +545,32 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     const homeLd = await page.locator('script[type="application/ld+json"]').first().textContent();
     expect(homeLd).toBeTruthy();
     const parsedHome = JSON.parse(homeLd!);
-    expect(JSON.stringify(parsedHome)).toContain("ProfilePage");
-    expect(JSON.stringify(parsedHome)).toContain("Person");
-    expect(JSON.stringify(parsedHome)).not.toContain("worksFor");
+    const homeLdText = JSON.stringify(parsedHome);
+    expect(homeLdText).toContain("ProfilePage");
+    expect(homeLdText).toContain("Person");
+    expect(homeLdText).toContain("WebSite");
+    expect(homeLdText).toContain("AWS Certified Cloud Practitioner");
+    expect(homeLdText).toContain("https://www.linkedin.com/in/adrian-syah-abidin-0416b81b9/");
+    expect(homeLdText).toContain("https://medium.com/@adriansyah1230");
+    expect(homeLdText).not.toContain("worksFor");
+    expect(homeLdText).not.toContain("adriansyah1230@gmail.com");
 
     await page.goto("/projects/", { waitUntil: "domcontentloaded" });
+    await expect(page).toHaveTitle("Engineering Projects | Adrian Syah Abidin");
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
       "https://adriansyahabidin.vercel.app/projects/"
     );
+    const projectsLd = await page.locator('script[type="application/ld+json"]').first().textContent();
+    expect(projectsLd).toContain("CollectionPage");
+    expect(projectsLd).toContain("https://adriansyahabidin.vercel.app/#person");
+
+    await page.goto("/projects/android-stress-detection/", { waitUntil: "domcontentloaded" });
+    await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute("content", "summary_large_image");
+    await expect(page.getByText("Related Projects", { exact: true })).toBeVisible();
+    await expect(
+      page.locator("article footer").getByRole("link", { name: "QuranPlus", exact: true })
+    ).toBeVisible();
 
     const ogRes = await request.get("/og-image.png");
     expect(ogRes.status()).toBe(200);
@@ -548,10 +578,12 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
 
     const robotsRes = await request.get("/robots.txt");
     expect(robotsRes.status()).toBe(200);
+    expect(robotsRes.headers()["content-type"]).toContain("text/plain");
     expect(await robotsRes.text()).toContain("https://adriansyahabidin.vercel.app/sitemap.xml");
 
     const sitemapRes = await request.get("/sitemap.xml");
     expect(sitemapRes.status()).toBe(200);
+    expect(sitemapRes.headers()["content-type"]).toContain("xml");
     const sitemapText = await sitemapRes.text();
     expect(sitemapText).toContain("https://adriansyahabidin.vercel.app/");
     expect(sitemapText).toContain("https://adriansyahabidin.vercel.app/projects/android-stress-detection/");
@@ -752,6 +784,10 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     "/projects/parfum-creator/",
     "/projects/automate-plus/",
     "/projects/heart-rate-monitor/",
+    "/resources/",
+    "/resources/coffee-brew-ratio-extraction-calculator/",
+    "/resources/perfume-concentration-dilution-calculator/",
+    "/resources/automate-plus-vs-selenium-ide-katalon/",
   ]) {
     test(`axe-core WCAG 2.2 AA audit passes with zero violations on ${route}`, async ({ page }) => {
       await page.goto(route, { waitUntil: "networkidle" });
@@ -760,4 +796,65 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       expect(results.violations).toEqual([]);
     });
   }
+
+  test("V10 Advanced SEO resources hub, approved tools, gated 404 drafts, calculators & bidirectional links work seamlessly", async ({
+    page,
+    request,
+  }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (err) => errors.push(err.message));
+
+    // 1. Resources hub renders approved guides without drafts
+    await page.goto("/resources/", { waitUntil: "networkidle" });
+    await expect(page.locator("h1")).toHaveText("Engineering Resources.");
+    await expect(page.getByText(/Coffee Brew Ratio, Extraction Yield & Recipe Scaler/i)).toBeVisible();
+    await expect(page.getByText(/AdzanPlus vs Al-Azan/i)).toHaveCount(0);
+
+    // 2. Sitemap exposes published resources and excludes draft/review slugs
+    const sitemapRes = await request.get("/sitemap.xml");
+    expect(sitemapRes.status()).toBe(200);
+    const sitemapXml = await sitemapRes.text();
+    expect(sitemapXml).toContain("/resources/");
+    expect(sitemapXml).toContain("/resources/coffee-brew-ratio-extraction-calculator/");
+    expect(sitemapXml).not.toContain("adzan-plus-vs-al-azan-offline-prayer");
+    expect(sitemapXml).not.toContain("parfum-creator-vs-perfumers-world-comparison");
+
+    // 3. Draft/review routes remain unbuilt (HTTP 404)
+    const draftRes = await request.get("/resources/parfum-creator-vs-perfumers-world-comparison/");
+    expect(draftRes.status()).toBe(404);
+
+    // 4. Interactive Coffee Calculator computes EY% & scaled pours cleanly
+    await page.goto("/resources/coffee-brew-ratio-extraction-calculator/", { waitUntil: "networkidle" });
+    await expect(page.getByTestId("coffee-ratio-output")).toHaveText("1:16.67");
+    await expect(page.getByTestId("coffee-ey-output")).toHaveText("20.06%");
+    await page.getByLabel("Target Water (g)").fill("300");
+    await expect(page.locator("table tbody tr").last()).toContainText("300.0 g");
+
+    // 5. Interactive Perfume Calculator analyzes mass & solves target batch
+    await page.goto("/resources/perfume-concentration-dilution-calculator/", { waitUntil: "networkidle" });
+    await expect(page.getByTestId("perfume-conc-output")).toHaveText("18.00%");
+    await page.getByRole("tab", { name: /Solve Target Batch Weight/i }).click();
+    await page.getByLabel("Desired Batch Weight (g)").fill("50");
+    await page.getByLabel("Target Oil Concentration (%)").fill("22");
+    await expect(page.getByTestId("perfume-solved-oil")).toHaveText("11.00 g");
+
+    // 6. Bidirectional linking from Project Case Study -> Resource & responsive 320px/1440px overflow check
+    await page.goto("/projects/coffee-creator/", { waitUntil: "domcontentloaded" });
+    await expect(
+      page.getByRole("link", { name: /Coffee Brew Ratio, Extraction Yield & Recipe Scaler/i })
+    ).toBeVisible();
+
+    for (const width of [320, 1024, 1440]) {
+      await page.setViewportSize({ width, height: 800 });
+      for (const route of ["/resources/", "/resources/automate-plus-vs-selenium-ide-katalon/"]) {
+        await page.goto(route, { waitUntil: "networkidle" });
+        const hasOverflow = await page.evaluate(
+          () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+        );
+        expect(hasOverflow, `Overflow on ${route} at ${width}px`).toBe(false);
+      }
+    }
+
+    expect(errors).toEqual([]);
+  });
 });

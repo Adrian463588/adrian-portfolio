@@ -44,7 +44,7 @@ export function Hero() {
       <div className="mx-auto w-full max-w-[1280px]">
         <div className="max-w-3xl space-y-8">
           <p className="hero-entrance text-sm font-medium tracking-wide text-[#65C8F5]">
-            Software Engineer
+            Software &amp; QA Automation Engineer
           </p>
 
           <div className="space-y-4">

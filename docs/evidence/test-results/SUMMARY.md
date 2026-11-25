@@ -45,3 +45,36 @@
 | Playwright E2E + `axe-core` | `npm run test:e2e` | PASS | `32 / 32` passed (`ParfumCreator` cover decoded, `GitHub` & `v1.3.1` `Release` CTAs, `0` private labels, SEO JSON-LD, `0` WCAG 2.2 AA violations) |
 | Lighthouse (`/projects/parfum-creator/`) | Chrome DevTools MCP | PASS | Accessibility 100 · Best Practices 100 · SEO 100 · Agentic Browsing 100 |
 | Vercel CLI / Live Deploy | Remote domain | NOT VERIFIED | `vercel` CLI absent locally; remote Vercel deploy triggers after `origin/main` push |
+
+---
+
+# Verification Summary — V9 Technical SEO & Entity Architecture (`main` uncommitted local changes)
+
+| Check | Command / Tool | Result | Notes |
+|-------|----------------|--------|-------|
+| Live Prod Baseline (`770eaa3`) | `fetch()` on `adriansyahabidin.vercel.app` | PASS | `/`, `/robots.txt`, `/sitemap.xml` (`73` URLs), `/projects/parfum-creator/` (`200`); `404` on invalid route |
+| Static Asset Validation | `npm run validate:assets` | PASS | `30` referenced static assets verified in `public/` & `out/` |
+| ESLint & TypeScript | `npm run lint`, `npm run typecheck` | PASS | `0` errors, `0` warnings |
+| Unit Tests | `npm run test` (`vitest run`) | PASS | `4` files, `20` tests passed (including `tests/unit/seo.test.ts`) |
+| Static Build | `npm run build` (`next build`) | PASS | `78` static routes exported cleanly (`out/`) |
+| Playwright E2E + `axe-core` | `npm run test:e2e` | PASS | `32 / 32` passed (`rawHomeHtml` crawler check, `@id` JSON-LD links, Related Projects, `0` WCAG 2.2 AA violations) |
+| Lighthouse (`/` Desktop & Mobile, `/projects/`) | Chrome DevTools MCP | PASS | Accessibility 100 · Best Practices 100 · SEO 100 · Agentic Browsing 100 |
+| Core Web Vitals (`/`) | Chrome DevTools Trace | PASS | `LCP: 372 ms` (`TTFB: 8 ms`, `Render delay: 364 ms`) · `CLS: 0.00` (CrUX: insufficient data) |
+| Search Console Verify & Bing | External consoles | BLOCKED — OWNER ACTION | Meta tag already live from `770eaa3`; owner must click Verify, submit `sitemap.xml`, and link Bing Webmaster |
+
+---
+
+# Verification Summary — V10 Advanced White Hat SEO (`main` uncommitted local changes)
+
+| Check | Command / Tool | Result | Notes |
+|-------|----------------|--------|-------|
+| Catalog & Anti-Spam Gate | `npm run seo:validate` | PASS | `publishedCount: 7`, `gatedCount: 2`, `errors: []` |
+| Static Assets | `npm run validate:assets` | PASS | `30` referenced static assets verified in `public/` & `out/` |
+| ESLint & TypeScript | `npm run lint`, `npm run typecheck` | PASS | `0` errors (`strict: true`) |
+| Unit Tests | `npm run test` (`vitest run`) | PASS | `5` files, `28` tests passed (`seo-advanced`, `seo`, `projects`, `experience`, `sync-github`) |
+| Static Build | `npm run build` (`next build`) | PASS | `86` static pages exported cleanly (`out/`) |
+| Static HTML & Sitemap Audit | `npm run seo:audit` | PASS | `pageCount: 81`, `jsonLdChecked: 81`, `sitemapUrls: 81`, drafts verified absent (`errors: []`) |
+| Internal Link Integrity | `npm run seo:links` | PASS | `checkedLinks: 1724`, `errors: []` |
+| Playwright E2E + `axe-core` | `npm run test:e2e` | PASS | `37 / 37` passed (`axe-core` 0 violations across `10` routes, draft 404 checks, calculators, `320px`–`1920px` overflow, WebGL fallback) |
+| Lighthouse (`/` Desktop, `/resources/` Desktop, calculator Desktop, comparison Mobile) | Chrome DevTools MCP | PASS | Accessibility 100 · Best Practices 100 · SEO 100 · Agentic Browsing 100 (`57`/`52`/`60`/`57` passed, `0` failed) |
+| Commit / Push / Prod Deploy | Remote git & Vercel | NOT EXECUTED | Pending explicit owner authorization |

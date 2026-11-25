@@ -35,6 +35,9 @@ export function Footer() {
           <Link href="/projects/" prefetch={false} className="group transition-colors">
             <RollText>Projects</RollText>
           </Link>
+          <Link href="/resources/" prefetch={false} className="group transition-colors">
+            <RollText>Resources</RollText>
+          </Link>
           <a
             href="https://github.com/Adrian463588"
             target="_blank"

@@ -8,6 +8,8 @@ import { SmoothScrollProvider } from "@/components/motion/SmoothScrollProvider";
 import { DesktopCursor } from "@/components/motion/DesktopCursor";
 import { MotionProvider } from "@/context/MotionContext";
 
+import { SITE_CONFIG } from "@/config/site.config";
+
 const displaySans = Space_Grotesk({
   variable: "--font-display",
   subsets: ["latin"],
@@ -26,42 +28,31 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const SITE_URL = "https://adriansyahabidin.vercel.app";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(SITE_CONFIG.url),
   title: {
-    default: "Adrian Syah Abidin | Software & QA Automation Engineer",
-    template: "%s | Adrian Syah Abidin",
+    default: SITE_CONFIG.titleDefault,
+    template: SITE_CONFIG.titleTemplate,
   },
-  description:
-    "Explore Adrian Syah Abidin's portfolio, featuring enterprise software testing, Cypress automation, DevOps, and personal engineering projects.",
+  description: SITE_CONFIG.description,
   openGraph: {
-    title: "Adrian Syah Abidin | Software & QA Automation Engineer",
-    description:
-      "Portfolio covering enterprise software testing, Cypress automation, Jenkins CI, DevOps infrastructure, Android apps, and applied AI.",
+    title: SITE_CONFIG.titleDefault,
+    description: SITE_CONFIG.description,
     type: "website",
-    url: SITE_URL,
-    siteName: "Adrian Syah Abidin Portfolio",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Adrian Syah Abidin — Software & QA Automation Engineer Portfolio",
-      },
-    ],
+    locale: SITE_CONFIG.locale,
+    url: `${SITE_CONFIG.url}/`,
+    siteName: SITE_CONFIG.siteName,
+    images: [SITE_CONFIG.ogImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Adrian Syah Abidin | Software & QA Automation Engineer",
-    description:
-      "Portfolio covering enterprise software testing, Cypress automation, DevOps infrastructure, Android apps, and applied AI.",
-    images: ["/og-image.png"],
+    title: SITE_CONFIG.titleDefault,
+    description: SITE_CONFIG.description,
+    images: [SITE_CONFIG.ogImage],
   },
   robots: { index: true, follow: true },
   verification: {
-    google: "P4O6B5PWmL-5E0i5XRbfkOSaPcop92urgS2lk-IAZ5s",
+    google: SITE_CONFIG.verification.google,
   },
 };
 
