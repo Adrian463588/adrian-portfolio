@@ -13,9 +13,8 @@ const navLinks = [
   { href: "/#work", label: "Work", match: "work", idx: "01" },
   { href: "/projects/", label: "Projects", match: "projects", idx: "02" },
   { href: "/#experience", label: "Experience", match: "experience", idx: "03" },
-  { href: "/#enterprise-work", label: "Enterprise", match: "enterprise-work", idx: "04" },
-  { href: "/#about", label: "About", match: "about", idx: "05" },
-  { href: "/#contact", label: "Contact", match: "contact", idx: "06" },
+  { href: "/#about", label: "About", match: "about", idx: "04" },
+  { href: "/#contact", label: "Contact", match: "contact", idx: "05" },
 ];
 
 export function Navbar() {

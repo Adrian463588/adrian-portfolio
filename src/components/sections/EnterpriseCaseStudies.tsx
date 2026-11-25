@@ -20,9 +20,8 @@ export function EnterpriseCaseStudies() {
     >
       <div className="mx-auto max-w-[1280px]">
         <SectionHeader
-          eyebrow="03 / Enterprise Work"
-          title="Enterprise Quality Case Studies."
-          description="Sanitized case studies from Berijalan Techno Center (Astra Credit Companies Group), documented at an abstracted disclosure boundary."
+          title="Enterprise Work."
+          description="Sanitized software testing case studies from Berijalan Techno Center (Astra Credit Companies Group)."
           action={
             <Link
               href="/projects/?origin=professional"

@@ -113,7 +113,7 @@ export function TimelineItem({
 
       {linkedProjects.length > 0 && (
         <div className="mt-5 flex flex-wrap items-center gap-3">
-          <span className="text-xs font-medium text-[#A7ADB7]">Case studies:</span>
+          <span className="text-xs font-medium text-[#A7ADB7]">Related work:</span>
           {linkedProjects.map((project) => (
             <Link
               key={project.slug}

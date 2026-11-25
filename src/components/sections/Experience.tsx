@@ -40,15 +40,11 @@ export function Experience() {
       <div className="mx-auto grid max-w-[1280px] grid-cols-1 gap-12 lg:grid-cols-12">
         <div className="min-w-0 space-y-6 lg:col-span-4">
           <div className="space-y-3 lg:sticky lg:top-24">
-            <p className="font-mono text-xs tracking-[0.12em] text-[#65C8F5] uppercase">
-              02 / Experience
-            </p>
             <h2 className="font-display text-[clamp(1.85rem,3.6vw,3rem)] font-bold leading-[1.08] tracking-[-0.03em] text-[#F2F0EC]">
-              Engineering in practice.
+              Experience.
             </h2>
             <p className="text-sm leading-relaxed text-[#A7ADB7]">
-              Enterprise quality control, test automation, QA internships, and technical training
-              ordered reverse-chronologically.
+              Software quality testing, test automation, internships, and technical training.
             </p>
 
             <div

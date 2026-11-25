@@ -3,7 +3,7 @@ export type ProjectCategory =
   | "DevOps & CI/CD"
   | "QA & Test Automation"
   | "Financial Systems"
-  | "Enterprise Application Modernization"
+  | "Application Modernization"
   | "Backend Engineering"
   | "Frontend & Web Development"
   | "Android & Mobile Development"
@@ -161,7 +161,7 @@ export interface ExperienceEntry {
 export interface CompetencyGroup {
   id: string;
   title: string;
-  summary: string;
+  summary?: string;
   icon: string;
   skills: string[];
   relatedProjectSlugs: string[];
@@ -172,6 +172,7 @@ export interface CertificationEntry {
   name: string;
   issuer: string;
   category: string;
+  kind?: "certification" | "course";
   status: string;
   verificationNote?: string;
   verificationUrl?: string;

@@ -104,7 +104,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     projectOrigin: "original",
     tier: "featured",
     featured: true,
-    editorialOrder: 2,
+    editorialOrder: 3,
     problemStatement:
       "Islamic reference apps commonly rely on cloud APIs for semantic search and Q&A, failing offline and risking ungrounded LLM hallucinations on religious texts.",
     proposedSolution:
@@ -164,7 +164,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     projectOrigin: "original",
     tier: "featured",
     featured: true,
-    editorialOrder: 3,
+    editorialOrder: 7,
     problemStatement:
       "Most exam prep apps conflate TOEFL ITP, TOEFL iBT, and IELTS scoring/question formats and fail in offline study environments.",
     proposedSolution:
@@ -223,7 +223,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     projectOrigin: "original",
     tier: "featured",
     featured: true,
-    editorialOrder: 4,
+    editorialOrder: 5,
     problemStatement:
       "International travelers frequently lose reliable connectivity while needing real-time bilingual voice translation and text recognition.",
     proposedSolution:
@@ -267,7 +267,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     projectOrigin: "original",
     tier: "featured",
     featured: true,
-    editorialOrder: 5,
+    editorialOrder: 8,
     problemStatement:
       "Cloud health chatbots introduce privacy exposure for patient queries and risk unverified advice when offline or ungrounded.",
     proposedSolution:
@@ -307,9 +307,8 @@ export const projectOverrides: Record<string, ProjectOverride> = {
       "Built shared core-astronomy and core-prayer calculation modules, Material 3 UI, Jetpack Glance home widgets, haptic reminders, and anti-leakage security checks.",
     projectStatus: "released",
     projectOrigin: "original",
-    tier: "featured",
-    featured: true,
-    editorialOrder: 6,
+    tier: "catalog",
+    featured: false,
     implementedFeatures: [
       "Real-time on-device solar/astronomical hisab calculations including Dhuha",
       "Precision Qibla compass and configurable pre-adhan heads-up alerts (5–30 min)",
@@ -328,7 +327,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     title: "Dual-VM Monitoring & Alerting Stack",
     subtitle: "Prometheus, Grafana, Uptime Kuma & Terraform Infrastructure",
     summary:
-      "Platform-agnostic dual-VM DevOps observability deployment isolating target workloads from Prometheus, Grafana, Alertmanager, and Uptime Kuma Discord alerting.",
+      "Dual-VM DevOps observability deployment isolating Nginx workloads from Prometheus, Grafana, Alertmanager, and Uptime Kuma Discord alerting via Terraform and Docker Compose.",
     description:
       "Automated infrastructure and monitoring stack separating target Nginx/Node Exporter hosts from a dedicated observability VM using Terraform, Docker Compose, and Bash provisioning.",
     category: "DevOps & DevSecOps",
@@ -355,7 +354,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     projectOrigin: "original",
     tier: "featured",
     featured: true,
-    editorialOrder: 7,
+    editorialOrder: 2,
     problemStatement:
       "Co-locating monitoring tools on the same VM as the application causes observability blind spots whenever the target host faces resource exhaustion.",
     proposedSolution:
@@ -391,7 +390,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     projectOrigin: "original",
     tier: "featured",
     featured: true,
-    editorialOrder: 8,
+    editorialOrder: 6,
     sourceReferences: [
       "https://github.com/Adrian463588/hsk1vocab",
       "https://hsk1vocab.edgeone.dev/",
@@ -556,7 +555,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     summary:
       "Infrastructure-as-Code pipeline provisioning Google Kubernetes Engine (GKE) via Terraform and validating memory-driven HPA replica scaling (2–5 pods at 75% target).",
     description:
-      "Platform-agnostic Kubernetes autoscaling blueprint using Terraform for GKE provisioning, Metrics Server bootstrap scripts, Nginx workload manifests, and synthetic memory stress validation.",
+      "Google Kubernetes Engine autoscaling setup using Terraform cluster provisioning, Metrics Server scripts, Nginx workload manifests, and synthetic memory stress verification.",
     category: "DevOps & DevSecOps",
     technologies: ["Terraform", "Kubernetes", "GKE", "HPA", "Shell", "Nginx"],
     screenshots: [
@@ -572,8 +571,9 @@ export const projectOverrides: Record<string, ProjectOverride> = {
       "Wrote Terraform cluster/node-pool configs, Kubernetes deployment/service/HPA YAML manifests, Metrics Server bootstrapper, and scale-up/cooldown verification captures.",
     projectStatus: "completed",
     projectOrigin: "original",
-    tier: "catalog",
-    featured: false,
+    tier: "featured",
+    featured: true,
+    editorialOrder: 4,
     sourceReferences: ["https://github.com/Adrian463588/Task12ManageKubernetesAutoscallingKubernetes"],
   },
 

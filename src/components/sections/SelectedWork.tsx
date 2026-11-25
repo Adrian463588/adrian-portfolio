@@ -105,16 +105,16 @@ export function SelectedWork() {
       <div className="mx-auto max-w-[1280px] space-y-20">
         <div>
           <SectionHeader
-            eyebrow="01 / Selected Work"
-            title="Built with purpose."
-            description="Selected software systems across test automation, offline-first Android, and applied AI."
+            eyebrow="2020 — 2026"
+            title="Selected Work."
+            description="Selected software projects across test automation, infrastructure, mobile engineering, and applied AI."
             action={
               <Link
                 href="/projects/"
                 prefetch={false}
                 className="active-press group inline-flex min-h-[44px] items-center gap-2 rounded-full border border-white/15 bg-[#15171C]/85 px-4 py-2 text-sm font-medium text-[#F2F0EC] transition-colors hover:border-[#65C8F5]"
               >
-                <RollText>View project archive</RollText>
+                <RollText>All Projects</RollText>
                 <ArrowUpRight className="h-4 w-4 text-[#65C8F5]" aria-hidden="true" />
               </Link>
             }
@@ -264,14 +264,11 @@ export function SelectedWork() {
           className="flex flex-col justify-between gap-6 border-y border-white/10 py-9 md:flex-row md:items-center"
         >
           <div className="min-w-0 flex-1 space-y-1.5">
-            <p className="font-mono text-xs tracking-[0.12em] text-[#65C8F5] uppercase">
-              Archive
-            </p>
             <h2 className="font-display text-xl font-bold tracking-tight text-[#F2F0EC] sm:text-2xl">
-              Explore all projects &amp; experiments.
+              All Projects.
             </h2>
             <p className="text-sm text-[#A7ADB7]">
-              Browse enterprise quality case studies, open-source repositories, and engineering experiments in gallery or compact index view.
+              Browse enterprise testing work, open-source software, and technical experiments.
             </p>
           </div>
           <MagneticSurface>
@@ -280,7 +277,7 @@ export function SelectedWork() {
               prefetch={false}
               className="active-press inline-flex min-h-[46px] shrink-0 items-center gap-2 rounded-full bg-[#F2F0EC] px-6 py-2.5 text-sm font-semibold text-[#08090C] transition-colors hover:bg-[#65C8F5]"
             >
-              <span>Browse All Projects</span>
+              <span>Explore All Projects</span>
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </MagneticSurface>

@@ -132,9 +132,9 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
 
     const enterpriseSection = page.locator("#enterprise-work");
     await expect(enterpriseSection.locator("article")).toHaveCount(3);
-    await expect(enterpriseSection).toContainText("Archer Upgrade");
-    await expect(enterpriseSection).toContainText("STNK Alignment");
-    await expect(enterpriseSection).toContainText("Advanced Joint Finance Parameter");
+    await expect(enterpriseSection).toContainText("Archer — Collection System Modernization");
+    await expect(enterpriseSection).toContainText("STNK Workflow Testing");
+    await expect(enterpriseSection).toContainText("Joint Financing — Parameter Validation");
     await expect(enterpriseSection.locator("img")).toHaveCount(0);
     await expect(enterpriseSection.getByRole("link", { name: /GitHub/i })).toHaveCount(0);
 
@@ -170,7 +170,7 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     // Inline Type tab filters enterprise dossiers
     await page.getByRole("tab", { name: /^Professional$/i }).click();
     await expect(page.getByText(/Showing 3 of/i)).toBeVisible();
-    await expect(page.getByText(/Archer Upgrade/i)).toBeVisible();
+    await expect(page.getByText(/Archer — Collection System Modernization/i)).toBeVisible();
     await page.getByRole("button", { name: /Clear filters/i }).click();
 
     const search = page.getByLabel("Search projects");
@@ -195,14 +195,14 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
   test("enterprise detail routes resolve cleanly on static reload", async ({ page }) => {
     await page.goto("/projects/archer-upgrade/", { waitUntil: "domcontentloaded" });
     await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(page.getByRole("link", { name: /View GitHub Repository/i })).toHaveCount(0);
-    await expect(page.getByText(/Illustrative · Non-Proprietary/i)).toBeVisible();
+    await expect(page.getByRole("link", { name: /Source code/i })).toHaveCount(0);
+    await expect(page.getByText(/Illustrative · Non-Proprietary Diagram/i)).toBeVisible();
     await expect(page.getByRole("link", { name: /Associated Experience/i })).toBeVisible();
 
     await page.goto("/projects/stnk-alignment/", { waitUntil: "domcontentloaded" });
     await expect(page.locator("article")).toContainText("Magic xpa");
     await expect(page.locator("article")).toContainText("AOL UniPaaS");
-    await expect(page.getByRole("link", { name: /View GitHub Repository/i })).toHaveCount(0);
+    await expect(page.getByRole("link", { name: /Source code/i })).toHaveCount(0);
 
     await page.goto("/projects/advanced-joint-finance-parameter/", { waitUntil: "domcontentloaded" });
     await expect(page.locator("article")).toContainText("Joint Financing");

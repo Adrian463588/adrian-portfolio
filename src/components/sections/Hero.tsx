@@ -55,7 +55,7 @@ export function Hero() {
       <div className="mx-auto w-full max-w-[1280px]">
         <div className="max-w-3xl space-y-8">
           <p className="hero-entrance text-sm font-medium tracking-wide text-[#65C8F5]">
-            Software Engineer · Quality Engineering · DevOps · Applied AI
+            Software Engineer — Quality Engineering &amp; DevOps
           </p>
 
           <div className="space-y-5">
@@ -63,11 +63,11 @@ export function Hero() {
               Adrian Syah Abidin
             </h1>
             <p className="hero-entrance max-w-2xl text-[clamp(1.15rem,2.1vw,1.55rem)] leading-snug text-[#D6D9DF]">
-              Engineering{" "}
+              I build software, automate testing, and work on{" "}
               <span className="border-b-2 border-[#65C8F5] pb-0.5 text-[#F2F0EC]">
                 reliable systems
-              </span>{" "}
-              across enterprise automotive financing quality control, automation, and applied AI.
+              </span>
+              .
             </p>
           </div>
 
@@ -77,19 +77,18 @@ export function Hero() {
                 href="#work"
                 className="active-press inline-flex min-h-[46px] items-center gap-2 rounded-full bg-[#F2F0EC] px-6 py-2.5 text-sm font-semibold text-[#08090C] transition-colors hover:bg-[#65C8F5]"
               >
-                <span>Explore Work</span>
+                <span>View Work</span>
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </a>
             </MagneticSurface>
 
             <MagneticSurface strength={0.16}>
-              <Link
-                href="/projects/"
-                prefetch={false}
+              <a
+                href="#contact"
                 className="active-press group inline-flex min-h-[46px] items-center gap-2 rounded-full border border-white/15 bg-[#15171C]/85 px-6 py-2.5 text-sm font-medium text-[#F2F0EC] backdrop-blur-sm transition-colors hover:border-[#65C8F5]"
               >
-                <RollText>All Projects</RollText>
-              </Link>
+                <RollText>Get in Touch</RollText>
+              </a>
             </MagneticSurface>
 
             <button
@@ -112,6 +111,14 @@ export function Hero() {
           </div>
 
           <div className="hero-entrance flex flex-wrap items-center gap-7 border-t border-white/10 pt-6 text-sm text-[#A7ADB7]">
+            <Link
+              href="/projects/"
+              prefetch={false}
+              className="link-underline group inline-flex min-h-[44px] items-center gap-1 text-[#65C8F5] transition-colors hover:text-[#F2F0EC]"
+            >
+              <RollText>All Projects</RollText>
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </Link>
             <a
               href="https://github.com/Adrian463588"
               target="_blank"
@@ -138,13 +145,6 @@ export function Hero() {
             >
               <RollText>Medium</RollText>
               <ArrowUpRight className="h-3.5 w-3.5 opacity-60" aria-hidden="true" />
-            </a>
-            <a
-              href="#experience"
-              className="link-underline group inline-flex min-h-[44px] items-center gap-1 text-[#65C8F5] transition-colors hover:text-[#F2F0EC]"
-            >
-              <RollText>Experience</RollText>
-              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
             </a>
           </div>
         </div>

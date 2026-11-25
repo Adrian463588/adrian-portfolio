@@ -10,9 +10,8 @@ export function Education() {
     >
       <div className="mx-auto max-w-[1280px]">
         <SectionHeader
-          eyebrow="06 / Education"
-          title="Academic Background."
-          description="Formal engineering and information technology education."
+          title="Education."
+          description="Academic background and undergraduate engineering research."
         />
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">

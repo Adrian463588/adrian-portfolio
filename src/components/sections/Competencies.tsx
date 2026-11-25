@@ -14,9 +14,8 @@ export function Competencies() {
     >
       <div className="mx-auto max-w-[1280px]">
         <SectionHeader
-          eyebrow="04 / Capabilities"
-          title="Technical Matrix."
-          description="Core engineering practices backed by enterprise quality engagements and shipped systems."
+          title="Technical Skills."
+          description="Tools and technologies I work with."
         />
 
         <div className="grid grid-cols-1 gap-x-12 gap-y-2 md:grid-cols-2">
@@ -40,16 +39,18 @@ export function Competencies() {
                     </h3>
                   </div>
 
-                  <p className="text-sm leading-relaxed text-[#A7ADB7]">{group.summary}</p>
+                  {group.summary && (
+                    <p className="text-sm leading-relaxed text-[#A7ADB7]">{group.summary}</p>
+                  )}
 
-                  <p className="text-xs leading-relaxed text-[#D6D9DF]">
+                  <p className="text-sm leading-relaxed text-[#D6D9DF]">
                     {group.skills.join(" · ")}
                   </p>
                 </div>
 
                 {linkedProjects.length > 0 && (
                   <div className="mt-5 flex flex-wrap items-center gap-2">
-                    <span className="text-xs text-[#A7ADB7]">Evidence:</span>
+                    <span className="text-xs text-[#A7ADB7]">Related work:</span>
                     {linkedProjects.map((proj) => (
                       <Link
                         key={proj.slug}

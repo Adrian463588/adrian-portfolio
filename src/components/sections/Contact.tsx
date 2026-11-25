@@ -25,15 +25,12 @@ export function Contact() {
     >
       <div className="mx-auto max-w-[1280px]">
         <div className="max-w-3xl space-y-6">
-          <p className="font-mono text-xs tracking-[0.12em] text-[#65C8F5] uppercase">
-            08 / Contact
-          </p>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.75rem)] font-bold leading-[1.05] tracking-[-0.03em] text-[#F2F0EC]">
-            Let&apos;s Connect on Engineering &amp; Quality Systems.
+            Let&apos;s Work Together.
           </h2>
           <p className="max-w-2xl text-sm leading-relaxed text-[#A7ADB7] sm:text-base">
-            Open to Software Engineering, QA/SDET, DevOps/DevSecOps, Financial Systems Technology,
-            and Applied AI roles. Based in Yogyakarta, Indonesia — open to remote and global relocation.
+            Open to Software Engineering, QA/SDET, and DevOps opportunities. Based in Yogyakarta,
+            Indonesia.
           </p>
 
           <div className="flex flex-wrap items-center gap-3.5 pt-2">
@@ -43,7 +40,7 @@ export function Contact() {
                 className="active-press inline-flex min-h-[46px] items-center gap-2 rounded-full bg-[#F2F0EC] px-6 py-2.5 text-sm font-semibold text-[#08090C] transition-colors hover:bg-[#65C8F5]"
               >
                 <Mail className="h-4 w-4" aria-hidden="true" />
-                <span>adriansyah1230@gmail.com</span>
+                <span>Say hello</span>
               </a>
             </MagneticSurface>
 
@@ -60,7 +57,7 @@ export function Contact() {
               ) : (
                 <>
                   <Copy className="h-4 w-4 text-[#A7ADB7]" aria-hidden="true" />
-                  <span>Copy email</span>
+                  <span className="font-mono">adriansyah1230@gmail.com</span>
                 </>
               )}
             </button>
@@ -84,7 +81,15 @@ export function Contact() {
             rel="noopener noreferrer"
             className="link-underline group inline-flex min-h-[44px] items-center gap-1.5 transition-colors hover:text-[#F2F0EC]"
           >
-            <RollText>GitHub (@Adrian463588)</RollText>
+            <RollText>GitHub</RollText>
+            <ArrowUpRight className="h-4 w-4 text-[#65C8F5]" aria-hidden="true" />
+          </a>
+
+          <a
+            href="mailto:adriansyah1230@gmail.com"
+            className="link-underline group inline-flex min-h-[44px] items-center gap-1.5 transition-colors hover:text-[#F2F0EC]"
+          >
+            <RollText>Email</RollText>
             <ArrowUpRight className="h-4 w-4 text-[#65C8F5]" aria-hidden="true" />
           </a>
 

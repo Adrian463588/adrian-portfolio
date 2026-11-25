@@ -5,13 +5,13 @@ export const enterpriseProjectsCatalog: Project[] = [
   {
     id: "archer-upgrade",
     slug: "archer-upgrade",
-    title: "Archer Upgrade — Enterprise Collection System Modernization",
-    subtitle: "Automated Web Testing & CI Quality Verification",
+    title: "Archer — Collection System Modernization",
+    subtitle: "Automated Web Testing & Jenkins CI Quality Checks",
     summary:
-      "End-to-end Cypress test automation and Jenkins CI regression validation supporting legacy AOL UniPaaS collection system modernization to a React-based web platform.",
+      "End-to-end Cypress test automation and Jenkins CI regression checks supporting migration of AOL UniPaaS collection workflows to React.",
     description:
-      "Contributed automated web quality verification during modernization of an enterprise automotive financing collection platform from legacy AOL UniPaaS workflows into a React-based web interface inside the Astra Credit Companies (ACC) Group ecosystem.",
-    category: "Enterprise Application Modernization",
+      "Wrote automated browser tests for automotive financing collection screens moving from legacy AOL UniPaaS into a React-based web interface at Berijalan Techno Center (ACC Group). Contribution was focused strictly on QA automation and regression testing.",
+    category: "Application Modernization",
     secondaryCategories: ["QA & Test Automation", "DevOps & CI/CD", "Financial Systems"],
     technologies: [
       "Cypress",
@@ -87,12 +87,12 @@ export const enterpriseProjectsCatalog: Project[] = [
   {
     id: "stnk-alignment",
     slug: "stnk-alignment",
-    title: "STNK Alignment — Vehicle Registration Process Alignment",
-    subtitle: "Enterprise Functional & Business Workflow Validation",
+    title: "STNK Workflow Testing",
+    subtitle: "Manual Functional & Business Process Testing",
     summary:
-      "Manual functional quality engineering validating vehicle registration (STNK) business process updates and multi-module alignment across AOL UniPaaS and Magic xpa.",
+      "Manual functional software testing verifying vehicle registration (STNK) process updates across interacting AOL UniPaaS and Magic xpa modules.",
     description:
-      "Validated functional behavior, status consistency, and edge-case business flows for automotive financing vehicle registration (STNK) process alignment initiatives across legacy AOL UniPaaS and Magic xpa modules.",
+      "Tested functional behavior, status transitions, and edge cases for vehicle registration (STNK) process alignment across AOL UniPaaS and Magic xpa applications.",
     category: "Financial Systems",
     secondaryCategories: ["QA & Test Automation"],
     technologies: [
@@ -167,12 +167,12 @@ export const enterpriseProjectsCatalog: Project[] = [
   {
     id: "advanced-joint-finance-parameter",
     slug: "advanced-joint-finance-parameter",
-    title: "Advanced Joint Finance Parameter — Financial System Enhancement",
+    title: "Joint Financing — Parameter Validation",
     subtitle: "Joint Financing Rule & Parameter Configuration QA",
     summary:
-      "Manual functional testing and configuration validation of enhanced Joint Financing parameter modules within enterprise AOL UniPaaS financing systems.",
+      "Manual functional testing and configuration validation of updated Joint Financing parameter modules in AOL UniPaaS.",
     description:
-      "Tested enhanced Joint Financing parameter configuration capabilities and downstream financing workflow behaviors inside enterprise AOL UniPaaS systems serving automotive credit operations.",
+      "Tested updated Joint Financing parameter rules and integration flows inside AOL UniPaaS financing systems.",
     category: "Financial Systems",
     secondaryCategories: ["QA & Test Automation"],
     technologies: [
