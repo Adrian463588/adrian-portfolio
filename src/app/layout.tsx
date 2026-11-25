@@ -4,6 +4,8 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SpatialWidget } from "@/components/three/SpatialWidget";
+import { SmoothScrollProvider } from "@/components/motion/SmoothScrollProvider";
+import { DesktopCursor } from "@/components/motion/DesktopCursor";
 
 const displaySans = Space_Grotesk({
   variable: "--font-display",
@@ -126,7 +128,7 @@ export default function RootLayout({
       lang="en"
       className={`${displaySans.variable} ${geistSans.variable} ${geistMono.variable}`}
     >
-      <body className="min-h-screen bg-[#08090B] text-[#F1F3F5] antialiased">
+      <body className="min-h-screen bg-[#080808] text-[#F1F0EB] antialiased">
         <a href="#main" className="skip-link">
           Skip to main content
         </a>
@@ -135,13 +137,16 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
         <SpatialWidget />
-        <div className="relative z-10 flex min-h-screen flex-col">
-          <Navbar />
-          <main id="main" className="flex-1">
-            {children}
-          </main>
-          <Footer />
-        </div>
+        <DesktopCursor />
+        <SmoothScrollProvider>
+          <div className="relative z-10 flex min-h-screen flex-col">
+            <Navbar />
+            <main id="main" className="flex-1">
+              {children}
+            </main>
+            <Footer />
+          </div>
+        </SmoothScrollProvider>
       </body>
     </html>
   );

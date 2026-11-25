@@ -155,29 +155,29 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
 
   const originOptions: { id: OriginFilter; label: string }[] = (
     [
-      { id: "all" as const, label: `All Work (${counts.all})` },
-      { id: "professional" as const, label: `Professional Work (${counts.professional})` },
-      { id: "personal" as const, label: `Personal Projects (${counts.personal})` },
-      { id: "academic" as const, label: `Academic Projects (${counts.academic})` },
+      { id: "all" as const, label: `All (${counts.all})` },
+      { id: "professional" as const, label: `Professional (${counts.professional})` },
+      { id: "personal" as const, label: `Personal (${counts.personal})` },
+      { id: "academic" as const, label: `Academic (${counts.academic})` },
       { id: "experiment" as const, label: `Experiments (${counts.experiment})` },
     ] satisfies { id: OriginFilter; label: string }[]
   ).filter((tab) => tab.id === "all" || counts[tab.id] > 0);
 
   const tierTabs: { id: "all" | ProjectTier; label: string }[] = [
-    { id: "all", label: `All Eligible (${counts.all})` },
+    { id: "all", label: `All (${counts.all})` },
     { id: "featured", label: `Featured (${counts.featured})` },
-    { id: "catalog", label: `Core Projects (${counts.catalog})` },
-    { id: "archive", label: `Experiments & Archive (${counts.archive})` },
+    { id: "catalog", label: `Standard (${counts.catalog})` },
+    { id: "archive", label: `Archive (${counts.archive})` },
   ];
 
   return (
     <div className="space-y-6">
-      {/* Compact single-row editorial toolbar — keeps first projects visible in initial viewport */}
-      <div className="flex flex-col gap-3 rounded-xl border border-white/10 bg-[#101216]/85 p-3 backdrop-blur-md lg:flex-row lg:items-center lg:justify-between">
+      {/* Compact single-row editorial toolbar */}
+      <div className="flex flex-col gap-3 rounded-xl border border-white/10 bg-[#151515]/80 p-3 backdrop-blur-md lg:flex-row lg:items-center lg:justify-between">
         <div className="relative min-w-0 flex-1">
           <Search
             aria-hidden="true"
-            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A0A6B0]"
+            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A6A6A6]"
           />
           <input
             id="project-search"
@@ -189,25 +189,25 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
               setQuery(v);
               updateUrl({ query: v });
             }}
-            placeholder="Search projects, systems, or technologies..."
-            className="min-h-[42px] w-full rounded-lg border border-white/10 bg-[#08090B]/90 py-2 pl-9 pr-4 text-sm text-[#F1F3F5] placeholder:text-[#7E8591] focus:border-[#00C8F5] focus:outline-none"
+            placeholder="Search projects, stack, or systems..."
+            className="min-h-[42px] w-full rounded-lg border border-white/10 bg-[#080808]/90 py-2 pl-9 pr-4 text-sm text-[#F1F0EB] placeholder:text-[#868686] focus:border-[#4169FF] focus:outline-none"
           />
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
           <label htmlFor="origin-filter" className="sr-only">
-            Engagement Origin
+            Filter by work type
           </label>
           <select
             id="origin-filter"
-            aria-label="Engagement Origin"
+            aria-label="Filter by work type"
             value={origin}
             onChange={(e) => {
               const v = e.target.value as OriginFilter;
               setOrigin(v);
               updateUrl({ origin: v });
             }}
-            className="min-h-[42px] rounded-lg border border-white/10 bg-[#08090B]/90 px-3 py-2 text-xs font-medium text-[#F1F3F5] focus:border-[#00C8F5] focus:outline-none"
+            className="min-h-[42px] rounded-lg border border-white/10 bg-[#080808]/90 px-3 py-2 text-xs font-medium text-[#F1F0EB] focus:border-[#4169FF] focus:outline-none"
           >
             {originOptions.map((opt) => (
               <option key={opt.id} value={opt.id}>
@@ -228,9 +228,9 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
               setSort(v);
               updateUrl({ sort: v });
             }}
-            className="min-h-[42px] rounded-lg border border-white/10 bg-[#08090B]/90 px-3 py-2 text-xs font-medium text-[#F1F3F5] focus:border-[#00C8F5] focus:outline-none"
+            className="min-h-[42px] rounded-lg border border-white/10 bg-[#080808]/90 px-3 py-2 text-xs font-medium text-[#F1F0EB] focus:border-[#4169FF] focus:outline-none"
           >
-            <option value="editorial">Editorial order</option>
+            <option value="editorial">Featured first</option>
             <option value="recent">Recently updated</option>
           </select>
 
@@ -241,20 +241,20 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
             onClick={() => setFiltersOpen((prev) => !prev)}
             className={`inline-flex min-h-[42px] items-center gap-1.5 rounded-lg border px-3.5 py-2 text-xs font-medium transition-colors ${
               filtersOpen || secondaryFilterCount > 0
-                ? "border-[#00C8F5]/60 bg-[#00C8F5]/12 text-[#00C8F5]"
-                : "border-white/10 bg-[#08090B]/90 text-[#F1F3F5] hover:border-white/25"
+                ? "border-[#4169FF] bg-[#4169FF]/15 text-[#8CA8FF]"
+                : "border-white/10 bg-[#080808]/90 text-[#F1F0EB] hover:border-white/25"
             }`}
           >
             <SlidersHorizontal className="h-3.5 w-3.5" aria-hidden="true" />
             <span>
-              More Filters{secondaryFilterCount > 0 ? ` (${secondaryFilterCount})` : ""}
+              Filters{secondaryFilterCount > 0 ? ` (${secondaryFilterCount})` : ""}
             </span>
           </button>
 
           <div
             role="group"
             aria-label="Project presentation view"
-            className="inline-flex rounded-lg border border-white/10 bg-[#08090B]/90 p-0.5"
+            className="inline-flex rounded-lg border border-white/10 bg-[#080808]/90 p-0.5"
           >
             <button
               type="button"
@@ -262,8 +262,8 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
               onClick={() => setViewMode("gallery")}
               className={`inline-flex min-h-[38px] items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
                 viewMode === "gallery"
-                  ? "bg-white/12 text-[#F1F3F5]"
-                  : "text-[#A0A6B0] hover:text-[#F1F3F5]"
+                  ? "bg-white/12 text-[#F1F0EB]"
+                  : "text-[#A6A6A6] hover:text-[#F1F0EB]"
               }`}
             >
               <LayoutGrid className="h-3.5 w-3.5" aria-hidden="true" />
@@ -275,8 +275,8 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
               onClick={() => setViewMode("index")}
               className={`inline-flex min-h-[38px] items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
                 viewMode === "index"
-                  ? "bg-white/12 text-[#F1F3F5]"
-                  : "text-[#A0A6B0] hover:text-[#F1F3F5]"
+                  ? "bg-white/12 text-[#F1F0EB]"
+                  : "text-[#A6A6A6] hover:text-[#F1F0EB]"
               }`}
             >
               <List className="h-3.5 w-3.5" aria-hidden="true" />
@@ -290,11 +290,11 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
       {filtersOpen && (
         <div
           id="more-filters-panel"
-          className="grid grid-cols-1 gap-4 rounded-xl border border-white/10 bg-[#101216]/90 p-5 backdrop-blur-md lg:grid-cols-12"
+          className="grid grid-cols-1 gap-4 rounded-xl border border-white/10 bg-[#151515]/90 p-5 backdrop-blur-md lg:grid-cols-12"
         >
           <div className="lg:col-span-4">
-            <label htmlFor="cat-filter" className="mb-1.5 block font-mono text-xs text-[#A0A6B0]">
-              Engineering Domain
+            <label htmlFor="cat-filter" className="mb-1.5 block font-mono text-xs text-[#A6A6A6]">
+              Category
             </label>
             <select
               id="cat-filter"
@@ -304,9 +304,9 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
                 setCategory(v);
                 updateUrl({ category: v });
               }}
-              className="min-h-[42px] w-full rounded-lg border border-white/10 bg-[#08090B] px-3 py-2 text-sm text-[#F1F3F5] focus:border-[#00C8F5] focus:outline-none"
+              className="min-h-[42px] w-full rounded-lg border border-white/10 bg-[#080808] px-3 py-2 text-sm text-[#F1F0EB] focus:border-[#4169FF] focus:outline-none"
             >
-              <option value="all">All domains</option>
+              <option value="all">All categories</option>
               {availableCategories.map((cat) => (
                 <option key={cat} value={cat}>
                   {cat}
@@ -316,8 +316,8 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
           </div>
 
           <div className="lg:col-span-4">
-            <label htmlFor="tech-filter" className="mb-1.5 block font-mono text-xs text-[#A0A6B0]">
-              Technology Stack
+            <label htmlFor="tech-filter" className="mb-1.5 block font-mono text-xs text-[#A6A6A6]">
+              Technology
             </label>
             <select
               id="tech-filter"
@@ -327,7 +327,7 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
                 setTechnology(v);
                 updateUrl({ technology: v });
               }}
-              className="min-h-[42px] w-full rounded-lg border border-white/10 bg-[#08090B] px-3 py-2 text-sm text-[#F1F3F5] focus:border-[#00C8F5] focus:outline-none"
+              className="min-h-[42px] w-full rounded-lg border border-white/10 bg-[#080808] px-3 py-2 text-sm text-[#F1F0EB] focus:border-[#4169FF] focus:outline-none"
             >
               <option value="all">All technologies</option>
               {topTechnologies.map((tech) => (
@@ -339,8 +339,8 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
           </div>
 
           <div className="lg:col-span-12">
-            <p className="mb-2 font-mono text-xs text-[#A0A6B0]">Catalog Classification Tier</p>
-            <div role="tablist" aria-label="Project tier filter" className="flex flex-wrap gap-2">
+            <p className="mb-2 font-mono text-xs text-[#A6A6A6]">Scope</p>
+            <div role="tablist" aria-label="Project scope filter" className="flex flex-wrap gap-2">
               {tierTabs.map((tab) => {
                 const selected = tier === tab.id;
                 return (
@@ -355,8 +355,8 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
                     }}
                     className={`min-h-[38px] rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
                       selected
-                        ? "border-[#00C8F5] bg-[#00C8F5]/15 text-[#00C8F5]"
-                        : "border-white/10 bg-[#08090B] text-[#A0A6B0] hover:border-white/25 hover:text-[#F1F3F5]"
+                        ? "border-[#4169FF] bg-[#4169FF]/15 text-[#8CA8FF]"
+                        : "border-white/10 bg-[#080808] text-[#A6A6A6] hover:border-white/25 hover:text-[#F1F0EB]"
                     }`}
                   >
                     {tab.label}
@@ -370,17 +370,17 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
 
       {/* Result count bar + contextual active filter reset */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="sr-only">Filtered Engineering Projects</h2>
-        <p aria-live="polite" className="font-mono text-xs text-[#A0A6B0]">
-          Showing <span className="font-semibold text-[#F1F3F5]">{filtered.length}</span> of{" "}
-          <span className="font-semibold text-[#F1F3F5]">{items.length}</span> verified works
+        <h2 className="sr-only">Filtered Projects</h2>
+        <p aria-live="polite" className="font-mono text-xs text-[#A6A6A6]">
+          Showing <span className="font-semibold text-[#F1F0EB]">{filtered.length}</span> of{" "}
+          <span className="font-semibold text-[#F1F0EB]">{items.length}</span> works
         </p>
 
         {hasActiveFilter && (
           <button
             type="button"
             onClick={resetFilters}
-            className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-white/15 bg-[#101216] px-3.5 py-1.5 text-xs font-medium text-[#F1F3F5] transition-colors hover:border-[#00C8F5]/60 hover:text-[#00C8F5]"
+            className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-white/15 bg-[#151515] px-3.5 py-1.5 text-xs font-medium text-[#F1F0EB] transition-colors hover:border-[#4169FF] hover:text-[#7A9BFF]"
           >
             <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
             Clear filters
@@ -390,18 +390,18 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
 
       {/* Gallery or Index View or Empty State */}
       {filtered.length === 0 ? (
-        <div className="rounded-xl border border-white/10 bg-[#101216]/80 px-6 py-16 text-center">
-          <h2 className="font-display text-lg font-bold text-[#F1F3F5]">
-            No matching engineering works found
+        <div className="rounded-xl border border-white/10 bg-[#151515]/80 px-6 py-16 text-center">
+          <h2 className="font-display text-lg font-bold text-[#F1F0EB]">
+            No matching projects found
           </h2>
-          <p className="mx-auto mt-2 max-w-md text-sm text-[#A0A6B0]">
-            No entries matched your current query or filter combination. Reset filters to view all{" "}
+          <p className="mx-auto mt-2 max-w-md text-sm text-[#A6A6A6]">
+            No entries matched your current filter selection. Reset filters to browse all{" "}
             {items.length} works.
           </p>
           <button
             type="button"
             onClick={resetFilters}
-            className="mt-6 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#F1F3F5] px-5 py-2.5 text-sm font-semibold text-[#08090B] transition-colors hover:bg-[#00C8F5]"
+            className="mt-6 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#F1F0EB] px-5 py-2.5 text-sm font-semibold text-[#080808] transition-colors hover:bg-[#7A9BFF]"
           >
             <RotateCcw className="h-4 w-4" aria-hidden="true" />
             Reset all filters
@@ -434,7 +434,7 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
               onPointerLeave={() => setHoveredPreview(null)}
               className="group grid grid-cols-1 gap-2 py-4 transition-colors hover:bg-white/[0.025] md:grid-cols-12 md:items-center md:gap-4"
             >
-              <span className="font-mono text-xs text-[#00C8F5] md:col-span-1">
+              <span className="font-mono text-xs text-[#7A9BFF] md:col-span-1">
                 {String(index + 1).padStart(2, "0")}
               </span>
 
@@ -442,7 +442,7 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
                 <Link
                   href={`/projects/${project.slug}/`}
                   prefetch={false}
-                  className="font-display block truncate text-base font-bold text-[#F1F3F5] transition-colors group-hover:text-[#00C8F5]"
+                  className="font-display block truncate text-base font-bold text-[#F1F0EB] transition-colors group-hover:text-[#7A9BFF]"
                 >
                   {project.title}
                 </Link>
@@ -453,12 +453,12 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
                 )}
               </div>
 
-              <span className="font-mono text-xs text-[#A0A6B0] md:col-span-3">
-                {project.projectOrigin === "professional" ? "Professional Work · " : ""}
+              <span className="font-mono text-xs text-[#A6A6A6] md:col-span-3">
+                {project.projectOrigin === "professional" ? "Professional · " : ""}
                 {project.category}
               </span>
 
-              <span className="truncate font-mono text-xs text-[#D1D5DB] md:col-span-2">
+              <span className="truncate font-mono text-xs text-[#D6D5CF] md:col-span-2">
                 {project.technologies.slice(0, 2).join(" · ")}
               </span>
 
@@ -467,7 +467,7 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
                   href={`/projects/${project.slug}/`}
                   prefetch={false}
                   aria-label={`Open case study for ${project.title}`}
-                  className="inline-flex min-h-[36px] items-center justify-end gap-1 font-mono text-xs text-[#00C8F5]"
+                  className="inline-flex min-h-[36px] items-center justify-end gap-1 font-mono text-xs text-[#7A9BFF]"
                 >
                   <span>Open</span>
                   <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -480,7 +480,7 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
           {hoveredPreview && hoveredPreview.project.screenshots[0] && canHover && !reducedMotion && (
             <div
               aria-hidden="true"
-              className="pointer-events-none fixed z-40 hidden w-72 overflow-hidden rounded-xl border border-white/20 bg-[#08090B] shadow-2xl lg:block"
+              className="pointer-events-none fixed z-40 hidden w-72 overflow-hidden rounded-xl border border-white/20 bg-[#080808] shadow-2xl lg:block"
               style={{
                 left: `${Math.min(hoveredPreview.x, 1080)}px`,
                 top: `${Math.max(84, hoveredPreview.y)}px`,

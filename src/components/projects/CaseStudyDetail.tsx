@@ -30,25 +30,31 @@ export function CaseStudyDetail({
     <article className="px-6 py-12 sm:py-16">
       <div className="mx-auto max-w-[1000px] space-y-10">
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 font-mono text-xs text-[#A0A6B0]">
-          <Link href="/" prefetch={false} className="transition-colors hover:text-[#00C8F5]">
+        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 font-mono text-xs text-[#A6A6A6]">
+          <Link href="/" prefetch={false} className="transition-colors hover:text-[#7A9BFF]">
             Home
           </Link>
           <span aria-hidden="true">/</span>
-          <Link href="/projects/" prefetch={false} className="transition-colors hover:text-[#00C8F5]">
+          <Link href="/projects/" prefetch={false} className="transition-colors hover:text-[#7A9BFF]">
             Projects
           </Link>
           <span aria-hidden="true">/</span>
-          <span className="text-[#F1F3F5]">{project.title}</span>
+          <span className="text-[#F1F0EB]">{project.title}</span>
         </nav>
 
         {/* Header */}
         <header className="space-y-5 border-b border-white/10 pb-8">
           <div className="flex flex-wrap items-center gap-2">
             <Badge label={project.category} variant="accent" />
-            <Badge label={`Status: ${project.projectStatus}`} />
+            <Badge label={project.projectStatus} />
             <Badge
-              label={isEnterprise ? "Origin: Professional Work" : `Origin: ${project.projectOrigin}`}
+              label={
+                isEnterprise
+                  ? "Professional Work"
+                  : project.projectOrigin === "fork"
+                    ? "Extended Fork"
+                    : project.projectOrigin
+              }
               variant={
                 isEnterprise
                   ? "accent"
@@ -57,7 +63,7 @@ export function CaseStudyDetail({
                     : "neutral"
               }
             />
-            {project.license && <Badge label={`License: ${project.license}`} />}
+            {project.license && <Badge label={project.license} />}
             {project.hasCiWorkflow && (
               <span className="inline-flex items-center gap-1 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-xs text-emerald-300">
                 <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
@@ -67,17 +73,17 @@ export function CaseStudyDetail({
           </div>
 
           <div className="space-y-2.5">
-            <h1 className="font-display break-words text-3xl font-bold tracking-tight text-[#F1F3F5] sm:text-5xl sm:leading-[1.06]">
+            <h1 className="font-display break-words text-3xl font-bold tracking-tight text-[#F1F0EB] sm:text-5xl sm:leading-[1.06]">
               {project.title}
             </h1>
             {project.subtitle && (
-              <p className="break-words text-lg font-medium text-[#D1D5DB]">{project.subtitle}</p>
+              <p className="break-words text-lg font-medium text-[#D6D5CF]">{project.subtitle}</p>
             )}
-            <p className="max-w-3xl break-words text-base leading-relaxed text-[#F1F3F5]/90">
+            <p className="max-w-3xl break-words text-base leading-relaxed text-[#F1F0EB]/90">
               {project.summary}
             </p>
             {project.description !== project.summary && (
-              <p className="max-w-3xl break-words text-sm leading-relaxed text-[#A0A6B0]">
+              <p className="max-w-3xl break-words text-sm leading-relaxed text-[#A6A6A6]">
                 {project.description}
               </p>
             )}
@@ -90,7 +96,7 @@ export function CaseStudyDetail({
                   href={project.repositoryUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#F1F3F5] px-5 py-2.5 text-sm font-semibold text-[#08090B] transition-colors hover:bg-[#00C8F5]"
+                  className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#F1F0EB] px-5 py-2.5 text-sm font-semibold text-[#080808] transition-colors hover:bg-[#7A9BFF]"
                 >
                   <Github className="h-4 w-4" aria-hidden="true" />
                   View GitHub Repository
@@ -102,7 +108,7 @@ export function CaseStudyDetail({
                   href={project.demoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-white/15 bg-[#101216] px-5 py-2.5 text-sm font-medium text-[#F1F3F5] transition-colors hover:border-[#00C8F5]/60 hover:text-[#00C8F5]"
+                  className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-white/15 bg-[#151515] px-5 py-2.5 text-sm font-medium text-[#F1F0EB] transition-colors hover:border-[#4169FF] hover:text-[#7A9BFF]"
                 >
                   <ExternalLink className="h-4 w-4" aria-hidden="true" />
                   Open Live Demo
@@ -114,7 +120,7 @@ export function CaseStudyDetail({
                   href={project.releaseUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-white/15 bg-[#101216] px-5 py-2.5 text-sm font-medium text-[#F1F3F5] transition-colors hover:border-[#00C8F5]/60 hover:text-[#00C8F5]"
+                  className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-white/15 bg-[#151515] px-5 py-2.5 text-sm font-medium text-[#F1F0EB] transition-colors hover:border-[#4169FF] hover:text-[#7A9BFF]"
                 >
                   <Package className="h-4 w-4" aria-hidden="true" />
                   View Release Artifacts
@@ -125,16 +131,16 @@ export function CaseStudyDetail({
                 <Link
                   href="/#experience"
                   prefetch={false}
-                  className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-white/15 bg-[#101216] px-5 py-2.5 text-sm font-medium text-[#F1F3F5] transition-colors hover:border-[#00C8F5]/60 hover:text-[#00C8F5]"
+                  className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-white/15 bg-[#151515] px-5 py-2.5 text-sm font-medium text-[#F1F0EB] transition-colors hover:border-[#4169FF] hover:text-[#7A9BFF]"
                 >
-                  <Briefcase className="h-4 w-4 text-[#00C8F5]" aria-hidden="true" />
+                  <Briefcase className="h-4 w-4 text-[#7A9BFF]" aria-hidden="true" />
                   Associated Experience ({project.organization || "Berijalan"})
                 </Link>
               )}
             </div>
           )}
 
-          <p className="font-mono text-xs text-[#A0A6B0]">
+          <p className="font-mono text-xs text-[#A6A6A6]">
             {isEnterprise
               ? "Sanitized public portfolio disclosure — proprietary repositories and internal systems omitted"
               : `Last updated: ${project.updatedAt}`}
@@ -146,35 +152,35 @@ export function CaseStudyDetail({
         {isEnterprise && (
           <section className="grid grid-cols-1 gap-4 border-y border-white/10 py-6 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-wider text-[#A0A6B0]">
+              <p className="font-mono text-[11px] uppercase tracking-wider text-[#A6A6A6]">
                 Organization
               </p>
-              <p className="mt-1 text-sm font-medium text-[#F1F3F5]">
+              <p className="mt-1 text-sm font-medium text-[#F1F0EB]">
                 {project.organization}
               </p>
               {project.corporateGroup && (
-                <p className="mt-0.5 text-xs text-[#A0A6B0]">{project.corporateGroup}</p>
+                <p className="mt-0.5 text-xs text-[#A6A6A6]">{project.corporateGroup}</p>
               )}
             </div>
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-wider text-[#A0A6B0]">
+              <p className="font-mono text-[11px] uppercase tracking-wider text-[#A6A6A6]">
                 Business Domain
               </p>
-              <p className="mt-1 text-sm font-medium text-[#F1F3F5]">
+              <p className="mt-1 text-sm font-medium text-[#F1F0EB]">
                 {project.businessDomain}
               </p>
             </div>
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-wider text-[#A0A6B0]">
+              <p className="font-mono text-[11px] uppercase tracking-wider text-[#A6A6A6]">
                 Testing Approach
               </p>
-              <p className="mt-1 text-sm font-medium text-[#00C8F5]">{project.testingType}</p>
+              <p className="mt-1 text-sm font-medium text-[#7A9BFF]">{project.testingType}</p>
             </div>
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-wider text-[#A0A6B0]">
+              <p className="font-mono text-[11px] uppercase tracking-wider text-[#A6A6A6]">
                 Platforms Covered
               </p>
-              <p className="mt-1 text-sm font-medium text-[#F1F3F5]">
+              <p className="mt-1 text-sm font-medium text-[#F1F0EB]">
                 {project.applicationTechnologies?.join(" · ")}
               </p>
             </div>
@@ -183,12 +189,12 @@ export function CaseStudyDetail({
 
         {/* Conceptual Workflow Diagram (Strictly Illustrative & Sanitized) */}
         {project.conceptualFlow && project.conceptualFlow.length > 0 && (
-          <section className="space-y-4 rounded-xl border border-white/10 bg-[#101216]/75 p-6 backdrop-blur-sm">
+          <section className="space-y-4 border-y border-white/10 py-6">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <h2 className="font-display text-base font-bold text-[#F1F3F5]">
+              <h2 className="font-display text-base font-bold text-[#F1F0EB]">
                 Conceptual Quality Workflow Diagram
               </h2>
-              <span className="rounded-md border border-white/10 bg-[#08090B] px-2.5 py-1 font-mono text-[11px] text-[#A0A6B0]">
+              <span className="rounded-md border border-white/10 bg-[#151515] px-2.5 py-1 font-mono text-[11px] text-[#A6A6A6]">
                 Illustrative · Non-Proprietary Portfolio Diagram
               </span>
             </div>
@@ -196,19 +202,19 @@ export function CaseStudyDetail({
               {project.conceptualFlow.map((step, index) => (
                 <div
                   key={step.label}
-                  className="flex flex-col justify-between rounded-lg border border-white/10 bg-[#08090B]/85 p-4"
+                  className="flex flex-col justify-between rounded-lg border border-white/10 bg-[#151515]/75 p-4"
                 >
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-mono text-[11px] font-semibold text-[#00C8F5]">
+                      <span className="font-mono text-[11px] font-semibold text-[#7A9BFF]">
                         0{index + 1}
                       </span>
                       {index < project.conceptualFlow!.length - 1 && (
-                        <ArrowRight className="h-3.5 w-3.5 text-[#A0A6B0]" aria-hidden="true" />
+                        <ArrowRight className="h-3.5 w-3.5 text-[#A6A6A6]" aria-hidden="true" />
                       )}
                     </div>
-                    <h3 className="text-sm font-semibold text-[#F1F3F5]">{step.label}</h3>
-                    <p className="text-xs leading-relaxed text-[#A0A6B0]">{step.detail}</p>
+                    <h3 className="text-sm font-semibold text-[#F1F0EB]">{step.label}</h3>
+                    <p className="text-xs leading-relaxed text-[#A6A6A6]">{step.detail}</p>
                   </div>
                 </div>
               ))}
@@ -234,7 +240,7 @@ export function CaseStudyDetail({
         {/* Screenshots Gallery */}
         {project.screenshots.length > 0 && (
           <section className="space-y-4">
-            <h2 className="font-display text-xl font-bold text-[#F1F3F5]">
+            <h2 className="font-display text-xl font-bold text-[#F1F0EB]">
               Application Screenshots
             </h2>
             <div className="grid gap-6 md:grid-cols-2">
@@ -243,9 +249,9 @@ export function CaseStudyDetail({
                 return (
                   <figure
                     key={shot.src}
-                    className="editorial-image-wrap group overflow-hidden rounded-xl border border-white/10 bg-[#101216]/80"
+                    className="editorial-image-wrap group overflow-hidden rounded-xl border border-white/10 bg-[#151515]/80"
                   >
-                    <div className="flex aspect-[16/10] w-full items-center justify-center overflow-hidden bg-[#08090B]">
+                    <div className="flex aspect-[16/10] w-full items-center justify-center overflow-hidden bg-[#080808]">
                       <Image
                         src={shot.src}
                         alt={shot.alt}
@@ -259,7 +265,7 @@ export function CaseStudyDetail({
                       />
                     </div>
                     {shot.caption && (
-                      <figcaption className="border-t border-white/10 px-4 py-3 font-mono text-xs text-[#A0A6B0]">
+                      <figcaption className="border-t border-white/10 px-4 py-3 font-mono text-xs text-[#A6A6A6]">
                         {shot.caption}
                       </figcaption>
                     )}
@@ -272,7 +278,7 @@ export function CaseStudyDetail({
 
         {/* Technology Stack */}
         <section className="border-t border-white/10 pt-6">
-          <h2 className="mb-3 font-display text-base font-bold text-[#F1F3F5]">
+          <h2 className="mb-3 font-display text-base font-bold text-[#F1F0EB]">
             Technology Stack
           </h2>
           <div className="flex flex-wrap gap-2">
@@ -287,20 +293,20 @@ export function CaseStudyDetail({
           <section className="grid gap-8 border-t border-white/10 pt-8 md:grid-cols-2">
             {project.problemStatement && (
               <div className="space-y-2">
-                <h2 className="font-display text-base font-bold text-[#F1F3F5]">
+                <h2 className="font-display text-base font-bold text-[#F1F0EB]">
                   Problem Statement
                 </h2>
-                <p className="text-sm leading-relaxed text-[#A0A6B0]">
+                <p className="text-sm leading-relaxed text-[#A6A6A6]">
                   {project.problemStatement}
                 </p>
               </div>
             )}
             {project.proposedSolution && (
               <div className="space-y-2">
-                <h2 className="font-display text-base font-bold text-[#F1F3F5]">
+                <h2 className="font-display text-base font-bold text-[#F1F0EB]">
                   Engineering Solution
                 </h2>
-                <p className="text-sm leading-relaxed text-[#A0A6B0]">
+                <p className="text-sm leading-relaxed text-[#A6A6A6]">
                   {project.proposedSolution}
                 </p>
               </div>
@@ -311,20 +317,20 @@ export function CaseStudyDetail({
         {/* Personal Contribution & Architecture */}
         <section className="grid gap-8 border-t border-white/10 pt-8 md:grid-cols-2">
           <div className="space-y-2">
-            <h2 className="font-display text-base font-bold text-[#F1F3F5]">
+            <h2 className="font-display text-base font-bold text-[#F1F0EB]">
               Personal Contribution
             </h2>
-            <p className="text-sm leading-relaxed text-[#A0A6B0]">
+            <p className="text-sm leading-relaxed text-[#A6A6A6]">
               {project.personalContribution}
             </p>
           </div>
 
           {project.architectureSummary && (
             <div className="space-y-2">
-              <h2 className="font-display text-base font-bold text-[#F1F3F5]">
+              <h2 className="font-display text-base font-bold text-[#F1F0EB]">
                 Technical Architecture
               </h2>
-              <p className="text-sm leading-relaxed text-[#A0A6B0]">
+              <p className="text-sm leading-relaxed text-[#A6A6A6]">
                 {project.architectureSummary}
               </p>
             </div>
@@ -336,13 +342,13 @@ export function CaseStudyDetail({
           <section className="grid gap-8 border-t border-white/10 pt-8 md:grid-cols-2">
             {project.implementedFeatures && project.implementedFeatures.length > 0 && (
               <div className="space-y-3">
-                <h2 className="font-display text-base font-bold text-[#F1F3F5]">
+                <h2 className="font-display text-base font-bold text-[#F1F0EB]">
                   Implemented Features
                 </h2>
-                <ul className="space-y-2 text-sm text-[#A0A6B0]">
+                <ul className="space-y-2 text-sm text-[#A6A6A6]">
                   {project.implementedFeatures.map((feat, i) => (
                     <li key={i} className="flex items-start gap-2.5">
-                      <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#00C8F5]" />
+                      <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#4169FF]" />
                       <span>{feat}</span>
                     </li>
                   ))}
@@ -352,13 +358,13 @@ export function CaseStudyDetail({
 
             {project.engineeringChallenges && project.engineeringChallenges.length > 0 && (
               <div className="space-y-3">
-                <h2 className="font-display text-base font-bold text-[#F1F3F5]">
+                <h2 className="font-display text-base font-bold text-[#F1F0EB]">
                   Engineering Challenges
                 </h2>
-                <ul className="space-y-2 text-sm text-[#A0A6B0]">
+                <ul className="space-y-2 text-sm text-[#A6A6A6]">
                   {project.engineeringChallenges.map((chal, i) => (
                     <li key={i} className="flex items-start gap-2.5">
-                      <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#00C8F5]" />
+                      <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#4169FF]" />
                       <span>{chal}</span>
                     </li>
                   ))}
@@ -373,30 +379,30 @@ export function CaseStudyDetail({
           <section className="space-y-6 border-t border-white/10 pt-8">
             {project.testingStrategy && (
               <div className="space-y-1.5">
-                <h2 className="font-display text-base font-bold text-[#F1F3F5]">
+                <h2 className="font-display text-base font-bold text-[#F1F0EB]">
                   Testing &amp; Verification Strategy
                 </h2>
-                <p className="text-sm leading-relaxed text-[#A0A6B0]">
+                <p className="text-sm leading-relaxed text-[#A6A6A6]">
                   {project.testingStrategy}
                 </p>
               </div>
             )}
             {project.securityConsiderations && (
               <div className="space-y-1.5">
-                <h2 className="font-display text-base font-bold text-[#F1F3F5]">
+                <h2 className="font-display text-base font-bold text-[#F1F0EB]">
                   Security &amp; Privacy Considerations
                 </h2>
-                <p className="text-sm leading-relaxed text-[#A0A6B0]">
+                <p className="text-sm leading-relaxed text-[#A6A6A6]">
                   {project.securityConsiderations}
                 </p>
               </div>
             )}
             {project.resultsAndLimitations && (
               <div className="space-y-1.5">
-                <h2 className="font-display text-base font-bold text-[#F1F3F5]">
+                <h2 className="font-display text-base font-bold text-[#F1F0EB]">
                   Results &amp; Known Limitations
                 </h2>
-                <p className="text-sm leading-relaxed text-[#A0A6B0]">
+                <p className="text-sm leading-relaxed text-[#A6A6A6]">
                   {project.resultsAndLimitations}
                 </p>
               </div>
@@ -412,12 +418,12 @@ export function CaseStudyDetail({
                 <Link
                   href={`/projects/${prevProject.slug}/`}
                   prefetch={false}
-                  className="group rounded-xl border border-white/10 bg-[#101216]/70 p-4 transition-colors hover:border-[#00C8F5]/50"
+                  className="group rounded-xl border border-white/10 bg-[#151515]/70 p-4 transition-colors hover:border-[#4169FF]"
                 >
-                  <p className="font-mono text-[11px] text-[#A0A6B0] uppercase">
+                  <p className="font-mono text-[11px] text-[#A6A6A6] uppercase">
                     &larr; Previous Work
                   </p>
-                  <p className="mt-1 font-display truncate text-sm font-semibold text-[#F1F3F5] group-hover:text-[#00C8F5]">
+                  <p className="mt-1 font-display truncate text-sm font-semibold text-[#F1F0EB] group-hover:text-[#7A9BFF]">
                     {prevProject.title}
                   </p>
                 </Link>
@@ -428,12 +434,12 @@ export function CaseStudyDetail({
                 <Link
                   href={`/projects/${nextProject.slug}/`}
                   prefetch={false}
-                  className="group rounded-xl border border-white/10 bg-[#101216]/70 p-4 text-right transition-colors hover:border-[#00C8F5]/50"
+                  className="group rounded-xl border border-white/10 bg-[#151515]/70 p-4 text-right transition-colors hover:border-[#4169FF]"
                 >
-                  <p className="font-mono text-[11px] text-[#A0A6B0] uppercase">
+                  <p className="font-mono text-[11px] text-[#A6A6A6] uppercase">
                     Next Work &rarr;
                   </p>
-                  <p className="mt-1 font-display truncate text-sm font-semibold text-[#F1F3F5] group-hover:text-[#00C8F5]">
+                  <p className="mt-1 font-display truncate text-sm font-semibold text-[#F1F0EB] group-hover:text-[#7A9BFF]">
                     {nextProject.title}
                   </p>
                 </Link>
@@ -443,7 +449,7 @@ export function CaseStudyDetail({
 
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
             <div className="space-y-1">
-              <p className="font-mono text-xs uppercase tracking-wider text-[#A0A6B0]">
+              <p className="font-mono text-xs uppercase tracking-wider text-[#A6A6A6]">
                 Verified Source References
               </p>
               <div className="flex flex-wrap gap-3">
@@ -453,7 +459,7 @@ export function CaseStudyDetail({
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="break-all font-mono text-xs text-[#00C8F5] hover:underline"
+                    className="break-all font-mono text-xs text-[#7A9BFF] hover:underline"
                   >
                     {url}
                   </a>
@@ -464,7 +470,7 @@ export function CaseStudyDetail({
             <Link
               href="/projects/"
               prefetch={false}
-              className="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full border border-white/15 bg-[#101216] px-5 py-2 text-sm font-medium text-[#F1F3F5] transition-colors hover:border-[#00C8F5]/60 hover:text-[#00C8F5]"
+              className="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full border border-white/15 bg-[#151515] px-5 py-2 text-sm font-medium text-[#F1F0EB] transition-colors hover:border-[#4169FF] hover:text-[#7A9BFF]"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               All Projects

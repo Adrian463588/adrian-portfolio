@@ -1,14 +1,15 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #08090b;
-  --color-surface: #101216;
-  --color-surface-elevated: #14161a;
-  --color-border: rgba(255, 255, 255, 0.1);
-  --color-foreground: #f1f3f5;
-  --color-muted: #a0a6b0;
-  --color-accent: #00c8f5;
-  --color-accent-blue: #2563eb;
+  --color-background: #080808;
+  --color-surface: #151515;
+  --color-surface-elevated: #1c1d22;
+  --color-border: rgba(241, 240, 235, 0.1);
+  --color-foreground: #f1f0eb;
+  --color-muted: #a6a6a6;
+  --color-accent: #4169ff;
+  --color-accent-blue: #4169ff;
+  --color-chrome-cyan: #00c8f5;
   --font-display: var(--font-display), var(--font-geist-sans), system-ui, sans-serif;
   --font-sans: var(--font-geist-sans), "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono), "JetBrains Mono", ui-monospace, monospace;
@@ -16,16 +17,16 @@
 
 :root {
   color-scheme: dark;
-  --bg-canvas: #08090b;
-  --bg-secondary: #101216;
-  --bg-surface: #14161a;
-  --border-subtle: rgba(255, 255, 255, 0.1);
-  --border-strong: rgba(255, 255, 255, 0.22);
-  --text-primary: #f1f3f5;
-  --text-secondary: #a0a6b0;
-  --accent: #00c8f5;
-  --accent-blue: #2563eb;
-  --accent-contrast: #08090b;
+  --bg-canvas: #080808;
+  --bg-secondary: #151515;
+  --bg-surface: #1c1d22;
+  --border-subtle: rgba(241, 240, 235, 0.1);
+  --border-strong: rgba(241, 240, 235, 0.24);
+  --text-primary: #f1f0eb;
+  --text-secondary: #a6a6a6;
+  --accent: #4169ff;
+  --accent-blue: #4169ff;
+  --accent-contrast: #080808;
 }
 
 html {
@@ -47,12 +48,12 @@ body {
 }
 
 ::selection {
-  background-color: rgba(0, 200, 245, 0.25);
-  color: #f1f3f5;
+  background-color: rgba(65, 105, 255, 0.32);
+  color: #f1f0eb;
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid #4169ff;
   outline-offset: 3px;
 }
 
@@ -75,9 +76,9 @@ button:focus-visible .roll-text-clone {
   transform: translateY(0%);
 }
 
-/* Hairline image mask reveal */
+/* Hairline image mask & optical clip-wipe */
 .editorial-image-wrap img {
-  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .group:hover .editorial-image-wrap img {
   transform: scale(1.035);
@@ -88,14 +89,14 @@ button:focus-visible .roll-text-clone {
   width: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #08090b;
+  background: #080808;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(241, 240, 235, 0.16);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 200, 245, 0.45);
+  background: rgba(65, 105, 255, 0.55);
 }
 
 /* Skip to content */
@@ -105,8 +106,8 @@ button:focus-visible .roll-text-clone {
   left: 1rem;
   z-index: 100;
   padding: 0.625rem 1rem;
-  background: #00c8f5;
-  color: #08090b;
+  background: #4169ff;
+  color: #f1f0eb;
   font-weight: 600;
   font-size: 0.875rem;
   border-radius: 0.5rem;

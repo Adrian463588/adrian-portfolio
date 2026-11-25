@@ -8,9 +8,9 @@ import { RollText } from "@/components/motion/RollText";
 import { MagneticSurface } from "@/components/motion/MagneticSurface";
 
 const navLinks = [
+  { href: "/#work", label: "Work", match: "work" },
   { href: "/#experience", label: "Experience", match: "experience" },
   { href: "/#enterprise-work", label: "Enterprise", match: "enterprise-work" },
-  { href: "/#work", label: "Work", match: "work" },
   { href: "/projects/", label: "Projects", match: "projects" },
   { href: "/#about", label: "About", match: "about" },
 ];
@@ -42,7 +42,7 @@ export function Navbar() {
   }, [mobileOpen]);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#08090B]/75 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-[#080808]/75 backdrop-blur-md">
       <nav
         aria-label="Primary navigation"
         className="mx-auto flex h-[68px] max-w-[1280px] items-center justify-between px-6"
@@ -50,9 +50,9 @@ export function Navbar() {
         <Link
           href="/"
           prefetch={false}
-          className="group inline-flex min-h-[44px] shrink-0 items-center gap-2.5 whitespace-nowrap font-display text-sm font-bold tracking-[0.06em] text-[#F1F3F5] uppercase transition-colors hover:text-[#00C8F5]"
+          className="group inline-flex min-h-[44px] shrink-0 items-center gap-2.5 whitespace-nowrap font-display text-sm font-bold tracking-[0.06em] text-[#F1F0EB] uppercase transition-colors hover:text-[#7A9BFF]"
         >
-          <span className="inline-block h-2 w-2 rounded-full bg-[#00C8F5]" aria-hidden="true" />
+          <span className="inline-block h-2 w-2 rounded-full bg-[#4169FF]" aria-hidden="true" />
           <span>ADRIAN.</span>
         </Link>
 
@@ -66,7 +66,7 @@ export function Navbar() {
                 prefetch={false}
                 aria-current={active ? "page" : undefined}
                 className={`group inline-flex min-h-[40px] items-center whitespace-nowrap px-3.5 py-2 text-sm font-medium transition-colors ${
-                  active ? "text-[#00C8F5]" : "text-[#A0A6B0] hover:text-[#F1F3F5]"
+                  active ? "text-[#7A9BFF]" : "text-[#A6A6A6] hover:text-[#F1F0EB]"
                 }`}
               >
                 <RollText>{link.label}</RollText>
@@ -76,16 +76,17 @@ export function Navbar() {
         </div>
 
         <div className="hidden shrink-0 items-center gap-5 lg:flex">
-          <span className="font-mono text-[11px] tracking-wider text-[#A0A6B0]">
+          <span className="font-mono text-[11px] tracking-wider text-[#A6A6A6]">
             YOGYA · GMT+7
           </span>
           <MagneticSurface>
-            <a
-              href="mailto:adriansyah1230@gmail.com"
-              className="group inline-flex min-h-[40px] items-center whitespace-nowrap rounded-full border border-white/20 bg-[#F1F3F5] px-4 py-1.5 text-sm font-semibold text-[#08090B] transition-colors hover:border-[#00C8F5] hover:bg-[#00C8F5]"
+            <Link
+              href="/#contact"
+              prefetch={false}
+              className="group inline-flex min-h-[40px] items-center whitespace-nowrap rounded-full bg-[#F1F0EB] px-4 py-1.5 text-sm font-semibold text-[#080808] transition-colors hover:bg-[#7A9BFF]"
             >
-              Get in Touch
-            </a>
+              Let&apos;s Connect
+            </Link>
           </MagneticSurface>
         </div>
 
@@ -96,7 +97,7 @@ export function Navbar() {
           aria-expanded={mobileOpen}
           aria-controls="mobile-nav-drawer"
           aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
-          className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-white/15 bg-[#101216] text-[#F1F3F5] transition-colors hover:border-[#00C8F5]/60 lg:hidden"
+          className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-white/15 bg-[#151515] text-[#F1F0EB] transition-colors hover:border-[#4169FF] lg:hidden"
         >
           {mobileOpen ? (
             <X className="h-5 w-5" aria-hidden="true" />
@@ -109,7 +110,7 @@ export function Navbar() {
       {mobileOpen && (
         <div
           id="mobile-nav-drawer"
-          className="border-t border-white/10 bg-[#08090B]/95 px-6 py-4 backdrop-blur-lg lg:hidden"
+          className="border-t border-white/10 bg-[#080808]/95 px-6 py-4 backdrop-blur-lg lg:hidden"
         >
           <div className="flex flex-col gap-1">
             {navLinks.map((link) => {
@@ -122,23 +123,24 @@ export function Navbar() {
                   onClick={() => setMobileOpen(false)}
                   aria-current={active ? "page" : undefined}
                   className={`flex min-h-[44px] items-center justify-between border-b border-white/5 py-2.5 text-sm font-medium transition-colors ${
-                    active ? "text-[#00C8F5]" : "text-[#F1F3F5]"
+                    active ? "text-[#7A9BFF]" : "text-[#F1F0EB]"
                   }`}
                 >
                   <span>{link.label}</span>
-                  <span aria-hidden="true" className="font-mono text-xs text-[#A0A6B0]">
+                  <span aria-hidden="true" className="font-mono text-xs text-[#A6A6A6]">
                     &rarr;
                   </span>
                 </Link>
               );
             })}
-            <a
-              href="mailto:adriansyah1230@gmail.com"
+            <Link
+              href="/#contact"
+              prefetch={false}
               onClick={() => setMobileOpen(false)}
-              className="mt-4 flex min-h-[44px] items-center justify-center rounded-full bg-[#F1F3F5] px-4 py-2.5 text-sm font-semibold text-[#08090B]"
+              className="mt-4 flex min-h-[44px] items-center justify-center rounded-full bg-[#F1F0EB] px-4 py-2.5 text-sm font-semibold text-[#080808]"
             >
-              Get in Touch
-            </a>
+              Let&apos;s Connect
+            </Link>
           </div>
         </div>
       )}

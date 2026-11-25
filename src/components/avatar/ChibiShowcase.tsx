@@ -56,13 +56,13 @@ export function ChibiShowcase({ compact = false, className }: ChibiShowcaseProps
         className
       )}
     >
-      {/* Restrained studio rim glow behind avatar frame */}
+      {/* Restrained Electric Blue studio halo behind portrait frame */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -inset-3 -z-10 rounded-[36px] bg-gradient-to-br from-[#00C8F5]/14 via-transparent to-[#2563EB]/14 blur-xl transition-opacity duration-500 group-hover:opacity-100"
+        className="pointer-events-none absolute -inset-3 -z-10 rounded-[36px] bg-gradient-to-br from-[#4169FF]/18 via-transparent to-[#00C8F5]/12 blur-xl transition-opacity duration-500 group-hover:opacity-100"
       />
 
-      <figure className="relative overflow-hidden rounded-[30px] border border-white/10 bg-[#101216] shadow-[0_24px_60px_-24px_rgba(0,0,0,0.85)]">
+      <figure className="relative overflow-hidden rounded-[30px] border border-white/10 bg-[#151515] shadow-[0_24px_60px_-24px_rgba(0,0,0,0.9)]">
         <div className="relative aspect-square w-full overflow-hidden rounded-[30px]">
           <Image
             src="/images/avatar/professional-chibi.webp"
@@ -79,15 +79,15 @@ export function ChibiShowcase({ compact = false, className }: ChibiShowcaseProps
               className="pointer-events-none absolute inset-0 transition-opacity duration-300"
               style={{
                 opacity: tilt.active ? 1 : 0,
-                background: `radial-gradient(280px circle at ${tilt.hx}% ${tilt.hy}%, rgba(0, 200, 245, 0.14), transparent 65%)`,
+                background: `radial-gradient(280px circle at ${tilt.hx}% ${tilt.hy}%, rgba(65, 105, 255, 0.2), transparent 65%)`,
               }}
             />
           )}
         </div>
 
-        <figcaption className="flex items-center justify-between border-t border-white/10 bg-[#08090B]/90 px-4 py-2.5 font-mono text-[11px] tracking-wider text-[#A0A6B0]">
+        <figcaption className="flex items-center justify-between border-t border-white/10 bg-[#080808]/92 px-4 py-2.5 font-mono text-[11px] tracking-wider text-[#A6A6A6]">
           <span>YOGYAKARTA · FT UGM</span>
-          <span className="text-[#00C8F5]">QA · DEVOPS · AI</span>
+          <span className="text-[#7A9BFF]">QA · DEVOPS · AI</span>
         </figcaption>
       </figure>
     </div>

@@ -73,7 +73,7 @@ export function SpatialBackground() {
     <ThreeErrorBoundary fallback={<SpatialFallback reason="webgl-unavailable" />}>
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#08090B]"
+        className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#080808]"
       >
         <Canvas
           frameloop={isVisibleTab ? "always" : "never"}
@@ -96,7 +96,7 @@ export function SpatialBackground() {
         {/* Subtle bottom-top obsidian vignette so foreground typography keeps high WCAG contrast */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#08090B]/35 via-transparent to-[#08090B]/90"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#080808]/35 via-transparent to-[#080808]/92"
         />
       </div>
     </ThreeErrorBoundary>

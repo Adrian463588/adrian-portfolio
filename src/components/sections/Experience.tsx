@@ -34,18 +34,18 @@ export function Experience() {
   return (
     <section
       id="experience"
-      className="border-t border-white/10 bg-[#08090B]/70 px-6 py-20 backdrop-blur-[2px] sm:py-24"
+      className="border-t border-white/10 bg-[#080808]/75 px-6 py-20 backdrop-blur-[2px] sm:py-24"
     >
       <div className="mx-auto grid max-w-[1280px] grid-cols-1 gap-12 lg:grid-cols-12">
         <div className="min-w-0 space-y-6 lg:col-span-4">
           <div className="space-y-3 lg:sticky lg:top-24">
-            <p className="font-mono text-xs tracking-[0.16em] text-[#00C8F5] uppercase">
+            <p className="font-mono text-xs tracking-[0.16em] text-[#7A9BFF] uppercase">
               Career Ledger
             </p>
-            <h2 className="font-display text-[clamp(1.75rem,3.4vw,2.75rem)] font-bold leading-[1.08] tracking-[-0.03em] text-[#F1F3F5]">
+            <h2 className="font-display text-[clamp(1.85rem,3.6vw,3rem)] font-bold leading-[1.08] tracking-[-0.03em] text-[#F1F0EB]">
               Professional Experience
             </h2>
-            <p className="text-sm leading-relaxed text-[#A0A6B0]">
+            <p className="text-sm leading-relaxed text-[#A6A6A6]">
               Enterprise quality control, test automation, QA internships, and technical training
               ordered reverse-chronologically.
             </p>
@@ -66,8 +66,8 @@ export function Experience() {
                     onClick={() => setFilter(tab.id)}
                     className={`min-h-[40px] rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
                       selected
-                        ? "border-[#00C8F5] bg-[#00C8F5]/12 text-[#00C8F5]"
-                        : "border-white/15 bg-transparent text-[#A0A6B0] hover:border-white/30 hover:text-[#F1F3F5]"
+                        ? "border-[#4169FF] bg-[#4169FF]/15 text-[#8CA8FF]"
+                        : "border-white/15 bg-transparent text-[#A6A6A6] hover:border-white/30 hover:text-[#F1F0EB]"
                     }`}
                   >
                     {tab.label}

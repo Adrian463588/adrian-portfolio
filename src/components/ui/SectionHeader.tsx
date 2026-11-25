@@ -23,14 +23,14 @@ export function SectionHeader({
       )}
     >
       <div className="max-w-2xl space-y-2.5">
-        <p className="font-mono text-xs tracking-[0.16em] text-[#00C8F5] uppercase">
+        <p className="font-mono text-xs tracking-[0.16em] text-[#7A9BFF] uppercase">
           {eyebrow}
         </p>
-        <h2 className="font-display text-[clamp(1.75rem,3.4vw,2.75rem)] font-bold leading-[1.1] tracking-[-0.03em] text-[#F1F3F5]">
+        <h2 className="font-display text-[clamp(1.85rem,3.6vw,3rem)] font-bold leading-[1.08] tracking-[-0.03em] text-[#F1F0EB]">
           {title}
         </h2>
         {description && (
-          <p className="max-w-xl text-sm leading-relaxed text-[#A0A6B0] sm:text-base">
+          <p className="max-w-xl text-sm leading-relaxed text-[#A6A6A6] sm:text-base">
             {description}
           </p>
         )}

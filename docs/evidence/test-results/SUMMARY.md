@@ -65,9 +65,9 @@
 | TypeScript | `npm run typecheck` | PASS | `tsc --noEmit` strict mode, 0 errors |
 | Unit Tests | `npm run test` | PASS | Vitest: 3 files, 14/14 passed (`experience.test.ts`, `projects.test.ts`, `sync-github.test.ts`) |
 | Static Export Build | `npm run build` | PASS | Next.js `output: "export"` built 80/80 static pages in `out/` |
-| E2E & A11y Suite | `npm run test:e2e` | PASS | Playwright + `axe-core`: 27/27 tests passed (full-bleed spatial 3D hero without boxed debug badge, V2 grouped Berijalan & 11-step sequence preserved, `/projects/` compact toolbar with Gallery visible above the fold + `More Filters` + `Index` view mode, Chibi portrait load in `#about`, zero horizontal overflow across all 10 viewports `320px–1920px`, zero `axe` violations on 7 routes, reduced-motion & WebGL fallbacks) |
-| Confidentiality & Spelling Scan | PowerShell scan across 701 `out/` files | PASS | Zero confidential leaks; exact casing (`Magic xpa`, `AOL UniPaaS`, `Joint Financing`) |
+| E2E & A11y Suite | `npm run test:e2e` | PASS | Playwright + `axe-core`: 27/27 tests passed (Section 14 asymmetric homepage & V3 sequence, Lenis+GSAP + parametric Chrome/GLSL 3D without debug labels, clean `Projects` heading with progressive `Filters` & `Index` mode, Chibi portrait in `#about`, zero horizontal overflow across 10 viewports `320px–1920px`, zero `axe` violations on 7 routes, reduced-motion & WebGL fallbacks) |
+| Confidentiality & Slop Scan | PowerShell scan across `745` `out/` files | PASS | Zero secret leaks and zero banned placeholder/jargon tokens (`All Eligible`, `Engagement Origin`, `DEMAND RENDERED`, `Static snapshot synced`, `All 73 Projects`) |
 | Lighthouse (`/` Desktop & Mobile) | Chrome DevTools MCP | PASS | Accessibility `100`, Best Practices `100`, SEO `100`, Agentic Browsing `100` (`57/57` passed, `0` failed) |
 | Lighthouse (`/projects/` Desktop) | Chrome DevTools MCP | PASS | Accessibility `100`, Best Practices `100`, SEO `100`, Agentic Browsing `100` (`55/55` passed, `0` failed) |
-| Performance Trace (`/` Lab, 1x CPU) | Chrome DevTools MCP | PASS | LCP `291 ms` (`TTFB: 6 ms`, `Render delay: 286 ms`), CLS `0.00` |
-| Unverified Items | Live remote deploy | NOT VERIFIED | Feature branch `feat/v3-immersive-3d-redesign` pushed for review/Preview; `main` production unchanged pending authorization |
+| Performance Trace (`/` Lab, 1x CPU) | Chrome DevTools MCP | PASS | LCP `301 ms` (`TTFB: 6 ms`, `Render delay: 295 ms`), CLS `0.00` |
+| Unverified Items | Live remote deploy | NOT VERIFIED | Feature branch `feat/v3-immersive-3d-redesign` pushed for Preview/review; production `main` left untouched until authorization |

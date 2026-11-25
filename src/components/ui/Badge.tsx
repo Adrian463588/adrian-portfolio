@@ -7,8 +7,8 @@ interface BadgeProps {
 }
 
 const variantStyles: Record<NonNullable<BadgeProps["variant"]>, string> = {
-  neutral: "border-white/15 bg-[#101216]/90 text-[#F1F3F5]",
-  accent: "border-[#00C8F5]/35 bg-[#00C8F5]/10 text-[#67E8F9]",
+  neutral: "border-white/15 bg-[#151515]/90 text-[#F1F0EB]",
+  accent: "border-[#4169FF]/45 bg-[#4169FF]/12 text-[#8CA8FF]",
   success: "border-emerald-500/35 bg-emerald-500/10 text-emerald-300",
   warning: "border-amber-500/35 bg-amber-500/10 text-amber-300",
 };

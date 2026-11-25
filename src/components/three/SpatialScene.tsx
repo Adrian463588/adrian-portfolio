@@ -16,7 +16,7 @@ function buildParticlePositions(count: number): Float32Array {
   for (let i = 0; i < count; i++) {
     const t = i / count;
     const angle = i * 2.39996323;
-    const radius = 6 + ((Math.sin(i * 12.9898) * 43758.5453) % 1 + 1) * 14;
+    const radius = 6.5 + ((Math.sin(i * 12.9898) * 43758.5453) % 1 + 1) * 14.5;
     const ySpread = (Math.cos(i * 78.233) * 0.5 + (t - 0.5)) * 18;
     arr[i * 3] = Math.cos(angle) * radius;
     arr[i * 3 + 1] = ySpread;
@@ -36,8 +36,8 @@ function PerspectiveHorizonGrid({
     () => ({
       uTime: { value: 0 },
       uScroll: { value: 0 },
+      uElectric: { value: new THREE.Color("#4169FF") },
       uCyan: { value: new THREE.Color("#00C8F5") },
-      uBlue: { value: new THREE.Color("#2563EB") },
     }),
     []
   );
@@ -70,8 +70,8 @@ function PerspectiveHorizonGrid({
         fragmentShader={`
           uniform float uTime;
           uniform float uScroll;
+          uniform vec3 uElectric;
           uniform vec3 uCyan;
-          uniform vec3 uBlue;
           varying vec3 vWorldPos;
 
           float gridLine(float coord, float width) {
@@ -81,14 +81,14 @@ function PerspectiveHorizonGrid({
 
           void main() {
             float spacing = 2.6;
-            float gx = gridLine(vWorldPos.x / spacing, 0.025);
-            float gz = gridLine(vWorldPos.z / spacing + uTime * 0.14 + uScroll * 4.0, 0.025);
+            float gx = gridLine(vWorldPos.x / spacing, 0.022);
+            float gz = gridLine(vWorldPos.z / spacing + uTime * 0.14 + uScroll * 4.5, 0.022);
             float grid = max(gx, gz);
             float dist = length(vWorldPos.xz) / 56.0;
-            float fade = (1.0 - smoothstep(0.15, 0.95, dist));
-            vec3 color = mix(uBlue, uCyan, clamp(gx * gz + 0.28, 0.0, 1.0));
-            float scrollDim = 1.0 - smoothstep(0.1, 0.9, uScroll) * 0.45;
-            gl_FragColor = vec4(color, grid * fade * 0.34 * scrollDim);
+            float fade = 1.0 - smoothstep(0.14, 0.95, dist);
+            vec3 color = mix(uElectric, uCyan, clamp(gx * gz + 0.18, 0.0, 1.0));
+            float scrollDim = 1.0 - smoothstep(0.12, 0.92, uScroll) * 0.42;
+            gl_FragColor = vec4(color, grid * fade * 0.3 * scrollDim);
           }
         `}
       />
@@ -102,26 +102,50 @@ export function SpatialScene({
   isCompactViewport,
 }: SpatialSceneProps) {
   const groupRef = useRef<THREE.Group>(null);
-  const outerShellRef = useRef<THREE.LineSegments>(null);
-  const innerLatticeRef = useRef<THREE.LineSegments>(null);
+  const torusKnotRef = useRef<THREE.Mesh>(null);
+  const auraShellRef = useRef<THREE.Mesh>(null);
   const gyroPrimaryRef = useRef<THREE.Mesh>(null);
   const gyroSecondaryRef = useRef<THREE.Mesh>(null);
   const particlesRef = useRef<THREE.Points>(null);
 
-  const particleCount = isCompactViewport ? 420 : 1100;
+  const prevScrollRef = useRef(0);
+  const scrollVelocityRef = useRef(0);
+
+  const particleCount = isCompactViewport ? 340 : 960;
+
+  const auraUniforms = useMemo(
+    () => ({
+      uTime: { value: 0 },
+      uVelocity: { value: 0 },
+      uAccent: { value: new THREE.Color("#4169FF") },
+      uIvory: { value: new THREE.Color("#F1F0EB") },
+    }),
+    []
+  );
 
   const resources = useMemo(() => {
-    const outerIco = new THREE.IcosahedronGeometry(2.05, 1);
-    const outerEdges = new THREE.EdgesGeometry(outerIco);
-    outerIco.dispose();
+    const knotGeo = new THREE.TorusKnotGeometry(
+      isCompactViewport ? 0.92 : 1.15,
+      isCompactViewport ? 0.25 : 0.31,
+      160,
+      28,
+      2,
+      3
+    );
 
-    const innerOct = new THREE.OctahedronGeometry(1.08, 0);
-    const innerEdges = new THREE.EdgesGeometry(innerOct);
-    innerOct.dispose();
-
-    const coreSolidGeo = new THREE.OctahedronGeometry(0.68, 0);
-    const gyroPrimaryGeo = new THREE.TorusGeometry(2.58, 0.014, 12, 96);
-    const gyroSecondaryGeo = new THREE.TorusGeometry(2.24, 0.01, 10, 84);
+    const auraGeo = new THREE.IcosahedronGeometry(isCompactViewport ? 1.72 : 2.12, 3);
+    const gyroPrimaryGeo = new THREE.TorusGeometry(
+      isCompactViewport ? 2.05 : 2.52,
+      0.012,
+      12,
+      96
+    );
+    const gyroSecondaryGeo = new THREE.TorusGeometry(
+      isCompactViewport ? 1.78 : 2.18,
+      0.009,
+      10,
+      84
+    );
 
     const particleGeo = new THREE.BufferGeometry();
     particleGeo.setAttribute(
@@ -129,70 +153,94 @@ export function SpatialScene({
       new THREE.BufferAttribute(buildParticlePositions(particleCount), 3)
     );
 
-    const outerMat = new THREE.LineBasicMaterial({
-      color: "#2563EB",
+    const knotMat = new THREE.MeshPhysicalMaterial({
+      color: "#D9D8D2",
+      metalness: 0.92,
+      roughness: 0.14,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.08,
+      emissive: "#0D1A4A",
+      emissiveIntensity: 0.35,
+    });
+
+    const auraMat = new THREE.ShaderMaterial({
       transparent: true,
-      opacity: 0.46,
+      depthWrite: false,
+      wireframe: true,
+      blending: THREE.AdditiveBlending,
+      uniforms: auraUniforms,
+      vertexShader: `
+        uniform float uTime;
+        uniform float uVelocity;
+        varying float vPulse;
+
+        void main() {
+          float wave = sin(position.x * 2.4 + uTime * 1.1)
+                     * cos(position.y * 2.4 - uTime * 0.9)
+                     * sin(position.z * 2.4 + uTime * 0.7);
+          float amp = 0.065 + min(uVelocity * 1.4, 0.22);
+          vec3 displaced = position + normal * wave * amp;
+          vPulse = 0.5 + 0.5 * wave;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 uAccent;
+        uniform vec3 uIvory;
+        varying float vPulse;
+
+        void main() {
+          vec3 tint = mix(uAccent, uIvory, vPulse * 0.42);
+          gl_FragColor = vec4(tint, 0.16 + vPulse * 0.12);
+        }
+      `,
     });
-    const innerEdgeMat = new THREE.LineBasicMaterial({
-      color: "#00C8F5",
-      transparent: true,
-      opacity: 0.88,
-    });
-    const coreSolidMat = new THREE.MeshStandardMaterial({
-      color: "#0D1117",
-      metalness: 0.82,
-      roughness: 0.24,
-      emissive: "#003B5C",
-      emissiveIntensity: 0.38,
-    });
+
     const ringMatPrimary = new THREE.MeshBasicMaterial({
-      color: "#00C8F5",
+      color: "#4169FF",
       transparent: true,
-      opacity: 0.32,
+      opacity: 0.36,
     });
+
     const ringMatSecondary = new THREE.MeshBasicMaterial({
-      color: "#60A5FA",
+      color: "#F1F0EB",
       transparent: true,
-      opacity: 0.22,
+      opacity: 0.18,
     });
+
     const particleMat = new THREE.PointsMaterial({
-      size: isCompactViewport ? 0.09 : 0.075,
-      color: "#00C8F5",
+      size: isCompactViewport ? 0.085 : 0.072,
+      color: "#A6B8FF",
       transparent: true,
-      opacity: 0.55,
+      opacity: 0.48,
       sizeAttenuation: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
     });
 
     return {
-      outerEdges,
-      innerEdges,
-      coreSolidGeo,
+      knotGeo,
+      auraGeo,
       gyroPrimaryGeo,
       gyroSecondaryGeo,
       particleGeo,
-      outerMat,
-      innerEdgeMat,
-      coreSolidMat,
+      knotMat,
+      auraMat,
       ringMatPrimary,
       ringMatSecondary,
       particleMat,
     };
-  }, [particleCount, isCompactViewport]);
+  }, [particleCount, isCompactViewport, auraUniforms]);
 
   useEffect(() => {
     return () => {
-      resources.outerEdges.dispose();
-      resources.innerEdges.dispose();
-      resources.coreSolidGeo.dispose();
+      resources.knotGeo.dispose();
+      resources.auraGeo.dispose();
       resources.gyroPrimaryGeo.dispose();
       resources.gyroSecondaryGeo.dispose();
       resources.particleGeo.dispose();
-      resources.outerMat.dispose();
-      resources.innerEdgeMat.dispose();
-      resources.coreSolidMat.dispose();
+      resources.knotMat.dispose();
+      resources.auraMat.dispose();
       resources.ringMatPrimary.dispose();
       resources.ringMatSecondary.dispose();
       resources.particleMat.dispose();
@@ -205,43 +253,50 @@ export function SpatialScene({
     const py = pointerTarget.current?.y ?? 0;
     const sp = scrollProgress.current ?? 0;
 
-    // Smooth camera parallax + scroll-driven depth shift via frame state camera
+    const scrollDelta = Math.abs(sp - prevScrollRef.current);
+    prevScrollRef.current = sp;
+    scrollVelocityRef.current += (scrollDelta * 32 - scrollVelocityRef.current) * 0.12;
+
+    if (auraShellRef.current) {
+      const mat = auraShellRef.current.material as THREE.ShaderMaterial;
+      mat.uniforms.uTime.value = state.clock.elapsedTime;
+      mat.uniforms.uVelocity.value = scrollVelocityRef.current;
+      auraShellRef.current.rotation.y -= dt * 0.1;
+      auraShellRef.current.rotation.z += dt * 0.06;
+    }
+
     const cam = state.camera;
-    const targetCamX = px * 0.9;
-    const targetCamY = -py * 0.55 - sp * 0.6;
-    const targetCamZ = (isCompactViewport ? 10.5 : 8.4) + sp * 4.8;
+    const targetCamX = px * 0.85;
+    const targetCamY = -py * 0.5 - sp * 0.65;
+    const targetCamZ = (isCompactViewport ? 10.6 : 8.4) + sp * 4.9;
     cam.position.x += (targetCamX - cam.position.x) * 0.05;
     cam.position.y += (targetCamY - cam.position.y) * 0.05;
     cam.position.z += (targetCamZ - cam.position.z) * 0.05;
-    cam.lookAt(sp * 0.8, 0, -2);
+    cam.lookAt(sp * 0.7, 0, -2);
 
     if (particlesRef.current) {
-      particlesRef.current.rotation.y += dt * 0.024;
+      particlesRef.current.rotation.y += dt * 0.022;
       particlesRef.current.rotation.x += (py * 0.06 - particlesRef.current.rotation.x) * 0.03;
     }
 
     if (groupRef.current) {
-      const baseX = isCompactViewport ? 0.5 : 2.75 - sp * 1.1;
-      const baseY = isCompactViewport ? 1.55 : 0.25 + sp * 0.85;
-      const baseZ = -0.6 - sp * 2.2;
+      const baseX = isCompactViewport ? 0.55 : 2.85 - sp * 1.4;
+      const baseY = isCompactViewport ? 1.55 : 0.15 + sp * 0.85;
+      const baseZ = -0.6 - sp * 2.4;
       groupRef.current.position.x += (baseX - groupRef.current.position.x) * 0.06;
       groupRef.current.position.y +=
-        (baseY + Math.sin(state.clock.elapsedTime * 0.7) * 0.12 - groupRef.current.position.y) * 0.06;
+        (baseY + Math.sin(state.clock.elapsedTime * 0.68) * 0.14 - groupRef.current.position.y) *
+        0.06;
       groupRef.current.position.z += (baseZ - groupRef.current.position.z) * 0.06;
 
-      groupRef.current.rotation.y += dt * (0.16 + sp * 0.22);
-      groupRef.current.rotation.x += (py * 0.32 - groupRef.current.rotation.x) * 0.06;
-      groupRef.current.rotation.z += (-px * 0.24 - groupRef.current.rotation.z) * 0.06;
+      groupRef.current.rotation.y += dt * (0.14 + sp * 0.28);
+      groupRef.current.rotation.x += (py * 0.34 - groupRef.current.rotation.x) * 0.06;
+      groupRef.current.rotation.z += (-px * 0.22 - groupRef.current.rotation.z) * 0.06;
     }
 
-    if (outerShellRef.current) {
-      outerShellRef.current.rotation.y += dt * 0.14;
-      outerShellRef.current.rotation.z -= dt * 0.08;
-    }
-
-    if (innerLatticeRef.current) {
-      innerLatticeRef.current.rotation.y -= dt * 0.34;
-      innerLatticeRef.current.rotation.x += dt * 0.18;
+    if (torusKnotRef.current) {
+      torusKnotRef.current.rotation.y += dt * 0.18;
+      torusKnotRef.current.rotation.x += dt * 0.09;
     }
 
     if (gyroPrimaryRef.current) {
@@ -254,28 +309,28 @@ export function SpatialScene({
 
   return (
     <>
-      <fog attach="fog" args={["#08090B", 8, 42]} />
+      <fog attach="fog" args={["#080808", 8, 42]} />
       <ambientLight intensity={0.45} />
-      <directionalLight position={[5, 6, 5]} intensity={1.15} color="#F1F3F5" />
-      <pointLight position={[-4, -2, 3]} intensity={1.1} color="#00C8F5" />
-      <pointLight position={[4, 2, 2]} intensity={0.65} color="#2563EB" />
+      <directionalLight position={[6, 7, 6]} intensity={1.65} color="#F1F0EB" />
+      <directionalLight position={[-5, 4, -4]} intensity={0.75} color="#A6A6A6" />
+      <pointLight position={[-4, -2, 3]} intensity={1.8} color="#4169FF" />
+      <pointLight position={[4, 2, 3]} intensity={1.05} color="#00C8F5" />
 
       <PerspectiveHorizonGrid scrollProgress={scrollProgress} />
 
       <points ref={particlesRef} geometry={resources.particleGeo} material={resources.particleMat} />
 
-      <group ref={groupRef} position={[isCompactViewport ? 0.5 : 2.75, 0.25, -0.6]}>
-        <lineSegments
-          ref={outerShellRef}
-          geometry={resources.outerEdges}
-          material={resources.outerMat}
+      <group ref={groupRef} position={[isCompactViewport ? 0.55 : 2.85, 0.15, -0.6]}>
+        <mesh
+          ref={torusKnotRef}
+          geometry={resources.knotGeo}
+          material={resources.knotMat}
         />
-        <lineSegments
-          ref={innerLatticeRef}
-          geometry={resources.innerEdges}
-          material={resources.innerEdgeMat}
+        <mesh
+          ref={auraShellRef}
+          geometry={resources.auraGeo}
+          material={resources.auraMat}
         />
-        <mesh geometry={resources.coreSolidGeo} material={resources.coreSolidMat} />
         <mesh
           ref={gyroPrimaryRef}
           rotation={[Math.PI / 3.1, Math.PI / 6, 0]}

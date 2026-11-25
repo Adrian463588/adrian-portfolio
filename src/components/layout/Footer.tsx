@@ -5,14 +5,14 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-white/10 bg-[#08090B]/85 px-6 py-10 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-[1280px] flex-col items-start justify-between gap-6 text-sm text-[#A0A6B0] sm:flex-row sm:items-center">
+    <footer className="border-t border-white/10 bg-[#080808]/85 px-6 py-10 backdrop-blur-sm">
+      <div className="mx-auto flex max-w-[1280px] flex-col items-start justify-between gap-6 text-sm text-[#A6A6A6] sm:flex-row sm:items-center">
         <div className="space-y-1">
-          <p className="font-display font-semibold tracking-tight text-[#F1F3F5]">
+          <p className="font-display font-semibold tracking-tight text-[#F1F0EB]">
             &copy; {year} Adrian Syah Abidin
           </p>
-          <p className="font-mono text-xs text-[#A0A6B0]">
-            Yogyakarta, Indonesia · Static Frontend Architecture
+          <p className="font-mono text-xs text-[#A6A6A6]">
+            Yogyakarta, Indonesia
           </p>
         </div>
 

@@ -105,17 +105,17 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await expect(expSection.locator("article")).toHaveCount(12);
   });
 
-  test("homepage enforces V2 IA sequence and renders 3 sanitized Enterprise Case Studies", async ({
+  test("homepage enforces V3 editorial IA sequence and renders 3 sanitized Enterprise Case Studies", async ({
     page,
   }) => {
     await page.goto("/", { waitUntil: "networkidle" });
 
     const orderedIds = [
       "hero",
-      "experience",
-      "enterprise-work",
       "work",
       "project-explorer",
+      "experience",
+      "enterprise-work",
       "competencies",
       "certifications",
       "education",
@@ -147,24 +147,26 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       )
       .toBeGreaterThan(0);
 
-    // Full-bleed hero excludes boxed debug caption
+    // Full-bleed hero excludes boxed debug caption or hardcoded project count badges
     await expect(page.getByText(/DEMAND RENDERED/i)).toHaveCount(0);
+    await expect(page.getByText(/All 73 Projects/i)).toHaveCount(0);
   });
 
-  test("projects page opens in editorial gallery above the fold with progressive-disclosure filters and index mode", async ({
+  test("projects page opens cleanly with progressive-disclosure filters and index mode", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/projects/", { waitUntil: "networkidle" });
-    await expect(page.locator("h1")).toHaveText("Projects & Experiments.");
+    await expect(page.locator("h1")).toHaveText("Projects");
+    await expect(page.getByText(/ENGAGEMENT ORIGIN|ALL ELIGIBLE|STATIC SNAPSHOT SYNCED/i)).toHaveCount(0);
 
     // First gallery work renders immediately within initial desktop viewport
     const firstCardBox = await page.locator("article").first().boundingBox();
     expect(firstCardBox).toBeTruthy();
     expect(firstCardBox!.y).toBeLessThan(860);
 
-    // Compact Origin selector filters enterprise dossiers
-    await page.getByLabel("Engagement Origin").selectOption("professional");
+    // Compact Work Type selector filters enterprise dossiers
+    await page.getByLabel("Filter by work type").selectOption("professional");
     await expect(page.getByText(/Showing 3 of/i)).toBeVisible();
     await expect(page.getByText(/Archer Upgrade/i)).toBeVisible();
     await page.getByRole("button", { name: /Clear filters/i }).click();
@@ -174,12 +176,12 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await expect(page.getByText(/EverShop Cypress/i)).toBeVisible();
 
     await search.fill("nonexistent-xyz-999");
-    await expect(page.getByText(/No matching engineering works found/i)).toBeVisible();
+    await expect(page.getByText(/No matching projects found/i)).toBeVisible();
     await page.getByRole("button", { name: /Reset all filters/i }).click();
 
-    // Progressive-disclosure More Filters reveals Archive tier tab cleanly
-    await page.getByRole("button", { name: /More Filters/i }).click();
-    await page.getByRole("tab", { name: /Experiments & Archive/i }).click();
+    // Progressive-disclosure Filters reveals Archive scope tab cleanly
+    await page.getByRole("button", { name: /^Filters/i }).click();
+    await page.getByRole("tab", { name: /^Archive/i }).click();
     await expect(page.getByText(/HeartRateMonitor \(Extended Fork\)/i)).toBeVisible();
     await expect(page.getByText(/aditydcp\/sample-wear-phone-app/i)).toBeVisible();
 
