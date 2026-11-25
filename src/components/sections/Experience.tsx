@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { SectionHeader } from "@/components/ui/SectionHeader";
 import { TimelineItem } from "@/components/ui/TimelineItem";
 import { experiences } from "@/data/experience";
 import { projects } from "@/data/projects";
@@ -33,17 +32,28 @@ export function Experience() {
   ];
 
   return (
-    <section id="experience" className="px-6 py-16 sm:py-20">
-      <div className="mx-auto max-w-[1200px]">
-        <SectionHeader
-          eyebrow="Experience"
-          title="Professional Experience & Technical Training"
-          description="Enterprise software quality engineering, QA/SDET internships, and structured technical training in reverse-chronological order."
-          action={
+    <section
+      id="experience"
+      className="border-t border-white/10 bg-[#08090B]/70 px-6 py-20 backdrop-blur-[2px] sm:py-24"
+    >
+      <div className="mx-auto grid max-w-[1280px] grid-cols-1 gap-12 lg:grid-cols-12">
+        <div className="min-w-0 space-y-6 lg:col-span-4">
+          <div className="space-y-3 lg:sticky lg:top-24">
+            <p className="font-mono text-xs tracking-[0.16em] text-[#00C8F5] uppercase">
+              Career Ledger
+            </p>
+            <h2 className="font-display text-[clamp(1.75rem,3.4vw,2.75rem)] font-bold leading-[1.08] tracking-[-0.03em] text-[#F1F3F5]">
+              Professional Experience
+            </h2>
+            <p className="text-sm leading-relaxed text-[#A0A6B0]">
+              Enterprise quality control, test automation, QA internships, and technical training
+              ordered reverse-chronologically.
+            </p>
+
             <div
               role="tablist"
               aria-label="Filter experience category"
-              className="inline-flex flex-wrap gap-1 rounded-lg border border-[#27272A] bg-[#18181B] p-1"
+              className="flex flex-wrap gap-1.5 pt-2"
             >
               {tabs.map((tab) => {
                 const selected = filter === tab.id;
@@ -54,10 +64,10 @@ export function Experience() {
                     role="tab"
                     aria-selected={selected}
                     onClick={() => setFilter(tab.id)}
-                    className={`min-h-[38px] rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                    className={`min-h-[40px] rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
                       selected
-                        ? "bg-[#27272A] text-[#F4F4F5]"
-                        : "text-[#A1A1AA] hover:text-[#F4F4F5]"
+                        ? "border-[#00C8F5] bg-[#00C8F5]/12 text-[#00C8F5]"
+                        : "border-white/15 bg-transparent text-[#A0A6B0] hover:border-white/30 hover:text-[#F1F3F5]"
                     }`}
                   >
                     {tab.label}
@@ -65,11 +75,11 @@ export function Experience() {
                 );
               })}
             </div>
-          }
-        />
+          </div>
+        </div>
 
-        <div className="max-w-4xl">
-          {filtered.map((entry) => {
+        <div className="min-w-0 lg:col-span-8">
+          {filtered.map((entry, idx) => {
             const linkedProjects = (entry.projectIds ?? [])
               .map((slug) => projectMap.get(slug))
               .filter((p): p is Project => Boolean(p));
@@ -79,6 +89,7 @@ export function Experience() {
                 key={entry.id}
                 entry={entry}
                 linkedProjects={linkedProjects}
+                indexLabel={String(idx + 1).padStart(2, "0")}
               />
             );
           })}

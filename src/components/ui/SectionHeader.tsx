@@ -18,19 +18,19 @@ export function SectionHeader({
   return (
     <div
       className={cn(
-        "mb-10 flex flex-col justify-between gap-4 border-b border-[#27272A] pb-6 sm:flex-row sm:items-end",
+        "mb-12 flex flex-col justify-between gap-6 border-b border-white/10 pb-7 sm:flex-row sm:items-end",
         className
       )}
     >
-      <div className="max-w-2xl space-y-2">
-        <p className="font-mono text-xs font-medium uppercase tracking-wider text-[#38BDF8]">
+      <div className="max-w-2xl space-y-2.5">
+        <p className="font-mono text-xs tracking-[0.16em] text-[#00C8F5] uppercase">
           {eyebrow}
         </p>
-        <h2 className="text-2xl font-semibold tracking-tight text-[#F4F4F5] sm:text-3xl">
+        <h2 className="font-display text-[clamp(1.75rem,3.4vw,2.75rem)] font-bold leading-[1.1] tracking-[-0.03em] text-[#F1F3F5]">
           {title}
         </h2>
         {description && (
-          <p className="text-sm leading-relaxed text-[#A1A1AA] sm:text-base">
+          <p className="max-w-xl text-sm leading-relaxed text-[#A0A6B0] sm:text-base">
             {description}
           </p>
         )}

@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Check, Copy, Github, Linkedin, Mail } from "lucide-react";
-import { HeroSculptureWidget } from "@/components/three/HeroSculptureWidget";
+import { ArrowRight, ArrowUpRight, Check, Copy } from "lucide-react";
+import { MagneticSurface } from "@/components/motion/MagneticSurface";
+import { RollText } from "@/components/motion/RollText";
 
 export function Hero() {
   const [copiedEmail, setCopiedEmail] = useState(false);
@@ -21,55 +22,58 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="px-6 pt-12 pb-16 sm:pt-16 sm:pb-24"
+      className="relative flex min-h-[calc(100svh-68px)] items-center px-6 py-14 sm:py-20"
     >
-      <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-12 lg:grid-cols-12">
-        <div className="min-w-0 space-y-6 lg:col-span-7">
-          <p className="font-mono text-xs font-medium uppercase tracking-widest text-[#38BDF8] sm:text-[13px]">
-            Quality Engineering · DevOps · Backend · Applied AI
+      <div className="mx-auto w-full max-w-[1280px]">
+        <div className="max-w-3xl space-y-7">
+          <p className="font-mono text-xs tracking-[0.18em] text-[#00C8F5] uppercase sm:text-[13px]">
+            Software Engineer · DevOps · QA / SDET · Applied AI
           </p>
 
           <div className="space-y-4">
-            <h1 className="text-4xl font-bold tracking-tight text-[#F4F4F5] sm:text-5xl lg:text-[56px] lg:leading-[1.08]">
+            <h1 className="font-display text-[clamp(2.65rem,6vw,5.25rem)] font-bold leading-[1.02] tracking-[-0.04em] text-[#F1F3F5]">
               Adrian Syah Abidin
             </h1>
-            <p className="max-w-2xl text-lg leading-relaxed text-[#D4D4D8] sm:text-xl">
-              Software Engineer building and validating reliable systems across enterprise financial
-              applications, test automation, and modern software delivery.
+            <p className="max-w-2xl text-[clamp(1.125rem,2vw,1.5rem)] leading-snug text-[#E2E6EC]">
+              Engineering{" "}
+              <span className="border-b-2 border-[#00C8F5]/75 pb-0.5 text-[#F1F3F5]">
+                reliable systems
+              </span>{" "}
+              across enterprise automotive financing QA, automated testing, and applied AI.
             </p>
           </div>
 
-          <p className="max-w-xl text-sm leading-relaxed text-[#A1A1AA] sm:text-base">
-            Information Technology background at{" "}
-            <span className="font-medium text-[#F4F4F5]">Universitas Gadjah Mada (UGM)</span>{" "}
-            with software quality engineering experience across{" "}
-            <span className="font-medium text-[#F4F4F5]">Berijalan Techno Center (ACC Group)</span>,{" "}
-            <span className="font-medium text-[#F4F4F5]">Qiscus</span>,{" "}
-            <span className="font-medium text-[#F4F4F5]">Tokopedia (ByteDance)</span>, and{" "}
-            <span className="font-medium text-[#F4F4F5]">Bitbybit Studio</span>. AWS &amp; CompTIA certified.
+          <p className="max-w-2xl text-sm leading-relaxed text-[#A0A6B0] sm:text-base">
+            Information Technology background at Universitas Gadjah Mada (UGM) with quality
+            engineering and systems delivery across Berijalan Techno Center (ACC Group), Qiscus,
+            Tokopedia (ByteDance), and Bitbybit Studio.
           </p>
 
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            <a
-              href="#experience"
-              className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-[#F4F4F5] px-5 py-2.5 text-sm font-semibold text-[#09090B] transition-colors hover:bg-[#38BDF8]"
-            >
-              Explore Experience &amp; Work
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </a>
+          <div className="flex flex-wrap items-center gap-3.5 pt-2">
+            <MagneticSurface>
+              <a
+                href="#work"
+                className="inline-flex min-h-[46px] items-center gap-2 rounded-full bg-[#F1F3F5] px-6 py-2.5 text-sm font-semibold text-[#08090B] transition-colors hover:bg-[#00C8F5]"
+              >
+                <span>Explore Selected Work</span>
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+            </MagneticSurface>
 
-            <Link
-              href="/projects/"
-              prefetch={false}
-              className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-[#27272A] bg-[#18181B] px-5 py-2.5 text-sm font-medium text-[#F4F4F5] transition-colors hover:border-[#3F3F46] hover:bg-[#202024]"
-            >
-              Browse All Projects
-            </Link>
+            <MagneticSurface strength={0.16}>
+              <Link
+                href="/projects/"
+                prefetch={false}
+                className="group inline-flex min-h-[46px] items-center gap-2 rounded-full border border-white/15 bg-[#101216]/85 px-6 py-2.5 text-sm font-medium text-[#F1F3F5] backdrop-blur-sm transition-colors hover:border-[#00C8F5]/60"
+              >
+                <RollText>All 73 Projects</RollText>
+              </Link>
+            </MagneticSurface>
 
             <button
               type="button"
               onClick={handleCopyEmail}
-              className="inline-flex min-h-[44px] max-w-full items-center gap-2 rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2.5 font-mono text-xs text-[#A1A1AA] transition-colors hover:border-[#3F3F46] hover:text-[#F4F4F5]"
+              className="inline-flex min-h-[46px] max-w-full items-center gap-2 rounded-full border border-white/10 bg-[#08090B]/70 px-4 py-2 font-mono text-xs text-[#A0A6B0] backdrop-blur-sm transition-colors hover:border-white/25 hover:text-[#F1F3F5]"
             >
               {copiedEmail ? (
                 <>
@@ -85,47 +89,41 @@ export function Hero() {
             </button>
           </div>
 
-          <div className="flex flex-wrap items-center gap-5 pt-2 text-sm text-[#A1A1AA]">
+          <div className="flex flex-wrap items-center gap-6 border-t border-white/10 pt-6 text-sm text-[#A0A6B0]">
             <a
               href="https://github.com/Adrian463588"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-[44px] items-center gap-1.5 transition-colors hover:text-[#38BDF8]"
+              className="group inline-flex min-h-[44px] items-center gap-1 transition-colors hover:text-[#F1F3F5]"
             >
-              <Github className="h-4 w-4" aria-hidden="true" />
-              <span>GitHub</span>
+              <RollText>GitHub</RollText>
+              <ArrowUpRight className="h-3.5 w-3.5 opacity-60" aria-hidden="true" />
             </a>
             <a
               href="https://www.linkedin.com/in/adrian-syah-abidin-0416b81b9/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-[44px] items-center gap-1.5 transition-colors hover:text-[#38BDF8]"
+              className="group inline-flex min-h-[44px] items-center gap-1 transition-colors hover:text-[#F1F3F5]"
             >
-              <Linkedin className="h-4 w-4" aria-hidden="true" />
-              <span>LinkedIn</span>
+              <RollText>LinkedIn</RollText>
+              <ArrowUpRight className="h-3.5 w-3.5 opacity-60" aria-hidden="true" />
             </a>
             <a
               href="https://medium.com/@adriansyah1230"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-[44px] items-center gap-1.5 transition-colors hover:text-[#38BDF8]"
+              className="group inline-flex min-h-[44px] items-center gap-1 transition-colors hover:text-[#F1F3F5]"
             >
-              <BookOpen className="h-4 w-4" aria-hidden="true" />
-              <span>Medium</span>
+              <RollText>Medium</RollText>
+              <ArrowUpRight className="h-3.5 w-3.5 opacity-60" aria-hidden="true" />
             </a>
             <a
-              href="mailto:adriansyah1230@gmail.com"
-              className="inline-flex min-h-[44px] items-center gap-1.5 transition-colors hover:text-[#38BDF8]"
+              href="#about"
+              className="group inline-flex min-h-[44px] items-center gap-1 text-[#00C8F5] transition-colors"
             >
-              <Mail className="h-4 w-4" aria-hidden="true" />
-              <span>Email</span>
+              <RollText>Profile &amp; Chibi Studio</RollText>
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
             </a>
-          </div>
-        </div>
-
-        <div className="min-w-0 lg:col-span-5">
-          <div className="mx-auto aspect-square w-full max-w-[360px] lg:max-w-[440px]">
-            <HeroSculptureWidget />
           </div>
         </div>
       </div>

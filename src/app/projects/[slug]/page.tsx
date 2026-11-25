@@ -90,13 +90,24 @@ export default async function ProjectCaseStudyPage({
         },
       };
 
+  const currentIndex = projects.findIndex((p) => p.slug === project.slug);
+  const prevItem = currentIndex > 0 ? projects[currentIndex - 1] : undefined;
+  const nextItem =
+    currentIndex >= 0 && currentIndex < projects.length - 1
+      ? projects[currentIndex + 1]
+      : undefined;
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <CaseStudyDetail project={project} />
+      <CaseStudyDetail
+        project={project}
+        prevProject={prevItem ? { slug: prevItem.slug, title: prevItem.title } : undefined}
+        nextProject={nextItem ? { slug: nextItem.slug, title: nextItem.title } : undefined}
+      />
     </>
   );
 }

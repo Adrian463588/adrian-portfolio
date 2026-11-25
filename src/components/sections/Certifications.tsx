@@ -1,50 +1,50 @@
-import { Award, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { Badge } from "@/components/ui/Badge";
 import { certifications } from "@/data/certifications";
 
 export function Certifications() {
   return (
-    <section id="certifications" className="px-6 py-16 sm:py-20">
-      <div className="mx-auto max-w-[1200px]">
+    <section
+      id="certifications"
+      className="border-t border-white/10 bg-[#08090B]/75 px-6 py-20 sm:py-24"
+    >
+      <div className="mx-auto max-w-[1280px]">
         <SectionHeader
           eyebrow="Credentials"
           title="Industry Certifications"
-          description="Cloud, cybersecurity, networking, and applied data credentials."
+          description="Verified cloud infrastructure, cybersecurity, networking, and data credentials."
         />
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="divide-y divide-white/10 border-y border-white/10">
           {certifications.map((cert) => (
             <article
               key={cert.id}
-              className="flex flex-col justify-between rounded-xl border border-[#27272A] bg-[#18181B] p-5"
+              className="grid grid-cols-1 gap-2 py-5 transition-colors hover:bg-white/[0.02] md:grid-cols-12 md:items-center md:gap-4"
             >
-              <div className="flex items-start gap-3.5">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#27272A] bg-[#09090B] text-[#38BDF8]">
-                  <Award className="h-5 w-5" aria-hidden="true" />
-                </div>
-                <div className="space-y-1">
-                  <Badge label={cert.category} />
-                  <h3 className="pt-1 text-sm font-semibold leading-snug text-[#F4F4F5]">
-                    {cert.name}
-                  </h3>
-                  <p className="font-mono text-xs text-[#D4D4D8]">{cert.issuer}</p>
-                </div>
+              <p className="font-mono text-xs tracking-wider text-[#00C8F5] uppercase md:col-span-3">
+                {cert.category}
+              </p>
+
+              <div className="md:col-span-5">
+                <h3 className="font-display text-base font-semibold text-[#F1F3F5]">
+                  {cert.name}
+                </h3>
+                <p className="text-xs text-[#A0A6B0]">{cert.issuer}</p>
               </div>
 
-              <div className="mt-4 border-t border-[#27272A] pt-3">
+              <div className="md:col-span-4 md:text-right">
                 {cert.verificationUrl ? (
                   <a
                     href={cert.verificationUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 font-mono text-xs text-[#38BDF8] hover:underline"
+                    className="inline-flex min-h-[36px] items-center gap-1.5 font-mono text-xs text-[#00C8F5] hover:underline"
                   >
-                    Verify credential
+                    <span>Verify credential</span>
                     <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
                   </a>
                 ) : (
-                  <p className="font-mono text-xs text-[#A1A1AA]">{cert.status}</p>
+                  <p className="font-mono text-xs text-[#A0A6B0]">{cert.status}</p>
                 )}
               </div>
             </article>

@@ -7,10 +7,10 @@ interface BadgeProps {
 }
 
 const variantStyles: Record<NonNullable<BadgeProps["variant"]>, string> = {
-  neutral: "border-[#27272A] bg-[#18181B] text-[#E4E4E7]",
-  accent: "border-[#38BDF8]/30 bg-[#38BDF8]/10 text-[#7DD3FC]",
-  success: "border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
-  warning: "border-amber-500/30 bg-amber-500/10 text-amber-300",
+  neutral: "border-white/15 bg-[#101216]/90 text-[#F1F3F5]",
+  accent: "border-[#00C8F5]/35 bg-[#00C8F5]/10 text-[#67E8F9]",
+  success: "border-emerald-500/35 bg-emerald-500/10 text-emerald-300",
+  warning: "border-amber-500/35 bg-amber-500/10 text-amber-300",
 };
 
 export function Badge({ label, variant = "neutral", className }: BadgeProps) {

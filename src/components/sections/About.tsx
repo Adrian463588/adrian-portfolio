@@ -1,64 +1,70 @@
-import { Users } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { ChibiShowcase } from "@/components/avatar/ChibiShowcase";
+import { ScrollParallax } from "@/components/motion/ScrollParallax";
 import { leadership } from "@/data/leadership";
 
 export function About() {
   return (
-    <section id="about" className="px-6 py-16 sm:py-20">
-      <div className="mx-auto max-w-[1200px] space-y-8">
+    <section
+      id="about"
+      className="border-t border-white/10 bg-[#08090B]/80 px-6 py-20 sm:py-24"
+    >
+      <div className="mx-auto max-w-[1280px]">
         <SectionHeader
-          eyebrow="About"
-          title="Engineering Perspective & Community"
-          description="Connecting enterprise quality engineering with systems, automation, and applied AI."
+          eyebrow="About & Perspective"
+          title="Digital Precision, Human Craft"
+          description="Connecting enterprise quality engineering with resilient systems, automation, and applied AI."
         />
 
-        <div className="rounded-xl border border-[#27272A] bg-[#18181B] p-6 sm:p-8">
-          <p className="max-w-3xl text-sm leading-relaxed text-[#E4E4E7] sm:text-base">
-            I am a technology professional with experience in software quality engineering, automated
-            testing, enterprise application modernization, and financial business process validation.
-            My professional experience includes manual and automated testing for enterprise automotive
-            financing systems, while my personal engineering projects span software development,
-            infrastructure, and applied AI.
-          </p>
-        </div>
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <ScrollParallax yOffset={16}>
+              <ChibiShowcase />
+            </ScrollParallax>
+          </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {leadership.map((org) => (
-            <article
-              key={org.organization}
-              className="flex min-w-0 flex-col justify-between rounded-xl border border-[#27272A] bg-[#18181B] p-6"
-            >
-              <div>
-                <div className="mb-3 flex items-center justify-between gap-2">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#27272A] bg-[#09090B] text-[#38BDF8]">
-                    <Users className="h-4 w-4" aria-hidden="true" />
-                  </div>
-                  <span className="rounded-md border border-[#27272A] bg-[#09090B] px-2.5 py-0.5 font-mono text-xs text-[#A1A1AA]">
-                    {org.period}
-                  </span>
-                </div>
+          <div className="min-w-0 space-y-8 lg:col-span-7">
+            <div className="space-y-4">
+              <p className="text-base leading-relaxed text-[#F1F3F5] sm:text-lg">
+                I am a technology professional focused on software quality engineering, automated
+                testing, enterprise application modernization, and financial business process
+                validation.
+              </p>
+              <p className="text-sm leading-relaxed text-[#A0A6B0] sm:text-base">
+                Alongside manual and automated quality control for enterprise automotive financing
+                platforms across AOL UniPaaS, Magic xpa, Cypress, and Jenkins CI, my personal
+                engineering work spans offline-first Android applications, Rust/Tauri developer
+                tooling, Cloud &amp; DevSecOps observability, and local LLM systems built out of
+                Yogyakarta.
+              </p>
+            </div>
 
-                <h3 className="text-base font-semibold text-[#F4F4F5]">
-                  {org.organization}
-                </h3>
-                <p className="mt-0.5 text-sm text-[#38BDF8]">{org.role}</p>
-
-                {org.bullets.length > 0 && (
-                  <ul className="mt-3 space-y-2 text-sm leading-relaxed text-[#A1A1AA]">
-                    {org.bullets.map((bullet, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span
-                          aria-hidden="true"
-                          className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#38BDF8]/70"
-                        />
-                        <span>{bullet}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+            <div className="space-y-4 border-t border-white/10 pt-6">
+              <p className="font-mono text-xs tracking-[0.14em] text-[#00C8F5] uppercase">
+                Campus &amp; Engineering Communities
+              </p>
+              <div className="divide-y divide-white/10 border-b border-white/10">
+                {leadership.map((org) => (
+                  <article key={org.organization} className="py-4">
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                      <h3 className="font-display text-base font-semibold text-[#F1F3F5]">
+                        {org.organization}
+                      </h3>
+                      <span className="font-mono text-xs text-[#A0A6B0]">{org.period}</span>
+                    </div>
+                    <p className="mt-0.5 text-xs font-medium text-[#00C8F5]">{org.role}</p>
+                    {org.bullets.length > 0 && (
+                      <ul className="mt-2 space-y-1 text-sm text-[#A0A6B0]">
+                        {org.bullets.map((bullet, idx) => (
+                          <li key={idx}>· {bullet}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </article>
+                ))}
               </div>
-            </article>
-          ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

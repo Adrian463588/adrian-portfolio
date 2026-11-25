@@ -51,3 +51,23 @@
 | Lighthouse (`/projects/archer-upgrade/` Desktop) | Chrome DevTools MCP | PASS | Accessibility `100`, Best Practices `100`, SEO `100`, Agentic Browsing `100` (`51/51` passed, `0` failed) |
 | Performance Trace (`/` Lab, 1x CPU) | Chrome DevTools MCP | PASS | LCP `259 ms` (`TTFB: 5 ms`, `Render delay: 255 ms`), CLS `0.00` |
 | Unverified Internal Items | Employer internal docs / Vercel deploy | NOT VERIFIED | Official internal project titles beyond supplied names, split of projects per Berijalan period, quantitative outcomes, and live remote Vercel deployment status require user verification / dashboard publish |
+
+---
+
+## 5. V3 Verification — Immersive Spatial 3D & Editorial Redesign (`feat/v3-immersive-3d-redesign`)
+
+> **Date:** 2026-11-25  
+> **Target Build:** Static Next.js 16 export (`out/`, 80/80 static pages)
+
+| Check | Command / Tool | Result | Details |
+|---|---|---|---|
+| Lint | `npm run lint` | PASS | 0 ESLint errors, 0 warnings |
+| TypeScript | `npm run typecheck` | PASS | `tsc --noEmit` strict mode, 0 errors |
+| Unit Tests | `npm run test` | PASS | Vitest: 3 files, 14/14 passed (`experience.test.ts`, `projects.test.ts`, `sync-github.test.ts`) |
+| Static Export Build | `npm run build` | PASS | Next.js `output: "export"` built 80/80 static pages in `out/` |
+| E2E & A11y Suite | `npm run test:e2e` | PASS | Playwright + `axe-core`: 27/27 tests passed (full-bleed spatial 3D hero without boxed debug badge, V2 grouped Berijalan & 11-step sequence preserved, `/projects/` compact toolbar with Gallery visible above the fold + `More Filters` + `Index` view mode, Chibi portrait load in `#about`, zero horizontal overflow across all 10 viewports `320px–1920px`, zero `axe` violations on 7 routes, reduced-motion & WebGL fallbacks) |
+| Confidentiality & Spelling Scan | PowerShell scan across 701 `out/` files | PASS | Zero confidential leaks; exact casing (`Magic xpa`, `AOL UniPaaS`, `Joint Financing`) |
+| Lighthouse (`/` Desktop & Mobile) | Chrome DevTools MCP | PASS | Accessibility `100`, Best Practices `100`, SEO `100`, Agentic Browsing `100` (`57/57` passed, `0` failed) |
+| Lighthouse (`/projects/` Desktop) | Chrome DevTools MCP | PASS | Accessibility `100`, Best Practices `100`, SEO `100`, Agentic Browsing `100` (`55/55` passed, `0` failed) |
+| Performance Trace (`/` Lab, 1x CPU) | Chrome DevTools MCP | PASS | LCP `291 ms` (`TTFB: 6 ms`, `Render delay: 286 ms`), CLS `0.00` |
+| Unverified Items | Live remote deploy | NOT VERIFIED | Feature branch `feat/v3-immersive-3d-redesign` pushed for review/Preview; `main` production unchanged pending authorization |

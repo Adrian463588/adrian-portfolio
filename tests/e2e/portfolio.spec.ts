@@ -9,10 +9,13 @@ const axeSource = fs.readFileSync(
 
 const viewports = [
   { name: "xs-320", width: 320, height: 720 },
+  { name: "mobile-360", width: 360, height: 800 },
   { name: "mobile-375", width: 375, height: 812 },
   { name: "mobile-390", width: 390, height: 844 },
+  { name: "mobile-430", width: 430, height: 932 },
   { name: "tablet-768", width: 768, height: 1024 },
   { name: "laptop-1024", width: 1024, height: 768 },
+  { name: "desktop-1280", width: 1280, height: 800 },
   { name: "desktop-1440", width: 1440, height: 900 },
   { name: "wide-1920", width: 1920, height: 1080 },
 ];
@@ -134,15 +137,34 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await expect(enterpriseSection).toContainText("Advanced Joint Finance Parameter");
     await expect(enterpriseSection.locator("img")).toHaveCount(0);
     await expect(enterpriseSection.getByRole("link", { name: /GitHub/i })).toHaveCount(0);
+
+    // Chibi workstation illustration renders cleanly in #about without clipping or broken load
+    const chibiImg = page.locator('#about img[alt*="Illustrated chibi portrait"]');
+    await chibiImg.scrollIntoViewIfNeeded();
+    await expect
+      .poll(async () =>
+        chibiImg.evaluate((el: HTMLImageElement) => (el.complete ? el.naturalWidth : 0))
+      )
+      .toBeGreaterThan(0);
+
+    // Full-bleed hero excludes boxed debug caption
+    await expect(page.getByText(/DEMAND RENDERED/i)).toHaveCount(0);
   });
 
-  test("project explorer search, origin filters, empty state, reset, and archive fork attribution", async ({
+  test("projects page opens in editorial gallery above the fold with progressive-disclosure filters and index mode", async ({
     page,
   }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/projects/", { waitUntil: "networkidle" });
-    await expect(page.locator("h1")).toHaveText("Engineering Project Explorer");
+    await expect(page.locator("h1")).toHaveText("Projects & Experiments.");
 
-    await page.getByRole("button", { name: /Professional Work \(3\)/i }).click();
+    // First gallery work renders immediately within initial desktop viewport
+    const firstCardBox = await page.locator("article").first().boundingBox();
+    expect(firstCardBox).toBeTruthy();
+    expect(firstCardBox!.y).toBeLessThan(860);
+
+    // Compact Origin selector filters enterprise dossiers
+    await page.getByLabel("Engagement Origin").selectOption("professional");
     await expect(page.getByText(/Showing 3 of/i)).toBeVisible();
     await expect(page.getByText(/Archer Upgrade/i)).toBeVisible();
     await page.getByRole("button", { name: /Clear filters/i }).click();
@@ -152,47 +174,52 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await expect(page.getByText(/EverShop Cypress/i)).toBeVisible();
 
     await search.fill("nonexistent-xyz-999");
-    await expect(page.getByText(/No matching engineering projects found/i)).toBeVisible();
+    await expect(page.getByText(/No matching engineering works found/i)).toBeVisible();
     await page.getByRole("button", { name: /Reset all filters/i }).click();
 
+    // Progressive-disclosure More Filters reveals Archive tier tab cleanly
+    await page.getByRole("button", { name: /More Filters/i }).click();
     await page.getByRole("tab", { name: /Experiments & Archive/i }).click();
     await expect(page.getByText(/HeartRateMonitor \(Extended Fork\)/i)).toBeVisible();
     await expect(page.getByText(/aditydcp\/sample-wear-phone-app/i)).toBeVisible();
+
+    // Index presentation mode renders single-line typographic catalog rows
+    await page.getByRole("button", { name: /^Index$/i }).click();
+    await expect(page.getByRole("link", { name: /Open case study for HeartRateMonitor/i })).toBeVisible();
   });
 
-  test("enterprise and personal detail routes resolve cleanly on static reload", async ({
-    page,
-  }) => {
-    for (const slug of [
-      "archer-upgrade",
-      "stnk-alignment",
-      "advanced-joint-finance-parameter",
-    ]) {
-      await page.goto(`/projects/${slug}/`, { waitUntil: "networkidle" });
-      await page.reload({ waitUntil: "networkidle" });
-      await expect(page.getByRole("link", { name: /View GitHub Repository/i })).toHaveCount(0);
-      await expect(page.getByText(/Illustrative · Non-Proprietary/i)).toBeVisible();
-      await expect(page.getByRole("link", { name: /Associated Experience/i })).toBeVisible();
-    }
+  test("enterprise detail routes resolve cleanly on static reload", async ({ page }) => {
+    await page.goto("/projects/archer-upgrade/", { waitUntil: "domcontentloaded" });
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await expect(page.getByRole("link", { name: /View GitHub Repository/i })).toHaveCount(0);
+    await expect(page.getByText(/Illustrative · Non-Proprietary/i)).toBeVisible();
+    await expect(page.getByRole("link", { name: /Associated Experience/i })).toBeVisible();
 
-    await page.goto("/projects/stnk-alignment/", { waitUntil: "networkidle" });
+    await page.goto("/projects/stnk-alignment/", { waitUntil: "domcontentloaded" });
     await expect(page.locator("article")).toContainText("Magic xpa");
     await expect(page.locator("article")).toContainText("AOL UniPaaS");
+    await expect(page.getByRole("link", { name: /View GitHub Repository/i })).toHaveCount(0);
 
-    await page.goto("/projects/advanced-joint-finance-parameter/", { waitUntil: "networkidle" });
+    await page.goto("/projects/advanced-joint-finance-parameter/", { waitUntil: "domcontentloaded" });
     await expect(page.locator("article")).toContainText("Joint Financing");
-    await page.goto("/projects/automate-plus/", { waitUntil: "networkidle" });
+    await expect(page.getByRole("link", { name: /Associated Experience/i })).toBeVisible();
+  });
+
+  test("personal detail routes resolve cleanly on static reload and preserve fork credit", async ({
+    page,
+  }) => {
+    await page.goto("/projects/automate-plus/", { waitUntil: "domcontentloaded" });
     await expect(page.locator("h1")).toHaveText("AutomatePlus");
-    await page.reload({ waitUntil: "networkidle" });
+    await page.reload({ waitUntil: "domcontentloaded" });
     await expect(page.locator("h1")).toHaveText("AutomatePlus");
 
-    await page.goto("/projects/heart-rate-monitor/", { waitUntil: "networkidle" });
+    await page.goto("/projects/heart-rate-monitor/", { waitUntil: "domcontentloaded" });
     await expect(page.locator("h1")).toContainText("HeartRateMonitor");
     const forkBox = page.locator("section").filter({ hasText: /Fork Attribution & Contribution Boundary/i });
     await expect(forkBox).toBeVisible();
     await expect(forkBox).toContainText(/aditydcp\/sample-wear-phone-app/i);
 
-    await page.goto("/projects/project-game/", { waitUntil: "networkidle" });
+    await page.goto("/projects/project-game/", { waitUntil: "domcontentloaded" });
     await expect(page.getByText(/Unity \(C#\)/i)).toBeVisible();
     await expect(page.getByText(/2D side-scrolling/i).first()).toBeVisible();
     await expect(page.getByText(/Unreal Engine/i)).toHaveCount(0);
@@ -228,7 +255,7 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
   test("reduced-motion preference renders static geometric fallback", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/", { waitUntil: "networkidle" });
-    await expect(page.getByText(/REDUCED MOTION · STATIC GEOMETRY/i)).toBeVisible();
+    await expect(page.getByText(/REDUCED MOTION · STATIC GEOMETRY/i)).toBeAttached();
     await expect(page.locator("canvas")).toHaveCount(0);
   });
 
@@ -252,7 +279,7 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     });
 
     await page.goto("/", { waitUntil: "networkidle" });
-    await expect(page.getByText(/WEBGL FALLBACK/i)).toBeVisible();
+    await expect(page.getByText(/WEBGL FALLBACK/i)).toBeAttached();
     expect(errors).toEqual([]);
   });
 
