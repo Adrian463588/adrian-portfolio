@@ -60,6 +60,9 @@ export const metadata: Metadata = {
     images: ["/og-image.png"],
   },
   robots: { index: true, follow: true },
+  verification: {
+    google: "P4O6B5PWmL-5E0i5XRbfkOSaPcop92urgS2lk-IAZ5s",
+  },
 };
 
 export default function RootLayout({

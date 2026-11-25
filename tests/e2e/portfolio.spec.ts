@@ -434,6 +434,7 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     page,
     context,
   }) => {
+    test.slow();
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "networkidle" });
@@ -515,6 +516,10 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await page.goto("/", { waitUntil: "networkidle" });
     await expect(page).toHaveTitle("Adrian Syah Abidin | Software & QA Automation Engineer");
     await expect(page.locator('meta[name="keywords"]')).toHaveCount(0);
+    await expect(page.locator('meta[name="google-site-verification"]')).toHaveAttribute(
+      "content",
+      "P4O6B5PWmL-5E0i5XRbfkOSaPcop92urgS2lk-IAZ5s"
+    );
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
       "https://adriansyahabidin.vercel.app/"
@@ -560,6 +565,7 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
   test("personal detail routes resolve cleanly on static reload, enforce V6 flagship & private rules, and preserve fork credit", async ({
     page,
   }) => {
+    test.slow();
     await page.goto("/projects/android-stress-detection/", { waitUntil: "networkidle" });
     await expect(page).toHaveTitle(/Android Stress Detection — PPG & Wear OS Research/);
     await expect(page.locator("h1")).toHaveText("Android Stress Detection");
