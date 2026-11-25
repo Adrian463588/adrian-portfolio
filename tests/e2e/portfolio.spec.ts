@@ -61,11 +61,14 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
 
     const parfumCard = workArticles.nth(4);
     await expect(parfumCard).toContainText("ParfumCreator");
+    await expect(parfumCard).not.toContainText(/PRIVATE REPOSITORY|PRIVATE OVERVIEW|SOURCE OMITTED/i);
     await expect(parfumCard.getByRole("link", { name: /Case Study/i })).toHaveAttribute(
       "href",
       "/projects/parfum-creator/"
     );
-    await expect(parfumCard.getByRole("link", { name: /GitHub/i })).toHaveCount(0);
+    const parfumGitHub = parfumCard.getByRole("link", { name: /GitHub/i });
+    await expect(parfumGitHub).toHaveCount(1);
+    await expect(parfumGitHub).toHaveAttribute("href", "https://github.com/Adrian463588/ParfumCreator");
     await expect(parfumCard.getByRole("link", { name: /Live Demo/i })).toHaveCount(0);
 
     // Ensure contact section at bottom is immediately rendered at opacity 1 without scroll locks
@@ -74,10 +77,10 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       .evaluate((el) => getComputedStyle(el).opacity);
     expect(Number(contactOpacity)).toBe(1);
 
-    // Real images on public screenshot projects (01-04 + 06 = 5) load with non-zero naturalWidth
+    // Real images on all 6 featured projects load with non-zero naturalWidth after scrolling
     const images = workSection.locator("img");
     const imgCount = await images.count();
-    expect(imgCount).toBe(5);
+    expect(imgCount).toBe(6);
     for (let i = 0; i < imgCount; i++) {
       const img = images.nth(i);
       await img.scrollIntoViewIfNeeded();
@@ -276,7 +279,7 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
     const homeResults = await collectImageStates("img");
-    expect(homeResults.length).toBe(6);
+    expect(homeResults.length).toBe(7);
     for (const r of homeResults) {
       expect(r.complete && r.naturalWidth > 0, `Homepage image failed: ${JSON.stringify(r)}`).toBe(true);
     }
@@ -573,13 +576,54 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     }
 
     await page.goto("/projects/parfum-creator/", { waitUntil: "networkidle" });
+    await expect(page).toHaveTitle("ParfumCreator — Android Perfume Formulation App | Adrian Syah Abidin");
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      "content",
+      "Explore ParfumCreator, an Android application for perfume formulation, fragrance blending, and recipe development, built with Kotlin and Jetpack Compose."
+    );
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      "https://adriansyahabidin.vercel.app/projects/parfum-creator/"
+    );
+    const parfumLd = await page.locator('script[type="application/ld+json"]').first().textContent();
+    expect(parfumLd).toContain("SoftwareSourceCode");
+    expect(parfumLd).toContain("https://github.com/Adrian463588/ParfumCreator");
     await expect(page.locator("h1")).toHaveText("ParfumCreator");
-    await expect(page.getByText("Private Repository", { exact: true })).toBeVisible();
-    await expect(
-      page.locator("article").getByRole("link", { name: /Source code|GitHub|Live Demo|Release/i })
-    ).toHaveCount(0);
+    await expect(page.getByText("Private Repository", { exact: true })).toHaveCount(0);
+    await expect(page.locator("article")).not.toContainText(/PRIVATE OVERVIEW|SOURCE OMITTED|Private summary/i);
+    await expect(page.locator("article").getByRole("link", { name: /Source code/i })).toHaveAttribute(
+      "href",
+      "https://github.com/Adrian463588/ParfumCreator"
+    );
+    await expect(page.locator("article").getByRole("link", { name: /^Release$/i })).toHaveAttribute(
+      "href",
+      "https://github.com/Adrian463588/ParfumCreator/releases/tag/v1.3.1"
+    );
+    await expect(page.locator("article").getByRole("link", { name: /Live Demo/i })).toHaveCount(0);
+    const parfumImgs = page.locator("article img");
+    await expect(parfumImgs).toHaveCount(4);
+    for (let i = 0; i < 4; i++) {
+      const img = parfumImgs.nth(i);
+      await img.scrollIntoViewIfNeeded();
+      await expect
+        .poll(async () => img.evaluate((el: HTMLImageElement) => (el.complete ? el.naturalWidth : 0)))
+        .toBeGreaterThan(0);
+    }
     await page.reload({ waitUntil: "domcontentloaded" });
     await expect(page.locator("h1")).toHaveText("ParfumCreator");
+
+    await page.goto("/projects/?q=ParfumCreator", { waitUntil: "networkidle" });
+    const parfumSearchCard = page.locator("article").filter({ hasText: "ParfumCreator" }).first();
+    await expect(parfumSearchCard).toBeVisible();
+    await expect(parfumSearchCard.getByRole("link", { name: /GitHub/i })).toHaveAttribute(
+      "href",
+      "https://github.com/Adrian463588/ParfumCreator"
+    );
+    await expect
+      .poll(async () =>
+        parfumSearchCard.locator("img").first().evaluate((el: HTMLImageElement) => (el.complete ? el.naturalWidth : 0))
+      )
+      .toBeGreaterThan(0);
 
     for (const check of [
       { slug: "quran-plus", title: "QuranPlus", seo: /QuranPlus — Offline Quran & AI Android App/ },

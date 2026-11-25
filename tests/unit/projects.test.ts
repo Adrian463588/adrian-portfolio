@@ -38,7 +38,7 @@ describe("projects catalog & domain logic", () => {
     expect(result.errors.some((e) => /https/i.test(e))).toBe(true);
   });
 
-  it("pins Android Stress Detection as flagship followed by exact V6 featured order and protects private ParfumCreator", () => {
+  it("pins Android Stress Detection as flagship followed by exact featured order and integrates public ParfumCreator", () => {
     const featured = getFeaturedProjects(projects);
     expect(featured.length).toBeGreaterThanOrEqual(5);
     expect(featured.slice(0, 5).map((p) => p.slug)).toEqual([...FEATURED_PROJECT_ORDER]);
@@ -46,17 +46,19 @@ describe("projects catalog & domain logic", () => {
 
     for (const p of featured) {
       expect(p.tier).toBe("featured");
-      if (p.visibility !== "private-summary") {
-        expect(p.screenshots.length).toBeGreaterThan(0);
-      }
+      expect(p.screenshots.length).toBeGreaterThan(0);
     }
 
-    const parfum = getProjectBySlug(projects, "parfum-creator");
-    expect(parfum).toBeDefined();
-    expect(parfum?.visibility).toBe("private-summary");
-    expect(parfum?.screenshots).toEqual([]);
-    expect(getProjectActions(parfum!)).toEqual({
+    const parfumMatches = projects.filter((p) => p.slug === "parfum-creator");
+    expect(parfumMatches).toHaveLength(1);
+    const parfum = parfumMatches[0];
+    expect(parfum.visibility).not.toBe("private-summary");
+    expect(parfum.repositoryUrl).toBe("https://github.com/Adrian463588/ParfumCreator");
+    expect(parfum.screenshots.length).toBe(4);
+    expect(getProjectActions(parfum)).toEqual({
       detailUrl: "/projects/parfum-creator/",
+      repoUrl: "https://github.com/Adrian463588/ParfumCreator",
+      releaseUrl: "https://github.com/Adrian463588/ParfumCreator/releases/tag/v1.3.1",
     });
   });
 
@@ -71,14 +73,9 @@ describe("projects catalog & domain logic", () => {
       }));
     const remerged = mergeGitHubAndOverrides(reversed, projectOverrides);
     const featuredPublicSlugs = getFeaturedProjects(remerged)
-      .slice(0, 4)
+      .slice(0, 5)
       .map((p) => p.slug);
-    expect(featuredPublicSlugs).toEqual([
-      "android-stress-detection",
-      "quran-plus",
-      "coffee-creator",
-      "adzan-plus",
-    ]);
+    expect(featuredPublicSlugs).toEqual([...FEATURED_PROJECT_ORDER]);
   });
 
   it("resolves every competency relatedProjectSlugs target cleanly", () => {
