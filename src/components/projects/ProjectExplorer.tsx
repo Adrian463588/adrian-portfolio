@@ -1,25 +1,31 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { RotateCcw, Search } from "lucide-react";
+import { ArrowUpRight, LayoutGrid, List, RotateCcw, Search, SlidersHorizontal } from "lucide-react";
 import type { Project, ProjectCategory, ProjectTier } from "@/types";
 import {
   filterProjects,
   getAvailableCategories,
+  getProjectActions,
   getTopTechnologies,
   type ProjectFilterState,
 } from "@/lib/projects";
 import { ProjectCard } from "@/components/projects/ProjectCard";
+import { ProjectHoverPreview } from "@/components/projects/ProjectHoverPreview";
+import { useMotion } from "@/context/MotionContext";
 
 interface ProjectExplorerProps {
   items: Project[];
 }
 
 type OriginFilter = "all" | "professional" | "personal" | "academic" | "experiment";
+type ViewMode = "gallery" | "index";
 
 export function ProjectExplorer({ items }: ProjectExplorerProps) {
   const pathname = usePathname();
+  const { canHover, qualityMode } = useMotion();
 
   const availableCategories = useMemo(() => getAvailableCategories(items), [items]);
   const topTechnologies = useMemo(() => getTopTechnologies(items, 20), [items]);
@@ -30,6 +36,13 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
   const [category, setCategory] = useState<"all" | ProjectCategory>("all");
   const [technology, setTechnology] = useState<string>("all");
   const [sort, setSort] = useState<"editorial" | "recent">("editorial");
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>("gallery");
+  const [hoveredPreview, setHoveredPreview] = useState<{
+    project: Project | null;
+    x: number;
+    y: number;
+  }>({ project: null, x: 0, y: 0 });
 
   useEffect(() => {
     if (!window.location.search) return;
@@ -42,7 +55,10 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
       const tech = params.get("tech");
       const s = params.get("sort");
       if (q) setQuery(q);
-      if (t === "featured" || t === "catalog" || t === "archive") setTier(t);
+      if (t === "featured" || t === "catalog" || t === "archive") {
+        setTier(t);
+        setFiltersOpen(true);
+      }
       if (
         o === "professional" ||
         o === "personal" ||
@@ -51,9 +67,18 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
       ) {
         setOrigin(o);
       }
-      if (c && availableCategories.includes(c)) setCategory(c);
-      if (tech) setTechnology(tech);
-      if (s === "recent") setSort("recent");
+      if (c && availableCategories.includes(c)) {
+        setCategory(c);
+        setFiltersOpen(true);
+      }
+      if (tech) {
+        setTechnology(tech);
+        setFiltersOpen(true);
+      }
+      if (s === "recent") {
+        setSort("recent");
+        setFiltersOpen(true);
+      }
     });
     return () => cancelAnimationFrame(frame);
   }, [availableCategories]);
@@ -123,46 +148,70 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
     [items]
   );
 
-  const hasActiveFilter =
-    query.trim() !== "" ||
-    tier !== "all" ||
-    origin !== "all" ||
-    category !== "all" ||
-    technology !== "all" ||
-    sort !== "editorial";
+  const secondaryFilterCount =
+    (tier !== "all" ? 1 : 0) +
+    (category !== "all" ? 1 : 0) +
+    (technology !== "all" ? 1 : 0) +
+    (sort !== "editorial" ? 1 : 0);
 
-  const originTabs: { id: OriginFilter; label: string }[] = (
+  const hasActiveFilter =
+    query.trim() !== "" || origin !== "all" || secondaryFilterCount > 0;
+
+  const typeTabs: { id: OriginFilter; label: string }[] = (
     [
-      { id: "all" as const, label: `All Work (${counts.all})` },
-      { id: "professional" as const, label: `Professional Work (${counts.professional})` },
-      { id: "personal" as const, label: `Personal Projects (${counts.personal})` },
-      { id: "academic" as const, label: `Academic Projects (${counts.academic})` },
-      { id: "experiment" as const, label: `Experiments (${counts.experiment})` },
+      { id: "all" as const, label: "All" },
+      { id: "professional" as const, label: "Professional" },
+      { id: "personal" as const, label: "Personal" },
+      { id: "academic" as const, label: "Academic" },
+      { id: "experiment" as const, label: "Experiments" },
     ] satisfies { id: OriginFilter; label: string }[]
   ).filter((tab) => tab.id === "all" || counts[tab.id] > 0);
 
-  const tierTabs: { id: "all" | ProjectTier; label: string }[] = [
-    { id: "all", label: `All Eligible (${counts.all})` },
+  const scopeTabs: { id: "all" | ProjectTier; label: string }[] = [
+    { id: "all", label: `All (${counts.all})` },
     { id: "featured", label: `Featured (${counts.featured})` },
-    { id: "catalog", label: `Core Projects (${counts.catalog})` },
-    { id: "archive", label: `Experiments & Archive (${counts.archive})` },
+    { id: "catalog", label: `Standard (${counts.catalog})` },
+    { id: "archive", label: `Archive (${counts.archive})` },
   ];
 
   return (
     <div className="space-y-8">
-      {/* Search, technology & sort controls */}
-      <div className="grid grid-cols-1 gap-4 rounded-xl border border-[#27272A] bg-[#18181B] p-4 sm:p-5 lg:grid-cols-12">
-        <div className="min-w-0 lg:col-span-6">
-          <label htmlFor="project-search" className="mb-1.5 block font-mono text-xs text-[#A1A1AA]">
-            Search Projects
-          </label>
-          <div className="relative">
+      {/* Compact borderless editorial toolbar — keeps first projects immediately visible */}
+      <div className="flex flex-col gap-4 border-b border-white/10 pb-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="Filter by type">
+          {typeTabs.map((tab) => {
+            const active = origin === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => {
+                  setOrigin(tab.id);
+                  updateUrl({ origin: tab.id });
+                }}
+                className={`active-press min-h-[38px] rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
+                  active
+                    ? "border-[#65C8F5] bg-[#65C8F5]/14 text-[#65C8F5]"
+                    : "border-white/12 bg-transparent text-[#A7ADB7] hover:border-white/25 hover:text-[#F2F0EC]"
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2.5">
+          <div className="relative min-w-0 flex-1 sm:w-56 sm:flex-initial">
             <Search
               aria-hidden="true"
-              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A1A1AA]"
+              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A7ADB7]"
             />
             <input
               id="project-search"
+              aria-label="Search projects"
               type="search"
               value={query}
               onChange={(e) => {
@@ -170,15 +219,94 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
                 setQuery(v);
                 updateUrl({ query: v });
               }}
-              placeholder="Search by project name, technology, or problem domain..."
-              className="min-h-[44px] w-full rounded-lg border border-[#27272A] bg-[#09090B] py-2 pl-10 pr-4 text-sm text-[#F4F4F5] placeholder:text-[#9898A2] focus:border-[#38BDF8] focus:outline-none"
+              placeholder="Search projects..."
+              className="min-h-[40px] w-full rounded-full border border-white/12 bg-[#15171C]/75 py-1.5 pl-9 pr-4 text-xs text-[#F2F0EC] placeholder:text-[#8E95A0] focus:border-[#65C8F5] focus:outline-none"
             />
           </div>
-        </div>
 
-        <div className="min-w-0 sm:grid sm:grid-cols-2 sm:gap-4 lg:col-span-6">
-          <div>
-            <label htmlFor="tech-filter" className="mb-1.5 block font-mono text-xs text-[#A1A1AA]">
+          <button
+            type="button"
+            aria-expanded={filtersOpen}
+            aria-controls="more-filters-panel"
+            onClick={() => setFiltersOpen((prev) => !prev)}
+            className={`active-press inline-flex min-h-[40px] items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
+              filtersOpen || secondaryFilterCount > 0
+                ? "border-[#65C8F5] bg-[#65C8F5]/14 text-[#65C8F5]"
+                : "border-white/12 bg-[#15171C]/75 text-[#F2F0EC] hover:border-white/25"
+            }`}
+          >
+            <SlidersHorizontal className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>
+              Filters{secondaryFilterCount > 0 ? ` (${secondaryFilterCount})` : ""}
+            </span>
+          </button>
+
+          <div
+            role="group"
+            aria-label="Project presentation view"
+            className="inline-flex rounded-full border border-white/12 bg-[#15171C]/75 p-0.5"
+          >
+            <button
+              type="button"
+              aria-pressed={viewMode === "gallery"}
+              onClick={() => setViewMode("gallery")}
+              className={`inline-flex min-h-[34px] items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                viewMode === "gallery"
+                  ? "bg-[#F2F0EC] text-[#08090C]"
+                  : "text-[#A7ADB7] hover:text-[#F2F0EC]"
+              }`}
+            >
+              <LayoutGrid className="h-3.5 w-3.5" aria-hidden="true" />
+              <span>Gallery</span>
+            </button>
+            <button
+              type="button"
+              aria-pressed={viewMode === "index"}
+              onClick={() => setViewMode("index")}
+              className={`inline-flex min-h-[34px] items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                viewMode === "index"
+                  ? "bg-[#F2F0EC] text-[#08090C]"
+                  : "text-[#A7ADB7] hover:text-[#F2F0EC]"
+              }`}
+            >
+              <List className="h-3.5 w-3.5" aria-hidden="true" />
+              <span>Index</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Progressive-disclosure secondary filters panel */}
+      {filtersOpen && (
+        <div
+          id="more-filters-panel"
+          className="grid grid-cols-1 gap-4 rounded-xl border border-white/12 bg-[#15171C]/95 p-5 backdrop-blur-md lg:grid-cols-12"
+        >
+          <div className="lg:col-span-4">
+            <label htmlFor="cat-filter" className="mb-1.5 block text-xs font-medium text-[#A7ADB7]">
+              Category
+            </label>
+            <select
+              id="cat-filter"
+              value={category}
+              onChange={(e) => {
+                const v = e.target.value as "all" | ProjectCategory;
+                setCategory(v);
+                updateUrl({ category: v });
+              }}
+              className="min-h-[42px] w-full rounded-lg border border-white/12 bg-[#08090C] px-3 py-2 text-sm text-[#F2F0EC] focus:border-[#65C8F5] focus:outline-none"
+            >
+              <option value="all">All categories</option>
+              {availableCategories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="lg:col-span-4">
+            <label htmlFor="tech-filter" className="mb-1.5 block text-xs font-medium text-[#A7ADB7]">
               Technology
             </label>
             <select
@@ -189,7 +317,7 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
                 setTechnology(v);
                 updateUrl({ technology: v });
               }}
-              className="min-h-[44px] w-full rounded-lg border border-[#27272A] bg-[#09090B] px-3 py-2 text-sm text-[#F4F4F5] focus:border-[#38BDF8] focus:outline-none"
+              className="min-h-[42px] w-full rounded-lg border border-white/12 bg-[#08090C] px-3 py-2 text-sm text-[#F2F0EC] focus:border-[#65C8F5] focus:outline-none"
             >
               <option value="all">All technologies</option>
               {topTechnologies.map((tech) => (
@@ -200,9 +328,9 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
             </select>
           </div>
 
-          <div className="mt-4 sm:mt-0">
-            <label htmlFor="sort-order" className="mb-1.5 block font-mono text-xs text-[#A1A1AA]">
-              Sort Order
+          <div className="lg:col-span-4">
+            <label htmlFor="sort-order" className="mb-1.5 block text-xs font-medium text-[#A7ADB7]">
+              Sort
             </label>
             <select
               id="sort-order"
@@ -212,162 +340,153 @@ export function ProjectExplorer({ items }: ProjectExplorerProps) {
                 setSort(v);
                 updateUrl({ sort: v });
               }}
-              className="min-h-[44px] w-full rounded-lg border border-[#27272A] bg-[#09090B] px-3 py-2 text-sm text-[#F4F4F5] focus:border-[#38BDF8] focus:outline-none"
+              className="min-h-[42px] w-full rounded-lg border border-white/12 bg-[#08090C] px-3 py-2 text-sm text-[#F2F0EC] focus:border-[#65C8F5] focus:outline-none"
             >
-              <option value="editorial">Editorial relevance</option>
+              <option value="editorial">Featured</option>
               <option value="recent">Recently updated</option>
             </select>
           </div>
-        </div>
 
-        {/* Origin filter pills */}
-        <div className="lg:col-span-12">
-          <p className="mb-2 font-mono text-xs text-[#A1A1AA]">Engagement Origin</p>
-          <div className="flex flex-wrap gap-2">
-            {originTabs.map((tab) => {
-              const active = origin === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  aria-pressed={active}
-                  onClick={() => {
-                    setOrigin(tab.id);
-                    updateUrl({ origin: tab.id });
-                  }}
-                  className={`min-h-[38px] rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
-                    active
-                      ? "border-[#38BDF8] bg-[#38BDF8]/15 text-[#7DD3FC]"
-                      : "border-[#27272A] bg-[#09090B] text-[#A1A1AA] hover:border-[#3F3F46] hover:text-[#F4F4F5]"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
+          <div className="lg:col-span-12">
+            <p className="mb-2 text-xs font-medium text-[#A7ADB7]">Featured &amp; Archive</p>
+            <div role="tablist" aria-label="Filter by archive scope" className="flex flex-wrap gap-2">
+              {scopeTabs.map((tab) => {
+                const selected = tier === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={selected}
+                    onClick={() => {
+                      setTier(tab.id);
+                      updateUrl({ tier: tab.id });
+                    }}
+                    className={`min-h-[38px] rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
+                      selected
+                        ? "border-[#65C8F5] bg-[#65C8F5]/14 text-[#65C8F5]"
+                        : "border-white/12 bg-[#08090C] text-[#A7ADB7] hover:border-white/25 hover:text-[#F2F0EC]"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
+      )}
 
-        {/* Tier tabs */}
-        <div className="lg:col-span-12">
-          <div
-            role="tablist"
-            aria-label="Project tier filter"
-            className="flex flex-wrap gap-2 border-t border-[#27272A] pt-4"
-          >
-            {tierTabs.map((tab) => {
-              const selected = tier === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={selected}
-                  onClick={() => {
-                    setTier(tab.id);
-                    updateUrl({ tier: tab.id });
-                  }}
-                  className={`min-h-[40px] rounded-lg border px-3.5 py-2 text-xs font-medium transition-colors ${
-                    selected
-                      ? "border-[#38BDF8] bg-[#38BDF8]/15 text-[#7DD3FC]"
-                      : "border-[#27272A] bg-[#09090B] text-[#A1A1AA] hover:border-[#3F3F46] hover:text-[#F4F4F5]"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Category pills */}
-        <div className="lg:col-span-12">
-          <p className="mb-2 font-mono text-xs text-[#A1A1AA]">Engineering Domain</p>
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={() => {
-                setCategory("all");
-                updateUrl({ category: "all" });
-              }}
-              aria-pressed={category === "all"}
-              className={`min-h-[38px] rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
-                category === "all"
-                  ? "border-[#F4F4F5] bg-[#F4F4F5] text-[#09090B]"
-                  : "border-[#27272A] bg-[#09090B] text-[#A1A1AA] hover:text-[#F4F4F5]"
-              }`}
-            >
-              All Domains
-            </button>
-
-            {availableCategories.map((cat) => {
-              const active = category === cat;
-              return (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => {
-                    setCategory(cat);
-                    updateUrl({ category: cat });
-                  }}
-                  aria-pressed={active}
-                  className={`min-h-[38px] rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
-                    active
-                      ? "border-[#38BDF8] bg-[#38BDF8] text-[#09090B]"
-                      : "border-[#27272A] bg-[#09090B] text-[#A1A1AA] hover:border-[#3F3F46] hover:text-[#F4F4F5]"
-                  }`}
-                >
-                  {cat}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      {/* Result count bar */}
+      {/* Result count bar + contextual active filter reset */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="sr-only">Filtered Engineering Projects</h2>
-        <p aria-live="polite" className="font-mono text-xs text-[#A1A1AA]">
-          Showing <span className="font-semibold text-[#F4F4F5]">{filtered.length}</span> of{" "}
-          <span className="font-semibold text-[#F4F4F5]">{items.length}</span> verified public projects
+        <h2 className="sr-only">Projects</h2>
+        <p aria-live="polite" className="text-xs text-[#A7ADB7]">
+          Showing <span className="font-mono font-semibold text-[#F2F0EC]">{filtered.length}</span>{" "}
+          of <span className="font-mono font-semibold text-[#F2F0EC]">{items.length}</span> projects
         </p>
 
         {hasActiveFilter && (
           <button
             type="button"
             onClick={resetFilters}
-            className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg border border-[#27272A] bg-[#18181B] px-3.5 py-2 text-xs font-medium text-[#F4F4F5] transition-colors hover:border-[#38BDF8]/50 hover:text-[#38BDF8]"
+            className="active-press inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-white/15 bg-[#15171C] px-3.5 py-1.5 text-xs font-medium text-[#F2F0EC] transition-colors hover:border-[#65C8F5] hover:text-[#65C8F5]"
           >
             <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-            Clear filters
+            <span>Clear filters</span>
           </button>
         )}
       </div>
 
-      {/* Grid or Empty State */}
-      {filtered.length > 0 ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </div>
-      ) : (
-        <div className="rounded-xl border border-[#27272A] bg-[#18181B] px-6 py-14 text-center">
-          <h2 className="text-lg font-semibold text-[#F4F4F5]">
-            No matching engineering projects found
+      {/* Gallery, Editorial Index, or Empty State */}
+      {filtered.length === 0 ? (
+        <div className="border-y border-white/10 py-16 text-center">
+          <h2 className="font-display text-lg font-bold text-[#F2F0EC]">
+            No matching projects found
           </h2>
-          <p className="mx-auto mt-2 max-w-md text-sm text-[#A1A1AA]">
-            No repositories matched your current search or filter combination. Reset filters to view all {items.length} documented repositories.
+          <p className="mx-auto mt-2 max-w-md text-sm text-[#A7ADB7]">
+            No entries matched your current filter selection. Reset filters to view all{" "}
+            {items.length} projects.
           </p>
           <button
             type="button"
             onClick={resetFilters}
-            className="mt-6 inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-[#F4F4F5] px-5 py-2.5 text-sm font-semibold text-[#09090B] transition-colors hover:bg-[#38BDF8]"
+            className="active-press mt-6 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#F2F0EC] px-5 py-2.5 text-sm font-semibold text-[#08090C] transition-colors hover:bg-[#65C8F5]"
           >
             <RotateCcw className="h-4 w-4" aria-hidden="true" />
-            Reset all filters
+            <span>Reset all filters</span>
           </button>
+        </div>
+      ) : viewMode === "gallery" ? (
+        <div className="grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((project, index) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              priorityImage={index < 3}
+              featuredLead={index === 0}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="relative divide-y divide-white/10 border-y border-white/10">
+          {filtered.map((project, index) => (
+            <div
+              key={project.id}
+              onPointerMove={(e) => {
+                if (!canHover || qualityMode === "reduced" || e.pointerType === "touch") return;
+                setHoveredPreview({ project, x: e.clientX, y: e.clientY });
+              }}
+              onPointerLeave={() =>
+                setHoveredPreview((prev) => ({ ...prev, project: null }))
+              }
+              className="group grid grid-cols-1 gap-2 py-4 transition-colors hover:bg-white/[0.025] md:grid-cols-12 md:items-center md:gap-4"
+            >
+              <span className="font-mono text-xs text-[#65C8F5] md:col-span-1">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+
+              <div className="min-w-0 md:col-span-5">
+                <Link
+                  href={getProjectActions(project).detailUrl ?? "/projects/"}
+                  prefetch={false}
+                  className="font-display block truncate text-base font-bold text-[#F2F0EC] transition-colors group-hover:text-[#65C8F5]"
+                >
+                  {project.title}
+                </Link>
+                {project.projectOrigin === "fork" && project.upstreamCredit && (
+                  <p className="truncate text-xs text-amber-300">
+                    {project.upstreamCredit}
+                  </p>
+                )}
+              </div>
+
+              <span className="text-xs text-[#A7ADB7] md:col-span-3">
+                {project.category}
+              </span>
+
+              <span className="truncate text-xs text-[#D6D9DF] md:col-span-2">
+                {project.technologies.slice(0, 2).join(" · ")}
+              </span>
+
+              <div className="md:col-span-1 md:text-right">
+                <Link
+                  href={getProjectActions(project).detailUrl ?? "/projects/"}
+                  prefetch={false}
+                  aria-label={`Open case study for ${project.title}`}
+                  className="inline-flex min-h-[36px] items-center justify-end gap-1 text-xs font-medium text-[#65C8F5]"
+                >
+                  <span>Open</span>
+                  <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </Link>
+              </div>
+            </div>
+          ))}
+
+          <ProjectHoverPreview
+            project={hoveredPreview.project}
+            pointerX={hoveredPreview.x}
+            pointerY={hoveredPreview.y}
+          />
         </div>
       )}
     </div>

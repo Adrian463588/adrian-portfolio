@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 interface SectionHeaderProps {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   description?: string;
   action?: React.ReactNode;
@@ -18,19 +18,21 @@ export function SectionHeader({
   return (
     <div
       className={cn(
-        "mb-10 flex flex-col justify-between gap-4 border-b border-[#27272A] pb-6 sm:flex-row sm:items-end",
+        "mb-12 flex flex-col justify-between gap-6 border-b border-white/10 pb-7 sm:flex-row sm:items-end",
         className
       )}
     >
-      <div className="max-w-2xl space-y-2">
-        <p className="font-mono text-xs font-medium uppercase tracking-wider text-[#38BDF8]">
-          {eyebrow}
-        </p>
-        <h2 className="text-2xl font-semibold tracking-tight text-[#F4F4F5] sm:text-3xl">
+      <div className="max-w-2xl space-y-2.5">
+        {eyebrow && (
+          <p className="font-mono text-xs tracking-[0.12em] text-[#65C8F5] uppercase">
+            {eyebrow}
+          </p>
+        )}
+        <h2 className="font-display text-[clamp(1.85rem,3.6vw,3rem)] font-bold leading-[1.08] tracking-[-0.03em] text-[#F2F0EC]">
           {title}
         </h2>
         {description && (
-          <p className="text-sm leading-relaxed text-[#A1A1AA] sm:text-base">
+          <p className="max-w-xl text-sm leading-relaxed text-[#A7ADB7] sm:text-base">
             {description}
           </p>
         )}

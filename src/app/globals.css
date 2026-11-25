@@ -1,68 +1,132 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #09090b;
-  --color-surface: #18181b;
-  --color-surface-elevated: #202024;
-  --color-border: #27272a;
-  --color-foreground: #f4f4f5;
-  --color-muted: #a1a1aa;
-  --color-accent: #38bdf8;
+  --color-background: #08090c;
+  --color-surface: #15171c;
+  --color-surface-elevated: #1c1f26;
+  --color-border: rgba(242, 240, 236, 0.1);
+  --color-foreground: #f2f0ec;
+  --color-muted: #a7adb7;
+  --color-accent: #65c8f5;
+  --font-display: var(--font-display), var(--font-geist-sans), system-ui, sans-serif;
   --font-sans: var(--font-geist-sans), "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono), "JetBrains Mono", ui-monospace, monospace;
 }
 
 :root {
   color-scheme: dark;
-  --bg-canvas: #09090b;
-  --bg-surface: #18181b;
-  --bg-surface-elevated: #202024;
-  --border-subtle: #27272a;
-  --border-strong: #3f3f46;
-  --text-primary: #f4f4f5;
-  --text-secondary: #a1a1aa;
-  --text-muted: #9898a2;
-  --accent: #38bdf8;
-  --accent-contrast: #09090b;
+  --bg-canvas: #08090c;
+  --bg-secondary: #15171c;
+  --bg-surface: #1c1f26;
+  --border-subtle: rgba(242, 240, 236, 0.1);
+  --border-strong: rgba(242, 240, 236, 0.24);
+  --text-primary: #f2f0ec;
+  --text-secondary: #a7adb7;
+  --accent: #65c8f5;
+  --accent-contrast: #08090c;
 }
 
 html {
-  scroll-behavior: smooth;
   background-color: var(--bg-canvas);
 }
 
 body {
-  margin: 0;
-  overflow-x: hidden;
   background-color: var(--bg-canvas);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  line-height: 1.6;
+  line-height: 1.65;
+}
+
+.font-display {
+  font-family: var(--font-display);
 }
 
 ::selection {
-  background-color: rgba(56, 189, 248, 0.25);
-  color: #f4f4f5;
+  background-color: rgba(101, 200, 245, 0.28);
+  color: #f2f0ec;
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid #65c8f5;
   outline-offset: 3px;
+}
+
+/* Kinetic roll text hover micro-interaction */
+.roll-text-primary {
+  transform: translateY(0%);
+}
+.roll-text-clone {
+  transform: translateY(100%);
+}
+.group:hover .roll-text-primary,
+.group:focus-visible .roll-text-primary,
+a:hover .roll-text-primary,
+a:focus-visible .roll-text-primary,
+button:hover .roll-text-primary,
+button:focus-visible .roll-text-primary {
+  transform: translateY(-100%);
+}
+
+.group:hover .roll-text-clone,
+.group:focus-visible .roll-text-clone,
+a:hover .roll-text-clone,
+a:focus-visible .roll-text-clone,
+button:hover .roll-text-clone,
+button:focus-visible .roll-text-clone {
+  transform: translateY(0%);
+}
+
+/* Underline reveal link */
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-underline:hover::after,
+.link-underline:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* Subtle press tactile response */
+.active-press {
+  transition: transform 0.14s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.active-press:active {
+  transform: scale(0.98);
+}
+
+/* Hairline image mask & optical hover scale */
+.editorial-image-wrap img {
+  transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .editorial-image-wrap img {
+  transform: scale(1.035);
 }
 
 /* Subtle scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: #08090c;
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: rgba(242, 240, 236, 0.16);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: rgba(101, 200, 245, 0.55);
 }
 
 /* Skip to content */
@@ -72,8 +136,8 @@ body {
   left: 1rem;
   z-index: 100;
   padding: 0.625rem 1rem;
-  background: #38bdf8;
-  color: #09090b;
+  background: #65c8f5;
+  color: #08090c;
   font-weight: 600;
   font-size: 0.875rem;
   border-radius: 0.5rem;
@@ -86,6 +150,15 @@ body {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .group:hover .roll-text-primary,
+  .group:focus-visible .roll-text-primary,
+  a:hover .roll-text-primary,
+  button:hover .roll-text-primary {
+    transform: none !important;
+  }
+  .roll-text-clone {
+    display: none !important;
   }
   *,
   *::before,

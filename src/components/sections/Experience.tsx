@@ -1,21 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { SectionHeader } from "@/components/ui/SectionHeader";
+import { useState } from "react";
 import { TimelineItem } from "@/components/ui/TimelineItem";
+import { ChoreographedBlock } from "@/components/motion/SectionChoreography";
 import { experiences } from "@/data/experience";
-import { projects } from "@/data/projects";
-import type { Project } from "@/types";
 
 type FilterMode = "professional" | "training" | "all";
 
 export function Experience() {
   const [filter, setFilter] = useState<FilterMode>("professional");
-
-  const projectMap = useMemo(
-    () => new Map<string, Project>(projects.map((p) => [p.slug, p])),
-    []
-  );
 
   const professionalCount = experiences.filter((e) => e.category === "professional").length;
   const trainingCount = experiences.length - professionalCount;
@@ -33,17 +26,24 @@ export function Experience() {
   ];
 
   return (
-    <section id="experience" className="px-6 py-16 sm:py-20">
-      <div className="mx-auto max-w-[1200px]">
-        <SectionHeader
-          eyebrow="Experience"
-          title="Professional Experience & Technical Training"
-          description="Enterprise software quality engineering, QA/SDET internships, and structured technical training in reverse-chronological order."
-          action={
+    <section
+      id="experience"
+      className="border-t border-white/10 bg-[#08090C]/84 px-6 py-20 backdrop-blur-[2px] sm:py-24"
+    >
+      <div className="mx-auto grid max-w-[1280px] grid-cols-1 gap-12 lg:grid-cols-12">
+        <div className="min-w-0 space-y-6 lg:col-span-4">
+          <div className="space-y-3 lg:sticky lg:top-24">
+            <h2 className="font-display text-[clamp(1.85rem,3.6vw,3rem)] font-bold leading-[1.08] tracking-[-0.03em] text-[#F2F0EC]">
+              Experience.
+            </h2>
+            <p className="text-sm leading-relaxed text-[#A7ADB7]">
+              Software quality testing, test automation, internships, and technical training.
+            </p>
+
             <div
               role="tablist"
               aria-label="Filter experience category"
-              className="inline-flex flex-wrap gap-1 rounded-lg border border-[#27272A] bg-[#18181B] p-1"
+              className="flex flex-wrap gap-1.5 pt-2"
             >
               {tabs.map((tab) => {
                 const selected = filter === tab.id;
@@ -54,10 +54,10 @@ export function Experience() {
                     role="tab"
                     aria-selected={selected}
                     onClick={() => setFilter(tab.id)}
-                    className={`min-h-[38px] rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                    className={`active-press min-h-[40px] rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
                       selected
-                        ? "bg-[#27272A] text-[#F4F4F5]"
-                        : "text-[#A1A1AA] hover:text-[#F4F4F5]"
+                        ? "border-[#65C8F5] bg-[#65C8F5]/14 text-[#65C8F5]"
+                        : "border-white/15 bg-transparent text-[#A7ADB7] hover:border-white/30 hover:text-[#F2F0EC]"
                     }`}
                   >
                     {tab.label}
@@ -65,24 +65,18 @@ export function Experience() {
                 );
               })}
             </div>
-          }
-        />
-
-        <div className="max-w-4xl">
-          {filtered.map((entry) => {
-            const linkedProjects = (entry.projectIds ?? [])
-              .map((slug) => projectMap.get(slug))
-              .filter((p): p is Project => Boolean(p));
-
-            return (
-              <TimelineItem
-                key={entry.id}
-                entry={entry}
-                linkedProjects={linkedProjects}
-              />
-            );
-          })}
+          </div>
         </div>
+
+        <ChoreographedBlock variant="stagger-list" className="min-w-0 lg:col-span-8">
+          {filtered.map((entry, idx) => (
+            <TimelineItem
+              key={entry.id}
+              entry={entry}
+              indexLabel={String(idx + 1).padStart(2, "0")}
+            />
+          ))}
+        </ChoreographedBlock>
       </div>
     </section>
   );

@@ -63,7 +63,7 @@ export function TiltSurface({ children, className, maxTilt = 4.5 }: TiltSurfaceP
           className="pointer-events-none absolute inset-0 rounded-[inherit] transition-opacity duration-200"
           style={{
             opacity: highlight.active ? 1 : 0,
-            background: `radial-gradient(280px circle at ${highlight.x}% ${highlight.y}%, rgba(56, 189, 248, 0.08), transparent 65%)`,
+            background: `radial-gradient(280px circle at ${highlight.x}% ${highlight.y}%, rgba(0, 200, 245, 0.09), transparent 65%)`,
           }}
         />
       )}

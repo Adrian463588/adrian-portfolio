@@ -43,6 +43,89 @@ function isSafeHttpsUrl(value: string): boolean {
   }
 }
 
+const BLOCKED_DEMO_HOSTS = [".sslip.io", "adrian-portfolio-plum.vercel.app"];
+
+export function isVerifiedLiveDemoUrl(value?: string, repoUrl?: string): boolean {
+  if (!value || !isSafeHttpsUrl(value)) return false;
+  if (repoUrl && value.replace(/\/$/, "") === repoUrl.replace(/\/$/, "")) return false;
+  try {
+    const host = new URL(value).hostname.toLowerCase();
+    if (host === "localhost" || host === "127.0.0.1") return false;
+    return !BLOCKED_DEMO_HOSTS.some((blocked) => host === blocked || host.endsWith(blocked));
+  } catch {
+    return false;
+  }
+}
+
+export const FLAGSHIP_PROJECT_SLUG = "android-stress-detection" as const;
+
+export const FEATURED_PROJECT_ORDER = [
+  "android-stress-detection",
+  "quran-plus",
+  "coffee-creator",
+  "adzan-plus",
+  "parfum-creator",
+] as const;
+
+export function getEditorialRank(project: Project): number {
+  const pinnedIndex = FEATURED_PROJECT_ORDER.indexOf(
+    project.slug as (typeof FEATURED_PROJECT_ORDER)[number]
+  );
+  if (pinnedIndex !== -1) {
+    return pinnedIndex;
+  }
+  if (project.editorialOrder !== undefined) {
+    return 100 + project.editorialOrder;
+  }
+  return Number.MAX_SAFE_INTEGER;
+}
+
+export function sortProjectsEditorial(items: Project[]): Project[] {
+  const tierScore = (t: ProjectTier) => (t === "featured" ? 0 : t === "catalog" ? 1 : 2);
+  return [...items].sort((a, b) => {
+    const diff = tierScore(a.tier) - tierScore(b.tier);
+    if (diff !== 0) return diff;
+    const rankDiff = getEditorialRank(a) - getEditorialRank(b);
+    if (rankDiff !== 0) return rankDiff;
+    return b.updatedAt.localeCompare(a.updatedAt);
+  });
+}
+
+export interface ProjectActionLinks {
+  detailUrl?: string;
+  repoUrl?: string;
+  demoUrl?: string;
+  releaseUrl?: string;
+}
+
+/** Determine strictly verified navigation & external action links for a project. */
+export function getProjectActions(project: Project): ProjectActionLinks {
+  if (project.projectOrigin === "professional") {
+    return {};
+  }
+
+  if (project.visibility === "private-summary") {
+    return {
+      detailUrl: project.slug ? `/projects/${project.slug}/` : undefined,
+    };
+  }
+
+  const repoUrl =
+    project.repositoryUrl && isSafeHttpsUrl(project.repositoryUrl)
+      ? project.repositoryUrl
+      : undefined;
+
+  return {
+    detailUrl: project.slug ? `/projects/${project.slug}/` : undefined,
+    repoUrl,
+    demoUrl: isVerifiedLiveDemoUrl(project.demoUrl, repoUrl) ? project.demoUrl : undefined,
+    releaseUrl:
+      project.releaseUrl && isSafeHttpsUrl(project.releaseUrl)
+        ? project.releaseUrl
+        : undefined,
+  };
+}
+
 /** Validate unique IDs, slugs, URLs, and fork attribution invariants. */
 export function validateProjects(items: Project[]): ValidationResult {
   const errors: string[] = [];
@@ -66,11 +149,23 @@ export function validateProjects(items: Project[]): ValidationResult {
 
     if (item.repositoryUrl && !isSafeHttpsUrl(item.repositoryUrl)) {
       errors.push(`Project "${item.id}" repositoryUrl must use https://`);
-    } else if (item.projectOrigin !== "professional" && !item.repositoryUrl) {
+    } else if (
+      item.projectOrigin !== "professional" &&
+      item.visibility !== "private-summary" &&
+      !item.repositoryUrl
+    ) {
       errors.push(`Project "${item.id}" repositoryUrl must use https://`);
     }
     if (item.projectOrigin === "professional" && item.publicDisclosureApproved !== true) {
       errors.push(`Professional project "${item.id}" must pass publicDisclosureApproved build gate`);
+    }
+    if (item.visibility === "private-summary") {
+      if (item.publicDisclosureApproved !== true) {
+        errors.push(`Private-summary project "${item.id}" must pass publicDisclosureApproved build gate`);
+      }
+      if (item.repositoryUrl || item.demoUrl || item.releaseUrl) {
+        errors.push(`Private-summary project "${item.id}" must not expose repositoryUrl, demoUrl, or releaseUrl`);
+      }
     }
     if (item.demoUrl && !isSafeHttpsUrl(item.demoUrl)) {
       errors.push(`Project "${item.id}" demoUrl must use https://`);
@@ -84,7 +179,7 @@ export function validateProjects(items: Project[]): ValidationResult {
     if (item.projectOrigin === "fork" && !item.upstreamCredit) {
       errors.push(`Fork project "${item.id}" must declare upstreamCredit`);
     }
-    if (item.sourceReferences.length === 0) {
+    if (item.visibility !== "private-summary" && item.sourceReferences.length === 0) {
       errors.push(`Project "${item.id}" must include at least one sourceReference`);
     }
   }
@@ -159,7 +254,7 @@ function buildDefaultProject(repo: GitHubRepoSnapshot): Project {
     category,
     technologies: technologies.length > 0 ? technologies : ["Software Engineering"],
     repositoryUrl: repo.htmlUrl,
-    demoUrl: repo.homepage && isSafeHttpsUrl(repo.homepage) && repo.homepage !== repo.htmlUrl ? repo.homepage : undefined,
+    demoUrl: isVerifiedLiveDemoUrl(repo.homepage, repo.htmlUrl) ? repo.homepage : undefined,
     screenshots: [],
     personalContribution: repo.fork
       ? "Forked repository containing Adrian Syah Abidin's branch modifications and verification experiments."
@@ -203,6 +298,9 @@ export function mergeGitHubAndOverrides(
       id: rest.id || base.id,
       slug: rest.slug || base.slug,
       repositoryUrl: repo.htmlUrl,
+      demoUrl: isVerifiedLiveDemoUrl(rest.demoUrl ?? base.demoUrl, repo.htmlUrl)
+        ? rest.demoUrl ?? base.demoUrl
+        : undefined,
       updatedAt: rest.updatedAt || base.updatedAt,
       license: rest.license ?? base.license,
       language: rest.language ?? base.language,
@@ -212,21 +310,17 @@ export function mergeGitHubAndOverrides(
     results.push(merged);
   }
 
-  return results.sort((a, b) => {
-    if (a.featured !== b.featured) return a.featured ? -1 : 1;
-    if (a.editorialOrder !== undefined && b.editorialOrder !== undefined) {
-      return a.editorialOrder - b.editorialOrder;
-    }
-    if (a.editorialOrder !== undefined) return -1;
-    if (b.editorialOrder !== undefined) return 1;
-    return b.updatedAt.localeCompare(a.updatedAt);
-  });
+  return sortProjectsEditorial(results);
 }
 
 export function getFeaturedProjects(items: Project[]): Project[] {
   return items
     .filter((p) => p.featured && p.tier === "featured" && p.projectOrigin !== "professional")
-    .sort((a, b) => (a.editorialOrder ?? 999) - (b.editorialOrder ?? 999));
+    .sort((a, b) => {
+      const rankDiff = getEditorialRank(a) - getEditorialRank(b);
+      if (rankDiff !== 0) return rankDiff;
+      return b.updatedAt.localeCompare(a.updatedAt);
+    });
 }
 
 export function getEnterpriseProjects(items: Project[]): Project[] {
@@ -313,15 +407,5 @@ export function filterProjects(items: Project[], state: ProjectFilterState): Pro
     return [...filtered].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   }
 
-  return [...filtered].sort((a, b) => {
-    const tierScore = (t: ProjectTier) => (t === "featured" ? 0 : t === "catalog" ? 1 : 2);
-    const diff = tierScore(a.tier) - tierScore(b.tier);
-    if (diff !== 0) return diff;
-    if (a.editorialOrder !== undefined && b.editorialOrder !== undefined) {
-      return a.editorialOrder - b.editorialOrder;
-    }
-    if (a.editorialOrder !== undefined) return -1;
-    if (b.editorialOrder !== undefined) return 1;
-    return b.updatedAt.localeCompare(a.updatedAt);
-  });
+  return sortProjectsEditorial(filtered);
 }

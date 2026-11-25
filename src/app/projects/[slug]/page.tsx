@@ -26,15 +26,18 @@ export async function generateMetadata({
     };
   }
 
+  const metaTitle = project.seoTitle || project.title;
+  const metaDescription = project.seoDescription || project.summary;
+
   return {
-    title: project.title,
-    description: project.summary,
+    title: metaTitle,
+    description: metaDescription,
     alternates: {
       canonical: `/projects/${project.slug}/`,
     },
     openGraph: {
-      title: `${project.title} — Adrian Syah Abidin`,
-      description: project.summary,
+      title: `${metaTitle} — Adrian Syah Abidin`,
+      description: metaDescription,
       url: `https://adriansyahabidin.vercel.app/projects/${project.slug}/`,
       images: project.screenshots[0]
         ? [
@@ -45,10 +48,19 @@ export async function generateMetadata({
               alt: project.screenshots[0].alt,
             },
           ]
-        : undefined,
+        : [
+            {
+              url: "/og-image.png",
+              width: 1200,
+              height: 630,
+              alt: `${metaTitle} — Adrian Syah Abidin`,
+            },
+          ],
     },
   };
 }
+
+const SITE_URL = "https://adriansyahabidin.vercel.app";
 
 export default async function ProjectCaseStudyPage({
   params,
@@ -62,10 +74,10 @@ export default async function ProjectCaseStudyPage({
     notFound();
   }
 
-  const structuredData = project.repositoryUrl
+  const projectNode = project.repositoryUrl
     ? {
-        "@context": "https://schema.org",
         "@type": "SoftwareSourceCode",
+        "@id": `${SITE_URL}/projects/${project.slug}/#software`,
         name: project.title,
         description: project.summary,
         codeRepository: project.repositoryUrl,
@@ -74,21 +86,49 @@ export default async function ProjectCaseStudyPage({
         author: {
           "@type": "Person",
           name: "Adrian Syah Abidin",
+          url: `${SITE_URL}/`,
         },
       }
     : {
-        "@context": "https://schema.org",
         "@type": "CreativeWork",
+        "@id": `${SITE_URL}/projects/${project.slug}/#work`,
         name: project.title,
         description: project.summary,
         about: project.businessDomain || project.category,
-        keywords: project.technologies.join(", "),
         dateModified: project.updatedAt,
         author: {
           "@type": "Person",
           name: "Adrian Syah Abidin",
+          url: `${SITE_URL}/`,
         },
       };
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      projectNode,
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+          { "@type": "ListItem", position: 2, name: "Projects", item: `${SITE_URL}/projects/` },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: project.title,
+            item: `${SITE_URL}/projects/${project.slug}/`,
+          },
+        ],
+      },
+    ],
+  };
+
+  const currentIndex = projects.findIndex((p) => p.slug === project.slug);
+  const prevItem = currentIndex > 0 ? projects[currentIndex - 1] : undefined;
+  const nextItem =
+    currentIndex >= 0 && currentIndex < projects.length - 1
+      ? projects[currentIndex + 1]
+      : undefined;
 
   return (
     <>
@@ -96,7 +136,11 @@ export default async function ProjectCaseStudyPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <CaseStudyDetail project={project} />
+      <CaseStudyDetail
+        project={project}
+        prevProject={prevItem ? { slug: prevItem.slug, title: prevItem.title } : undefined}
+        nextProject={nextItem ? { slug: nextItem.slug, title: nextItem.title } : undefined}
+      />
     </>
   );
 }

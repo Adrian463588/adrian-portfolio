@@ -15,7 +15,7 @@ export const experiences: ExperienceEntry[] = [
     endDate: "2026-10",
     dateRange: "Mar 2026 – Oct 2026",
     summary:
-      "Contributed to software quality engineering initiatives for enterprise automotive financing applications within the Astra Credit Companies ecosystem, covering legacy application testing, web test automation, application modernization, and financial business process validation.",
+      "Tested enterprise automotive financing applications through manual testing, Cypress automation, and Jenkins CI integration.",
     roles: [
       {
         id: "berijalan-freelance",
@@ -26,7 +26,7 @@ export const experiences: ExperienceEntry[] = [
         endDate: "2026-10",
         dateRange: "Jul 2026 – Oct 2026",
         summary:
-          "Software quality engineering for enterprise automotive financing applications, covering automated regression testing, CI integration, and business process validation.",
+          "Automated regression testing with Cypress, Jenkins CI test integration, and business process testing across automotive financing apps.",
       },
       {
         id: "berijalan-trainee",
@@ -37,32 +37,34 @@ export const experiences: ExperienceEntry[] = [
         endDate: "2026-07",
         dateRange: "Mar 2026 – Jul 2026",
         summary:
-          "Practical software quality control training involving enterprise application testing, manual functional validation, and web test automation.",
+          "Practical software testing across enterprise financial systems, manual functional test cases, and web test automation.",
       },
     ],
-    projectIds: [
-      "archer-upgrade",
-      "stnk-alignment",
-      "advanced-joint-finance-parameter",
+    selectedProjects: [
+      {
+        id: "archer-upgrade",
+        title: "Archer Upgrade",
+        scope: "Cypress & Jenkins · React / AOL UniPaaS",
+        description:
+          "Automated testing for a React-based credit collection application modernized from AOL UniPaaS, using Cypress and Jenkins.",
+      },
+      {
+        id: "stnk-alignment",
+        title: "STNK Alignment",
+        scope: "AOL UniPaaS & Magic xpa",
+        description:
+          "Manual testing of vehicle registration workflows and application alignment across AOL UniPaaS and Magic xpa.",
+      },
+      {
+        id: "advanced-joint-finance-parameter",
+        title: "Advanced Joint Finance Parameter",
+        scope: "AOL UniPaaS",
+        description:
+          "Manual testing of enhanced joint financing parameters and business workflows in AOL UniPaaS.",
+      },
     ],
-    bullets: [
-      "Executed manual functional testing across enterprise applications built on AOL UniPaaS and Magic xpa.",
-      "Authored and ran automated web test scenarios with Cypress, integrated into Jenkins CI pipelines.",
-      "Contributed to QA validation for modernizing legacy collection workflows into a React-based web platform.",
-      "Validated business workflow updates for vehicle registration (STNK) alignment across interacting modules.",
-      "Tested enhanced Joint Financing parameter configurations and downstream workflows inside AOL UniPaaS.",
-    ],
-    technologies: [
-      "Cypress",
-      "Jenkins",
-      "AOL UniPaaS",
-      "Magic xpa",
-      "React-based Web Testing",
-      "Manual Testing",
-      "Automated Testing",
-      "Enterprise Financial Systems",
-      "Joint Financing",
-    ],
+    bullets: [],
+    technologies: ["Cypress", "Jenkins", "AOL UniPaaS", "Magic xpa"],
   },
   {
     id: "qiscus-qa",
@@ -74,11 +76,11 @@ export const experiences: ExperienceEntry[] = [
     endDate: "2025-10",
     dateRange: "Jul 2025 – Oct 2025",
     bullets: [
-      "Trained and validated conversational AI Agent integrations across client web widgets and WhatsApp channels (Crystallure, Oh My Glam, Paragon AI).",
-      "Executed end-to-end test planning, regression cycles, User Acceptance Testing (UAT), and release go-live verification.",
-      "Partnered with engineering teams to isolate, reproduce, and verify fixes for cross-system integration defects.",
+      "Trained and tested conversational AI agent integrations across web widgets and WhatsApp channels (Crystallure, Oh My Glam, Paragon AI).",
+      "Ran end-to-end test planning, integration testing, regression cycles, User Acceptance Testing (UAT), and release checks.",
+      "Worked with developers to isolate, reproduce, and re-test cross-system bugs.",
     ],
-    technologies: ["QA Engineering", "UAT", "Regression Testing", "AI Agent Evaluation", "Omnichannel"],
+    technologies: ["QA Engineering", "UAT", "Regression Testing", "AI Agents", "WhatsApp Integration"],
   },
   {
     id: "bitbybit-qa",
@@ -90,11 +92,11 @@ export const experiences: ExperienceEntry[] = [
     endDate: "2025-07",
     dateRange: "Nov 2024 – Jul 2025",
     bullets: [
-      "Performed functional QA and vulnerability assessments across omnichannel commerce and CRM platforms.",
-      "Applied automated security scanners including X-Ray and Nuclei to detect misconfigurations and surface flaws.",
-      "Validated stability and security posture across AI-assisted shopping features.",
+      "Performed functional testing and vulnerability scans across omnichannel commerce and CRM applications.",
+      "Ran security scanners including X-Ray and Nuclei to flag misconfigurations before release.",
+      "Tested stability and input safety across AI-assisted shopping features.",
     ],
-    technologies: ["Manual QA", "Nuclei", "X-Ray", "Vulnerability Scanning", "CRM & Omnichannel"],
+    technologies: ["Manual QA", "Nuclei", "X-Ray", "Vulnerability Scanning", "CRM"],
   },
   {
     id: "tokopedia-qa",
@@ -106,11 +108,11 @@ export const experiences: ExperienceEntry[] = [
     endDate: "2025-06",
     dateRange: "Feb 2025 – Jun 2025",
     bullets: [
-      "Executed manual and automated regression testing across Web and Android workflows on Tokopedia and TikTok Shop.",
-      "Documented reproducible defects, severity triage, and verification evidence within enterprise issue trackers.",
-      "Maintained regression coverage across staging and pre-release deployment environments.",
+      "Executed manual and automated regression testing across Web and Android features on Tokopedia and TikTok Shop.",
+      "Logged reproducible bug reports, severity triage, and fix re-tests in internal trackers.",
+      "Maintained pre-release regression suites across staging deployments.",
     ],
-    technologies: ["Web & Android QA", "Regression Automation", "Defect Triage", "Release Verification"],
+    technologies: ["Web & Android QA", "Regression Automation", "Defect Triage", "Release Checks"],
   },
   {
     id: "digital-skola-devops",

@@ -3,7 +3,7 @@ export type ProjectCategory =
   | "DevOps & CI/CD"
   | "QA & Test Automation"
   | "Financial Systems"
-  | "Enterprise Application Modernization"
+  | "Application Modernization"
   | "Backend Engineering"
   | "Frontend & Web Development"
   | "Android & Mobile Development"
@@ -23,7 +23,7 @@ export type ProjectOrigin =
   | "bootcamp"
   | "academic"
   | "experiment";
-export type EnterpriseVisibility = "public-sanitized" | "confidential";
+export type EnterpriseVisibility = "public-sanitized" | "confidential" | "private-summary";
 export type ProjectStatus =
   | "active"
   | "released"
@@ -78,7 +78,10 @@ export interface Project {
   conceptualFlow?: ConceptualFlowStep[];
   tier: ProjectTier;
   featured: boolean;
+  flagship?: boolean;
   editorialOrder?: number;
+  seoTitle?: string;
+  seoDescription?: string;
   updatedAt: string;
   license?: string;
   language?: string;
@@ -137,6 +140,13 @@ export interface ExperienceRole {
   summary?: string;
 }
 
+export interface InformationalProjectEntry {
+  id: string;
+  title: string;
+  scope?: string;
+  description: string;
+}
+
 export interface ExperienceEntry {
   id: string;
   category: "professional" | "bootcamp" | "training";
@@ -152,6 +162,7 @@ export interface ExperienceEntry {
   endDate?: string;
   summary?: string;
   roles?: ExperienceRole[];
+  selectedProjects?: InformationalProjectEntry[];
   projectIds?: string[];
   bullets: string[];
   technologies?: string[];
@@ -161,7 +172,7 @@ export interface ExperienceEntry {
 export interface CompetencyGroup {
   id: string;
   title: string;
-  summary: string;
+  summary?: string;
   icon: string;
   skills: string[];
   relatedProjectSlugs: string[];
@@ -172,6 +183,7 @@ export interface CertificationEntry {
   name: string;
   issuer: string;
   category: string;
+  kind?: "certification" | "course";
   status: string;
   verificationNote?: string;
   verificationUrl?: string;

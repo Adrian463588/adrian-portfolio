@@ -9,16 +9,19 @@ const axeSource = fs.readFileSync(
 
 const viewports = [
   { name: "xs-320", width: 320, height: 720 },
+  { name: "mobile-360", width: 360, height: 800 },
   { name: "mobile-375", width: 375, height: 812 },
   { name: "mobile-390", width: 390, height: 844 },
+  { name: "mobile-430", width: 430, height: 932 },
   { name: "tablet-768", width: 768, height: 1024 },
   { name: "laptop-1024", width: 1024, height: 768 },
+  { name: "desktop-1280", width: 1280, height: 800 },
   { name: "desktop-1440", width: 1440, height: 900 },
   { name: "wide-1920", width: 1920, height: 1080 },
 ];
 
 test.describe("Portfolio E2E, Accessibility & Resilience", () => {
-  test("homepage renders identity, 8 featured projects, and visible below-the-fold content without scroll traps", async ({
+  test("homepage renders identity, 6 flagship projects, quality switcher, and visible below-the-fold content without scroll traps", async ({
     page,
   }) => {
     const errors: string[] = [];
@@ -36,10 +39,34 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     const h1 = page.locator("h1");
     await expect(h1).toHaveText("Adrian Syah Abidin");
 
-    // Selected Work shows 8 featured case studies
+    // Selected Work shows 6 curated projects in V6 editorial order
     const workSection = page.locator("#work");
     await expect(workSection).toBeVisible();
-    await expect(workSection.locator("article")).toHaveCount(8);
+    const workArticles = workSection.locator("article");
+    await expect(workArticles).toHaveCount(6);
+
+    const orderedHeadings = await workSection.locator("article h3").allInnerTexts();
+    expect(orderedHeadings.map((t) => t.trim())).toEqual([
+      "Android Stress Detection",
+      "QuranPlus",
+      "Coffee Creator",
+      "AdzanPlus",
+      "ParfumCreator",
+      "AutomatePlus",
+    ]);
+
+    const flagshipCard = workArticles.first();
+    await expect(flagshipCard).toContainText("Flagship Research");
+    await expect(flagshipCard.getByRole("link", { name: /GitHub/i })).toHaveCount(1);
+
+    const parfumCard = workArticles.nth(4);
+    await expect(parfumCard).toContainText("ParfumCreator");
+    await expect(parfumCard.getByRole("link", { name: /Case Study/i })).toHaveAttribute(
+      "href",
+      "/projects/parfum-creator/"
+    );
+    await expect(parfumCard.getByRole("link", { name: /GitHub/i })).toHaveCount(0);
+    await expect(parfumCard.getByRole("link", { name: /Live Demo/i })).toHaveCount(0);
 
     // Ensure contact section at bottom is immediately rendered at opacity 1 without scroll locks
     const contactOpacity = await page
@@ -47,10 +74,10 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       .evaluate((el) => getComputedStyle(el).opacity);
     expect(Number(contactOpacity)).toBe(1);
 
-    // Real images load with non-zero naturalWidth after scrolling into view
+    // Real images on public screenshot projects (01-04 + 06 = 5) load with non-zero naturalWidth
     const images = workSection.locator("img");
     const imgCount = await images.count();
-    expect(imgCount).toBe(8);
+    expect(imgCount).toBe(5);
     for (let i = 0; i < imgCount; i++) {
       const img = images.nth(i);
       await img.scrollIntoViewIfNeeded();
@@ -102,17 +129,19 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await expect(expSection.locator("article")).toHaveCount(12);
   });
 
-  test("homepage enforces V2 IA sequence and renders 3 sanitized Enterprise Case Studies", async ({
+  test("homepage enforces V4 editorial IA sequence and renders Berijalan work strictly as non-interactive Experience info", async ({
     page,
   }) => {
     await page.goto("/", { waitUntil: "networkidle" });
 
+    // Standalone Enterprise Work section has been removed cleanly
+    await expect(page.locator("#enterprise-work")).toHaveCount(0);
+
     const orderedIds = [
       "hero",
-      "experience",
-      "enterprise-work",
       "work",
       "project-explorer",
+      "experience",
       "competencies",
       "certifications",
       "education",
@@ -127,72 +156,453 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       prevY = box!.y;
     }
 
-    const enterpriseSection = page.locator("#enterprise-work");
-    await expect(enterpriseSection.locator("article")).toHaveCount(3);
-    await expect(enterpriseSection).toContainText("Archer Upgrade");
-    await expect(enterpriseSection).toContainText("STNK Alignment");
-    await expect(enterpriseSection).toContainText("Advanced Joint Finance Parameter");
-    await expect(enterpriseSection.locator("img")).toHaveCount(0);
-    await expect(enterpriseSection.getByRole("link", { name: /GitHub/i })).toHaveCount(0);
+    // Selected projects under Berijalan contain all 3 initiatives with zero clickable links or buttons
+    const selectedProjectsList = page.locator('[aria-label="Selected projects at Berijalan Techno Center"]');
+    await expect(selectedProjectsList).toContainText("Archer Upgrade");
+    await expect(selectedProjectsList).toContainText("STNK Alignment");
+    await expect(selectedProjectsList).toContainText("Advanced Joint Finance Parameter");
+    await expect(selectedProjectsList.locator("a, button")).toHaveCount(0);
+
+    // Chibi workstation illustration renders cleanly in #about without clipping or broken load
+    const chibiImg = page.locator('#about img[alt="Illustrated portrait of Adrian Syah Abidin."]');
+    await chibiImg.scrollIntoViewIfNeeded();
+    await expect
+      .poll(async () =>
+        chibiImg.evaluate((el: HTMLImageElement) => (el.complete ? el.naturalWidth : 0))
+      )
+      .toBeGreaterThan(0);
+
+    // Branding uses Adrian. and personal location uses Indonesia without YOGYA / GMT+7
+    await expect(
+      page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: /Adrian — Home/i })
+    ).toBeVisible();
+    await expect(page.getByText("INDONESIA", { exact: true })).toBeVisible();
+    await expect(page.locator("#about")).toContainText("Indonesia · Universitas Gadjah Mada");
+    await expect(page.locator("#contact")).toContainText("Based in Indonesia.");
+    for (const sel of ["header", "#about", "#contact", "footer"]) {
+      await expect(page.locator(sel)).not.toContainText(/YOGYA|Yogyakarta|GMT\+7/i);
+    }
+    await expect(page.getByText(/DEMAND RENDERED/i)).toHaveCount(0);
+    await expect(page.getByText(/All 73 Projects/i)).toHaveCount(0);
   });
 
-  test("project explorer search, origin filters, empty state, reset, and archive fork attribution", async ({
+  test("projects page opens with V5 framing, hides removed enterprise routes, and strips dead Live Demo actions", async ({
     page,
   }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/projects/", { waitUntil: "networkidle" });
-    await expect(page.locator("h1")).toHaveText("Engineering Project Explorer");
+    await expect(page.locator("h1")).toHaveText("Projects.");
+    await expect(page.getByRole("tab", { name: /^Professional$/i })).toHaveCount(0);
+    await expect(
+      page.getByText(/ENGAGEMENT ORIGIN|ALL ELIGIBLE|STATIC SNAPSHOT SYNCED|REPOSITORY CATALOG|ENGINEERING PROJECT EXPLORER|ENGINEERING DOMAIN/i)
+    ).toHaveCount(0);
 
-    await page.getByRole("button", { name: /Professional Work \(3\)/i }).click();
-    await expect(page.getByText(/Showing 3 of/i)).toBeVisible();
-    await expect(page.getByText(/Archer Upgrade/i)).toBeVisible();
-    await page.getByRole("button", { name: /Clear filters/i }).click();
+    const firstCardBox = await page.locator("article").first().boundingBox();
+    expect(firstCardBox).toBeTruthy();
+    expect(firstCardBox!.y).toBeLessThan(860);
 
-    const search = page.getByLabel("Search Projects");
+    const search = page.getByLabel("Search projects");
     await search.fill("cypress");
     await expect(page.getByText(/EverShop Cypress/i)).toBeVisible();
 
+    // TechnoLoyaltyProgram must not show a dead sslip.io Live Demo link
+    await search.fill("Employee Loyalty Program Platform");
+    const technoCard = page.locator("article").filter({ hasText: "Employee Loyalty Program Platform" }).first();
+    await expect(technoCard).toBeVisible();
+    await expect(technoCard.getByRole("link", { name: /Live Demo/i })).toHaveCount(0);
+    await expect(technoCard.getByRole("link", { name: /GitHub/i })).toHaveCount(1);
+
     await search.fill("nonexistent-xyz-999");
-    await expect(page.getByText(/No matching engineering projects found/i)).toBeVisible();
+    await expect(page.getByText(/No matching projects found/i)).toBeVisible();
     await page.getByRole("button", { name: /Reset all filters/i }).click();
 
-    await page.getByRole("tab", { name: /Experiments & Archive/i }).click();
+    await page.getByRole("button", { name: /^Filters/i }).click();
+    await page.getByRole("tab", { name: /^Archive/i }).click();
     await expect(page.getByText(/HeartRateMonitor \(Extended Fork\)/i)).toBeVisible();
     await expect(page.getByText(/aditydcp\/sample-wear-phone-app/i)).toBeVisible();
+
+    await page.getByRole("button", { name: /^Index$/i }).click();
+    await expect(page.getByRole("link", { name: /Open case study for HeartRateMonitor/i })).toBeVisible();
   });
 
-  test("enterprise and personal detail routes resolve cleanly on static reload", async ({
+  test("all images across homepage and projects catalog load with valid dimensions", async ({
     page,
+  }) => {
+    const collectImageStates = async (selector: string) =>
+      page.evaluate(async (sel) => {
+        const imgs = Array.from(document.querySelectorAll<HTMLImageElement>(sel));
+        for (const img of imgs) {
+          img.scrollIntoView({ behavior: "instant", block: "center" });
+          await new Promise((r) => requestAnimationFrame(r));
+        }
+        return Promise.all(
+          imgs.map(
+            (img) =>
+              new Promise<{ src: string | null; complete: boolean; naturalWidth: number }>(
+                (resolve) => {
+                  const done = () =>
+                    resolve({
+                      src: img.getAttribute("src"),
+                      complete: img.complete,
+                      naturalWidth: img.naturalWidth,
+                    });
+                  if (img.complete && img.naturalWidth > 0) {
+                    done();
+                    return;
+                  }
+                  const timer = window.setTimeout(done, 8000);
+                  img.addEventListener(
+                    "load",
+                    () => {
+                      window.clearTimeout(timer);
+                      done();
+                    },
+                    { once: true }
+                  );
+                  img.addEventListener(
+                    "error",
+                    () => {
+                      window.clearTimeout(timer);
+                      done();
+                    },
+                    { once: true }
+                  );
+                }
+              )
+          )
+        );
+      }, selector);
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "load" });
+    const homeResults = await collectImageStates("img");
+    expect(homeResults.length).toBe(6);
+    for (const r of homeResults) {
+      expect(r.complete && r.naturalWidth > 0, `Homepage image failed: ${JSON.stringify(r)}`).toBe(true);
+    }
+
+    await page.goto("/projects/", { waitUntil: "load" });
+    const catalogResults = await collectImageStates("article img");
+    expect(catalogResults.length).toBeGreaterThanOrEqual(10);
+    for (const r of catalogResults) {
+      expect(r.complete && r.naturalWidth > 0, `Catalog image failed: ${JSON.stringify(r)}`).toBe(true);
+    }
+  });
+
+  test("RollText links keep visible text inside container bounds on hover, leave, and rapid sweep", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "networkidle" });
+
+    const nav = page.getByRole("navigation", { name: "Primary navigation" });
+    const targets = [
+      page.locator("#hero").getByRole("link", { name: /Get in Touch/i }),
+      page.locator("#hero").getByRole("link", { name: /GitHub/i }),
+      page.locator("#hero").getByRole("link", { name: /LinkedIn/i }),
+      page.locator("#hero").getByRole("link", { name: /Medium/i }),
+      nav.getByRole("link", { name: "Work" }),
+      nav.getByRole("link", { name: "Projects" }),
+      nav.getByRole("link", { name: "Experience" }),
+      nav.getByRole("link", { name: "About" }),
+      nav.getByRole("link", { name: "Contact" }),
+    ];
+
+    for (const loc of targets) {
+      await loc.hover();
+      await page.waitForTimeout(340);
+      const hovered = await loc.evaluate((el) => {
+        const container = el.querySelector(".roll-text");
+        const clone = el.querySelector(".roll-text-clone");
+        if (!container || !clone) return { ok: false, reason: "missing roll-text elements" };
+        const cr = container.getBoundingClientRect();
+        const cl = clone.getBoundingClientRect();
+        const opacity = parseFloat(getComputedStyle(clone).opacity || "1");
+        const visibleInBounds =
+          cl.top >= cr.top - 2 &&
+          cl.bottom <= cr.bottom + 2 &&
+          cl.height > 8 &&
+          opacity > 0.9;
+        return { ok: visibleInBounds, cr, cl, opacity };
+      });
+      expect(hovered.ok, `Hover clone hidden or clipped: ${JSON.stringify(hovered)}`).toBe(true);
+    }
+
+    // Move cursor to neutral space and verify primary label restores cleanly
+    await page.mouse.move(20, 200);
+    await page.waitForTimeout(340);
+    const restored = await targets[0].evaluate((el) => {
+      const container = el.querySelector(".roll-text");
+      const primary = el.querySelector(".roll-text-primary");
+      if (!container || !primary) return false;
+      const cr = container.getBoundingClientRect();
+      const pr = primary.getBoundingClientRect();
+      return pr.top >= cr.top - 2 && pr.bottom <= cr.bottom + 2;
+    });
+    expect(restored).toBe(true);
+  });
+
+  test("custom VIEW cursor uses sharp native scale without blurring or covering text links", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "networkidle" });
+
+    const workMedia = page.locator("[data-cursor='work']").first();
+    await workMedia.scrollIntoViewIfNeeded();
+    await workMedia.hover();
+    await page.waitForTimeout(300);
+
+    const viewBadge = page.getByTestId("cursor-view-badge");
+    await expect(viewBadge).toBeVisible();
+    const stats = await viewBadge.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      const label = el.querySelector("span");
+      const labelStyle = label ? getComputedStyle(label) : null;
+      let scaleX = 1;
+      if (cs.transform && cs.transform !== "none") {
+        const m = new DOMMatrixReadOnly(cs.transform);
+        scaleX = Math.hypot(m.a, m.b);
+      }
+      return {
+        opacity: parseFloat(cs.opacity || "0"),
+        filter: cs.filter,
+        scaleX,
+        fontSize: labelStyle ? parseFloat(labelStyle.fontSize) : 0,
+        pointerEvents: getComputedStyle(el.parentElement!).pointerEvents,
+      };
+    });
+    expect(stats.opacity).toBeGreaterThan(0.9);
+    expect(stats.filter).toBe("none");
+    expect(stats.scaleX).toBeLessThanOrEqual(1.01);
+    expect(stats.fontSize).toBeGreaterThanOrEqual(11);
+    expect(stats.pointerEvents).toBe("none");
+  });
+
+  test("ResilientImage displays intentional fallback cleanly when a project thumbnail fails to load", async ({
+    page,
+  }) => {
+    await page.route("**/projects/automate-plus-workbench.webp", (route) =>
+      route.fulfill({ status: 404, body: "Not Found" })
+    );
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "load" });
+    const fallback = page.locator("#work [data-image-fallback='true']").first();
+    await fallback.scrollIntoViewIfNeeded();
+    await expect(fallback).toBeVisible();
+    await expect(fallback).toContainText("AutomatePlus");
+  });
+
+  test("all public project routes in sitemap return HTTP 200 cleanly and Berijalan stays excluded", async ({
+    request,
   }) => {
     for (const slug of [
       "archer-upgrade",
       "stnk-alignment",
       "advanced-joint-finance-parameter",
+      "android-wear-stress-assistant",
     ]) {
-      await page.goto(`/projects/${slug}/`, { waitUntil: "networkidle" });
-      await page.reload({ waitUntil: "networkidle" });
-      await expect(page.getByRole("link", { name: /View GitHub Repository/i })).toHaveCount(0);
-      await expect(page.getByText(/Illustrative · Non-Proprietary/i)).toBeVisible();
-      await expect(page.getByRole("link", { name: /Associated Experience/i })).toBeVisible();
+      const res = await request.get(`/projects/${slug}/`);
+      expect(res.status()).toBe(404);
     }
 
-    await page.goto("/projects/stnk-alignment/", { waitUntil: "networkidle" });
-    await expect(page.locator("article")).toContainText("Magic xpa");
-    await expect(page.locator("article")).toContainText("AOL UniPaaS");
+    const sitemapXml = await (await request.get("/sitemap.xml")).text();
+    const projectLocs = [...sitemapXml.matchAll(/<loc>https:\/\/adriansyahabidin\.vercel\.app(\/projects\/[^<]+\/)<\/loc>/g)].map(
+      (m) => m[1]
+    );
+    expect(projectLocs.length).toBe(71);
+    for (const pinned of [
+      "/projects/android-stress-detection/",
+      "/projects/quran-plus/",
+      "/projects/coffee-creator/",
+      "/projects/adzan-plus/",
+      "/projects/parfum-creator/",
+    ]) {
+      expect(projectLocs).toContain(pinned);
+    }
 
-    await page.goto("/projects/advanced-joint-finance-parameter/", { waitUntil: "networkidle" });
-    await expect(page.locator("article")).toContainText("Joint Financing");
-    await page.goto("/projects/automate-plus/", { waitUntil: "networkidle" });
+    for (const pathname of projectLocs) {
+      const res = await request.get(pathname);
+      expect(res.status(), `Public route ${pathname} must return 200`).toBe(200);
+    }
+  });
+
+  test("all interactive controls respond to real user clicks and cross-page anchor navigation works", async ({
+    page,
+    context,
+  }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "networkidle" });
+
+    // 1. Hero CTAs work via genuine user clicks
+    await page.locator("#hero").getByRole("link", { name: /View My Work/i }).click();
+    await expect.poll(async () => page.evaluate(() => window.scrollY)).toBeGreaterThan(250);
+
+    // 2. Brand logo returns cleanly to top of homepage (TC-NAV-001)
+    await page
+      .getByRole("navigation", { name: "Primary navigation" })
+      .getByRole("link", { name: /Adrian — Home/i })
+      .click();
+    await expect.poll(async () => page.evaluate(() => window.scrollY)).toBeLessThan(80);
+
+    // 3. Copy email button copies address and displays feedback (TC-FUNC-007)
+    const copyBtn = page.locator("#contact").getByRole("button", { name: /adriansyah1230@gmail\.com/i });
+    await copyBtn.scrollIntoViewIfNeeded();
+    await copyBtn.click();
+    await expect(page.locator("#contact").getByText(/Copied address/i)).toBeVisible();
+
+    // 4. Footer Back to top button works cleanly
+    const backToTop = page.getByRole("button", { name: /Back to top/i });
+    await backToTop.scrollIntoViewIfNeeded();
+    await backToTop.click();
+    await expect.poll(async () => page.evaluate(() => window.scrollY)).toBeLessThan(80);
+
+    // 5. Verified Live Demo external link metadata on Featured project
+    await page.goto("/projects/hsk1-vocabulary-master/", { waitUntil: "domcontentloaded" });
+    const demoLink = page.getByRole("link", { name: /Live Demo/i });
+    await expect(demoLink).toHaveAttribute("href", "https://hsk1vocab.edgeone.dev/");
+    await expect(demoLink).toHaveAttribute("target", "_blank");
+    await expect(demoLink).toHaveAttribute("rel", /noopener/);
+
+    // 6. Top nav link to /projects/ + Case study + browser Back/Forward
+    await page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Projects" }).click();
+    await expect(page).toHaveURL(/\/projects\/?$/);
+    await expect(page.locator("h1")).toHaveText("Projects.");
+
+    await page.getByRole("link", { name: "AutomatePlus" }).first().click();
+    await expect(page).toHaveURL(/\/projects\/automate-plus\/?$/);
     await expect(page.locator("h1")).toHaveText("AutomatePlus");
-    await page.reload({ waitUntil: "networkidle" });
+    await page.goBack();
+    await expect(page).toHaveURL(/\/projects\/?$/);
+    await page.goForward();
+    await expect(page).toHaveURL(/\/projects\/automate-plus\/?$/);
+
+    // 7. Cross-page anchor link (#contact) from project detail reaches homepage contact section (TC-NAV-014)
+    await page
+      .getByRole("navigation", { name: "Primary navigation" })
+      .getByRole("link", { name: "Contact" })
+      .click();
+    await expect(page).toHaveURL(/\/#contact$/);
+    await expect(page.locator("#contact")).toBeInViewport();
+
+    // 8. Clicking brand logo from subpage navigates back to homepage
+    await page.goto("/projects/automate-plus/", { waitUntil: "domcontentloaded" });
+    await page
+      .getByRole("navigation", { name: "Primary navigation" })
+      .getByRole("link", { name: /Adrian — Home/i })
+      .click();
+    await expect(page).toHaveURL(/\/$/);
+
+    // 9. Mobile drawer link navigates without returning focus back to header toggle
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/", { waitUntil: "networkidle" });
+    await page.getByRole("button", { name: /Open navigation menu/i }).click();
+    const drawer = page.locator("#mobile-nav-drawer");
+    await expect(drawer).toBeVisible();
+    await drawer.getByRole("link", { name: /Experience/i }).click();
+    await expect(drawer).toBeHidden();
+    await expect.poll(async () => page.evaluate(() => window.scrollY)).toBeGreaterThan(400);
+  });
+
+  test("technical SEO tags, canonical URLs, JSON-LD, OG image, sitemap, and robots.txt are valid", async ({
+    page,
+    request,
+  }) => {
+    await page.goto("/", { waitUntil: "networkidle" });
+    await expect(page).toHaveTitle("Adrian Syah Abidin | Software & QA Automation Engineer");
+    await expect(page.locator('meta[name="keywords"]')).toHaveCount(0);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      "https://adriansyahabidin.vercel.app/"
+    );
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+      "content",
+      /\/og-image\.png$/
+    );
+
+    const homeLd = await page.locator('script[type="application/ld+json"]').first().textContent();
+    expect(homeLd).toBeTruthy();
+    const parsedHome = JSON.parse(homeLd!);
+    expect(JSON.stringify(parsedHome)).toContain("ProfilePage");
+    expect(JSON.stringify(parsedHome)).toContain("Person");
+    expect(JSON.stringify(parsedHome)).not.toContain("worksFor");
+
+    await page.goto("/projects/", { waitUntil: "domcontentloaded" });
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      "https://adriansyahabidin.vercel.app/projects/"
+    );
+
+    const ogRes = await request.get("/og-image.png");
+    expect(ogRes.status()).toBe(200);
+    expect(ogRes.headers()["content-type"]).toContain("image/png");
+
+    const robotsRes = await request.get("/robots.txt");
+    expect(robotsRes.status()).toBe(200);
+    expect(await robotsRes.text()).toContain("https://adriansyahabidin.vercel.app/sitemap.xml");
+
+    const sitemapRes = await request.get("/sitemap.xml");
+    expect(sitemapRes.status()).toBe(200);
+    const sitemapText = await sitemapRes.text();
+    expect(sitemapText).toContain("https://adriansyahabidin.vercel.app/");
+    expect(sitemapText).toContain("https://adriansyahabidin.vercel.app/projects/android-stress-detection/");
+    expect(sitemapText).toContain("https://adriansyahabidin.vercel.app/projects/parfum-creator/");
+    expect(sitemapText).toContain("https://adriansyahabidin.vercel.app/projects/automate-plus/");
+    expect(sitemapText).not.toContain("archer-upgrade");
+    expect(sitemapText).not.toContain("stnk-alignment");
+    expect(sitemapText).not.toContain("advanced-joint-finance-parameter");
+  });
+
+  test("personal detail routes resolve cleanly on static reload, enforce V6 flagship & private rules, and preserve fork credit", async ({
+    page,
+  }) => {
+    await page.goto("/projects/android-stress-detection/", { waitUntil: "networkidle" });
+    await expect(page).toHaveTitle(/Android Stress Detection — PPG & Wear OS Research/);
+    await expect(page.locator("h1")).toHaveText("Android Stress Detection");
+    await expect(page.getByText("Flagship Research", { exact: true })).toBeVisible();
+    await expect(page.locator("article")).toContainText(/not a medical diagnostic tool/i);
+    const stressImgs = page.locator("article img");
+    await expect(stressImgs).toHaveCount(2);
+    for (let i = 0; i < 2; i++) {
+      const img = stressImgs.nth(i);
+      await img.scrollIntoViewIfNeeded();
+      await expect
+        .poll(async () => img.evaluate((el: HTMLImageElement) => (el.complete ? el.naturalWidth : 0)))
+        .toBeGreaterThan(0);
+    }
+
+    await page.goto("/projects/parfum-creator/", { waitUntil: "networkidle" });
+    await expect(page.locator("h1")).toHaveText("ParfumCreator");
+    await expect(page.getByText("Private Repository", { exact: true })).toBeVisible();
+    await expect(
+      page.locator("article").getByRole("link", { name: /Source code|GitHub|Live Demo|Release/i })
+    ).toHaveCount(0);
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await expect(page.locator("h1")).toHaveText("ParfumCreator");
+
+    for (const check of [
+      { slug: "quran-plus", title: "QuranPlus", seo: /QuranPlus — Offline Quran & AI Android App/ },
+      { slug: "coffee-creator", title: "Coffee Creator", seo: /Coffee Creator — Coffee Brewing Android App/ },
+      { slug: "adzan-plus", title: "AdzanPlus", seo: /AdzanPlus — Prayer Times & Adhan Reminders/ },
+    ]) {
+      await page.goto(`/projects/${check.slug}/`, { waitUntil: "domcontentloaded" });
+      await expect(page).toHaveTitle(check.seo);
+      await expect(page.locator("h1")).toHaveText(check.title);
+    }
+
+    await page.goto("/projects/automate-plus/", { waitUntil: "domcontentloaded" });
+    await expect(page.locator("h1")).toHaveText("AutomatePlus");
+    await page.reload({ waitUntil: "domcontentloaded" });
     await expect(page.locator("h1")).toHaveText("AutomatePlus");
 
-    await page.goto("/projects/heart-rate-monitor/", { waitUntil: "networkidle" });
+    await page.goto("/projects/heart-rate-monitor/", { waitUntil: "domcontentloaded" });
     await expect(page.locator("h1")).toContainText("HeartRateMonitor");
     const forkBox = page.locator("section").filter({ hasText: /Fork Attribution & Contribution Boundary/i });
     await expect(forkBox).toBeVisible();
     await expect(forkBox).toContainText(/aditydcp\/sample-wear-phone-app/i);
 
-    await page.goto("/projects/project-game/", { waitUntil: "networkidle" });
+    await page.goto("/projects/project-game/", { waitUntil: "domcontentloaded" });
     await expect(page.getByText(/Unity \(C#\)/i)).toBeVisible();
     await expect(page.getByText(/2D side-scrolling/i).first()).toBeVisible();
     await expect(page.getByText(/Unreal Engine/i)).toHaveCount(0);
@@ -225,10 +635,16 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await expect(skip).toBeFocused();
   });
 
-  test("reduced-motion preference renders static geometric fallback", async ({ page }) => {
+  test("reduced-motion preference and runtime quality switcher render static geometric fallback", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/", { waitUntil: "networkidle" });
-    await expect(page.getByText(/REDUCED MOTION · STATIC GEOMETRY/i)).toBeVisible();
+    await expect(page.getByText(/REDUCED MOTION · STATIC GEOMETRY/i)).toBeAttached();
+    await expect(page.locator("canvas")).toHaveCount(0);
+
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.goto("/", { waitUntil: "networkidle" });
+    await page.getByRole("button", { name: /^Reduced$/i }).click();
+    await expect(page.getByText(/REDUCED MOTION · STATIC GEOMETRY/i)).toBeAttached();
     await expect(page.locator("canvas")).toHaveCount(0);
   });
 
@@ -252,7 +668,7 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     });
 
     await page.goto("/", { waitUntil: "networkidle" });
-    await expect(page.getByText(/WEBGL FALLBACK/i)).toBeVisible();
+    await expect(page.getByText(/WEBGL FALLBACK/i)).toBeAttached();
     expect(errors).toEqual([]);
   });
 
@@ -271,20 +687,19 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       );
       expect(overflowProjects).toBe(false);
 
-      await page.goto("/projects/archer-upgrade/", { waitUntil: "networkidle" });
-      const overflowEnterprise = await page.evaluate(
+      await page.goto("/projects/automate-plus/", { waitUntil: "networkidle" });
+      const overflowDetail = await page.evaluate(
         () => document.documentElement.scrollWidth > document.documentElement.clientWidth
       );
-      expect(overflowEnterprise).toBe(false);
+      expect(overflowDetail).toBe(false);
     });
   }
 
   for (const route of [
     "/",
     "/projects/",
-    "/projects/archer-upgrade/",
-    "/projects/stnk-alignment/",
-    "/projects/advanced-joint-finance-parameter/",
+    "/projects/android-stress-detection/",
+    "/projects/parfum-creator/",
     "/projects/automate-plus/",
     "/projects/heart-rate-monitor/",
   ]) {

@@ -6,11 +6,11 @@ export const education: EducationEntry[] = [
     degree: "Information Technology (Teknologi Informasi, FT UGM)",
     period: "2020 – Present",
     location: "Yogyakarta, Indonesia",
-    notes: "Coursework & engineering thesis focus on software engineering, mobile biosignals, and applied AI.",
+    notes: "Research on PPG-based stress detection using Android and wearable devices.",
   },
   {
     institution: "SMA Negeri 3 Yogyakarta",
-    degree: "High School Diploma (Mathematics & Natural Sciences)",
+    degree: "Mathematics & Natural Sciences",
     period: "2017 – 2020",
     location: "Yogyakarta, Indonesia",
   },

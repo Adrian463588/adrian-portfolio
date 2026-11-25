@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import {
   ArrowLeft,
   ArrowRight,
@@ -11,107 +10,115 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import type { Project } from "@/types";
+import { getProjectActions } from "@/lib/projects";
 import { Badge } from "@/components/ui/Badge";
+import { ResilientImage } from "@/components/ui/ResilientImage";
+import { ChoreographedBlock } from "@/components/motion/SectionChoreography";
 
 interface CaseStudyDetailProps {
   project: Project;
+  prevProject?: { slug: string; title: string };
+  nextProject?: { slug: string; title: string };
 }
 
-export function CaseStudyDetail({ project }: CaseStudyDetailProps) {
+export function CaseStudyDetail({
+  project,
+  prevProject,
+  nextProject,
+}: CaseStudyDetailProps) {
   const isEnterprise = project.projectOrigin === "professional";
+  const isPrivateSummary = project.visibility === "private-summary";
+  const isEditorialDeep = project.tier === "featured" || isEnterprise;
+  const isArchive = project.tier === "archive";
+  const actions = getProjectActions(project);
 
   return (
-    <article className="px-6 py-12 sm:py-16">
+    <article className="min-h-[calc(100vh-68px)] bg-[#08090C]/84 px-6 py-12 backdrop-blur-[2px] sm:py-16">
       <div className="mx-auto max-w-[1000px] space-y-10">
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-[#A1A1AA]">
-          <Link href="/" prefetch={false} className="transition-colors hover:text-[#38BDF8]">
+        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs text-[#A7ADB7]">
+          <Link href="/" prefetch={false} className="link-underline transition-colors hover:text-[#65C8F5]">
             Home
           </Link>
           <span aria-hidden="true">/</span>
-          <Link href="/projects/" prefetch={false} className="transition-colors hover:text-[#38BDF8]">
+          <Link href="/projects/" prefetch={false} className="link-underline transition-colors hover:text-[#65C8F5]">
             Projects
           </Link>
           <span aria-hidden="true">/</span>
-          <span className="text-[#F4F4F5]">{project.title}</span>
+          <span className="text-[#F2F0EC]">{project.title}</span>
         </nav>
 
         {/* Header */}
-        <header className="space-y-5 border-b border-[#27272A] pb-8">
+        <header className="space-y-5 border-b border-white/10 pb-8">
           <div className="flex flex-wrap items-center gap-2">
             <Badge label={project.category} variant="accent" />
-            <Badge label={`Status: ${project.projectStatus}`} />
-            <Badge
-              label={isEnterprise ? "Origin: Professional Work" : `Origin: ${project.projectOrigin}`}
-              variant={
-                isEnterprise
-                  ? "accent"
-                  : project.projectOrigin === "fork"
-                    ? "warning"
-                    : "neutral"
-              }
-            />
-            {project.license && <Badge label={`License: ${project.license}`} />}
+            {project.flagship && <Badge label="Flagship Research" variant="accent" />}
+            {isPrivateSummary && <Badge label="Private Repository" />}
+            {isEnterprise && <Badge label="Enterprise Work" variant="accent" />}
+            {project.projectOrigin === "fork" && (
+              <Badge label="Extended Fork" variant="warning" />
+            )}
+            {project.license && <Badge label={project.license} />}
             {project.hasCiWorkflow && (
-              <span className="inline-flex items-center gap-1 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-xs text-emerald-300">
+              <span className="inline-flex items-center gap-1 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-300">
                 <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
-                {isEnterprise ? "Jenkins CI Integrated" : "CI Workflow Present"}
+                {isEnterprise ? "Jenkins CI" : "CI Checks"}
               </span>
             )}
           </div>
 
-          <div className="space-y-2">
-            <h1 className="break-words text-3xl font-bold tracking-tight text-[#F4F4F5] sm:text-4xl">
+          <div className="space-y-2.5">
+            <h1 className="font-display break-words text-3xl font-bold tracking-tight text-[#F2F0EC] sm:text-5xl sm:leading-[1.04]">
               {project.title}
             </h1>
             {project.subtitle && (
-              <p className="break-words text-lg font-medium text-[#D4D4D8]">{project.subtitle}</p>
+              <p className="break-words text-lg font-medium text-[#D6D9DF]">{project.subtitle}</p>
             )}
-            <p className="max-w-3xl break-words text-base leading-relaxed text-[#E4E4E7]">
+            <p className="max-w-3xl break-words text-base leading-relaxed text-[#F2F0EC]/90">
               {project.summary}
             </p>
-            {project.description !== project.summary && (
-              <p className="max-w-3xl break-words text-sm leading-relaxed text-[#A1A1AA]">
+            {project.description !== project.summary && !isArchive && (
+              <p className="max-w-3xl break-words text-sm leading-relaxed text-[#A7ADB7]">
                 {project.description}
               </p>
             )}
           </div>
 
-          {(project.repositoryUrl || project.demoUrl || project.releaseUrl || isEnterprise) && (
+          {(actions.repoUrl || actions.demoUrl || actions.releaseUrl || isEnterprise) && (
             <div className="flex flex-wrap items-center gap-3 pt-1">
-              {project.repositoryUrl && (
+              {actions.repoUrl && (
                 <a
-                  href={project.repositoryUrl}
+                  href={actions.repoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-[#F4F4F5] px-5 py-2.5 text-sm font-semibold text-[#09090B] transition-colors hover:bg-[#38BDF8]"
+                  className="active-press inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#F2F0EC] px-5 py-2.5 text-sm font-semibold text-[#08090C] transition-colors hover:bg-[#65C8F5]"
                 >
                   <Github className="h-4 w-4" aria-hidden="true" />
-                  View GitHub Repository
+                  <span>Source code</span>
                 </a>
               )}
 
-              {project.demoUrl && (
+              {actions.demoUrl && (
                 <a
-                  href={project.demoUrl}
+                  href={actions.demoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-[#27272A] bg-[#18181B] px-5 py-2.5 text-sm font-medium text-[#F4F4F5] transition-colors hover:border-[#38BDF8]/50 hover:text-[#38BDF8]"
+                  className="active-press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-white/15 bg-[#15171C] px-5 py-2.5 text-sm font-medium text-[#F2F0EC] transition-colors hover:border-[#65C8F5] hover:text-[#65C8F5]"
                 >
                   <ExternalLink className="h-4 w-4" aria-hidden="true" />
-                  Open Live Demo
+                  <span>Live Demo</span>
                 </a>
               )}
 
-              {project.releaseUrl && (
+              {actions.releaseUrl && (
                 <a
-                  href={project.releaseUrl}
+                  href={actions.releaseUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-[#27272A] bg-[#18181B] px-5 py-2.5 text-sm font-medium text-[#F4F4F5] transition-colors hover:border-[#38BDF8]/50 hover:text-[#38BDF8]"
+                  className="active-press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-white/15 bg-[#15171C] px-5 py-2.5 text-sm font-medium text-[#F2F0EC] transition-colors hover:border-[#65C8F5] hover:text-[#65C8F5]"
                 >
                   <Package className="h-4 w-4" aria-hidden="true" />
-                  View Release Artifacts
+                  <span>Release</span>
                 </a>
               )}
 
@@ -119,90 +126,107 @@ export function CaseStudyDetail({ project }: CaseStudyDetailProps) {
                 <Link
                   href="/#experience"
                   prefetch={false}
-                  className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-[#27272A] bg-[#18181B] px-5 py-2.5 text-sm font-medium text-[#F4F4F5] transition-colors hover:border-[#38BDF8]/50 hover:text-[#38BDF8]"
+                  className="active-press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-white/15 bg-[#15171C] px-5 py-2.5 text-sm font-medium text-[#F2F0EC] transition-colors hover:border-[#65C8F5] hover:text-[#65C8F5]"
                 >
-                  <Briefcase className="h-4 w-4 text-[#38BDF8]" aria-hidden="true" />
-                  Associated Experience ({project.organization || "Berijalan"})
+                  <Briefcase className="h-4 w-4 text-[#65C8F5]" aria-hidden="true" />
+                  <span>Associated Experience ({project.organization || "Berijalan"})</span>
                 </Link>
               )}
             </div>
           )}
 
-          <p className="font-mono text-xs text-[#A1A1AA]">
+          <p className="font-mono text-xs text-[#A7ADB7]">
             {isEnterprise
-              ? "Sanitized public portfolio disclosure — proprietary repositories and internal systems omitted"
-              : `Last updated: ${project.updatedAt}`}
-            {!isEnterprise && project.language ? ` · Primary language: ${project.language}` : ""}
+              ? "Sanitized public disclosure — internal repositories and employer data omitted"
+              : isPrivateSummary
+                ? "Private repository — high-level overview only; source code and internal assets are not published"
+                : `Updated ${project.updatedAt}`}
+            {!isEnterprise && project.language ? ` · ${project.language}` : ""}
           </p>
         </header>
 
-        {/* Enterprise Metadata & Role Affiliation */}
+        {/* Enterprise Metadata Summary */}
         {isEnterprise && (
-          <section className="grid grid-cols-1 gap-4 rounded-xl border border-[#27272A] bg-[#18181B] p-6 sm:grid-cols-2 lg:grid-cols-4">
+          <section className="grid grid-cols-1 gap-4 border-y border-white/10 py-6 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-wider text-[#A1A1AA]">
+              <p className="text-xs font-medium uppercase tracking-wider text-[#A7ADB7]">
                 Organization
               </p>
-              <p className="mt-1 text-sm font-medium text-[#F4F4F5]">
+              <p className="mt-1 text-sm font-medium text-[#F2F0EC]">
                 {project.organization}
               </p>
               {project.corporateGroup && (
-                <p className="mt-0.5 text-xs text-[#A1A1AA]">{project.corporateGroup}</p>
+                <p className="mt-0.5 text-xs text-[#A7ADB7]">{project.corporateGroup}</p>
               )}
             </div>
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-wider text-[#A1A1AA]">
-                Business Domain
+              <p className="text-xs font-medium uppercase tracking-wider text-[#A7ADB7]">
+                Domain
               </p>
-              <p className="mt-1 text-sm font-medium text-[#F4F4F5]">
+              <p className="mt-1 text-sm font-medium text-[#F2F0EC]">
                 {project.businessDomain}
               </p>
             </div>
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-wider text-[#A1A1AA]">
-                Testing Approach
+              <p className="text-xs font-medium uppercase tracking-wider text-[#A7ADB7]">
+                Testing Scope
               </p>
-              <p className="mt-1 text-sm font-medium text-[#38BDF8]">{project.testingType}</p>
+              <p className="mt-1 text-sm font-medium text-[#65C8F5]">{project.testingType}</p>
             </div>
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-wider text-[#A1A1AA]">
+              <p className="text-xs font-medium uppercase tracking-wider text-[#A7ADB7]">
                 Platforms Covered
               </p>
-              <p className="mt-1 text-sm font-medium text-[#F4F4F5]">
+              <p className="mt-1 text-sm font-medium text-[#F2F0EC]">
                 {project.applicationTechnologies?.join(" · ")}
               </p>
             </div>
           </section>
         )}
 
-        {/* Conceptual Workflow Diagram (Strictly Illustrative & Sanitized) */}
+        {/* Explicit Fork Attribution */}
+        {project.projectOrigin === "fork" && project.upstreamCredit && (
+          <section className="border-l-2 border-amber-400/70 bg-amber-500/5 px-5 py-4">
+            <div className="flex items-start gap-3">
+              <GitFork className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" aria-hidden="true" />
+              <div className="space-y-1">
+                <h2 className="font-display text-sm font-semibold text-[#F2F0EC]">
+                  Fork Attribution &amp; Contribution Boundary
+                </h2>
+                <p className="text-sm text-[#D6D9DF]">{project.upstreamCredit}</p>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Conceptual Quality Workflow Diagram (Enterprise) */}
         {project.conceptualFlow && project.conceptualFlow.length > 0 && (
-          <section className="space-y-4 rounded-xl border border-[#27272A] bg-[#18181B] p-6">
+          <section className="space-y-4 border-y border-white/10 py-6">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <h2 className="text-base font-semibold text-[#F4F4F5]">
-                Conceptual Quality Workflow Diagram
+              <h2 className="font-display text-base font-bold text-[#F2F0EC]">
+                QA Workflow Overview
               </h2>
-              <span className="rounded-md border border-[#27272A] bg-[#09090B] px-2.5 py-1 font-mono text-[11px] text-[#A1A1AA]">
-                Illustrative · Non-Proprietary Portfolio Diagram
+              <span className="border border-white/10 bg-[#15171C] px-2.5 py-1 text-xs text-[#A7ADB7]">
+                Illustrative · Non-Proprietary Diagram
               </span>
             </div>
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
               {project.conceptualFlow.map((step, index) => (
                 <div
                   key={step.label}
-                  className="flex flex-col justify-between rounded-lg border border-[#27272A] bg-[#09090B] p-4"
+                  className="flex flex-col justify-between border-t border-white/15 bg-[#15171C]/55 p-4"
                 >
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-mono text-[11px] font-semibold text-[#38BDF8]">
+                      <span className="font-mono text-xs font-semibold text-[#65C8F5]">
                         0{index + 1}
                       </span>
                       {index < project.conceptualFlow!.length - 1 && (
-                        <ArrowRight className="h-3.5 w-3.5 text-[#71717A]" aria-hidden="true" />
+                        <ArrowRight className="h-3.5 w-3.5 text-[#A7ADB7]" aria-hidden="true" />
                       )}
                     </div>
-                    <h3 className="text-sm font-semibold text-[#F4F4F5]">{step.label}</h3>
-                    <p className="text-xs leading-relaxed text-[#A1A1AA]">{step.detail}</p>
+                    <h3 className="text-sm font-semibold text-[#F2F0EC]">{step.label}</h3>
+                    <p className="text-xs leading-relaxed text-[#A7ADB7]">{step.detail}</p>
                   </div>
                 </div>
               ))}
@@ -210,41 +234,29 @@ export function CaseStudyDetail({ project }: CaseStudyDetailProps) {
           </section>
         )}
 
-        {/* Explicit Fork Attribution */}
-        {project.projectOrigin === "fork" && project.upstreamCredit && (
-          <section className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-5">
-            <div className="flex items-start gap-3">
-              <GitFork className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" aria-hidden="true" />
-              <div className="space-y-1">
-                <h2 className="text-sm font-semibold text-[#F4F4F5]">
-                  Fork Attribution &amp; Contribution Boundary
-                </h2>
-                <p className="text-sm text-[#D4D4D8]">{project.upstreamCredit}</p>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Screenshots Gallery */}
+        {/* Screenshots Gallery (Featured & Core with real imagery) */}
         {project.screenshots.length > 0 && (
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold text-[#F4F4F5]">
-              Application Screenshots
+            <h2 className="font-display text-xl font-bold text-[#F2F0EC]">
+              {isEditorialDeep ? "Demo & Screenshots" : "Screenshots"}
             </h2>
-            <div className="grid gap-6 md:grid-cols-2">
+            <ChoreographedBlock variant="clip-reveal" className="grid gap-6 md:grid-cols-2">
               {project.screenshots.map((shot) => {
                 const isPortrait = shot.height > shot.width;
                 return (
                   <figure
                     key={shot.src}
-                    className="overflow-hidden rounded-xl border border-[#27272A] bg-[#18181B]"
+                    className="editorial-image-wrap group overflow-hidden bg-[#15171C]"
                   >
-                    <div className="flex aspect-[16/10] w-full items-center justify-center bg-[#09090B]">
-                      <Image
+                    <div className="flex aspect-[16/10] w-full items-center justify-center overflow-hidden bg-[#08090C]">
+                      <ResilientImage
                         src={shot.src}
                         alt={shot.alt}
                         width={shot.width}
                         height={shot.height}
+                        loading="eager"
+                        fallbackTitle={project.title}
+                        fallbackCategory={project.category}
                         className={
                           isPortrait
                             ? "h-full w-full object-contain py-3"
@@ -253,180 +265,242 @@ export function CaseStudyDetail({ project }: CaseStudyDetailProps) {
                       />
                     </div>
                     {shot.caption && (
-                      <figcaption className="border-t border-[#27272A] px-4 py-3 font-mono text-xs text-[#A1A1AA]">
+                      <figcaption className="border-t border-white/10 px-4 py-3 text-xs text-[#A7ADB7]">
                         {shot.caption}
                       </figcaption>
                     )}
                   </figure>
                 );
               })}
-            </div>
+            </ChoreographedBlock>
           </section>
         )}
 
-        {/* Technology Stack */}
-        <section className="rounded-xl border border-[#27272A] bg-[#18181B] p-6">
-          <h2 className="mb-3 text-base font-semibold text-[#F4F4F5]">
-            Technology Stack
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            {project.technologies.map((tech) => (
-              <Badge key={tech} label={tech} />
-            ))}
-          </div>
-        </section>
-
-        {/* Problem & Solution */}
-        {(project.problemStatement || project.proposedSolution) && (
-          <section className="grid gap-6 md:grid-cols-2">
-            {project.problemStatement && (
-              <div className="rounded-xl border border-[#27272A] bg-[#18181B] p-6">
-                <h2 className="mb-2 text-base font-semibold text-[#F4F4F5]">
-                  Problem Statement
-                </h2>
-                <p className="text-sm leading-relaxed text-[#A1A1AA]">
-                  {project.problemStatement}
-                </p>
-              </div>
-            )}
-            {project.proposedSolution && (
-              <div className="rounded-xl border border-[#27272A] bg-[#18181B] p-6">
-                <h2 className="mb-2 text-base font-semibold text-[#F4F4F5]">
-                  Engineering Solution
-                </h2>
-                <p className="text-sm leading-relaxed text-[#A1A1AA]">
-                  {project.proposedSolution}
-                </p>
-              </div>
-            )}
-          </section>
-        )}
-
-        {/* Personal Contribution & Architecture */}
-        <section className="grid gap-6 md:grid-cols-2">
-          <div className="rounded-xl border border-[#27272A] bg-[#18181B] p-6">
-            <h2 className="mb-2 text-base font-semibold text-[#F4F4F5]">
-              Personal Contribution
-            </h2>
-            <p className="text-sm leading-relaxed text-[#A1A1AA]">
-              {project.personalContribution}
-            </p>
-          </div>
-
-          {project.architectureSummary && (
-            <div className="rounded-xl border border-[#27272A] bg-[#18181B] p-6">
-              <h2 className="mb-2 text-base font-semibold text-[#F4F4F5]">
-                Technical Architecture
+        {/* === PRESENTATION DEPTH 1: ARCHIVE & EXPERIMENTS (Concise View) === */}
+        {isArchive ? (
+          <section className="space-y-6 border-t border-white/10 pt-8">
+            <div className="space-y-2">
+              <h2 className="font-display text-base font-bold text-[#F2F0EC]">
+                What I Built
               </h2>
-              <p className="text-sm leading-relaxed text-[#A1A1AA]">
-                {project.architectureSummary}
+              <p className="text-sm leading-relaxed text-[#A7ADB7]">
+                {project.personalContribution}
               </p>
             </div>
-          )}
-        </section>
-
-        {/* Features & Challenges */}
-        {(project.implementedFeatures?.length || project.engineeringChallenges?.length) ? (
-          <section className="grid gap-6 md:grid-cols-2">
-            {project.implementedFeatures && project.implementedFeatures.length > 0 && (
-              <div className="rounded-xl border border-[#27272A] bg-[#18181B] p-6">
-                <h2 className="mb-3 text-base font-semibold text-[#F4F4F5]">
-                  Implemented Features
-                </h2>
-                <ul className="space-y-2 text-sm text-[#A1A1AA]">
-                  {project.implementedFeatures.map((feat, i) => (
-                    <li key={i} className="flex items-start gap-2.5">
-                      <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#38BDF8]" />
-                      <span>{feat}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {project.engineeringChallenges && project.engineeringChallenges.length > 0 && (
-              <div className="rounded-xl border border-[#27272A] bg-[#18181B] p-6">
-                <h2 className="mb-3 text-base font-semibold text-[#F4F4F5]">
-                  Engineering Challenges
-                </h2>
-                <ul className="space-y-2 text-sm text-[#A1A1AA]">
-                  {project.engineeringChallenges.map((chal, i) => (
-                    <li key={i} className="flex items-start gap-2.5">
-                      <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#38BDF8]" />
-                      <span>{chal}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </section>
-        ) : null}
-
-        {/* Testing, Security & Limitations */}
-        {(project.testingStrategy || project.securityConsiderations || project.resultsAndLimitations) && (
-          <section className="space-y-4">
-            {project.testingStrategy && (
-              <div className="rounded-xl border border-[#27272A] bg-[#18181B] p-6">
-                <h2 className="mb-2 text-base font-semibold text-[#F4F4F5]">
-                  Testing &amp; Verification Strategy
-                </h2>
-                <p className="text-sm leading-relaxed text-[#A1A1AA]">
-                  {project.testingStrategy}
-                </p>
-              </div>
-            )}
-            {project.securityConsiderations && (
-              <div className="rounded-xl border border-[#27272A] bg-[#18181B] p-6">
-                <h2 className="mb-2 text-base font-semibold text-[#F4F4F5]">
-                  Security &amp; Privacy Considerations
-                </h2>
-                <p className="text-sm leading-relaxed text-[#A1A1AA]">
-                  {project.securityConsiderations}
-                </p>
-              </div>
-            )}
-            {project.resultsAndLimitations && (
-              <div className="rounded-xl border border-[#27272A] bg-[#18181B] p-6">
-                <h2 className="mb-2 text-base font-semibold text-[#F4F4F5]">
-                  Results &amp; Known Limitations
-                </h2>
-                <p className="text-sm leading-relaxed text-[#A1A1AA]">
-                  {project.resultsAndLimitations}
-                </p>
-              </div>
-            )}
-          </section>
-        )}
-
-        {/* Source References & Back Nav */}
-        <footer className="flex flex-col justify-between gap-4 border-t border-[#27272A] pt-8 sm:flex-row sm:items-center">
-          <div className="space-y-1">
-            <p className="font-mono text-xs uppercase tracking-wider text-[#A1A1AA]">
-              Verified Source References
-            </p>
-            <div className="flex flex-wrap gap-3">
-              {project.sourceReferences.map((url) => (
-                <a
-                  key={url}
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="break-all font-mono text-xs text-[#38BDF8] hover:underline"
-                >
-                  {url}
-                </a>
+            <div className="flex flex-wrap gap-2">
+              {project.technologies.map((tech) => (
+                <Badge key={tech} label={tech} />
               ))}
             </div>
-          </div>
+          </section>
+        ) : (
+          <>
+            {/* Overview: Problem & Approach (only rendered if content exists) */}
+            {(project.problemStatement || project.proposedSolution) && (
+              <section className="grid gap-8 border-t border-white/10 pt-8 md:grid-cols-2">
+                {project.problemStatement && (
+                  <div className="space-y-2">
+                    <h2 className="font-display text-base font-bold text-[#F2F0EC]">
+                      {isEditorialDeep ? "01. Overview & Problem" : "Overview"}
+                    </h2>
+                    <p className="text-sm leading-relaxed text-[#A7ADB7]">
+                      {project.problemStatement}
+                    </p>
+                  </div>
+                )}
+                {project.proposedSolution && (
+                  <div className="space-y-2">
+                    <h2 className="font-display text-base font-bold text-[#F2F0EC]">
+                      Approach
+                    </h2>
+                    <p className="text-sm leading-relaxed text-[#A7ADB7]">
+                      {project.proposedSolution}
+                    </p>
+                  </div>
+                )}
+              </section>
+            )}
 
-          <Link
-            href="/projects/"
-            prefetch={false}
-            className="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-lg border border-[#27272A] bg-[#18181B] px-4 py-2 text-sm font-medium text-[#F4F4F5] transition-colors hover:border-[#38BDF8]/50 hover:text-[#38BDF8]"
-          >
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            All Projects
-          </Link>
+            {/* My Contribution & How It Works */}
+            <section className="grid gap-8 border-t border-white/10 pt-8 md:grid-cols-2">
+              <div className="space-y-2">
+                <h2 className="font-display text-base font-bold text-[#F2F0EC]">
+                  My Contribution
+                </h2>
+                <p className="text-sm leading-relaxed text-[#A7ADB7]">
+                  {project.personalContribution}
+                </p>
+                {project.implementedFeatures && project.implementedFeatures.length > 0 && (
+                  <ul className="mt-3 space-y-2 text-sm text-[#A7ADB7]">
+                    {project.implementedFeatures.map((feat, i) => (
+                      <li key={i} className="flex items-start gap-2.5">
+                        <span
+                          aria-hidden="true"
+                          className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#65C8F5]"
+                        />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              {(project.architectureSummary || project.engineeringChallenges?.length) && (
+                <div className="space-y-3">
+                  <h2 className="font-display text-base font-bold text-[#F2F0EC]">
+                    How It Works
+                  </h2>
+                  {project.architectureSummary && (
+                    <p className="text-sm leading-relaxed text-[#A7ADB7]">
+                      {project.architectureSummary}
+                    </p>
+                  )}
+                  {isEditorialDeep &&
+                    project.engineeringChallenges &&
+                    project.engineeringChallenges.length > 0 && (
+                      <ul className="space-y-2 pt-1 text-sm text-[#A7ADB7]">
+                        {project.engineeringChallenges.map((chal, i) => (
+                          <li key={i} className="flex items-start gap-2.5">
+                            <span
+                              aria-hidden="true"
+                              className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#65C8F5]"
+                            />
+                            <span>{chal}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                </div>
+              )}
+            </section>
+
+            {/* Technology Stack */}
+            <section className="border-t border-white/10 pt-6">
+              <h2 className="mb-3 font-display text-base font-bold text-[#F2F0EC]">
+                Technology Stack
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {project.technologies.map((tech) => (
+                  <Badge key={tech} label={tech} />
+                ))}
+              </div>
+            </section>
+
+            {/* Results & Lessons (Testing, Security & Limitations) */}
+            {(project.testingStrategy ||
+              project.securityConsiderations ||
+              project.resultsAndLimitations) && (
+              <section className="space-y-5 border-t border-white/10 pt-8">
+                <h2 className="font-display text-base font-bold text-[#F2F0EC]">
+                  Results, Testing &amp; Limitations
+                </h2>
+                {project.testingStrategy && (
+                  <div className="space-y-1">
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-[#65C8F5]">
+                      Testing
+                    </h3>
+                    <p className="text-sm leading-relaxed text-[#A7ADB7]">
+                      {project.testingStrategy}
+                    </p>
+                  </div>
+                )}
+                {project.securityConsiderations && (
+                  <div className="space-y-1">
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-[#65C8F5]">
+                      Security &amp; Confidentiality
+                    </h3>
+                    <p className="text-sm leading-relaxed text-[#A7ADB7]">
+                      {project.securityConsiderations}
+                    </p>
+                  </div>
+                )}
+                {project.resultsAndLimitations && (
+                  <div className="space-y-1">
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-[#65C8F5]">
+                      Release &amp; Known Limitations
+                    </h3>
+                    <p className="text-sm leading-relaxed text-[#A7ADB7]">
+                      {project.resultsAndLimitations}
+                    </p>
+                  </div>
+                )}
+              </section>
+            )}
+          </>
+        )}
+
+        {/* Links, Neighbor Navigation & Back Nav */}
+        <footer className="space-y-6 border-t border-white/10 pt-8">
+          {(prevProject || nextProject) && (
+            <div className="grid grid-cols-1 gap-4 border-b border-white/10 pb-6 sm:grid-cols-2">
+              {prevProject ? (
+                <Link
+                  href={`/projects/${prevProject.slug}/`}
+                  prefetch={false}
+                  className="group border-t border-white/10 pt-4 transition-colors hover:border-[#65C8F5]"
+                >
+                  <p className="font-mono text-xs text-[#A7ADB7] uppercase">
+                    &larr; Previous Work
+                  </p>
+                  <p className="mt-1 font-display truncate text-sm font-semibold text-[#F2F0EC] group-hover:text-[#65C8F5]">
+                    {prevProject.title}
+                  </p>
+                </Link>
+              ) : (
+                <div />
+              )}
+              {nextProject && (
+                <Link
+                  href={`/projects/${nextProject.slug}/`}
+                  prefetch={false}
+                  className="group border-t border-white/10 pt-4 text-right transition-colors hover:border-[#65C8F5]"
+                >
+                  <p className="font-mono text-xs text-[#A7ADB7] uppercase">
+                    Next Work &rarr;
+                  </p>
+                  <p className="mt-1 font-display truncate text-sm font-semibold text-[#F2F0EC] group-hover:text-[#65C8F5]">
+                    {nextProject.title}
+                  </p>
+                </Link>
+              )}
+            </div>
+          )}
+
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+            {project.sourceReferences.length > 0 ? (
+              <div className="space-y-1">
+                <p className="text-xs font-medium uppercase tracking-wider text-[#A7ADB7]">
+                  {isEnterprise ? "Company Website" : "Related Links"}
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {project.sourceReferences.map((url) => (
+                    <a
+                      key={url}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="link-underline break-all font-mono text-xs text-[#65C8F5]"
+                    >
+                      {url}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <p className="text-xs text-[#A7ADB7]">
+                Private summary — public links intentionally omitted.
+              </p>
+            )}
+
+            <Link
+              href="/projects/"
+              prefetch={false}
+              className="active-press inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full border border-white/15 bg-[#15171C] px-5 py-2 text-sm font-medium text-[#F2F0EC] transition-colors hover:border-[#65C8F5] hover:text-[#65C8F5]"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              <span>All Projects</span>
+            </Link>
+          </div>
         </footer>
       </div>
     </article>

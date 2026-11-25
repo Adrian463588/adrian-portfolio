@@ -1,51 +1,71 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { enterpriseProjects, githubProjects, githubSyncMeta, projects } from "@/data/projects";
+import { projects } from "@/data/projects";
 import { ProjectExplorer } from "@/components/projects/ProjectExplorer";
 
+const SITE_URL = "https://adriansyahabidin.vercel.app";
+
 export const metadata: Metadata = {
-  title: "Project Explorer",
+  title: "Projects",
   description:
-    "Searchable engineering catalog across QA/SDET, DevOps & DevSecOps, Backend APIs, Android, Applied AI, Desktop Systems, and FinTech repositories.",
+    "Explore open-source software, test automation frameworks, DevOps setups, Android apps, and experiments by Adrian Syah Abidin.",
   alternates: {
     canonical: "/projects/",
   },
+  openGraph: {
+    title: "Projects | Adrian Syah Abidin",
+    description:
+      "Open-source projects across test automation, DevOps infrastructure, backend APIs, Android, and on-device AI.",
+    url: `${SITE_URL}/projects/`,
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Projects — Adrian Syah Abidin" }],
+  },
+};
+
+const projectsJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": `${SITE_URL}/projects/#collection`,
+      url: `${SITE_URL}/projects/`,
+      name: "Projects | Adrian Syah Abidin",
+      description: "Public engineering projects and technical experiments by Adrian Syah Abidin.",
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: "Projects", item: `${SITE_URL}/projects/` },
+      ],
+    },
+  ],
 };
 
 export default function ProjectsPage() {
-  const syncedDate = githubSyncMeta.syncedAt.slice(0, 10);
-
   return (
-    <div className="px-6 py-12 sm:py-16">
-      <div className="mx-auto max-w-[1200px] space-y-10">
-        <div className="space-y-4 border-b border-[#27272A] pb-8">
+    <div className="min-h-[calc(100vh-68px)] bg-[#08090C]/82 px-6 py-12 backdrop-blur-[2px] sm:py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectsJsonLd) }}
+      />
+      <div className="mx-auto max-w-[1280px] space-y-10">
+        <div className="space-y-4 border-b border-white/10 pb-8">
           <Link
             href="/"
             prefetch={false}
-            className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-medium text-[#A1A1AA] transition-colors hover:text-[#38BDF8]"
+            className="link-underline inline-flex min-h-[38px] items-center gap-1.5 text-xs font-medium text-[#A7ADB7] transition-colors hover:text-[#65C8F5]"
           >
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            Back to overview
+            <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>Back to overview</span>
           </Link>
 
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <div className="max-w-2xl space-y-2">
-              <p className="font-mono text-xs font-medium uppercase tracking-wider text-[#38BDF8]">
-                Repository Catalog
-              </p>
-              <h1 className="text-3xl font-bold tracking-tight text-[#F4F4F5] sm:text-4xl">
-                Engineering Project Explorer
-              </h1>
-              <p className="text-sm leading-relaxed text-[#A1A1AA] sm:text-base">
-                Complete curated inventory of {projects.length} documented engagements ({enterpriseProjects.length} enterprise
-                quality case studies + {githubProjects.length} public repositories from{" "}
-                <span className="font-mono text-[#E4E4E7]">@{githubSyncMeta.username}</span>) across
-                Professional Work, Featured Personal Systems, Core Projects, and Experiments.
-              </p>
-            </div>
-            <p className="font-mono text-xs text-[#A1A1AA]">
-              Static snapshot synced {syncedDate}
+          <div className="max-w-2xl space-y-2.5">
+            <h1 className="font-display text-[clamp(2.25rem,5vw,4.25rem)] font-bold leading-[1.02] tracking-[-0.04em] text-[#F2F0EC]">
+              Projects.
+            </h1>
+            <p className="text-sm leading-relaxed text-[#A7ADB7] sm:text-base">
+              A collection of my work and experiments.
             </p>
           </div>
         </div>

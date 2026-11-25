@@ -45,18 +45,25 @@ describe("V2 grouped professional experience catalog", () => {
     }
   });
 
-  it("links Berijalan directly to the three enterprise case studies and preserves exact platform spelling", () => {
+  it("embeds the three Berijalan selected projects as non-interactive informational entries", () => {
     const berijalan = experiences.find((e) => e.id === "berijalan-acc");
-    expect(berijalan?.projectIds).toEqual([
-      "archer-upgrade",
-      "stnk-alignment",
-      "advanced-joint-finance-parameter",
+    expect(berijalan?.projectIds).toBeUndefined();
+    expect(berijalan?.selectedProjects?.map((p) => p.title)).toEqual([
+      "Archer Upgrade",
+      "STNK Alignment",
+      "Advanced Joint Finance Parameter",
     ]);
+    expect(berijalan?.selectedProjects?.[0].description).toContain("Cypress");
+    expect(berijalan?.selectedProjects?.[0].description).toContain("Jenkins");
+    expect(berijalan?.selectedProjects?.[1].description).toContain("AOL UniPaaS");
+    expect(berijalan?.selectedProjects?.[1].description).toContain("Magic xpa");
+    expect(berijalan?.selectedProjects?.[2].description).toContain("Manual testing");
+    expect(berijalan?.selectedProjects?.[2].description).toContain("AOL UniPaaS");
 
     const joined = JSON.stringify(berijalan);
     expect(joined).toContain("AOL UniPaaS");
     expect(joined).toContain("Magic xpa");
-    expect(joined).toContain("Joint Financing");
+    expect(joined).toMatch(/joint financing/i);
     expect(joined).not.toMatch(/Magic XPA|MagicXPA|Unipass/);
   });
 });
