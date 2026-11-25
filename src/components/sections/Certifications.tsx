@@ -1,39 +1,53 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { Award } from "lucide-react";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Award, ExternalLink } from "lucide-react";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { Badge } from "@/components/ui/Badge";
 import { certifications } from "@/data/certifications";
 
 export function Certifications() {
   return (
-    <section id="certifications" className="px-6 py-20">
-      <div className="mx-auto max-w-5xl">
-        <SectionHeading>CERTIFICATIONS</SectionHeading>
+    <section id="certifications" className="px-6 py-16 sm:py-20">
+      <div className="mx-auto max-w-[1200px]">
+        <SectionHeader
+          eyebrow="Credentials"
+          title="Industry Certifications"
+          description="Cloud, cybersecurity, networking, and applied data credentials."
+        />
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {certifications.map((cert, index) => (
-            <motion.div
-              key={index}
-              className="group flex items-start gap-4 rounded-xl border border-cyan-500/10 bg-[rgba(10,10,20,0.7)] p-5 shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-[12px] transition-all duration-300 hover:border-cyan-400/30 hover:bg-white/5"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.4, delay: index * 0.08 }}
-              whileHover={{
-                rotateY: [0, 5, 0],
-                transition: { duration: 0.4 },
-              }}
-              style={{ perspective: 800 }}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {certifications.map((cert) => (
+            <article
+              key={cert.id}
+              className="flex flex-col justify-between rounded-xl border border-[#27272A] bg-[#18181B] p-5"
             >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-cyan-500/20 text-cyan-400 transition-colors group-hover:bg-cyan-500/30 group-hover:text-cyan-300">
-                <Award className="h-5 w-5" />
+              <div className="flex items-start gap-3.5">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#27272A] bg-[#09090B] text-[#38BDF8]">
+                  <Award className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <div className="space-y-1">
+                  <Badge label={cert.category} />
+                  <h3 className="pt-1 text-sm font-semibold leading-snug text-[#F4F4F5]">
+                    {cert.name}
+                  </h3>
+                  <p className="font-mono text-xs text-[#D4D4D8]">{cert.issuer}</p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-bold text-white">{cert.name}</h3>
-                <p className="text-sm text-gray-400">{cert.issuer}</p>
+
+              <div className="mt-4 border-t border-[#27272A] pt-3">
+                {cert.verificationUrl ? (
+                  <a
+                    href={cert.verificationUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 font-mono text-xs text-[#38BDF8] hover:underline"
+                  >
+                    Verify credential
+                    <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                  </a>
+                ) : (
+                  <p className="font-mono text-xs text-[#A1A1AA]">{cert.status}</p>
+                )}
               </div>
-            </motion.div>
+            </article>
           ))}
         </div>
       </div>

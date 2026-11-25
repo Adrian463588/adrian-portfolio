@@ -1,157 +1,140 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { href: "#about", label: "About" },
-  { href: "#experience", label: "Experience" },
-  { href: "#projects", label: "Projects" },
-  { href: "#skills", label: "Skills" },
-  { href: "#certifications", label: "Certs" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#experience", label: "Experience", match: "experience" },
+  { href: "/#enterprise-work", label: "Enterprise", match: "enterprise-work" },
+  { href: "/#work", label: "Work", match: "work" },
+  { href: "/projects/", label: "Projects", match: "projects" },
+  { href: "/#competencies", label: "Competencies", match: "competencies" },
+  { href: "/#about", label: "About", match: "about" },
 ];
 
 export function Navbar() {
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("#about");
+  const toggleBtnRef = useRef<HTMLButtonElement>(null);
+  const wasOpenRef = useRef(false);
+
+  const isProjectsRoute = pathname?.startsWith("/projects");
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    if (wasOpenRef.current && !mobileOpen) {
+      toggleBtnRef.current?.focus();
+    }
+    wasOpenRef.current = mobileOpen;
+  }, [mobileOpen]);
 
-  // Scroll-spy via IntersectionObserver
   useEffect(() => {
-    const sectionIds = navLinks.map((l) => l.href.replace("#", ""));
-    const observers: IntersectionObserver[] = [];
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setActiveSection(`#${id}`);
-          }
-        },
-        { rootMargin: "-40% 0px -55% 0px" }
-      );
-      observer.observe(el);
-      observers.push(observer);
-    });
-
-    return () => observers.forEach((o) => o.disconnect());
-  }, []);
-
-  const handleLinkClick = () => {
-    setMobileOpen(false);
-  };
-
-  // Close on Escape
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && mobileOpen) setMobileOpen(false);
+    if (!mobileOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileOpen(false);
+      }
     };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, [mobileOpen]);
 
   return (
-    <header>
+    <header className="sticky top-0 z-50 w-full px-4 pt-4 sm:px-6">
       <nav
-        className={`fixed top-0 z-50 w-full p-4 transition-all duration-300 ${
-          scrolled ? "backdrop-blur-md" : ""
-        }`}
+        aria-label="Primary navigation"
+        className="mx-auto flex max-w-[1200px] items-center justify-between rounded-xl border border-[#27272A] bg-[#09090B]/85 px-4 py-2.5 backdrop-blur-md"
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between rounded-full border border-cyan-500/10 bg-[rgba(10,10,20,0.7)] px-6 py-3 shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-[12px]">
-          <a
-            href="#"
-            className="text-xl font-bold tracking-wider text-cyan-400"
-            style={{ fontFamily: "var(--font-orbitron)" }}
-          >
-            Adrian
-          </a>
+        <Link
+          href="/"
+          prefetch={false}
+          className="inline-flex min-h-[44px] shrink-0 items-center gap-2.5 whitespace-nowrap rounded-lg px-2 text-sm font-semibold tracking-tight text-[#F4F4F5] transition-colors hover:text-[#38BDF8]"
+        >
+          <span className="flex h-7 w-7 items-center justify-center rounded-md border border-[#27272A] bg-[#18181B] font-mono text-xs font-bold text-[#38BDF8]">
+            AS
+          </span>
+          <span>Adrian Syah Abidin</span>
+        </Link>
 
-          {/* Desktop nav */}
-          <div className="hidden space-x-8 md:flex">
-            {navLinks.map((link) => (
-              <a
+        <div className="hidden items-center gap-1 lg:flex">
+          {navLinks.map((link) => {
+            const active = link.match === "projects" && isProjectsRoute;
+            return (
+              <Link
                 key={link.href}
                 href={link.href}
-                aria-current={activeSection === link.href ? "true" : undefined}
-                className="relative text-sm font-semibold uppercase tracking-widest transition-colors hover:text-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-                style={{
-                  color:
-                    activeSection === link.href
-                      ? "rgb(34 211 238)"
-                      : undefined,
-                }}
+                prefetch={false}
+                aria-current={active ? "page" : undefined}
+                className={`inline-flex min-h-[40px] items-center whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                  active
+                    ? "bg-[#18181B] text-[#38BDF8]"
+                    : "text-[#A1A1AA] hover:bg-[#18181B]/70 hover:text-[#F4F4F5]"
+                }`}
               >
                 {link.label}
-                {activeSection === link.href && (
-                  <motion.div
-                    layoutId="nav-indicator"
-                    className="absolute -bottom-1 left-0 right-0 h-[2px] bg-gradient-to-r from-cyan-400 to-blue-600"
-                    transition={{
-                      type: "spring",
-                      stiffness: 380,
-                      damping: 30,
-                    }}
-                  />
-                )}
-              </a>
-            ))}
-          </div>
-
-          {/* Mobile toggle */}
-          <button
-            className="text-white md:hidden"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileOpen}
-          >
-            {mobileOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </button>
+              </Link>
+            );
+          })}
         </div>
 
-        {/* Mobile menu with AnimatePresence */}
-        <AnimatePresence>
-          {mobileOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-              className="absolute left-4 right-4 top-20 flex flex-col space-y-4 rounded-xl border border-cyan-500/10 bg-[rgba(10,10,20,0.95)] p-4 shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-[12px] md:hidden"
-            >
-              {navLinks.map((link) => (
-                <a
+        <div className="hidden shrink-0 items-center lg:flex">
+          <a
+            href="mailto:adriansyah1230@gmail.com"
+            className="inline-flex min-h-[40px] items-center whitespace-nowrap rounded-lg bg-[#F4F4F5] px-4 py-2 text-sm font-semibold text-[#09090B] transition-colors hover:bg-[#38BDF8]"
+          >
+            Get in Touch
+          </a>
+        </div>
+
+        <button
+          ref={toggleBtnRef}
+          type="button"
+          onClick={() => setMobileOpen((prev) => !prev)}
+          aria-expanded={mobileOpen}
+          aria-controls="mobile-nav-drawer"
+          aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
+          className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-[#27272A] bg-[#18181B] text-[#F4F4F5] transition-colors hover:border-[#3F3F46] lg:hidden"
+        >
+          {mobileOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
+        </button>
+      </nav>
+
+      {mobileOpen && (
+        <div
+          id="mobile-nav-drawer"
+          className="mx-auto mt-2 max-w-[1200px] rounded-xl border border-[#27272A] bg-[#18181B] p-3 shadow-2xl lg:hidden"
+        >
+          <div className="flex flex-col gap-1">
+            {navLinks.map((link) => {
+              const active = link.match === "projects" && isProjectsRoute;
+              return (
+                <Link
                   key={link.href}
                   href={link.href}
-                  onClick={handleLinkClick}
-                  className="rounded py-2 text-center transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
-                  style={{
-                    color:
-                      activeSection === link.href
-                        ? "rgb(34 211 238)"
-                        : undefined,
-                  }}
+                  prefetch={false}
+                  onClick={() => setMobileOpen(false)}
+                  aria-current={active ? "page" : undefined}
+                  className={`flex min-h-[44px] items-center rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors ${
+                    active
+                      ? "bg-[#202024] text-[#38BDF8]"
+                      : "text-[#F4F4F5] hover:bg-[#202024]"
+                  }`}
                 >
                   {link.label}
-                </a>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
+                </Link>
+              );
+            })}
+            <a
+              href="mailto:adriansyah1230@gmail.com"
+              onClick={() => setMobileOpen(false)}
+              className="mt-2 flex min-h-[44px] items-center justify-center rounded-lg bg-[#F4F4F5] px-4 py-2.5 text-sm font-semibold text-[#09090B]"
+            >
+              Get in Touch
+            </a>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

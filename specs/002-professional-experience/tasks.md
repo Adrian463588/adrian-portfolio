@@ -1,0 +1,9 @@
+# Task Breakdown 002 — Professional Experience & Enterprise Quality Engineering
+
+- [x] **T2.0 Baseline Audit & Public Fact Verification:** Capture V2 baseline screenshots and verify `berijalan.co.id`, `Magic xpa`, `uniPaaS`, and Cypress+Jenkins reference facts.
+- [x] **T2.1 Spec Kit & Architecture Updates:** Author `specs/002-professional-experience/*` and update `AGENTS.md`, `docs/*`.
+- [x] **T2.2 FigCraft Design Update:** Update `design/portfolio.figcraft` frames for grouped Berijalan card + Enterprise Case Studies section and export updated PNG references to `design/exports/`.
+- [x] **T2.3 TDD RED Phase:** Author failing unit tests in `tests/unit/experience.test.ts` and `tests/unit/projects.test.ts` covering grouped multi-role sorting, `publicDisclosureApproved` gate, and `origin: "professional"` filtering; verify initial RED failure.
+- [x] **T2.4 Data & Domain Schema Implementation:** Extend `src/types/index.ts`, `src/lib/projects.ts`, `src/data/experience.ts`, `src/data/enterprise-projects.ts`, `src/data/projects.ts`, `src/data/competencies.ts`. Verify `npm run test` turns GREEN.
+- [x] **T2.5 UI Components & Homepage Sequence:** Update `TimelineItem.tsx`, `Experience.tsx`, `Hero.tsx`, `SelectedWork.tsx`, `Competencies.tsx`, `Navbar.tsx`, `ProjectCard.tsx`, `ProjectExplorer.tsx`, `CaseStudyDetail.tsx`, `layout.tsx`, `sitemap.ts`; create `EnterpriseCaseStudies.tsx` and `About.tsx`; update `src/app/page.tsx` and `src/app/projects/[slug]/page.tsx`.
+- [x] **T2.6 E2E Tests, Security Check & Visual QA:** Extend `tests/e2e/portfolio.spec.ts` (`TC-EXP-*`, `TC-ENT-*`, `TC-UI-*`), run static `out/` confidentiality grep, run `lint`/`typecheck`/`test`/`build`/`test:e2e`, inspect V2 after screenshots + Chrome DevTools Lighthouse/Performance trace, and finalize verification summary.

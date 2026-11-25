@@ -1,10 +1,11 @@
 import { Hero } from "@/components/sections/Hero";
 import { Experience } from "@/components/sections/Experience";
-import { Projects } from "@/components/sections/Projects";
-import { Skills } from "@/components/sections/Skills";
+import { EnterpriseCaseStudies } from "@/components/sections/EnterpriseCaseStudies";
+import { SelectedWork } from "@/components/sections/SelectedWork";
+import { Competencies } from "@/components/sections/Competencies";
 import { Certifications } from "@/components/sections/Certifications";
 import { Education } from "@/components/sections/Education";
-import { Leadership } from "@/components/sections/Leadership";
+import { About } from "@/components/sections/About";
 import { Contact } from "@/components/sections/Contact";
 
 export default function Home() {
@@ -12,11 +13,12 @@ export default function Home() {
     <>
       <Hero />
       <Experience />
-      <Projects />
-      <Skills />
+      <EnterpriseCaseStudies />
+      <SelectedWork />
+      <Competencies />
       <Certifications />
       <Education />
-      <Leadership />
+      <About />
       <Contact />
     </>
   );

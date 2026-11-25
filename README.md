@@ -1,72 +1,79 @@
-# Adrian Syah Abidin — Portfolio
+# Adrian Syah Abidin — Engineering Portfolio
 
-A modern, interactive professional portfolio designed to showcase software engineering experience, projects, and skills. Built with Next.js and React Three Fiber, the site features a real-time 3D WebGL background and custom microinteractions to create a premium, engaging user experience tailored for hiring managers and technical recruiters.
+Frontend-only professional engineering portfolio showcasing software systems across **QA Automation / SDET**, **DevOps & DevSecOps**, **Backend Engineering**, **Android & Wear OS**, **On-Device Applied AI**, and **FinTech**. Built with Next.js 16 static export (`output: "export"`), TypeScript strict mode, Tailwind CSS v4, and bounded React Three Fiber 3D interaction.
 
-🌐 **Live Demo:** [adriansyahabidin.vercel.app](https://adriansyahabidin.vercel.app)
-
----
-
-## 🚀 Built With
-
-* **Framework:** Next.js 16 (App Router, Turbopack)
-* **Language:** TypeScript
-* **Styling:** Tailwind CSS v4
-* **Animations:** Framer Motion
-* **3D Engine & Effects:** React Three Fiber, Three.js, @react-three/postprocessing
-* **Icons & Fonts:** Lucide React, Google Fonts (Orbitron, Rajdhani)
-* **Deployment:** Vercel
+🌐 **Production Site:** [adriansyahabidin.vercel.app](https://adriansyahabidin.vercel.app)
 
 ---
 
-## 📂 Project Structure
+## Architecture & Stack
+
+- **Framework:** Next.js 16 (App Router, `output: "export"`, static SSG `/projects/[slug]`)
+- **Language:** TypeScript (`strict: true`)
+- **Styling:** Tailwind CSS v4 (`Graphite & Ice Blue` semantic tokens)
+- **3D Experience:** Three.js + React Three Fiber (`frameloop="demand"`, client lazy-loaded, WebGL + reduced-motion fallback)
+- **Icons:** Lucide React
+- **Testing:** Vitest (unit & data invariants) + Playwright + `axe-core` (E2E, responsive, accessibility)
+
+---
+
+## Repository Structure
 
 ```text
-src/
-├── app/                   # Next.js App Router (pages and layouts)
-│   ├── layout.tsx         # Root layout (fonts, SEO, 3D scene)
-│   ├── page.tsx           # Main single-page portfolio
-│   ├── globals.css        # Tailwind v4 theme and global styles
-│   ├── ThreeScene.tsx     # Dynamic import wrapper for 3D elements (SSR-safe)
-│   └── ClientEffects.tsx  # Global client-side interactions (progress, spotlight)
-├── components/            # Reusable UI components
-│   ├── layout/            # Navbar, Footer
-│   ├── sections/          # Content areas (Hero, Experience, Projects, Skills, etc.)
-│   ├── three/             # R3F scene definition, camera rig, and geometries
-│   └── ui/                # Microinteraction components (MagneticButton, TiltCard)
-├── data/                  # Static content configuration
-│   ├── experience.ts      # Professional history
-│   ├── projects.ts        # Portfolio projects
-│   ├── skills.ts          # Technical skill lists
-│   └── ...                # Certifications, leadership, education
-├── types/                 # TypeScript interfaces and type definitions
-└── lib/                   # Shared utilities (e.g., classname merger)
+adrian-portfolio/
+├── design/                        # Design tokens and FigCraft source + exports
+├── docs/                          # Audit, PRD, Design System, Architecture, Evidence
+├── public/projects/               # WebP application screenshots
+├── scripts/sync-github.mjs        # Paginated offline GitHub snapshot generator
+├── specs/001-professional-portfolio/
+├── src/
+│   ├── app/                       # App Router pages (/, /projects, /projects/[slug])
+│   ├── components/
+│   │   ├── layout/                # Navbar, Footer
+│   │   ├── projects/              # ProjectCard, ProjectExplorer, CaseStudyDetail
+│   │   ├── sections/              # Homepage sections
+│   │   ├── three/                 # Bounded R3F Hero sculpture & fallbacks
+│   │   └── ui/                    # Badge, SectionHeader, TiltSurface, TimelineItem
+│   ├── data/
+│   │   ├── github-repositories.json  # Static GitHub API snapshot
+│   │   ├── project-overrides.ts      # Curated case studies & fork attribution
+│   │   └── projects.ts               # Validated merged dataset
+│   ├── lib/                       # Pure filtering, validation, utilities
+│   └── types/                     # Domain TypeScript definitions
+└── tests/
+    ├── unit/                      # Vitest tests
+    └── e2e/                       # Playwright + axe-core tests
 ```
 
 ---
 
-## 💻 Local Development
+## Updating Projects from GitHub
 
-1. **Clone the repository:**
+Project metadata is synchronized offline so the deployed static frontend never calls GitHub APIs at runtime:
+
+1. Sync public repositories from `@Adrian463588`:
    ```bash
-   git clone https://github.com/Adrian463588/adrian-portfolio.git
-   cd adrian-portfolio
+   npm run sync:github
    ```
-
-2. **Install dependencies:**
+   Optionally set `GITHUB_TOKEN` in your local shell environment (never commit tokens or use `NEXT_PUBLIC_*`) to increase API rate limits. If GitHub is unreachable, the existing snapshot in `src/data/github-repositories.json` is preserved.
+2. Add or refine curated case studies, categories, or screenshots in `src/data/project-overrides.ts`.
+3. Add WebP screenshots to `public/projects/` with explicit `width` and `height`.
+4. Verify and build:
    ```bash
-   npm install
+   npm run lint
+   npm run typecheck
+   npm run test
+   npm run build
+   npm run test:e2e
    ```
-
-3. **Start the development server:**
-   ```bash
-   npm run dev
-   ```
-
-4. **Open your browser:**
-   Navigate to [http://localhost:3000](http://localhost:3000) to view the application.
 
 ---
 
-## 📄 License
+## Local Development
 
-© 2026 Adrian Syah Abidin. All rights reserved.
+```bash
+npm ci
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).

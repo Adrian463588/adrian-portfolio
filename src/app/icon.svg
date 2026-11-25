@@ -1,7 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-  <rect width="256" height="256" rx="64" fill="#050510"/>
-  <!-- Stylized "A" overlapping for cyber aesthetic -->
-  <path d="M128 40 L216 200 L176 200 L128 100 L80 200 L40 200 Z" fill="#00ffff"/>
-  <path d="M128 40 L216 200 L176 200 L128 100 L80 200 L40 200 Z" fill="none" stroke="#fff" stroke-width="4" opacity="0.3"/>
-  <path d="M96 150 L160 150 L170 170 L86 170 Z" fill="#0088ff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="14" fill="#09090B" />
+  <rect x="1.5" y="1.5" width="61" height="61" rx="12.5" stroke="#27272A" stroke-width="3" />
+  <path d="M18 46L29.5 18H34.5L46 46H40.2L37.6 39.2H26.4L23.8 46H18ZM28.1 34.4H35.9L32 24.1L28.1 34.4Z" fill="#F4F4F5" />
+  <circle cx="48" cy="17" r="4" fill="#38BDF8" />
 </svg>

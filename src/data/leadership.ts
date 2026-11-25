@@ -1,4 +1,4 @@
-import { LeadershipEntry } from "@/types";
+import type { LeadershipEntry } from "@/types";
 
 export const leadership: LeadershipEntry[] = [
   {
@@ -6,16 +6,16 @@ export const leadership: LeadershipEntry[] = [
     role: "Staff, Academic & Adkesma Divisions",
     period: "Jan 2021 – Jan 2023",
     bullets: [
-      "Organized academic events, including IELTS webinars and simulations.",
+      "Organized academic programs including IELTS preparation webinars and test simulations.",
       "Served as project lead and communication liaison for KKL 2022 and SOSKP 2022.",
     ],
   },
   {
     organization: "Night Login DTETI FT UGM",
-    role: "Member / Staff",
+    role: "Member / Contributor",
     period: "Jan 2021 – Dec 2023",
     bullets: [
-      "Active contributor in the Cyber Security Community (NCSC), Application Development Community (NADC), and Competitive Programming Community (NCPC).",
+      "Contributed across the Cyber Security Community (NCSC), Application Development Community (NADC), and Competitive Programming Community (NCPC).",
     ],
   },
   {

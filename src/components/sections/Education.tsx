@@ -1,40 +1,46 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { GraduationCap } from "lucide-react";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { GraduationCap, MapPin } from "lucide-react";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { education } from "@/data/education";
 
 export function Education() {
   return (
-    <section id="education" className="px-6 py-20">
-      <div className="mx-auto max-w-5xl">
-        <SectionHeading>EDUCATION</SectionHeading>
+    <section id="education" className="px-6 py-16 sm:py-20">
+      <div className="mx-auto max-w-[1200px]">
+        <SectionHeader
+          eyebrow="Academic"
+          title="Education"
+          description="Formal computer engineering and information technology foundation."
+        />
 
         <div className="grid gap-6 md:grid-cols-2">
-          {education.map((edu, index) => (
-            <motion.div
-              key={index}
-              className="flex items-start gap-4 rounded-xl border border-cyan-500/10 bg-[rgba(10,10,20,0.7)] p-6 shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-[12px] transition-all duration-300 hover:border-cyan-400/30 hover:bg-white/5"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
+          {education.map((edu) => (
+            <article
+              key={edu.institution}
+              className="flex items-start gap-4 rounded-xl border border-[#27272A] bg-[#18181B] p-6"
             >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-blue-500/20 text-blue-400">
-                <GraduationCap className="h-6 w-6" />
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-[#27272A] bg-[#09090B] text-[#38BDF8]">
+                <GraduationCap className="h-5 w-5" aria-hidden="true" />
               </div>
-              <div>
-                <h3 className="text-lg font-bold text-white">
+
+              <div className="space-y-1.5">
+                <span className="inline-block rounded-md border border-[#27272A] bg-[#09090B] px-2.5 py-0.5 font-mono text-xs text-[#A1A1AA]">
+                  {edu.period}
+                </span>
+                <h3 className="text-base font-semibold text-[#F4F4F5] sm:text-lg">
                   {edu.institution}
                 </h3>
-                <p className="text-gray-300">{edu.degree}</p>
-                <p className="text-sm text-gray-400">{edu.period}</p>
+                <p className="text-sm font-medium text-[#38BDF8]">{edu.degree}</p>
+                {edu.notes && (
+                  <p className="text-sm leading-relaxed text-[#A1A1AA]">{edu.notes}</p>
+                )}
                 {edu.location && (
-                  <p className="text-sm text-gray-500">{edu.location}</p>
+                  <p className="flex items-center gap-1.5 pt-1 text-xs text-[#A1A1AA]">
+                    <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
+                    <span>{edu.location}</span>
+                  </p>
                 )}
               </div>
-            </motion.div>
+            </article>
           ))}
         </div>
       </div>

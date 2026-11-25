@@ -2,32 +2,23 @@ import { cn } from "@/lib/utils";
 
 interface BadgeProps {
   label: string;
-  colorKey?: string;
+  variant?: "neutral" | "accent" | "success" | "warning";
   className?: string;
 }
 
-const colorMap: Record<string, string> = {
-  blue: "bg-blue-900/30 border-blue-500/30 text-blue-300",
-  orange: "bg-orange-900/30 border-orange-500/30 text-orange-300",
-  indigo: "bg-indigo-900/30 border-indigo-500/30 text-indigo-300",
-  purple: "bg-purple-900/30 border-purple-500/30 text-purple-300",
-  red: "bg-red-900/30 border-red-500/30 text-red-300",
-  teal: "bg-teal-900/30 border-teal-500/30 text-teal-300",
-  emerald: "bg-emerald-900/30 border-emerald-500/30 text-emerald-300",
-  cyan: "bg-cyan-900/30 border-cyan-500/30 text-cyan-300",
-  green: "bg-green-900/30 border-green-500/30 text-green-300",
-  yellow: "bg-yellow-900/30 border-yellow-500/30 text-yellow-300",
-  pink: "bg-pink-900/30 border-pink-500/30 text-pink-300",
-  sky: "bg-sky-900/30 border-sky-500/30 text-sky-300",
-  amber: "bg-amber-900/30 border-amber-500/30 text-amber-300",
+const variantStyles: Record<NonNullable<BadgeProps["variant"]>, string> = {
+  neutral: "border-[#27272A] bg-[#18181B] text-[#E4E4E7]",
+  accent: "border-[#38BDF8]/30 bg-[#38BDF8]/10 text-[#7DD3FC]",
+  success: "border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
+  warning: "border-amber-500/30 bg-amber-500/10 text-amber-300",
 };
 
-export function Badge({ label, colorKey = "cyan", className }: BadgeProps) {
+export function Badge({ label, variant = "neutral", className }: BadgeProps) {
   return (
     <span
       className={cn(
-        "rounded border px-3 py-1 text-xs",
-        colorMap[colorKey] || colorMap.cyan,
+        "inline-flex items-center rounded-md border px-2.5 py-0.5 font-mono text-xs font-medium leading-5",
+        variantStyles[variant],
         className
       )}
     >
