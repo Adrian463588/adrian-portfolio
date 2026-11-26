@@ -77,4 +77,17 @@
 | Internal Link Integrity | `npm run seo:links` | PASS | `checkedLinks: 1724`, `errors: []` |
 | Playwright E2E + `axe-core` | `npm run test:e2e` | PASS | `37 / 37` passed (`axe-core` 0 violations across `10` routes, draft 404 checks, calculators, `320px`–`1920px` overflow, WebGL fallback) |
 | Lighthouse (`/` Desktop, `/resources/` Desktop, calculator Desktop, comparison Mobile) | Chrome DevTools MCP | PASS | Accessibility 100 · Best Practices 100 · SEO 100 · Agentic Browsing 100 (`57`/`52`/`60`/`57` passed, `0` failed) |
-| Commit / Push / Prod Deploy | Remote git & Vercel | NOT EXECUTED | Pending explicit owner authorization |
+| Commit / Push / Prod Deploy | Remote git & Vercel | DONE | Committed & merged via `feat/portfolio-v9-v10-seo` -> `main` (`30433b4`) |
+
+---
+
+# Verification Summary — V10.1 App Icons, Web App Manifest & Google Site Name (`feat/portfolio-app-icons-site-name`)
+
+| Check | Command / Tool | Result | Notes |
+|-------|----------------|--------|-------|
+| Icon Generation (`A.` Obsidian & Arctic) | `npm run generate:icons` | PASS | Multi-res `favicon.ico` (`16/32/48`), `icon.svg`, `icon-{48,96,144,192,512}x*.png`, `icon-maskable-512x512.png`, `apple-touch-icon.png` |
+| Static Asset Validation | `npm run validate:assets` | PASS | `39` assets verified in `public/` & `out/` |
+| ESLint & TypeScript | `npm run lint`, `npm run typecheck` | PASS | `0` errors (`strict: true`) |
+| Unit Tests | `npm run test` (`vitest run`) | PASS | `5` files, `28/28` tests passed (`WebSite.alternateName`, `manifest.webmanifest`, SEO, calculators) |
+| Static Build & SEO CLI | `npm run build`, `npm run seo:audit`, `npm run seo:links` | PASS | `86` static pages (`/manifest.webmanifest` included), `81` indexable HTML pages checked with `icon` / `apple-touch-icon` / `manifest` tags, `1724` internal links valid |
+| Playwright E2E + `axe-core` | `npm run test:e2e` | PASS | `37/37` passed (all 10 icon/manifest routes HTTP `200`, `0` WCAG 2.2 AA violations) |

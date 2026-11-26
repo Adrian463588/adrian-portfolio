@@ -52,11 +52,25 @@ function hasValidBinaryHeader(filePath) {
   if (filePath.endsWith(".svg")) {
     return buf.toString("utf8").includes("<svg");
   }
+  if (filePath.endsWith(".ico")) {
+    return buf[0] === 0x00 && buf[1] === 0x00 && buf[2] === 0x01 && buf[3] === 0x00;
+  }
   return true;
 }
 
 const sourceFiles = walkFiles(srcDir, [".ts", ".tsx"]);
-const referenced = new Set(["/og-image.png"]);
+const referenced = new Set([
+  "/og-image.png",
+  "/favicon.ico",
+  "/icon.svg",
+  "/icon-48x48.png",
+  "/icon-96x96.png",
+  "/icon-144x144.png",
+  "/icon-192x192.png",
+  "/icon-512x512.png",
+  "/icon-maskable-512x512.png",
+  "/apple-touch-icon.png",
+]);
 
 for (const file of sourceFiles) {
   const content = fs.readFileSync(file, "utf8");
