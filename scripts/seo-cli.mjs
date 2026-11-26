@@ -166,6 +166,9 @@ function runStaticOutAudit() {
     if (!/<link\s+rel="canonical"\s+href="https:\/\/adriansyahabidin\.vercel\.app\/[^"]*"/i.test(html)) {
       errors.push(`Missing or non-canonical URL in ${rel}`);
     }
+    if (!/<link\s+rel="icon"/i.test(html) || !/<link\s+rel="apple-touch-icon"/i.test(html) || !/<link\s+rel="manifest"/i.test(html)) {
+      errors.push(`Missing icon/apple-touch-icon/manifest link tags in ${rel}`);
+    }
     const h1Count = (html.match(/<h1[\s>]/gi) ?? []).length;
     if (h1Count !== 1) errors.push(`Expected 1 <h1>, found ${h1Count} in ${rel}`);
 

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" rx="112" fill="#08090C" />
+       <rect x="12" y="12" width="488" height="488" rx="100" stroke="#1C1F26" stroke-width="18" />
+  <!-- Geometric 'A.' centered horizontally across the full glyph + dot bounds (108..404 -> center 256) -->
+  <path d="M108 378L194 134H248L334 378H278L259.5 320H182.5L164 378H108ZM197.5 272H244.5L221 196L197.5 272Z" fill="#F2F0EC" />
+  <circle cx="372" cy="348" r="32" fill="#65C8F5" />
+</svg>

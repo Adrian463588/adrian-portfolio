@@ -66,6 +66,8 @@ export function buildHomeJsonLd(
         "@id": ENTITY_IDS.website,
         url: canonicalUrl("/"),
         name: SITE_CONFIG.name,
+        alternateName: [...SITE_CONFIG.alternateNames],
+        description: SITE_CONFIG.description,
         inLanguage: SITE_CONFIG.language,
         publisher: { "@id": ENTITY_IDS.person },
       },

@@ -14,12 +14,14 @@ import {
 import { getPublishedResources } from "@/lib/seo-resources";
 import robots from "@/app/robots";
 import sitemap from "@/app/sitemap";
+import manifest from "@/app/manifest";
 
 describe("SEO config, structured data, sitemap, and robots invariants", () => {
   it("uses explicit production host with verified Search Console token and public profiles", () => {
     expect(SITE_CONFIG.url).toBe("https://adriansyahabidin.vercel.app");
     expect(SITE_CONFIG.locale).toBe("en_US");
     expect(SITE_CONFIG.language).toBe("en");
+    expect(SITE_CONFIG.alternateNames).toContain("Adrian.");
     expect(SITE_CONFIG.verification.google).toBe(
       "P4O6B5PWmL-5E0i5XRbfkOSaPcop92urgS2lk-IAZ5s"
     );
@@ -40,6 +42,8 @@ describe("SEO config, structured data, sitemap, and robots invariants", () => {
     const profilePage = graph.find((n) => n["@type"] === "ProfilePage");
 
     expect(website?.["@id"]).toBe(ENTITY_IDS.website);
+    expect(website?.name).toBe("Adrian Syah Abidin");
+    expect(website?.alternateName).toEqual([...SITE_CONFIG.alternateNames]);
     expect(website?.inLanguage).toBe("en");
     expect(person?.["@id"]).toBe(ENTITY_IDS.person);
     expect(person?.worksFor).toBeUndefined();
@@ -110,5 +114,13 @@ describe("SEO config, structured data, sitemap, and robots invariants", () => {
     const robotsConfig = robots();
     expect(robotsConfig.sitemap).toBe("https://adriansyahabidin.vercel.app/sitemap.xml");
     expect(robotsConfig.rules).toEqual({ userAgent: "*", allow: "/" });
+
+    const webManifest = manifest();
+    expect(webManifest.name).toBe("Adrian Syah Abidin");
+    expect(webManifest.short_name).toBe("Adrian.");
+    expect(webManifest.theme_color).toBe("#08090C");
+    expect(webManifest.icons?.some((i) => i.sizes === "48x48")).toBe(true);
+    expect(webManifest.icons?.some((i) => i.sizes === "192x192")).toBe(true);
+    expect(webManifest.icons?.some((i) => i.purpose === "maskable")).toBe(true);
   });
 });

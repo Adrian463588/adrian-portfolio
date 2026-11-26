@@ -537,6 +537,22 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       "href",
       "https://adriansyahabidin.vercel.app/"
     );
+    await expect(page.locator('meta[name="application-name"]')).toHaveAttribute(
+      "content",
+      "Adrian Syah Abidin"
+    );
+    await expect(page.locator('link[rel="manifest"]')).toHaveAttribute(
+      "href",
+      "/manifest.webmanifest"
+    );
+    await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute(
+      "href",
+      "/apple-touch-icon.png"
+    );
+    await expect(page.locator('link[rel="icon"][href="/icon-48x48.png"]')).toHaveAttribute(
+      "sizes",
+      "48x48"
+    );
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
       "content",
       /\/og-image\.png$/
@@ -575,6 +591,23 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     const ogRes = await request.get("/og-image.png");
     expect(ogRes.status()).toBe(200);
     expect(ogRes.headers()["content-type"]).toContain("image/png");
+
+    // Verify full favicon, Google Search multi-48px PNGs, Apple Touch Icon, and Web App Manifest
+    for (const iconAsset of [
+      "/favicon.ico",
+      "/icon.svg",
+      "/icon-48x48.png",
+      "/icon-96x96.png",
+      "/icon-144x144.png",
+      "/icon-192x192.png",
+      "/icon-512x512.png",
+      "/icon-maskable-512x512.png",
+      "/apple-touch-icon.png",
+      "/manifest.webmanifest",
+    ]) {
+      const assetRes = await request.get(iconAsset);
+      expect(assetRes.status(), `Asset ${iconAsset} must return 200`).toBe(200);
+    }
 
     const robotsRes = await request.get("/robots.txt");
     expect(robotsRes.status()).toBe(200);

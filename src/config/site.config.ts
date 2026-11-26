@@ -1,7 +1,13 @@
 export const SITE_CONFIG = {
   url: "https://adriansyahabidin.vercel.app",
   name: "Adrian Syah Abidin",
+  shortName: "Adrian.",
   siteName: "Adrian Syah Abidin",
+  alternateNames: [
+    "Adrian.",
+    "Adrian Syah Abidin Portfolio",
+    "adriansyahabidin",
+  ] as const,
   titleDefault: "Adrian Syah Abidin | Software & QA Automation Engineer",
   titleTemplate: "%s | Adrian Syah Abidin",
   jobTitle: "Software & QA Automation Engineer",
