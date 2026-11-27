@@ -20,7 +20,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="border-t border-white/10 bg-[#08090C]/90 px-6 py-10 backdrop-blur-sm">
+    <footer className="border-t border-white/10 bg-[#08090C]/90 px-6 pb-24 pt-10 backdrop-blur-sm lg:pb-10 lg:pr-24">
       <div className="mx-auto flex max-w-[1280px] flex-col justify-between gap-8 text-sm text-[#A7ADB7] lg:flex-row lg:items-center">
         <div className="space-y-1">
           <p className="font-display font-semibold tracking-tight text-[#F2F0EC]">

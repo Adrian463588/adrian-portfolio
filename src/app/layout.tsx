@@ -7,6 +7,7 @@ import { SpatialWidget } from "@/components/three/SpatialWidget";
 import { SmoothScrollProvider } from "@/components/motion/SmoothScrollProvider";
 import { DesktopCursor } from "@/components/motion/DesktopCursor";
 import { MotionProvider } from "@/context/MotionContext";
+import { ChatAssistant } from "@/features/chatbot/ChatAssistant";
 
 import { SITE_CONFIG } from "@/config/site.config";
 
@@ -108,6 +109,7 @@ export default function RootLayout({
               <Footer />
             </div>
           </SmoothScrollProvider>
+          <ChatAssistant />
         </MotionProvider>
       </body>
     </html>

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T01:14:18.975Z",
+  "generatedAt": "2026-11-27T14:33:51.520Z",
   "validation": {
     "valid": true,
     "errors": [],
@@ -52,7 +52,7 @@
   },
   "links": {
     "valid": true,
-    "checkedLinks": 1724,
+    "checkedLinks": 1694,
     "errors": []
   }
 }

@@ -12,10 +12,10 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   webServer: {
-    command: "node tests/e2e/static-server.mjs",
+    command: "npx next start -p 4173",
     url: "http://127.0.0.1:4173",
     reuseExistingServer: !process.env.CI,
-    timeout: 30_000,
+    timeout: 45_000,
   },
   projects: [
     {

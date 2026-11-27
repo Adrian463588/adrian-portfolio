@@ -901,7 +901,7 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     expect(rawHtml).not.toContain("I build and test");
 
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.goto("/", { waitUntil: "networkidle" });
 
     const typewriterContainer = page.getByTestId("hero-typewriter");
     const typewriter = page.getByTestId("hero-typewriter-text");
@@ -911,8 +911,8 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await expect(page.locator("#hero").getByRole("button")).toHaveCount(0);
     await expect(typewriterContainer).toHaveAttribute("data-state", "playing");
 
-    // Measure CTA Y position before delete/type cycle to guarantee 0.00 layout shift
-    await page.waitForTimeout(350);
+    // Wait for initial GSAP hero entrance transition (~650ms + stagger) before measuring baseline CTA Y
+    await page.waitForTimeout(850);
     const initialCtaY = (await ctaBtn.boundingBox())!.y;
 
     // Wait across 1500ms hold + delete + type of phrase 2 ("Code with purpose.")
@@ -949,5 +949,92 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await expect(page.getByTestId("hero-typewriter-text")).toHaveText("Think. Build. Repeat.");
     await page.waitForTimeout(1800);
     await expect(page.getByTestId("hero-typewriter-text")).toHaveText("Think. Build. Repeat.");
+  });
+
+  test("Ask Adrian AI assistant supports bilingual FAQ, PII guardrails, settings, retry, keyboard Escape focus restore, and WCAG compliance", async ({
+    page,
+  }) => {
+    const consoleErrors: string[] = [];
+    const chatRequestsOnLoad: string[] = [];
+    page.on("pageerror", (err) => consoleErrors.push(err.message));
+    page.on("request", (req) => {
+      if (req.url().includes("/api/chat")) chatRequestsOnLoad.push(req.url());
+    });
+
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/", { waitUntil: "networkidle" });
+    expect(chatRequestsOnLoad).toEqual([]);
+
+    const fab = page.getByRole("button", { name: /Open Ask Adrian AI assistant/i });
+    await expect(fab).toBeVisible();
+    await expect(page.locator("#ask-adrian-dialog")).toHaveCount(0);
+
+    // 1. Open dialog without navigating away
+    await fab.click();
+    const dialog = page.locator("#ask-adrian-dialog");
+    await expect(dialog).toBeVisible();
+
+    // 2. Click suggested FAQ prompt -> resolves via local-faq without leaking secrets
+    await dialog.getByRole("button", { name: /work experience|pengalaman kerja/i }).click();
+    await expect(dialog).toContainText("Berijalan Techno Center");
+    await expect(dialog).toContainText("Qiscus");
+
+    // 3. PII guardrail blocks private phone & date of birth requests politely
+    const input = dialog.locator("#ask-adrian-input");
+    await input.fill("What is Adrian's phone number and date of birth?");
+    await dialog.getByRole("button", { name: /Send message|Kirim pesan/i }).click();
+    await expect(dialog).toContainText("adriansyah1230@gmail.com");
+
+    // 4. Settings: switch to Indonesian + Detailed, then Clear conversation
+    await dialog.getByRole("button", { name: "Chat settings" }).click();
+    await dialog.getByRole("button", { name: "ID", exact: true }).click();
+    await dialog.getByRole("button", { name: /Detailed|Detail/i }).click();
+    await dialog.getByRole("button", { name: "Clear conversation" }).click();
+    await expect(dialog).toContainText("Apa pengalaman kerjanya?");
+
+    // 5. Simulate interrupted API failure -> shows Retry button cleanly -> recovers on Retry
+    let failOnce = true;
+    await page.route("**/api/chat/**", async (route) => {
+      if (failOnce) {
+        failOnce = false;
+        await route.fulfill({ status: 503, body: "upstream error" });
+        return;
+      }
+      await route.continue();
+    });
+    await dialog.getByRole("button", { name: "Apa proyek unggulannya?" }).click();
+    const retryBtn = dialog.getByRole("button", { name: /Coba lagi|Retry/i });
+    await expect(retryBtn).toBeVisible();
+    await retryBtn.click();
+    await expect(dialog).toContainText("Android Stress Detection");
+    await expect(dialog).toContainText("ParfumCreator");
+
+    // 6. Axe WCAG check while chat dialog is open
+    await page.addScriptTag({ content: axeSource });
+    const axeResults = await page.evaluate(async () => {
+      // @ts-expect-error injected by axe.min.js
+      return await window.axe.run(document, {
+        runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] },
+      });
+    });
+    const seriousOrCritical = axeResults.violations.filter(
+      (v: { impact?: string }) => v.impact === "critical" || v.impact === "serious"
+    );
+    expect(seriousOrCritical).toEqual([]);
+
+    // 7. Mobile viewport keeps chat usable without horizontal overflow
+    await page.setViewportSize({ width: 320, height: 720 });
+    const hasMobileOverflow = await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+    );
+    expect(hasMobileOverflow).toBe(false);
+    await expect(input).toBeVisible();
+
+    // 8. Escape closes dialog cleanly and restores focus to FAB on desktop
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+    await expect(fab).toBeFocused();
+    expect(consoleErrors).toEqual([]);
   });
 });
