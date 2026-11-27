@@ -1030,13 +1030,90 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     );
     expect(seriousOrCritical).toEqual([]);
 
-    // 7. Mobile viewport keeps chat usable without horizontal overflow
-    await page.setViewportSize({ width: 320, height: 720 });
-    const hasMobileOverflow = await page.evaluate(
-      () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+    // 7. Stress long URL, repo slug, Markdown list & code block across 320/375/390/1440px without bubble overflow
+    await page.route("**/api/chat/**", async (route) => {
+      const payload = [
+        "Ringkasan repository publik:",
+        "- Repo: `Adrian463588/Eksperimen_SML_AdrianSyahAbidin_super_long_repository_slug_without_breaks`",
+        "- URL: [Adrian463588/AutomatePlus_Very_Long_Repository_Identifier_Label](https://github.com/Adrian463588/Eksperimen_SML_AdrianSyahAbidin_super_long_repository_slug_without_breaks)",
+        "",
+        "```bash",
+        "curl -sS -X POST https://adriansyahabidin.vercel.app/api/chat/ -H 'Content-Type: application/json' --data-raw 'long_unbroken_parameter_value_verification_check'",
+        "```",
+      ].join("\n");
+      const sseBody = [
+        `data: ${JSON.stringify({ type: "delta", text: payload.slice(0, 80) })}\n\n`,
+        `data: ${JSON.stringify({ type: "delta", text: payload.slice(80) })}\n\n`,
+        `data: ${JSON.stringify({
+          type: "done",
+          text: payload,
+          links: [
+            {
+              label: "Eksperimen_SML_AdrianSyahAbidin_Very_Long_Project_Badge_Label Case Study",
+              href: "/projects/eksperimen-sml-adrian-syah-abidin/",
+            },
+          ],
+          mode: "ai",
+          provider: "groq",
+          interrupted: false,
+        })}\n\n`,
+      ].join("");
+      await route.fulfill({
+        status: 200,
+        headers: { "Content-Type": "text/event-stream; charset=utf-8" },
+        body: sseBody,
+      });
+    });
+
+    await input.fill(
+      "Cek https://github.com/Adrian463588/Eksperimen_SML_AdrianSyahAbidin_super_long_repository_slug_without_breaks"
     );
-    expect(hasMobileOverflow).toBe(false);
-    await expect(input).toBeVisible();
+    await dialog.getByRole("button", { name: /Send message|Kirim pesan/i }).click();
+    await expect(dialog).toContainText("long_unbroken_parameter_value_verification_check");
+    await page.unroute("**/api/chat/**");
+
+    for (const vp of [
+      { width: 320, height: 720 },
+      { width: 375, height: 812 },
+      { width: 390, height: 844 },
+      { width: 1440, height: 900 },
+    ]) {
+      await page.setViewportSize(vp);
+      const overflowReport = await page.evaluate(() => {
+        const dlg = document.querySelector("#ask-adrian-dialog");
+        const thread = dlg?.querySelector('[aria-live="polite"]');
+        if (!dlg || !thread) return { missing: true };
+        const bubbles = Array.from(thread.querySelectorAll(":scope > div > div"));
+        const bubbleViolations: string[] = [];
+        for (const bubble of bubbles) {
+          const bRect = bubble.getBoundingClientRect();
+          if (bRect.right > dlg.getBoundingClientRect().right + 1) {
+            bubbleViolations.push(`bubble overflow dialog: ${bRect.right} > ${dlg.getBoundingClientRect().right}`);
+          }
+          for (const child of Array.from(bubble.querySelectorAll("p, ul, ol, li, code, a, span, pre"))) {
+            // `code` inside a locally scrolling `pre` is intentionally scrollable inside `pre` bounds
+            if (child.tagName === "CODE" && child.closest("pre")) {
+              continue;
+            }
+            const cRect = child.getBoundingClientRect();
+            if (cRect.right > bRect.right + 1) {
+              bubbleViolations.push(`${child.tagName} overflow bubble: ${cRect.right} > ${bRect.right}`);
+            }
+          }
+        }
+        return {
+          docOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+          threadOverflow: thread.scrollWidth > thread.clientWidth + 1,
+          bubbleViolations,
+        };
+      });
+      expect(overflowReport).toEqual({
+        docOverflow: false,
+        threadOverflow: false,
+        bubbleViolations: [],
+      });
+      await expect(input).toBeVisible();
+    }
 
     // 8. Escape closes dialog cleanly and restores focus to FAB on desktop
     await page.setViewportSize({ width: 1280, height: 800 });

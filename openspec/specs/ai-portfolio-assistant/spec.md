@@ -26,3 +26,6 @@ When external inference is needed, `/api/chat` SHALL try eligible providers sequ
 
 ### Requirement: Accessible Lazy-Loaded Obsidian & Arctic Chat UI
 The portfolio SHALL render a lazy-loaded bottom-right FAB (`Ask Adrian`) and responsive desktop/mobile chat dialog supporting streaming text, Stop/Retry, up to 3 localized suggested questions, Auto/ID/EN language toggle, Concise/Detailed toggle, `sessionStorage` history with Clear Conversation, keyboard navigation (`Escape` closes and restores focus), and zero interference with WebGL or page scrolling.
+
+### Requirement: Overflow-Free Responsive Chat Bubbles & Bounded Markdown Rendering
+User and assistant chat bubbles inside `#ask-adrian-dialog` SHALL enforce `min-width: 0`, `max-width: 100%` containment, and `overflow-wrap: anywhere` so arbitrarily long URLs, unbroken repository slugs, bullet/ordered lists, inline code, and link chips wrap cleanly across `320px`–`1440px` without horizontal overflow, while fenced code blocks scroll horizontally strictly inside local `<pre>` blocks. `SafeChatMarkdown` SHALL render strictly via React elements without `dangerouslySetInnerHTML`, enforce bounded character/line/list/token/code caps, sanitize ASCII control characters, and permit only root-relative (`/` excluding `//` and `/\`), credential-free `https://`, or valid `mailto:` links.
