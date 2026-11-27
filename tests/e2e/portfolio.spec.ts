@@ -39,6 +39,14 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     const h1 = page.locator("h1");
     await expect(h1).toHaveText("Adrian Syah Abidin");
 
+    // 0. Hero removes visible QR icon button and keeps subtitle alignment crisp
+    await expect(page.locator("#hero svg.lucide-qr-code")).toHaveCount(0);
+    await expect(page.locator('#hero [role="tooltip"]')).toHaveCount(0);
+    const subtitle = page.locator("#hero").getByText("Software & QA Automation Engineer", { exact: true });
+    const [subBox, h1Box] = await Promise.all([subtitle.boundingBox(), h1.boundingBox()]);
+    expect(subBox && h1Box).toBeTruthy();
+    expect(Math.abs((subBox?.x ?? 0) - (h1Box?.x ?? 0))).toBeLessThanOrEqual(4);
+
     // Selected Work shows 6 curated projects in V6 editorial order
     const workSection = page.locator("#work");
     await expect(workSection).toBeVisible();
@@ -1054,6 +1062,14 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
 
     const h1 = page.locator("h1");
     await expect(h1).toHaveText("Adrian Syah Abidin");
+
+    // 0. Hero removes visible QR icon button and keeps subtitle alignment crisp
+    await expect(page.locator("#hero svg.lucide-qr-code")).toHaveCount(0);
+    await expect(page.locator('#hero [role="tooltip"]')).toHaveCount(0);
+    const subtitle = page.locator("#hero").getByText("Software & QA Automation Engineer", { exact: true });
+    const [subBox, h1Box] = await Promise.all([subtitle.boundingBox(), h1.boundingBox()]);
+    expect(subBox && h1Box).toBeTruthy();
+    expect(Math.abs((subBox?.x ?? 0) - (h1Box?.x ?? 0))).toBeLessThanOrEqual(4);
 
     // 1. Single-click on H1 does not open share dialog
     await h1.click();

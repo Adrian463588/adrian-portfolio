@@ -3,7 +3,7 @@
 ## Requirements
 
 ### Requirement: Multi-Input Quick Share Triggers on Hero Identity
-Double-clicking (desktop mouse) or double-tapping (touchscreen via Pointer Events within 250–350 ms without scroll or long-press movement) the semantic `<h1>` name **Adrian Syah Abidin**, OR activating the subtle accessible Share/QR icon button nearby via click/tap/`Enter`/`Space`, SHALL open `ProfileShareDialog` exactly once while preserving `<h1>` typography, SEO text content, WebGL interactions, and normal website text selection.
+Double-clicking (desktop mouse) or double-tapping (touchscreen via Pointer Events within 250–350 ms without scroll or long-press movement) the semantic `<h1>` name **Adrian Syah Abidin**, OR activating a visually-hidden-until-focused keyboard Share control (`sr-only focus-visible:not-sr-only`, with no visible QR icon button beside **Software & QA Automation Engineer**), SHALL open `ProfileShareDialog` exactly once while preserving `<h1>` typography, alignment, SEO text content, WebGL interactions, and normal website text selection.
 
 #### Scenario: Desktop double-click and accidental highlight prevention
 - **WHEN** a desktop visitor double-clicks `<h1>Adrian Syah Abidin</h1>`

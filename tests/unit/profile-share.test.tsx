@@ -4,6 +4,8 @@ import jsQR from "jsqr";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { SITE_CONFIG } from "@/config/site.config";
+import { MotionProvider } from "@/context/MotionContext";
+import { Hero } from "@/components/sections/Hero";
 import { useDoubleTap } from "@/hooks/useDoubleTap";
 import { ProfileShareDialog } from "@/components/profile/ProfileShareDialog";
 
@@ -249,5 +251,41 @@ describe("Sprint 10 Quick Profile Share — QR, Gesture & Modal TDD", () => {
     render(<ProfileShareDialog isOpen onClose={vi.fn()} />);
     expect(screen.queryByRole("button", { name: /Share link/i })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Copy link/i })).toBeInTheDocument();
+  });
+
+  it("renders Hero without visible QR icon while preserving double-click and keyboard Share access", () => {
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      configurable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: false,
+        media: query,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      })),
+    });
+
+    const { container } = render(
+      <MotionProvider>
+        <Hero />
+      </MotionProvider>
+    );
+
+    expect(container.querySelector("svg.lucide-qr-code")).toBeNull();
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+
+    const srButton = screen.getByRole("button", { name: "Share Adrian Syah Abidin profile" });
+    expect(srButton.className).toContain("sr-only");
+    expect(srButton.className).toContain("focus-visible:not-sr-only");
+
+    // Double-click heading opens dialog
+    fireEvent.doubleClick(screen.getByRole("heading", { level: 1, name: "Adrian Syah Abidin" }));
+    expect(screen.getByRole("heading", { name: "Share profile" })).toBeInTheDocument();
+
+    // Escape restores focus to keyboard Share trigger without reintroducing visible icon
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(screen.queryByRole("heading", { name: "Share profile" })).not.toBeInTheDocument();
+    fireEvent.click(srButton);
+    expect(screen.getByRole("heading", { name: "Share profile" })).toBeInTheDocument();
   });
 });
