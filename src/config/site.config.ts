@@ -1,5 +1,6 @@
 export const SITE_CONFIG = {
   url: "https://adriansyahabidin.vercel.app",
+  shareUrl: "https://adriansyahabidin.vercel.app/",
   name: "Adrian Syah Abidin",
   shortName: "Adrian.",
   siteName: "Adrian Syah Abidin",
