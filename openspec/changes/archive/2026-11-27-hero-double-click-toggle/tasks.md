@@ -1,0 +1,5 @@
+- [x] Author OpenSpec delta (`hero-double-click-toggle`)
+- [x] Update `tests/unit/typewriter.test.tsx` for double-click play/pause and zero button rendering (RED verified)
+- [x] Simplify `TypewriterText.tsx` removing button & adding `onDoubleClick` toggle (GREEN verified `6/6`)
+- [x] Update `tests/e2e/portfolio.spec.ts` and verify full lint/typecheck/unit/build/E2E gates (`38/38`)
+- [x] Archive OpenSpec change, PR, merge to `main`, and verify live Vercel deploy

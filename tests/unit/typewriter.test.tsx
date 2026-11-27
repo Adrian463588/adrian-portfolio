@@ -96,7 +96,7 @@ describe("HERO_TAGLINES & TypewriterText TDD invariants", () => {
     expect(display).toHaveTextContent("Think. Build. Repeat.");
   });
 
-  it("supports keyboard-accessible Pause and Resume without losing current state", () => {
+  it("renders no standalone Pause button and toggles Play/Pause cleanly on double-click", () => {
     vi.useFakeTimers();
     render(
       <TypewriterText
@@ -108,12 +108,13 @@ describe("HERO_TAGLINES & TypewriterText TDD invariants", () => {
       />
     );
 
-    const pauseBtn = screen.getByRole("button", { name: /Pause dynamic headline animation/i });
-    expect(pauseBtn).toHaveAttribute("aria-pressed", "false");
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
 
-    fireEvent.click(pauseBtn);
-    expect(pauseBtn).toHaveAttribute("aria-pressed", "true");
-    expect(pauseBtn).toHaveAccessibleName(/Resume dynamic headline animation/i);
+    const container = screen.getByTestId("hero-typewriter");
+    expect(container).toHaveAttribute("data-state", "playing");
+
+    fireEvent.dblClick(container);
+    expect(container).toHaveAttribute("data-state", "paused");
 
     const lockedText = screen.getByTestId("hero-typewriter-text").textContent;
     act(() => {
@@ -121,8 +122,8 @@ describe("HERO_TAGLINES & TypewriterText TDD invariants", () => {
     });
     expect(screen.getByTestId("hero-typewriter-text").textContent).toBe(lockedText);
 
-    fireEvent.click(pauseBtn);
-    expect(pauseBtn).toHaveAttribute("aria-pressed", "false");
+    fireEvent.dblClick(container);
+    expect(container).toHaveAttribute("data-state", "playing");
     act(() => {
       vi.advanceTimersByTime(1500);
     });
