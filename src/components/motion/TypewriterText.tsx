@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Pause, Play } from "lucide-react";
 import { HERO_TAGLINES, HERO_TYPEWRITER_CONFIG } from "@/config/site.config";
 import { useMotion } from "@/context/MotionContext";
 
@@ -19,7 +18,7 @@ export interface TypewriterTextProps {
 /**
  * Lightweight, SSR/hydration-safe continuous typewriter headline.
  * Reserves the longest phrase height via overlapping CSS Grid cells (0.00 CLS),
- * exposes static screen-reader text to prevent character chatter, and honors reduced motion.
+ * toggles Play/Pause via double-click, and honors reduced motion without visual clutter.
  */
 export function TypewriterText({
   phrases = HERO_TAGLINES,
@@ -147,54 +146,44 @@ export function TypewriterText({
   ]);
 
   const showBlinkingCursor = !isReducedMotion && !isPaused;
+  const playbackState = isReducedMotion
+    ? "reduced"
+    : isPaused
+      ? "paused"
+      : "playing";
 
   return (
-    <div className={`flex items-start gap-1.5 ${className}`}>
-      <p className="relative grid max-w-[calc(100%-3.25rem)] font-display text-[clamp(1.25rem,2.3vw,1.7rem)] font-medium leading-snug tracking-[-0.015em] text-[#F2F0EC]">
-        <span className="sr-only">{safePhrases[0]}</span>
-        {/* Intrinsic CSS grid sizer guarantees 0.00 CLS across mobile wraps and 0-char gaps */}
-        <span
-          aria-hidden="true"
-          className="pointer-events-none col-start-1 row-start-1 select-none invisible"
-        >
-          {longestPhrase}
-          <span className="inline-block w-[3px]" />
-        </span>
-        <span aria-hidden="true" className="col-start-1 row-start-1">
-          <span data-testid="hero-typewriter-text">{visibleText}</span>
-          {!isReducedMotion && (
-            <span
-              data-testid="hero-typewriter-cursor"
-              className={`ml-0.5 inline-block h-[1.05em] w-[2px] translate-y-[0.12em] bg-[#65C8F5] ${
-                showBlinkingCursor ? "typewriter-cursor" : "opacity-60"
-              }`}
-            />
-          )}
-        </span>
-      </p>
-
-      {!isReducedMotion && (
-        <button
-          type="button"
-          onClick={() => setIsPaused((prev) => !prev)}
-          aria-pressed={isPaused}
-          aria-label={
-            isPaused
-              ? "Resume dynamic headline animation"
-              : "Pause dynamic headline animation"
-          }
-          title={isPaused ? "Resume headline" : "Pause headline"}
-          className="active-press group/pause -mt-1.5 inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-full text-[#A7ADB7] transition-colors hover:text-[#65C8F5]"
-        >
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/15 bg-[#15171C]/75 backdrop-blur-sm transition-colors group-hover/pause:border-[#65C8F5]/60">
-            {isPaused ? (
-              <Play className="h-3 w-3" aria-hidden="true" />
-            ) : (
-              <Pause className="h-3 w-3" aria-hidden="true" />
-            )}
-          </span>
-        </button>
-      )}
-    </div>
+    <p
+      data-testid="hero-typewriter"
+      data-state={playbackState}
+      onDoubleClick={() => {
+        if (!isReducedMotion) {
+          setIsPaused((prev) => !prev);
+        }
+      }}
+      title={!isReducedMotion ? "Double-click to pause or resume" : undefined}
+      className={`relative grid w-fit max-w-full font-display text-[clamp(1.25rem,2.3vw,1.7rem)] font-medium leading-snug tracking-[-0.015em] text-[#F2F0EC] ${className}`}
+    >
+      <span className="sr-only">{safePhrases[0]}</span>
+      {/* Intrinsic CSS grid sizer guarantees 0.00 CLS across mobile wraps and 0-char gaps */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none col-start-1 row-start-1 select-none invisible"
+      >
+        {longestPhrase}
+        <span className="inline-block w-[3px]" />
+      </span>
+      <span aria-hidden="true" className="col-start-1 row-start-1 select-none">
+        <span data-testid="hero-typewriter-text">{visibleText}</span>
+        {!isReducedMotion && (
+          <span
+            data-testid="hero-typewriter-cursor"
+            className={`ml-0.5 inline-block h-[1.05em] w-[2px] translate-y-[0.12em] bg-[#65C8F5] ${
+              showBlinkingCursor ? "typewriter-cursor" : "opacity-60"
+            }`}
+          />
+        )}
+      </span>
+    </p>
   );
 }

@@ -104,3 +104,13 @@
 | Static Production Build | `npm run build` | PASS | `86/86` static pages (`out/`) |
 | Playwright E2E + `axe-core` | `npm run test:e2e` | PASS | `38/38` passed (`dynamic Hero typewriter` 0 CLS `320px`/`1440px`, Pause/Resume, reduced motion, 0 WCAG 2.2 AA violations) |
 | Lighthouse (`/` Desktop & Mobile) & Trace | Chrome DevTools MCP | PASS | Accessibility 100 · Best Practices 100 · SEO 100 · Agentic Browsing 100 (`57/57` passed); `LCP: 424 ms`, `CLS: 0.00` |
+
+---
+
+# Verification Summary — V11.1 Double-Click Play/Pause Simplification (`feat/hero-double-click-toggle`)
+
+| Check | Command / Tool | Result | Notes |
+|-------|----------------|--------|-------|
+| OpenSpec & TDD | `openspec/changes/archive/2026-11-27-hero-double-click-toggle/`, `tests/unit/typewriter.test.tsx` | PASS | Buttonless `<p>` UI with `onDoubleClick` toggle & `data-state` (`6/6` Vitest unit tests) |
+| Full Gates & Build | `seo:validate`, `lint`, `typecheck`, `test`, `build`, `validate:assets`, `seo:audit`, `seo:links` | PASS | `34/34` unit tests, `86` static pages, `39` assets, `1724` internal links |
+| Playwright E2E + `axe-core` | `npm run test:e2e` | PASS | `38/38` passed (`#hero button` count `0`, double-click freezes & resumes text cleanly, `0` WCAG 2.2 AA violations) |

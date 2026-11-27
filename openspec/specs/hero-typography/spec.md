@@ -23,13 +23,18 @@ The typewriter container MUST reserve space matching the longest phrase across v
 - **WHEN** a phrase deletes down to zero visible characters before the next phrase starts
 - **THEN** elements below the typewriter (body copy, `View My Work`, `Get in Touch`) retain fixed vertical position without shifting
 
-### Requirement: Reduced Motion & Screen Reader Accessibility
-The typewriter component SHALL respect OS `prefers-reduced-motion`, application `qualityMode === "reduced"`, provide a keyboard-accessible Pause/Resume control, and avoid letter-by-letter screen reader announcements.
+### Requirement: Reduced Motion & Gesture Play/Pause Control
+The typewriter component SHALL respect OS `prefers-reduced-motion` and application `qualityMode === "reduced"`, render zero standalone pause buttons next to the tagline, and toggle pause/resume when double-clicking the tagline text.
 
 #### Scenario: Reduced motion disables looping timers
 - **WHEN** `prefers-reduced-motion: reduce` is active OR `qualityMode === "reduced"` is selected
 - **THEN** the headline displays `"Think. Build. Repeat."` statically with zero interval/timeout churn
 
-#### Scenario: User pauses and resumes animation
-- **WHEN** the user activates the Hero tagline Pause control via pointer or keyboard
-- **THEN** typing/deleting pauses cleanly on the current statement (`aria-pressed="true"`) until resumed
+#### Scenario: No standalone pause button clutter
+- **WHEN** the Hero section renders in Desktop or Mobile viewports
+- **THEN** no visible Pause/Play `<button>` appears next to the typewriter text
+
+#### Scenario: User double-clicks tagline to pause and resume
+- **WHEN** the user double-clicks the Hero tagline while animation is playing
+- **THEN** the typewriter freezes on the current statement (`data-state="paused"`)
+- **AND** double-clicking again resumes typing/deleting from the current position (`data-state="playing"`)
