@@ -975,17 +975,31 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
 
     const fab = page.getByRole("button", { name: /Open Ask Adrian AI assistant/i });
     await expect(fab).toBeVisible();
+    await expect(fab.getByTestId("adrian-mascot")).toHaveCount(1);
     await expect(page.locator("#ask-adrian-dialog")).toHaveCount(0);
 
-    // 1. Open dialog without navigating away
+    // Hovering chibi mascot updates hover state cleanly
+    await fab.hover();
+    await expect(fab.getByTestId("adrian-mascot")).toHaveAttribute("data-mascot-state", "hover");
+
+    // 1. Open dialog without navigating away -> shared mascot moves to header, redundant X FAB gone
     await fab.click();
     const dialog = page.locator("#ask-adrian-dialog");
     await expect(dialog).toBeVisible();
+    await expect(page.getByRole("button", { name: /Close Ask Adrian AI assistant/i })).toHaveCount(0);
+    await expect(page.getByTestId("adrian-mascot")).toHaveCount(1);
+    await expect(dialog.getByTestId("adrian-mascot")).toBeVisible();
+    await expect(dialog).toContainText("Want to know more about Adrian");
+    await expect(dialog).not.toContainText("Avoid sharing sensitive data");
 
-    // 2. Click suggested FAQ prompt -> resolves via local-faq without leaking secrets
+    // 2. Click suggested FAQ prompt -> resolves via local-faq with distinct right cyan user bubble & left graphite assistant bubble
     await dialog.getByRole("button", { name: /work experience|pengalaman kerja/i }).click();
     await expect(dialog).toContainText("Berijalan Techno Center");
     await expect(dialog).toContainText("Qiscus");
+    const firstUserBubble = dialog.locator("div.items-end > div").first();
+    const firstAssistantBubble = dialog.locator("div.items-start > div").first();
+    await expect(firstUserBubble).toHaveClass(/bg-\[#0F2B3C\]/);
+    await expect(firstAssistantBubble).toHaveClass(/bg-\[#15171C\]/);
 
     // 2b. Natural open-ended Indonesian experience query avoids static FAQ and unrelated GitHub repo dumps
     const input = dialog.locator("#ask-adrian-input");
@@ -1009,12 +1023,15 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await dialog.getByRole("button", { name: /Send message|Kirim pesan/i }).click();
     await expect(dialog).toContainText("adriansyah1230@gmail.com");
 
-    // 4. Settings: switch to Indonesian + Detailed, then Clear conversation
+    // 4. Settings: compact animated panel switches Language (Indonesia) + Detailed + Clear chat + About & Privacy
     await dialog.getByRole("button", { name: "Chat settings" }).click();
-    await dialog.getByRole("button", { name: "ID", exact: true }).click();
-    await dialog.getByRole("button", { name: /Detailed|Detail/i }).click();
-    await dialog.getByRole("button", { name: "Clear conversation" }).click();
-    await expect(dialog).toContainText("Apa pengalaman kerjanya?");
+    const settingsPanel = dialog.getByTestId("chat-settings-panel");
+    await expect(settingsPanel).toBeVisible();
+    await expect(settingsPanel).toContainText(/About & Privacy/i);
+    await settingsPanel.getByRole("button", { name: "Indonesia", exact: true }).click();
+    await settingsPanel.getByRole("button", { name: /Detailed|Detail/i }).click();
+    await settingsPanel.getByRole("button", { name: /Hapus obrolan|Clear chat/i }).click();
+    await expect(dialog).toContainText("Pengalaman kerja");
 
     // 5. Simulate interrupted API failure -> shows Retry button cleanly -> recovers on Retry
     let failOnce = true;
@@ -1026,7 +1043,7 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       }
       await route.continue();
     });
-    await dialog.getByRole("button", { name: "Apa proyek unggulannya?" }).click();
+    await dialog.getByRole("button", { name: "Proyek unggulan" }).click();
     const retryBtn = dialog.getByRole("button", { name: /Coba lagi|Retry/i });
     await expect(retryBtn).toBeVisible();
     await retryBtn.click();
@@ -1136,7 +1153,74 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await page.keyboard.press("Escape");
     await expect(dialog).toHaveCount(0);
     await expect(fab).toBeFocused();
+    await expect(page.getByTestId("adrian-mascot")).toHaveCount(1);
     expect(consoleErrors).toEqual([]);
+  });
+
+  test("Ask Adrian animated chibi mascot syncs live thinking state, reverse close, and reduced-motion across viewports", async ({
+    page,
+  }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (err) => errors.push(err.message));
+
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/", { waitUntil: "networkidle" });
+
+    const fab = page.getByRole("button", { name: /Open Ask Adrian AI assistant/i });
+    await expect(fab.getByTestId("adrian-mascot")).toHaveAttribute("data-mascot-variant", "fab");
+
+    // Hovering launcher triggers hover state without auto-opening
+    await fab.hover();
+    await expect(fab.getByTestId("adrian-mascot")).toHaveAttribute("data-mascot-state", "hover");
+    await expect(page.locator("#ask-adrian-dialog")).toHaveCount(0);
+
+    // Open -> mascot moves cleanly to header, zero redundant X FAB rendered
+    await fab.click();
+    const dialog = page.locator("#ask-adrian-dialog");
+    await expect(dialog).toBeVisible();
+    await expect(page.getByRole("button", { name: /Close Ask Adrian AI assistant/i })).toHaveCount(0);
+    await expect(page.getByTestId("adrian-mascot")).toHaveCount(1);
+
+    // Thinking syncs strictly during live streaming wait before tokens arrive
+    await page.route("**/api/chat/**", async (route) => {
+      await new Promise((r) => setTimeout(r, 320));
+      await route.fulfill({
+        status: 200,
+        headers: { "Content-Type": "text/event-stream; charset=utf-8" },
+        body: `data: ${JSON.stringify({
+          type: "done",
+          text: "Streamed cleanly.",
+          links: [],
+          mode: "ai",
+          provider: "groq",
+          interrupted: false,
+        })}\n\n`,
+      });
+    });
+
+    await dialog.locator("#ask-adrian-input").fill("Why AutomatePlus?");
+    await dialog.getByRole("button", { name: /Send message|Kirim pesan/i }).click();
+    await expect(dialog.getByTestId("adrian-mascot")).toHaveAttribute("data-mascot-state", "thinking");
+    await expect(dialog).toContainText("Streamed cleanly.");
+    await expect(dialog.getByTestId("adrian-mascot")).toHaveAttribute("data-mascot-state", "idle");
+    await page.unroute("**/api/chat/**");
+
+    // Header Close restores single FAB mascot cleanly
+    await dialog.getByRole("button", { name: "Close chat" }).click();
+    await expect(dialog).toHaveCount(0);
+    await expect(fab).toBeVisible();
+    await expect(fab).toBeFocused();
+    await expect(page.getByTestId("adrian-mascot")).toHaveCount(1);
+
+    // Reduced-motion mode keeps mascot static and opens/closes immediately
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await expect(fab.getByTestId("adrian-mascot")).toHaveAttribute("data-reduced-motion", "true");
+    await fab.click();
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByTestId("adrian-mascot")).toHaveAttribute("data-reduced-motion", "true");
+    await dialog.getByRole("button", { name: "Close chat" }).click();
+    await expect(dialog).toHaveCount(0);
+    expect(errors).toEqual([]);
   });
 
   test("Quick Profile Share opens on desktop dblclick and keyboard icon while verifying QR + copy + accessibility", async ({

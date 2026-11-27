@@ -17,19 +17,11 @@ export interface ChatSettingsState {
 }
 
 export const CHAT_SUGGESTED_QUESTIONS = {
-  id: [
-    "Apa pengalaman kerjanya?",
-    "Apa proyek unggulannya?",
-    "Apa keahlian teknisnya?",
-  ],
-  en: [
-    "What is his work experience?",
-    "What are his featured projects?",
-    "What is his technical stack?",
-  ],
+  id: ["Pengalaman kerja", "Proyek unggulan", "Keahlian teknis"],
+  en: ["Work experience", "Featured projects", "Technical skills"],
 } as const;
 
 export const CHAT_GREETINGS = {
-  id: "Halo! Saya **Ask Adrian**, asisten AI portofolio untuk Adrian Syah Abidin. Silakan tanyakan pengalaman kerja, proyek, atau keahlian teknisnya.",
-  en: "Hello! I'm **Ask Adrian**, an AI portfolio assistant representing Adrian Syah Abidin. Ask me about his experience, projects, or technical skills.",
+  id: "Halo! Mau tahu lebih banyak tentang pengalaman, keahlian, atau proyek Adrian?",
+  en: "Hi! Want to know more about Adrian’s work, skills, or projects?",
 } as const;
