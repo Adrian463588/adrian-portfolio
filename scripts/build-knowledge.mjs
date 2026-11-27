@@ -414,6 +414,24 @@ const knowledge = {
     },
     taglines: HERO_TAGLINES,
   },
+  workExperience: normalizedExperience.filter((e) => e.category === "professional"),
+  currentActivities: {
+    summary:
+      "Completing final-stage Information Technology undergraduate studies and wearable PPG stress-detection research at Universitas Gadjah Mada (UGM), building public open-source software across Android/Kotlin, Rust/Tauri 2 QA automation, and DevOps tools, and open to Software Engineering, QA/SDET, or DevOps roles (Berijalan Techno Center freelance engagement concluded in October 2026).",
+    focusAreas: [
+      "UGM Information Technology & PPG wearable stress-detection research",
+      "Open-source Android, KMP, and QA automation engineering (AutomatePlus, QuranPlus, Coffee Creator, AdzanPlus, ParfumCreator)",
+      "Open to full-time or freelance Software Engineering, QA/SDET Automation, and DevOps positions",
+    ],
+  },
+  academicResearch: {
+    project: "Android Stress Detection",
+    institution: "Universitas Gadjah Mada (UGM)",
+    slug: "android-stress-detection",
+    path: "/projects/android-stress-detection/",
+    summary:
+      "Wearable Photoplethysmography (PPG) signal processing and channel-independent on-device ONNX inference pipeline across Wear OS (Galaxy Watch) and Android, paired with signal quality gating and local AI counseling. Experimental research prototype only (not a medical diagnostic tool); participant records and raw unpublished subject datasets remain confidential.",
+  },
   education,
   leadership,
   experience: normalizedExperience,
@@ -425,6 +443,7 @@ const knowledge = {
     featuredSlugs: featuredProjects.map((p) => p.slug),
     items: normalizedProjects,
   },
+  personalProjects: normalizedProjects.filter((p) => p.featured || p.projectOrigin === "original"),
   resources: publishedResources.map((r) => ({
     slug: r.slug,
     title: r.title,

@@ -36,8 +36,15 @@ CHAT_RATE_LIMIT_PER_MINUTE=5
 CHAT_RATE_LIMIT_PER_DAY=20
 CHAT_GLOBAL_DAILY_ATTEMPTS=100
 CHAT_MAX_OUTPUT_TOKENS=512
-CHAT_PROVIDER_TIMEOUT_MS=5000
+CHAT_PROVIDER_TIMEOUT_MS=7000
 CHAT_TOTAL_DEADLINE_MS=25000
+```
+
+### Vercel CLI Verification (`VERCEL_TOKEN` in env only)
+```bash
+npx --yes vercel link --yes --scope adrian-s-projects-8718f839 --project adrian-portfolio
+npx --yes vercel env ls
+npx --yes vercel logs https://adriansyahabidin.vercel.app
 ```
 
 > **Note:** When migrating multiple serverless instances under heavy traffic, optionally set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` for global Redis-backed rate limiting, plus `TURNSTILE_SECRET_KEY` / `NEXT_PUBLIC_TURNSTILE_SITE_KEY` if bot protection is needed.

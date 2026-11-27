@@ -15,6 +15,9 @@ export function validateKnowledgePayload(data, rawText) {
     "lastUpdated",
     "persona",
     "profile",
+    "workExperience",
+    "currentActivities",
+    "academicResearch",
     "education",
     "experience",
     "competencies",
@@ -41,7 +44,7 @@ export function validateKnowledgePayload(data, rawText) {
     { name: "groq_api_key", regex: /\bgsk_[A-Za-z0-9_-]{12,}/ },
     { name: "gemini_api_key", regex: /\b(?:AIzaSy|AQ\.Ab)[A-Za-z0-9_-]{12,}/ },
     { name: "openrouter_api_key", regex: /\bsk-or-v1-[A-Za-z0-9_-]{12,}/ },
-    { name: "vercel_token", regex: /\bvck_[A-Za-z0-9_-]{12,}/ },
+    { name: "vercel_token", regex: /\bv(?:ck|cp)_[A-Za-z0-9_-]{12,}/ },
     { name: "birthdate_or_nik_value", regex: /"(?:birthDate|dateOfBirth|dob|nik|ktp|age|homeAddress|streetAddress)"\s*:/i },
   ];
 

@@ -9,8 +9,8 @@ const SECRET_PATTERNS = [
   { name: "Groq API key", regex: /\bgsk_[A-Za-z0-9_-]{16,}/ },
   { name: "Google / Gemini key", regex: /\b(?:AIzaSy[A-Za-z0-9_-]{20,}|AQ\.Ab[A-Za-z0-9_-]{16,})/ },
   { name: "OpenRouter API key", regex: /\bsk-or-v1-[A-Za-z0-9_-]{16,}/ },
-  { name: "Vercel token", regex: /\bvck_[A-Za-z0-9_-]{16,}/ },
-  { name: "Private phone number", regex: /\(\+62\)\s*81215260921|081215260921/ },
+  { name: "Vercel token", regex: /\bv(?:ck|cp)_[A-Za-z0-9_-]{16,}/ },
+  { name: "Private phone number", regex: /\(\+62\)\s*8\d{8,12}|0812\d{7,10}/ },
 ];
 
 const IGNORE_PREFIXES = [

@@ -11,14 +11,14 @@ The assistant SHALL answer strictly from `knowledge/adrian-knowledge.json` and c
 - **AND** returns a polite refusal in the matching language (`id` or `en`) redirecting to public contact links (`adriansyah1230@gmail.com`, LinkedIn)
 
 ### Requirement: FAQ-First Routing & Lightweight Bilingual Retrieval
-Known FAQs (greetings, profile, education, experience, Berijalan Techno Center, QA automation, DevOps, skills, certifications, featured projects, Android Stress Detection, career interests, current activities, résumé, contact) SHALL resolve locally with zero upstream LLM requests, while open-ended questions retrieve relevant knowledge chunks and cite allowlisted URLs only.
+Strict greetings and exact chip FAQs SHALL resolve locally with zero upstream LLM requests, while open-ended questions (including follow-ups with conversation history and Indonesian queries containing Adrian's name such as `"berikan apa saja pengalaman adrian ?"`) SHALL classify intent cleanly (`work_experience`, `current_activities`, `academic_research`, `projects`, `technical_skills`, etc.), exclude unrelated GitHub repository-name noise, retrieve verified natural prose snippets with allowlisted URLs only, and invoke real AI inference cleanly without dumping raw `Project | Summary | Description` pipes.
 
-#### Scenario: Known bilingual FAQ hits local deterministic path
-- **WHEN** a visitor submits a greeting or known FAQ in Indonesian or English
-- **THEN** `/api/chat` returns a grounded response with `mode: "local-faq"` and zero upstream API calls
+#### Scenario: Work experience query avoids repo-name pollution and enters AI inference
+- **WHEN** a visitor asks `"berikan apa saja pengalaman adrian ?"`
+- **THEN** `/api/chat` bypasses static FAQ interception, classifies intent as `work_experience`, prioritizes Berijalan Techno Center, Qiscus, Tokopedia, and Bitbybit Studio records, and excludes unrelated repository slugs containing `"Adrian"`
 
 ### Requirement: Bounded Multi-Provider Fallback & Free-Only Enforcement
-When external inference is needed, `/api/chat` SHALL try eligible providers sequentially (`Groq -> Gemini -> OpenRouter Free -> Local Fallback`), enforce strict input/history validation, visitor rate limits, atomic global attempt budgets, `5s` pre-response timeouts, `25s` total deadline, and `openrouter/free` / `:free` model restrictions without ever falling back to paid models or leaking credentials/raw upstream errors.
+When external inference is needed, `/api/chat` SHALL try eligible providers sequentially (`Groq -> Gemini -> OpenRouter Free -> Local Fallback`), strip `<think>...</think>` reasoning spans incrementally during SSE and JSON responses, enforce strict input/history validation, visitor rate limits, atomic global attempt budgets, `7s` pre-response timeouts (up to `12s` cap), `25s` total deadline, and `openrouter/free` / `:free` model restrictions without ever falling back to paid models or leaking credentials/raw upstream errors.
 
 #### Scenario: Primary provider fails and secondary provider responds
 - **WHEN** Groq keys fail credential or quota checks while Gemini (`GEMINI_ENABLED=true`) or OpenRouter is available
