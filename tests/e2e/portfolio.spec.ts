@@ -295,6 +295,7 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
   test("RollText links keep visible text inside container bounds on hover, leave, and rapid sweep", async ({
     page,
   }) => {
+    test.slow();
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "networkidle" });
 
@@ -889,5 +890,65 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     }
 
     expect(errors).toEqual([]);
+  });
+
+  test("dynamic Hero typewriter cycles bold brand messaging with zero layout shift, pause control, and reduced-motion compliance", async ({
+    page,
+    request,
+  }) => {
+    const rawHtml = await (await request.get("/")).text();
+    expect(rawHtml).toContain("Think. Build. Repeat.");
+    expect(rawHtml).not.toContain("I build and test");
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
+    const typewriter = page.getByTestId("hero-typewriter-text");
+    const ctaBtn = page.locator("#hero").getByRole("link", { name: /View My Work/i });
+    const pauseBtn = page.getByRole("button", { name: /Pause dynamic headline animation/i });
+
+    await expect(typewriter).toHaveText("Think. Build. Repeat.");
+    await expect(pauseBtn).toBeVisible();
+    const pauseBox = await pauseBtn.boundingBox();
+    expect(Math.round(pauseBox?.width ?? 0)).toBeGreaterThanOrEqual(44);
+    expect(Math.round(pauseBox?.height ?? 0)).toBeGreaterThanOrEqual(44);
+
+    // Measure CTA Y position before delete/type cycle to guarantee 0.00 layout shift
+    await page.waitForTimeout(350);
+    const initialCtaY = (await ctaBtn.boundingBox())!.y;
+
+    // Wait across 1500ms hold + delete + type of phrase 2 ("Code with purpose.")
+    await expect
+      .poll(async () => typewriter.textContent(), { timeout: 10000, intervals: [50] })
+      .toContain("Code with purpose.");
+
+    const postTransitionCtaY = (await ctaBtn.boundingBox())!.y;
+    expect(Math.abs(postTransitionCtaY - initialCtaY)).toBeLessThan(2);
+
+    // Verify Pause freezes text and Resume continues
+    await pauseBtn.click();
+    const resumeBtn = page.getByRole("button", { name: /Resume dynamic headline animation/i });
+    await expect(resumeBtn).toHaveAttribute("aria-pressed", "true");
+    const frozenText = await typewriter.textContent();
+    await page.waitForTimeout(1700);
+    expect(await typewriter.textContent()).toBe(frozenText);
+
+    // Narrow 320px viewport overflow & vertical stability check
+    await page.setViewportSize({ width: 320, height: 720 });
+    const mobileInitialY = (await ctaBtn.boundingBox())!.y;
+    await resumeBtn.click();
+    await page.waitForTimeout(900);
+    const mobileAfterY = (await ctaBtn.boundingBox())!.y;
+    expect(Math.abs(mobileAfterY - mobileInitialY)).toBeLessThan(2);
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)
+    ).toBe(false);
+
+    // Reduced-motion mode enforces static headline cleanly
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/", { waitUntil: "networkidle" });
+    await expect(page.getByTestId("hero-typewriter-text")).toHaveText("Think. Build. Repeat.");
+    await page.waitForTimeout(1800);
+    await expect(page.getByTestId("hero-typewriter-text")).toHaveText("Think. Build. Repeat.");
   });
 });

@@ -48,3 +48,26 @@ export const SITE_CONFIG = {
     "Applied Artificial Intelligence",
   ],
 } as const;
+
+export const HERO_TAGLINES = [
+  "Think. Build. Repeat.",
+  "Code with purpose.",
+  "Quality. No compromises.",
+  "Break it. Make it better.",
+  "Deploy faster. Build smarter.",
+  "Make data matter.",
+  "Build beyond limits.",
+  "Secure by design.",
+  "Built to stay online.",
+  "Make AI work.",
+  "From idea to impact.",
+  "Engineer what's next.",
+] as const;
+
+export const HERO_TYPEWRITER_CONFIG = {
+  typingMs: 30,
+  deletingMs: 12,
+  pauseAfterCompleteMs: 1500,
+  pauseBetweenPhrasesMs: 90,
+  cursorBlinkMs: 480,
+} as const;

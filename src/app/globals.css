@@ -106,6 +106,20 @@ button:focus-visible .roll-text-clone {
   transform: scale(0.98);
 }
 
+@keyframes typewriter-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.typewriter-cursor {
+  animation: typewriter-blink 960ms steps(2, start) infinite;
+}
+
 /* Hairline image mask & optical hover scale */
 .editorial-image-wrap img {
   transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
