@@ -18,8 +18,14 @@ export async function generateWithOpenRouter(
     );
   }
 
-  return executeOpenAiCompatibleChat(OPENROUTER_ENDPOINT, input, {
-    "HTTP-Referer": "https://adriansyahabidin.vercel.app",
-    "X-Title": "Ask Adrian Portfolio Assistant",
-  });
+  return executeOpenAiCompatibleChat(
+    OPENROUTER_ENDPOINT,
+    // Reserve sufficient budget so OpenRouter :free reasoning models still emit visible content
+    { ...input, maxTokens: Math.max(input.maxTokens, 1024) },
+    {
+      "HTTP-Referer": "https://adriansyahabidin.vercel.app",
+      "X-Title": "Ask Adrian Portfolio Assistant",
+    },
+    { reasoning: { effort: "low" } }
+  );
 }
