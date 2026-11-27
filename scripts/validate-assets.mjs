@@ -61,6 +61,7 @@ function hasValidBinaryHeader(filePath) {
 const sourceFiles = walkFiles(srcDir, [".ts", ".tsx"]);
 const referenced = new Set([
   "/og-image.png",
+  "/images/profile/portfolio-qr.svg",
   "/favicon.ico",
   "/icon.svg",
   "/icon-48x48.png",

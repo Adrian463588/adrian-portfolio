@@ -908,7 +908,7 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     const ctaBtn = page.locator("#hero").getByRole("link", { name: /View My Work/i });
 
     await expect(typewriter).toHaveText("Think. Build. Repeat.");
-    await expect(page.locator("#hero").getByRole("button")).toHaveCount(0);
+    await expect(page.locator("#hero").getByRole("button", { name: /pause|play/i })).toHaveCount(0);
     await expect(typewriterContainer).toHaveAttribute("data-state", "playing");
 
     // Wait for initial GSAP hero entrance transition (~650ms + stagger) before measuring baseline CTA Y
@@ -1036,5 +1036,182 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await expect(dialog).toHaveCount(0);
     await expect(fab).toBeFocused();
     expect(consoleErrors).toEqual([]);
+  });
+
+  test("Quick Profile Share opens on desktop dblclick and keyboard icon while verifying QR + copy + accessibility", async ({
+    page,
+    context,
+  }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (e) => errors.push(e.message));
+    page.on("console", (m) => {
+      if (m.type() === "error") errors.push(m.text());
+    });
+
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "networkidle" });
+
+    const h1 = page.locator("h1");
+    await expect(h1).toHaveText("Adrian Syah Abidin");
+
+    // 1. Single-click on H1 does not open share dialog
+    await h1.click();
+    await expect(page.locator("#profile-share-dialog")).toHaveCount(0);
+
+    // 2. Desktop double-click on H1 opens dialog once without accidental selected text
+    await h1.dblclick();
+    const dialog = page.locator("#profile-share-dialog");
+    await expect(dialog).toHaveCount(1);
+    await expect(dialog).toBeVisible();
+    const selectedOnH1 = await page.evaluate(() => window.getSelection()?.toString() ?? "");
+    expect(selectedOnH1).toBe("");
+
+    await expect(dialog.getByRole("heading", { name: "Share profile" })).toBeVisible();
+    await expect(dialog).toContainText("adriansyahabidin.vercel.app");
+    await expect(dialog).toContainText("Scan the QR code to explore my portfolio.");
+
+    // 3. Static crisp SVG QR loaded with zero CSS blur/filter
+    const qrImg = dialog.locator('img[src="/images/profile/portfolio-qr.svg"]');
+    const qrMetrics = await qrImg.evaluate((el) => {
+      const img = el as HTMLImageElement;
+      const box = img.getBoundingClientRect();
+      const cs = getComputedStyle(img);
+      return {
+        complete: img.complete,
+        naturalWidth: img.naturalWidth,
+        width: box.width,
+        height: box.height,
+        filter: cs.filter,
+      };
+    });
+    expect(qrMetrics.complete).toBe(true);
+    expect(qrMetrics.naturalWidth).toBeGreaterThan(0);
+    expect(qrMetrics.width).toBeGreaterThanOrEqual(220);
+    expect(qrMetrics.height).toBeCloseTo(qrMetrics.width, 0);
+    expect(qrMetrics.filter).toBe("none");
+
+    // 4. Copy link writes canonical URL & announces Copied!
+    await dialog.getByRole("button", { name: /Copy link/i }).click();
+    await expect(dialog.getByRole("button", { name: /Copied!/i })).toBeVisible();
+    const copiedClip = await page.evaluate(() => navigator.clipboard.readText());
+    expect(copiedClip).toBe("https://adriansyahabidin.vercel.app/");
+
+    // 5. Close via Escape restores focus to accessible Share trigger button
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+    const shareTrigger = page.getByRole("button", { name: "Share Adrian Syah Abidin profile" });
+    await expect(shareTrigger).toBeFocused();
+
+    // 6. Keyboard Enter on Share icon opens dialog; axe WCAG check passes while open
+    await shareTrigger.press("Enter");
+    await expect(dialog).toBeVisible();
+    await page.addScriptTag({ content: axeSource });
+    const axeResults = await page.evaluate(async () => {
+      // @ts-expect-error injected
+      return await window.axe.run(document, {
+        runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] },
+      });
+    });
+    expect(
+      axeResults.violations.filter((v: { impact?: string }) => v.impact === "critical" || v.impact === "serious")
+    ).toEqual([]);
+
+    // 7. Backdrop click dismisses dialog
+    await page.mouse.click(20, 20);
+    await expect(dialog).toHaveCount(0);
+    expect(errors).toEqual([]);
+  });
+
+  test("Quick Profile Share supports mobile touchscreen double-tap, rejects scroll & single-tap, and adapts responsively", async ({
+    browser,
+  }) => {
+    const touchCtx = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      hasTouch: true,
+      isMobile: true,
+    });
+    try {
+      const mPage = await touchCtx.newPage();
+      const errors: string[] = [];
+      mPage.on("pageerror", (e) => errors.push(e.message));
+      mPage.on("console", (m) => {
+        if (m.type() === "error") errors.push(m.text());
+      });
+
+      await mPage.addInitScript(() => {
+        Object.defineProperty(navigator, "share", {
+          configurable: true,
+          value: async (payload: { url?: string }) => {
+            (window as unknown as { __lastNativeShare?: unknown }).__lastNativeShare = payload;
+          },
+        });
+      });
+
+      await mPage.goto("/", { waitUntil: "networkidle" });
+      await mPage.waitForTimeout(400);
+
+      const mH1 = mPage.locator("h1");
+      const box = (await mH1.boundingBox())!;
+      const cx = Math.round(box.x + box.width * 0.4);
+      const cy = Math.round(box.y + box.height * 0.4);
+
+      const sendTouch = async (type: "pointerdown" | "pointermove" | "pointerup", x: number, y: number) => {
+        await mH1.dispatchEvent(type, {
+          pointerId: 1,
+          pointerType: "touch",
+          isPrimary: true,
+          clientX: x,
+          clientY: y,
+        });
+      };
+
+      // 1. Scroll swipe must not trigger dialog
+      await sendTouch("pointerdown", cx, cy);
+      await sendTouch("pointermove", cx, cy - 35);
+      await sendTouch("pointerup", cx, cy - 35);
+      await mPage.touchscreen.tap(cx, cy);
+      await expect(mPage.locator("#profile-share-dialog")).toHaveCount(0);
+
+      // 2. Single-tap expires without opening
+      await mPage.waitForTimeout(450);
+      await expect(mPage.locator("#profile-share-dialog")).toHaveCount(0);
+
+      // 3. Native mobile touchscreen double-tap opens modal once
+      await mPage.touchscreen.tap(cx, cy);
+      await mPage.waitForTimeout(40);
+      await mPage.touchscreen.tap(cx, cy);
+
+      const mDialog = mPage.locator("#profile-share-dialog");
+      await expect(mDialog).toHaveCount(1);
+      await expect(mDialog).toBeVisible();
+
+      // 4. Native Share link invokes navigator.share on mobile
+      await mDialog.getByRole("button", { name: /Share link/i }).click();
+      const shared = await mPage.evaluate(
+        () => (window as unknown as { __lastNativeShare?: { url?: string } }).__lastNativeShare
+      );
+      expect(shared?.url).toBe("https://adriansyahabidin.vercel.app/");
+
+      // 5. Mobile viewports 320px / 375px / 390px have zero horizontal overflow & >= 44px touch targets
+      for (const vp of [
+        { width: 320, height: 720 },
+        { width: 375, height: 812 },
+        { width: 390, height: 844 },
+      ]) {
+        await mPage.setViewportSize(vp);
+        const overflow = await mPage.evaluate(
+          () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+        );
+        expect(overflow, `Overflow on Quick Share modal at ${vp.width}px`).toBe(false);
+      }
+
+      const closeBox = await mDialog.getByRole("button", { name: "Close share profile dialog" }).boundingBox();
+      expect(closeBox!.width).toBeGreaterThanOrEqual(44);
+      expect(closeBox!.height).toBeGreaterThanOrEqual(44);
+      expect(errors).toEqual([]);
+    } finally {
+      await touchCtx.close();
+    }
   });
 });

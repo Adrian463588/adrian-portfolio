@@ -35,6 +35,7 @@ Enterprise engineering engagements at **Berijalan Techno Center — ACC Group** 
 
 - **Framework:** Next.js 16 (App Router, statically prerendered `/`, `/projects/`, `/projects/[slug]/`, `/resources/`, `/resources/[slug]/` routes + Node.js serverless `POST /api/chat/`)
 - **AI Portfolio Assistant (`Ask Adrian`):** Canonical knowledge base `knowledge/adrian-knowledge.json`, deterministic bilingual FAQ-first routing, PII/secret guardrails, visitor rate limits + daily budget caps, and ordered provider fallback (`Groq -> Gemini -> OpenRouter Free -> Local Fallback`; see [docs/deployment/VERCEL_ASK_ADRIAN_SETUP.md](docs/deployment/VERCEL_ASK_ADRIAN_SETUP.md))
+- **Quick Profile Share & Static QR:** Double-click (desktop), Pointer Events double-tap (touchscreens), or click the Hero `QrCode` action to open `ProfileShareDialog` featuring static high-contrast SVG QR ([public/images/profile/portfolio-qr.svg](public/images/profile/portfolio-qr.svg)), Clipboard copy + fallback, and Web Share API support.
 - **Language:** TypeScript (`strict: true`)
 - **Design Tokens & Typography:** Tailwind CSS v4 (`Obsidian & Arctic`: `#08090C`, `#15171C`, `#1C1F26`, `#F2F0EC`, `#A7ADB7`, `#65C8F5`; `Space Grotesk`, `Geist`, `Geist Mono`)
 - **3D & Shaders:** Three.js + React Three Fiber (`SpatialScene`, custom GLSL `atmosphereShader.ts` and `horizonGridShader.ts`, runtime `High` / `Balanced` / `Reduced` quality modes, WebGL & `prefers-reduced-motion` static geometry fallback)
