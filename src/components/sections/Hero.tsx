@@ -4,7 +4,7 @@ import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ArrowRight, ArrowUpRight, QrCode } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { MagneticSurface } from "@/components/motion/MagneticSurface";
 import { RollText } from "@/components/motion/RollText";
 import { TypewriterText } from "@/components/motion/TypewriterText";
@@ -20,7 +20,7 @@ export function Hero() {
   const restoreFocusRef = useRef<HTMLElement | null>(null);
   const lastTouchOpenAtRef = useRef(0);
   const [shareOpen, setShareOpen] = useState(false);
-  const { qualityMode, canHover, isClient } = useMotion();
+  const { qualityMode } = useMotion();
 
   const openShareDialog = useCallback((returnTo?: HTMLElement | null) => {
     restoreFocusRef.current = returnTo ?? shareTriggerRef.current;
@@ -42,11 +42,6 @@ export function Hero() {
     },
     { maxIntervalMs: 350 }
   );
-
-  const shareTooltip =
-    isClient && !canHover
-      ? "Double-tap to share profile"
-      : "Double-click to share profile";
 
   useGSAP(
     () => {
@@ -75,33 +70,22 @@ export function Hero() {
       className="relative flex min-h-[calc(100svh-68px)] items-center px-6 py-16 sm:py-24"
     >
       <div className="mx-auto w-full max-w-[1280px]">
+        <button
+          ref={shareTriggerRef}
+          type="button"
+          onClick={() => openShareDialog(shareTriggerRef.current)}
+          aria-label="Share Adrian Syah Abidin profile"
+          aria-haspopup="dialog"
+          aria-expanded={shareOpen}
+          aria-controls="profile-share-dialog"
+          className="sr-only focus-visible:not-sr-only focus-visible:mb-4 focus-visible:inline-flex focus-visible:min-h-[44px] focus-visible:items-center focus-visible:rounded-full focus-visible:border focus-visible:border-[#65C8F5] focus-visible:bg-[#15171C] focus-visible:px-4 focus-visible:py-1.5 focus-visible:text-xs focus-visible:font-medium focus-visible:text-[#F2F0EC] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#65C8F5]"
+        >
+          Share profile
+        </button>
         <div className="max-w-3xl space-y-8">
-          <div className="hero-entrance flex flex-wrap items-center gap-2.5">
-            <p className="text-sm font-medium tracking-wide text-[#65C8F5]">
-              Software &amp; QA Automation Engineer
-            </p>
-            <div className="group/share relative inline-flex items-center">
-              <button
-                ref={shareTriggerRef}
-                type="button"
-                onClick={() => openShareDialog(shareTriggerRef.current)}
-                aria-label="Share Adrian Syah Abidin profile"
-                aria-haspopup="dialog"
-                aria-expanded={shareOpen}
-                aria-controls="profile-share-dialog"
-                title={shareTooltip}
-                className="inline-flex h-11 w-11 -my-1 items-center justify-center rounded-full border border-white/12 bg-[#15171C]/65 text-[#A7ADB7] transition-colors hover:border-[#65C8F5] hover:text-[#65C8F5] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#65C8F5] sm:-my-2.5"
-              >
-                <QrCode className="h-4 w-4" aria-hidden="true" />
-              </button>
-              <span
-                role="tooltip"
-                className="pointer-events-none invisible absolute left-full top-1/2 z-30 ml-2 hidden -translate-y-1/2 whitespace-nowrap rounded-md border border-white/12 bg-[#15171C] px-2.5 py-1 text-[11px] font-normal text-[#F2F0EC] opacity-0 transition-opacity duration-150 group-hover/share:visible group-hover/share:opacity-100 group-focus-within/share:visible group-focus-within/share:opacity-100 sm:block"
-              >
-                {shareTooltip}
-              </span>
-            </div>
-          </div>
+          <p className="hero-entrance text-sm font-medium tracking-wide text-[#65C8F5]">
+            Software &amp; QA Automation Engineer
+          </p>
 
           <div className="space-y-4">
             <h1
