@@ -58,7 +58,7 @@ export function getChatbotConfig(
     rateLimitPerDay: parsePositiveInt(env.CHAT_RATE_LIMIT_PER_DAY, 20),
     globalDailyAttempts: parsePositiveInt(env.CHAT_GLOBAL_DAILY_ATTEMPTS, 100),
     maxOutputTokens: Math.min(parsePositiveInt(env.CHAT_MAX_OUTPUT_TOKENS, 512), 512),
-    providerTimeoutMs: Math.min(parsePositiveInt(env.CHAT_PROVIDER_TIMEOUT_MS, 5000), 10000),
+    providerTimeoutMs: Math.min(parsePositiveInt(env.CHAT_PROVIDER_TIMEOUT_MS, 7000), 12000),
     totalDeadlineMs: Math.min(parsePositiveInt(env.CHAT_TOTAL_DEADLINE_MS, 25000), 30000),
     upstashUrl: env.UPSTASH_REDIS_REST_URL?.trim() || undefined,
     upstashToken: env.UPSTASH_REDIS_REST_TOKEN?.trim() || undefined,

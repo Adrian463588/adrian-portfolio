@@ -98,4 +98,41 @@ describe("POST /api/chat validation & integration contracts", () => {
       if (prevUrl !== undefined) process.env.UPSTASH_REDIS_REST_URL = prevUrl;
     }
   });
+
+  it("handles open Indonesian experience query without falling into static FAQ or polluting with GitHub repos", async () => {
+    const prevGroq = process.env.GROQ_ENABLED;
+    const prevGemini = process.env.GEMINI_ENABLED;
+    const prevOpenRouter = process.env.OPENROUTER_ENABLED;
+    process.env.GROQ_ENABLED = "false";
+    process.env.GEMINI_ENABLED = "false";
+    process.env.OPENROUTER_ENABLED = "false";
+
+    try {
+      const req = new Request("http://localhost:3000/api/chat/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: "berikan apa saja pengalaman adrian ?",
+          language: "auto",
+          detail: "concise",
+          history: [],
+        }),
+      });
+      const res = await handleChatRequest(req);
+      expect(res.status).toBe(200);
+      const json = await res.json();
+      expect(json.mode).toBe("local-fallback");
+      expect(json.text).toContain("Berijalan Techno Center");
+      expect(json.text).toContain("Qiscus");
+      expect(json.text).not.toContain("Eksperimen SML");
+      expect(json.text).not.toContain("| Summary:");
+    } finally {
+      if (prevGroq === undefined) delete process.env.GROQ_ENABLED;
+      else process.env.GROQ_ENABLED = prevGroq;
+      if (prevGemini === undefined) delete process.env.GEMINI_ENABLED;
+      else process.env.GEMINI_ENABLED = prevGemini;
+      if (prevOpenRouter === undefined) delete process.env.OPENROUTER_ENABLED;
+      else process.env.OPENROUTER_ENABLED = prevOpenRouter;
+    }
+  });
 });

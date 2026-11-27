@@ -987,8 +987,24 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
     await expect(dialog).toContainText("Berijalan Techno Center");
     await expect(dialog).toContainText("Qiscus");
 
-    // 3. PII guardrail blocks private phone & date of birth requests politely
+    // 2b. Natural open-ended Indonesian experience query avoids static FAQ and unrelated GitHub repo dumps
     const input = dialog.locator("#ask-adrian-input");
+    await input.fill("berikan apa saja pengalaman adrian ?");
+    const [expRes] = await Promise.all([
+      page.waitForResponse(
+        (res) => res.url().includes("/api/chat") && res.request().method() === "POST"
+      ),
+      dialog.getByRole("button", { name: /Send message|Kirim pesan/i }).click(),
+    ]);
+    expect(expRes.status()).toBe(200);
+    const lastBubble = dialog.locator('[aria-live="polite"] > div').last();
+    await expect(lastBubble).toContainText(/Berijalan|Qiscus|Tokopedia/i, { timeout: 20_000 });
+    await expect(lastBubble).not.toContainText("Verified local FAQ");
+    await expect(lastBubble).not.toContainText("FAQ portofolio lokal");
+    await expect(lastBubble).not.toContainText("Eksperimen SML");
+    await expect(lastBubble).not.toContainText("| Summary:");
+
+    // 3. PII guardrail blocks private phone & date of birth requests politely
     await input.fill("What is Adrian's phone number and date of birth?");
     await dialog.getByRole("button", { name: /Send message|Kirim pesan/i }).click();
     await expect(dialog).toContainText("adriansyah1230@gmail.com");

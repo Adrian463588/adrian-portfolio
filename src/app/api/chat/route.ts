@@ -159,10 +159,14 @@ export async function handleChatRequest(req: Request): Promise<Response> {
     );
   }
 
-  // 2. Bilingual FAQ-first routing (zero upstream LLM requests for common questions)
+  // 2. Bilingual FAQ-first routing (zero upstream LLM requests for strict static greetings/FAQ)
   if (config.faqFirst) {
-    const faq = matchPresetFaq(message, lang);
+    const faq = matchPresetFaq(message, lang, history);
     if (faq) {
+      console.info(
+        "[ask-adrian]",
+        JSON.stringify({ requestId, mode: "local-faq", provider: "local", intent: faq.id })
+      );
       return respondSingle(
         {
           requestId,
@@ -268,6 +272,16 @@ export async function handleChatRequest(req: Request): Promise<Response> {
           links: result.links,
           interrupted: result.interrupted,
         };
+        console.info(
+          "[ask-adrian]",
+          JSON.stringify({
+            requestId,
+            mode: result.mode,
+            provider: result.provider,
+            attempts: result.attempts,
+            interrupted: result.interrupted,
+          })
+        );
         controller.enqueue(
           encoder.encode(`data: ${JSON.stringify({ type: "done", ...donePayload })}\n\n`)
         );
@@ -295,6 +309,17 @@ export async function handleChatRequest(req: Request): Promise<Response> {
     budget,
     signal: req.signal,
   });
+
+  console.info(
+    "[ask-adrian]",
+    JSON.stringify({
+      requestId,
+      mode: result.mode,
+      provider: result.provider,
+      attempts: result.attempts,
+      interrupted: result.interrupted,
+    })
+  );
 
   return buildJsonResponse(
     {

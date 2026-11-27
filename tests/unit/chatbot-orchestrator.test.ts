@@ -214,4 +214,40 @@ describe("Ask Adrian provider orchestrator & fallback rules", () => {
     expect(overMin.allowed).toBe(false);
     expect(overMin.reason).toBe("minute-limit");
   });
+
+  it("strips <think> reasoning tags incrementally during SSE streaming", async () => {
+    const encoder = new TextEncoder();
+    const sse = new ReadableStream({
+      start(controller) {
+        controller.enqueue(encoder.encode('data: {"choices":[{"delta":{"content":"<think>hidden "}}]}\n\n'));
+        controller.enqueue(encoder.encode('data: {"choices":[{"delta":{"content":"cot</think>Visible "}}]}\n\n'));
+        controller.enqueue(encoder.encode('data: {"choices":[{"delta":{"content":"answer."}}]}\n\n'));
+        controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+        controller.close();
+      },
+    });
+
+    const fetchMock = vi.fn(
+      async () => new Response(sse, { status: 200, headers: { "Content-Type": "text/event-stream" } })
+    );
+
+    const streamed: string[] = [];
+    const res = await runChatOrchestrator({
+      message: "Summarize his DevOps background briefly.",
+      history: [],
+      language: "en",
+      detail: "concise",
+      stream: true,
+      onToken: (delta) => streamed.push(delta),
+      config: makeConfig(),
+      fetchImpl: fetchMock as unknown as typeof fetch,
+      budget: new DailyAttemptBudget(10),
+    });
+
+    expect(res.mode).toBe("ai");
+    expect(res.text).toBe("Visible answer.");
+    expect(streamed.join("")).not.toContain("<think>");
+    expect(streamed.join("")).not.toContain("hidden");
+    expect(streamed.join("")).toBe("Visible answer.");
+  });
 });

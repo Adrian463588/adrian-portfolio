@@ -37,7 +37,7 @@ export async function runChatOrchestrator(
     signal,
   } = input;
 
-  const retrieved = retrieveKnowledgeContext(message, language);
+  const retrieved = retrieveKnowledgeContext(message, language, history);
   const systemPrompt = buildSystemPrompt(language, detail, retrieved.snippets);
   const messages: ChatHistoryMessage[] = [
     ...history.slice(-6),
@@ -149,7 +149,7 @@ export async function runChatOrchestrator(
     }
   }
 
-  const fallback = buildLocalFallbackAnswer(message, language, detail);
+  const fallback = buildLocalFallbackAnswer(message, language, detail, history);
   return {
     mode: "local-fallback",
     provider: "local",
