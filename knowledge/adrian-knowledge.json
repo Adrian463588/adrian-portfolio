@@ -1,0 +1,3010 @@
+{
+  "schemaVersion": "1.0.0",
+  "lastUpdated": "2026-11-27T14:32:55.861Z",
+  "persona": {
+    "assistantName": "Ask Adrian",
+    "ownerName": "Adrian Syah Abidin",
+    "roleDescription": "AI Portfolio Assistant representing Adrian Syah Abidin",
+    "disclosure": {
+      "id": "Saya asisten AI portofolio untuk Adrian Syah Abidin, bukan Adrian secara langsung. Jawaban bersumber dari data publik terverifikasi pada portofolio ini.",
+      "en": "I am Ask Adrian, an AI portfolio assistant representing Adrian Syah Abidin — not Adrian in person. Answers come strictly from verified portfolio and public-safe sources."
+    },
+    "tone": [
+      "friendly",
+      "professional",
+      "concise",
+      "technically accurate",
+      "honest about limitations"
+    ]
+  },
+  "profile": {
+    "name": "Adrian Syah Abidin",
+    "jobTitle": "Software & QA Automation Engineer",
+    "summary": "Software and QA Automation Engineer based in Indonesia. Explore my work in quality engineering, DevOps, Android development, applied AI, and enterprise financial systems.",
+    "generalLocation": "Yogyakarta / Indonesia",
+    "alumniOf": "Universitas Gadjah Mada",
+    "careerInterests": [
+      "Software Engineering (Backend Go/Laravel, Android Kotlin/Compose)",
+      "Quality Engineering & Test Automation (SDET — Cypress, Playwright, Appium, CI)",
+      "DevOps & Cloud Infrastructure (Docker, Kubernetes, Terraform, Observability)",
+      "Applied AI & On-Device Systems"
+    ],
+    "publicContact": {
+      "email": "adriansyah1230@gmail.com",
+      "github": "https://github.com/Adrian463588",
+      "linkedin": "https://www.linkedin.com/in/adrian-syah-abidin-0416b81b9/",
+      "medium": "https://medium.com/@adriansyah1230",
+      "website": "https://adriansyahabidin.vercel.app"
+    },
+    "taglines": [
+      "Think. Build. Repeat.",
+      "Code with purpose.",
+      "Quality. No compromises.",
+      "Break it. Make it better.",
+      "Deploy faster. Build smarter.",
+      "Make data matter.",
+      "Build beyond limits.",
+      "Secure by design.",
+      "Built to stay online.",
+      "Make AI work.",
+      "From idea to impact.",
+      "Engineer what's next."
+    ]
+  },
+  "education": [
+    {
+      "institution": "Universitas Gadjah Mada (UGM)",
+      "degree": "Information Technology (Teknologi Informasi, FT UGM)",
+      "period": "2020 – Present",
+      "location": "Yogyakarta, Indonesia",
+      "notes": "Research on PPG-based stress detection using Android and wearable devices."
+    },
+    {
+      "institution": "SMA Negeri 3 Yogyakarta",
+      "degree": "Mathematics & Natural Sciences",
+      "period": "2017 – 2020",
+      "location": "Yogyakarta, Indonesia"
+    }
+  ],
+  "leadership": [
+    {
+      "organization": "KMTETI FT UGM",
+      "role": "Staff, Academic & Adkesma Divisions",
+      "period": "Jan 2021 – Jan 2023",
+      "bullets": [
+        "Organized academic programs including IELTS preparation webinars and test simulations.",
+        "Served as project lead and communication liaison for KKL 2022 and SOSKP 2022."
+      ]
+    },
+    {
+      "organization": "Night Login DTETI FT UGM",
+      "role": "Member / Contributor",
+      "period": "Jan 2021 – Dec 2023",
+      "bullets": [
+        "Contributed across the Cyber Security Community (NCSC), Application Development Community (NADC), and Competitive Programming Community (NCPC)."
+      ]
+    },
+    {
+      "organization": "Google Developer Student Clubs UGM",
+      "role": "Member",
+      "period": "Jan 2022 – Nov 2022",
+      "bullets": []
+    }
+  ],
+  "experience": [
+    {
+      "id": "berijalan-acc",
+      "category": "professional",
+      "title": "Software Quality Control Engineer",
+      "organization": "Berijalan Techno Center",
+      "legalEntity": "PT Cipta Sedaya Digital Indonesia",
+      "corporateGroup": "Astra Credit Companies (ACC) Group",
+      "location": "Yogyakarta, Indonesia",
+      "dateRange": "Mar 2026 – Oct 2026",
+      "startDate": "2026-03",
+      "endDate": "2026-10",
+      "bullets": [],
+      "technologies": [
+        "Cypress",
+        "Jenkins",
+        "AOL UniPaaS",
+        "Magic xpa"
+      ],
+      "website": "https://berijalan.co.id/",
+      "roles": [
+        {
+          "id": "berijalan-freelance",
+          "title": "Software Quality Control Engineer — Freelance",
+          "employmentLabel": "Freelance",
+          "dateRange": "Jul 2026 – Oct 2026"
+        },
+        {
+          "id": "berijalan-trainee",
+          "title": "Software Quality Control Engineer Trainee",
+          "employmentLabel": "Bootcamp / Internship-equivalent",
+          "dateRange": "Mar 2026 – Jul 2026"
+        }
+      ],
+      "selectedProjects": [
+        {
+          "id": "archer-upgrade",
+          "title": "Archer Upgrade",
+          "scope": "Cypress & Jenkins · React / AOL UniPaaS",
+          "description": "Automated testing for a React-based credit collection application modernized from AOL UniPaaS, using Cypress and Jenkins."
+        },
+        {
+          "id": "stnk-alignment",
+          "title": "STNK Alignment",
+          "scope": "AOL UniPaaS & Magic xpa",
+          "description": "Manual testing of vehicle registration workflows and application alignment across AOL UniPaaS and Magic xpa."
+        },
+        {
+          "id": "advanced-joint-finance-parameter",
+          "title": "Advanced Joint Finance Parameter",
+          "scope": "AOL UniPaaS",
+          "description": "Manual testing of enhanced joint financing parameters and business workflows in AOL UniPaaS."
+        }
+      ]
+    },
+    {
+      "id": "qiscus-qa",
+      "category": "professional",
+      "title": "Software Quality Assurance Engineer Intern",
+      "organization": "Qiscus",
+      "location": "Remote",
+      "dateRange": "Jul 2025 – Oct 2025",
+      "startDate": "2025-07",
+      "endDate": "2025-10",
+      "bullets": [
+        "Trained and tested conversational AI agent integrations across web widgets and WhatsApp channels (Crystallure, Oh My Glam, Paragon AI).",
+        "Ran end-to-end test planning, integration testing, regression cycles, User Acceptance Testing (UAT), and release checks.",
+        "Worked with developers to isolate, reproduce, and re-test cross-system bugs."
+      ],
+      "extraContext": "Worked on client AI Agent QA implementations for Paragon brands including Crystallure, Oh My Glam, and Paragon AI across web widgets and WhatsApp.",
+      "technologies": [
+        "QA Engineering",
+        "UAT",
+        "Regression Testing",
+        "AI Agents",
+        "WhatsApp Integration"
+      ]
+    },
+    {
+      "id": "bitbybit-qa",
+      "category": "professional",
+      "title": "Software Quality Assurance Engineer Intern",
+      "organization": "Bitbybit Studio – Favo Group",
+      "location": "Remote",
+      "dateRange": "Nov 2024 – Jul 2025",
+      "startDate": "2024-11",
+      "endDate": "2025-07",
+      "bullets": [
+        "Performed functional testing and vulnerability scans across omnichannel commerce and CRM applications.",
+        "Ran security scanners including X-Ray and Nuclei to flag misconfigurations before release.",
+        "Tested stability and input safety across AI-assisted shopping features."
+      ],
+      "extraContext": "Evaluated omnichannel, CRM, and AI-integrated shopping resilience using X-Ray, Nuclei, and security scanning workflows alongside manual QA.",
+      "technologies": [
+        "Manual QA",
+        "Nuclei",
+        "X-Ray",
+        "Vulnerability Scanning",
+        "CRM"
+      ]
+    },
+    {
+      "id": "tokopedia-qa",
+      "category": "professional",
+      "title": "QA Engineer Intern",
+      "organization": "Tokopedia – ByteDance Group",
+      "location": "Yogyakarta, Indonesia",
+      "dateRange": "Feb 2025 – Jun 2025",
+      "startDate": "2025-02",
+      "endDate": "2025-06",
+      "bullets": [
+        "Executed manual and automated regression testing across Web and Android features on Tokopedia and TikTok Shop.",
+        "Logged reproducible bug reports, severity triage, and fix re-tests in internal trackers.",
+        "Maintained pre-release regression suites across staging deployments."
+      ],
+      "technologies": [
+        "Web & Android QA",
+        "Regression Automation",
+        "Defect Triage",
+        "Release Checks"
+      ]
+    },
+    {
+      "id": "digital-skola-devops",
+      "category": "bootcamp",
+      "title": "DevOps Engineer Student",
+      "organization": "Digital Skola",
+      "dateRange": "Aug 2025 – Nov 2025",
+      "startDate": "2025-08",
+      "endDate": "2025-11",
+      "bullets": [
+        "Built dual-VM Prometheus/Grafana/Uptime Kuma observability stacks and Kubernetes HPA workloads.",
+        "Implemented Docker containerization, CI/CD pipelines (Jenkins, GitHub Actions), and Terraform/Ansible provisioning."
+      ],
+      "technologies": [
+        "Docker",
+        "Kubernetes",
+        "Terraform",
+        "Ansible",
+        "Prometheus",
+        "Grafana"
+      ],
+      "repoUrl": "https://github.com/Adrian463588/Task5ManageDashboardMonitoring"
+    },
+    {
+      "id": "sanbercode-golang",
+      "category": "bootcamp",
+      "title": "Golang Backend Development",
+      "organization": "Sanbercode",
+      "dateRange": "Sep 2025 – Oct 2025",
+      "startDate": "2025-09",
+      "endDate": "2025-10",
+      "bullets": [
+        "Built and deployed RESTful APIs in Go (Gin) with JWT authentication, middleware, and PostgreSQL persistence.",
+        "Applied Go structs, interfaces, error handling, and SQL migrations."
+      ],
+      "technologies": [
+        "Go",
+        "Gin",
+        "PostgreSQL",
+        "JWT"
+      ],
+      "repoUrl": "https://github.com/Adrian463588/finalproject-sb-go-70-Adrian"
+    },
+    {
+      "id": "synrgy-qa",
+      "category": "bootcamp",
+      "title": "Quality Assurance Engineer Student",
+      "organization": "SYNRGY Academy",
+      "dateRange": "Feb 2024 – Aug 2024",
+      "startDate": "2024-02",
+      "endDate": "2024-08",
+      "bullets": [
+        "Built Selenium and Appium automated UI test suites integrated with Cucumber BDD.",
+        "Executed API testing with Postman/Newman and performance load checks via JMeter alongside BRD/SRS docs."
+      ],
+      "technologies": [
+        "Selenium",
+        "Appium",
+        "Cucumber",
+        "Postman",
+        "JMeter"
+      ]
+    },
+    {
+      "id": "teach4hope-cyber",
+      "category": "training",
+      "title": "Youth Cyberpioneers Program (Network Security)",
+      "organization": "Teach4Hope",
+      "dateRange": "Jan 2024 – May 2024",
+      "startDate": "2024-01",
+      "endDate": "2024-05",
+      "bullets": [
+        "Completed network security curriculum aligned with CompTIA Network+ covering network hardening and risk mitigation."
+      ],
+      "technologies": [
+        "Network Security",
+        "CompTIA Network+"
+      ]
+    },
+    {
+      "id": "bangkit-android",
+      "category": "bootcamp",
+      "title": "Mobile Development (Android) Cohort",
+      "organization": "Bangkit Academy (Google, Tokopedia, Gojek, Traveloka)",
+      "dateRange": "Feb 2023 – Aug 2023",
+      "startDate": "2023-02",
+      "endDate": "2023-08",
+      "bullets": [
+        "Developed Kotlin and Jetpack Compose Android applications following SOLID principles and local/API persistence."
+      ],
+      "technologies": [
+        "Kotlin",
+        "Jetpack Compose",
+        "SOLID",
+        "Android"
+      ]
+    },
+    {
+      "id": "sanbercode-laravel",
+      "category": "bootcamp",
+      "title": "Web Developer (Laravel)",
+      "organization": "Sanbercode",
+      "dateRange": "Oct 2022 – Nov 2022",
+      "startDate": "2022-10",
+      "endDate": "2022-11",
+      "bullets": [
+        "Built MVC web applications using Laravel, Eloquent ORM, migrations, and RESTful CRUD routes."
+      ],
+      "technologies": [
+        "PHP",
+        "Laravel",
+        "MySQL"
+      ]
+    },
+    {
+      "id": "sanbercode-data",
+      "category": "bootcamp",
+      "title": "Data Science Track",
+      "organization": "Sanbercode",
+      "dateRange": "Apr 2022 – May 2022",
+      "startDate": "2022-04",
+      "endDate": "2022-05",
+      "bullets": [
+        "Performed exploratory data analysis and visualization using Python, Pandas, NumPy, Matplotlib, and Seaborn."
+      ],
+      "technologies": [
+        "Python",
+        "Pandas",
+        "NumPy",
+        "Matplotlib"
+      ]
+    },
+    {
+      "id": "sanbercode-flutter",
+      "category": "bootcamp",
+      "title": "Mobile Developer (Flutter)",
+      "organization": "Sanbercode",
+      "dateRange": "Feb 2022 – Mar 2022",
+      "startDate": "2022-02",
+      "endDate": "2022-03",
+      "bullets": [
+        "Built cross-platform Flutter prototypes with GetX state management and Firebase authentication."
+      ],
+      "technologies": [
+        "Flutter",
+        "Dart",
+        "GetX",
+        "Firebase"
+      ]
+    }
+  ],
+  "competencies": [
+    {
+      "id": "qa-sdet",
+      "title": "Quality Engineering",
+      "icon": "ShieldCheck",
+      "skills": [
+        "Cypress",
+        "Playwright",
+        "Selenium",
+        "Appium",
+        "Postman",
+        "JMeter",
+        "Cucumber (BDD)",
+        "Manual Testing"
+      ],
+      "relatedProjectSlugs": [
+        "automate-plus",
+        "demo-evershop-cypress",
+        "saucedemo-cypress-bdd-jenkins"
+      ]
+    },
+    {
+      "id": "devops-sec",
+      "title": "DevOps & Security",
+      "icon": "Container",
+      "skills": [
+        "Docker",
+        "Kubernetes",
+        "Jenkins",
+        "Terraform",
+        "GitHub Actions",
+        "Prometheus",
+        "Grafana",
+        "Nuclei"
+      ],
+      "relatedProjectSlugs": [
+        "dual-vm-observability-stack",
+        "gke-terraform-hpa-autoscaling",
+        "auu-ahh-cafe-menu"
+      ]
+    },
+    {
+      "id": "fintech-backend",
+      "title": "Backend & Financial Systems",
+      "icon": "Server",
+      "skills": [
+        "Go",
+        "Laravel",
+        "PostgreSQL",
+        "MySQL",
+        "AOL UniPaaS",
+        "Magic xpa",
+        "Joint Financing"
+      ],
+      "relatedProjectSlugs": [
+        "ledger-scope",
+        "credit-risk-mlops",
+        "go-online-shop"
+      ]
+    },
+    {
+      "id": "android-mobile",
+      "title": "Mobile Engineering",
+      "icon": "Smartphone",
+      "skills": [
+        "Kotlin",
+        "Jetpack Compose",
+        "Material 3",
+        "KMP",
+        "Room",
+        "Hilt",
+        "Wear OS"
+      ],
+      "relatedProjectSlugs": [
+        "android-stress-detection",
+        "quran-plus",
+        "coffee-creator",
+        "adzan-plus",
+        "parfum-creator"
+      ]
+    },
+    {
+      "id": "ai-systems",
+      "title": "Applied AI & Systems",
+      "icon": "Cpu",
+      "skills": [
+        "Python",
+        "Rust",
+        "Tauri 2",
+        "ONNX",
+        "LiteRT-LM",
+        "llama.cpp",
+        "sqlite-vec"
+      ],
+      "relatedProjectSlugs": [
+        "chat-buddy",
+        "med-bot",
+        "biosignal-stress-pipeline"
+      ]
+    }
+  ],
+  "certifications": [
+    {
+      "id": "aws-ccp",
+      "name": "AWS Certified Cloud Practitioner",
+      "issuer": "Amazon Web Services",
+      "category": "Cloud Infrastructure",
+      "kind": "certification",
+      "status": "Issued certification"
+    },
+    {
+      "id": "comptia-sec-plus",
+      "name": "CompTIA Security+",
+      "issuer": "CompTIA",
+      "category": "Cybersecurity",
+      "kind": "certification",
+      "status": "Issued certification"
+    },
+    {
+      "id": "comptia-net-plus",
+      "name": "CompTIA Network+",
+      "issuer": "CompTIA",
+      "category": "Networking",
+      "kind": "certification",
+      "status": "Issued certification"
+    },
+    {
+      "id": "alibaba-aca",
+      "name": "Alibaba Cloud Certified Associate (ACA)",
+      "issuer": "Alibaba Cloud",
+      "category": "Cloud Infrastructure",
+      "kind": "certification",
+      "status": "Level & verification pending confirmation"
+    },
+    {
+      "id": "ec-council-ehe",
+      "name": "Ethical Hacking Essentials (EHE)",
+      "issuer": "EC-Council",
+      "category": "Security",
+      "kind": "certification",
+      "status": "Issued credential"
+    },
+    {
+      "id": "dicoding-ml",
+      "name": "Machine Learning for Beginners",
+      "issuer": "Dicoding Indonesia",
+      "category": "Applied ML",
+      "kind": "course",
+      "status": "Completed coursework"
+    },
+    {
+      "id": "dicoding-viz",
+      "name": "Data Visualization Basics",
+      "issuer": "Dicoding Indonesia",
+      "category": "Data Analytics",
+      "kind": "course",
+      "status": "Completed coursework"
+    }
+  ],
+  "cvEnrichments": {
+    "additionalCourses": [
+      {
+        "id": "kominfo-dts-secplus",
+        "name": "Digital Talent Scholarship — Cybersecurity (Security+)",
+        "organizer": "Ministry of Communication and Information Technology (Kominfo)",
+        "period": "Sep 2022 – Oct 2022",
+        "location": "Remote",
+        "focus": [
+          "Threat analysis",
+          "Incident response",
+          "Risk mitigation",
+          "Security policies"
+        ],
+        "sourceId": "cv-cybersecurity-2025"
+      },
+      {
+        "id": "kominfo-ccna-training",
+        "name": "CCNA Network Engineer Training",
+        "organizer": "Ministry of Communication and Information Technology (Kominfo)",
+        "period": "Jul 2022 – Sep 2022",
+        "location": "Remote",
+        "focus": [
+          "Routing",
+          "Switching",
+          "Network protocols (Cisco CCNA 200-301 curriculum; certificate not obtained)"
+        ],
+        "sourceId": "cv-cybersecurity-2025"
+      },
+      {
+        "id": "kominfo-cyber-novice-ehe",
+        "name": "Cyber Novice: Ethical Hacking Essentials",
+        "organizer": "Ministry of Communication and Information Technology (Kominfo)",
+        "period": "Mar 2022 – Apr 2022",
+        "location": "Remote",
+        "focus": [
+          "Reconnaissance",
+          "Scanning",
+          "Enumeration",
+          "Vulnerability assessment"
+        ],
+        "sourceId": "cv-cybersecurity-2025"
+      }
+    ],
+    "verifiedBootcampMetrics": [
+      {
+        "id": "digital-skola-score",
+        "organization": "Digital Skola DevOps Bootcamp",
+        "period": "Aug 2025 – Oct 2025",
+        "summary": "Graduated with a 97.3/100 final score and 96.5/100 technical proficiency across Kubernetes (HA, HPA), Docker, Terraform, Ansible, Jenkins, GitHub Actions, Prometheus, and Grafana.",
+        "sourceId": "cv-devops-2025"
+      }
+    ],
+    "ownerReviewNotes": [
+      {
+        "id": "alibaba-cert-level",
+        "topic": "Alibaba Cloud certification level",
+        "observation": "DevOps/Backend/Game CVs list both 'Alibaba Cloud Certified Professional' and 'Alibaba Cloud Certified Associate (ACA)', while portfolio certifications.ts lists 'Alibaba Cloud Certified Associate (ACA)' as pending level confirmation.",
+        "recommendation": "Assistant reports Alibaba Cloud ACA with conservative pending-confirmation wording until verified by Adrian."
+      },
+      {
+        "id": "parfumcreator-privacy",
+        "topic": "ParfumCreator visibility",
+        "observation": "ParfumCreator became public in Sprint V8 and lives at https://github.com/Adrian463588/ParfumCreator (featured slot #5).",
+        "recommendation": "Always describe ParfumCreator as an open public Android portfolio project."
+      }
+    ]
+  },
+  "projects": {
+    "totalCount": 71,
+    "featuredSlugs": [
+      "android-stress-detection",
+      "quran-plus",
+      "coffee-creator",
+      "adzan-plus",
+      "parfum-creator",
+      "automate-plus"
+    ],
+    "items": [
+      {
+        "id": "android-stress-detection",
+        "slug": "android-stress-detection",
+        "title": "Android Stress Detection",
+        "subtitle": "Wearable PPG Signal Processing, On-Device ONNX Inference & Decision Support",
+        "summary": "Wearable PPG signal processing and on-device ONNX stress detection across Android and Galaxy Watch, paired with local AI counseling and signal quality gating.",
+        "description": "Dual-module Kotlin, Jetpack Compose, and Wear OS research prototype recording multi-channel PPG from Samsung Galaxy Watch and running channel-independent ONNX Runtime inference locally on Android, with explicit abstain logic when signal quality is insufficient.",
+        "category": "Research & Academic Projects",
+        "technologies": [
+          "Kotlin",
+          "Jetpack Compose",
+          "Wear OS",
+          "PPG Signal Processing",
+          "ONNX Runtime",
+          "LiteRT-LM",
+          "Sherpa-ONNX",
+          "Room"
+        ],
+        "tier": "featured",
+        "featured": true,
+        "flagship": true,
+        "projectOrigin": "original",
+        "projectStatus": "active",
+        "personalContribution": "Built the multi-module Phone and Wear OS Kotlin apps, on-device signal gating and ONNX Runtime wrappers, local RAG AI+ counselor, Verbatim+ audio features, R8 hardening, and CI publication-safety scans.",
+        "problemStatement": "Wearable PPG recordings suffer from motion artifacts, cadence jitter, and transport gaps, while streaming physiological signals to cloud backends introduces acute privacy risks.",
+        "proposedSolution": "Split raw Galaxy Watch PPG acquisition from Android-side validation, SQA/MADC gating, and channel-independent Green/IR ONNX Runtime inference so the app abstains with INSUFFICIENT_SIGNAL rather than fabricating predictions.",
+        "architectureSummary": "Four-module Gradle architecture (app, wear, shared, inference) using MVVM + unidirectional Flow, Google Play Services Wear Data Layer, Room persistence, local Gemma/LiteRT-LM counseling, and Sherpa-ONNX speech components.",
+        "implementedFeatures": [
+          "Samsung Galaxy Watch PPG recording over Wear Data Layer with independent Green and IR channel evaluation",
+          "On-device signal quality assessment (SQA/MADC), 240s anchor core windowing, and strict abstain handling on insufficient signal",
+          "Local ONNX Runtime inference locked to validated biosignal pipeline contracts (ECG used only as offline research validation reference)",
+          "Five-tab Jetpack Compose interface (Home, History, Verbatim+, AI+ local RAG counselor, Profile) with R8 release hardening and SHA-256 asset verification"
+        ],
+        "testingStrategy": "868 JVM unit tests passing across app (796), inference (34), and shared (38) modules on v0.1.5, alongside ktlint, detekt, production lint, Gitleaks full-history scan, and physical Xiaomi device UI smoke verification.",
+        "resultsAndLimitations": "This project is an experimental research prototype for stress monitoring and decision support, not a medical diagnostic tool. Phone v0.1.5 and Watch v0.1.1 are internal debug previews; full-channel Watch acceptance remains partial due to diagnostic Red timestamp conflicts, and AI+ local corpus/web citations are not clinically validated.",
+        "caseStudyPath": "/projects/android-stress-detection/",
+        "repositoryUrl": "https://github.com/Adrian463588/android-stress-detection",
+        "updatedAt": "2026-11-15"
+      },
+      {
+        "id": "quran-plus",
+        "slug": "quran-plus",
+        "title": "QuranPlus",
+        "subtitle": "Offline-First Android Quran, Hadith & On-Device RAG Companion",
+        "summary": "Offline-first Android app combining complete 30 Juz Quran reading, 9-kitab Hadith search, Tahsin drills, and on-device sqlite-vec RAG.",
+        "description": "Offline-first Android application delivering complete 114-surah Quran text, word-by-word reading tools, Hadith search across 9 collections, Tahsin drills, Dzikir & Hizib, and local semantic AI retrieval without network dependency.",
+        "category": "Android & Mobile Development",
+        "technologies": [
+          "Kotlin",
+          "Jetpack Compose",
+          "Material 3",
+          "LiteRT-LM",
+          "ONNX Runtime",
+          "sqlite-vec",
+          "Room"
+        ],
+        "tier": "featured",
+        "featured": true,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "released",
+        "personalContribution": "Sole developer: engineered Clean MVVM architecture, Jetpack Compose adaptive phone/tablet UI, local Room + sqlite-vec retrieval pipeline, LiteRT-LM/ONNX inference integration, and regression CI.",
+        "problemStatement": "Islamic reference apps commonly rely on cloud APIs for semantic search and Q&A, failing offline and risking ungrounded LLM hallucinations on religious texts.",
+        "proposedSolution": "Bundled verified text corpora with local vector indexing (sqlite-vec) and on-device LiteRT-LM/ONNX inference so retrieval and citations run privately on the handset.",
+        "architectureSummary": "Multi-module Gradle Kotlin project (app, shared, data, specs, openspec) following MVVM + unidirectional state flow with Room storage and embedded vector retrieval.",
+        "implementedFeatures": [
+          "Complete 30 Juz (114 surahs, 6,236 ayat) with Kemenag RI Indonesian metadata, waqaf & gharib guides",
+          "9-kitab Hadith browser, Tahsin makharij quizzes, and Dzikir & Hizib reader",
+          "On-device Tanya AI powered by sqlite-vec RAG and LiteRT-LM",
+          "Responsive phone and Galaxy Tab S7 tablet layouts verified in CI regression suite"
+        ],
+        "testingStrategy": "GitHub Actions regression.yml checks alongside physical-device visual verification captures on Samsung Galaxy S20 Ultra and Tab S7.",
+        "resultsAndLimitations": "Released v1.0.13 APK via GitHub Releases; on-device LLM inference depends on device RAM and Android API 32+.",
+        "caseStudyPath": "/projects/quran-plus/",
+        "repositoryUrl": "https://github.com/Adrian463588/QuranPlus",
+        "releaseUrl": "https://github.com/Adrian463588/QuranPlus/releases/tag/v1.0.13",
+        "updatedAt": "2026-11-21"
+      },
+      {
+        "id": "coffee-creator",
+        "slug": "coffee-creator",
+        "title": "Coffee Creator",
+        "subtitle": "Offline-First Tactile Android Coffee Laboratory",
+        "summary": "Offline-first Kotlin and Jetpack Compose coffee brewing companion with extraction calculators, haptic pour-over timer, CVA cupping forms, and local RAG.",
+        "description": "Material 3 offline-first Android app adopting a tactile industrial UI with Room persistence, benchmark modules, OpenSpec specs, and physical-device test captures.",
+        "category": "Android & Mobile Development",
+        "technologies": [
+          "Kotlin",
+          "Jetpack Compose",
+          "Material 3",
+          "Room",
+          "Haptics",
+          "Local RAG"
+        ],
+        "tier": "featured",
+        "featured": true,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "released",
+        "personalContribution": "Developed coffee science formulas, Room database schema, direct hardware haptic timer cues, CVA sensory evaluation screens, and v1.14.7 release artifacts.",
+        "caseStudyPath": "/projects/coffee-creator/",
+        "repositoryUrl": "https://github.com/Adrian463588/coffee-creator",
+        "releaseUrl": "https://github.com/Adrian463588/coffee-creator/releases/tag/v1.14.7",
+        "updatedAt": "2026-11-14"
+      },
+      {
+        "id": "adzan-plus",
+        "slug": "adzan-plus",
+        "title": "AdzanPlus",
+        "subtitle": "Offline-First Prayer Times, Astronomy & Glance Widget Suite",
+        "summary": "Offline-first Android prayer schedule app using shared Kotlin Multiplatform astronomy modules, Qibla compass, Dhuha timing, and Jetpack Glance widgets.",
+        "description": "MIT-licensed Kotlin & Jetpack Compose prayer reminder suite powered by shared multiplatform astronomical calculation modules (core-astronomy, core-prayer) with zero server dependency.",
+        "category": "Android & Mobile Development",
+        "technologies": [
+          "Kotlin",
+          "Jetpack Compose",
+          "Kotlin Multiplatform",
+          "Clean Architecture",
+          "Jetpack Glance"
+        ],
+        "tier": "featured",
+        "featured": true,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "released",
+        "personalContribution": "Built shared core-astronomy and core-prayer calculation modules, Material 3 UI, Jetpack Glance home widgets, haptic reminders, and anti-leakage security checks.",
+        "implementedFeatures": [
+          "Real-time on-device solar/astronomical hisab calculations including Dhuha",
+          "Precision Qibla compass and configurable pre-adhan heads-up alerts (5–30 min)",
+          "Jetpack Glance AppWidgets and shared KMP domain logic"
+        ],
+        "caseStudyPath": "/projects/adzan-plus/",
+        "repositoryUrl": "https://github.com/Adrian463588/AdzanPlus",
+        "releaseUrl": "https://github.com/Adrian463588/AdzanPlus/releases/tag/v2.2.1",
+        "updatedAt": "2026-11-14"
+      },
+      {
+        "id": "parfum-creator",
+        "slug": "parfum-creator",
+        "title": "ParfumCreator",
+        "subtitle": "Local-First Android Perfume Formulation Studio",
+        "summary": "An Android app for perfume formulation, fragrance blending, and recipe development, with on-device AI assistance.",
+        "description": "Built with Kotlin and Jetpack Compose, ParfumCreator combines fragrance formulation tools, recipe management, calculation utilities, and on-device AI assistance in a mobile application.",
+        "category": "Android & Mobile Development",
+        "technologies": [
+          "Kotlin",
+          "Jetpack Compose",
+          "Local RAG",
+          "LiteRT-LM",
+          "Room",
+          "Android NDK (C++17)",
+          "Dagger Hilt"
+        ],
+        "tier": "featured",
+        "featured": true,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "released",
+        "personalContribution": "Sole developer and architect: built Clean Architecture + MVVM modules, NDK C++17 native formula math, 232 recipe templates, 2,046+ ingredient catalog, on-device MiniLM RAG, and Gemma 4 LiteRT-LM integration.",
+        "problemStatement": "Perfume formulation workflows often rely on spreadsheets or cloud utilities that separate ingredient density math, fragrance note proportions, and technical reference notes across disconnected tools.",
+        "proposedSolution": "Built a local-first Android application combining mass/volume dilution calculators, searchable natural and catalog oil inventories, batch-scalable templates, and on-device MiniLM retrieval in Room.",
+        "architectureSummary": "Clean Architecture and MVVM across Kotlin, Jetpack Compose Material 3, Dagger Hilt, Room v3 (formulas, ingredient catalogs, and 384-d RAG vectors), DataStore, WorkManager SAF downloads, and JNI C++17 native library libparfume_core.so.",
+        "implementedFeatures": [
+          "Formula Creator computing batch weight, concentration (w/w), Top/Heart/Base note architecture, heuristic SPL index, and 4-axis Fragrance Wheel direction",
+          "232 study recipe templates (100 natural, 100 fragrance oil, 32 starter) with batch scaling and explicit catalog SKU binding",
+          "Searchable library of 2,046+ natural essential oils, absolutes, resins, and catalog oils with CSV import and custom ingredients",
+          "Local MiniLM (all-MiniLM-L6-v2.tflite, 384-d) document indexing over SAF PDF/TXT/MD/CSV/JSON files paired with Gemma 4 LiteRT-LM and opt-in HTTPS-allowlisted lookup"
+        ],
+        "testingStrategy": "188 JVM unit tests passing across 19 suites with zero Android Lint errors on v1.3.1, alongside instrumentation tests for recipe templates and headless emulator flows.",
+        "resultsAndLimitations": "Published v1.3.1 debug APK (SHA-256 verified). Built-in 200 study recipes represent experimental concentrates rather than skin-ready retail perfumes or supplier originals; the app does not validate IFRA safety limits, and local Gemma 4 inference requires downloading ~2.4–3.4 GB model files via SAF.",
+        "caseStudyPath": "/projects/parfum-creator/",
+        "repositoryUrl": "https://github.com/Adrian463588/ParfumCreator",
+        "releaseUrl": "https://github.com/Adrian463588/ParfumCreator/releases/tag/v1.3.1",
+        "updatedAt": "2026-11-25"
+      },
+      {
+        "id": "automate-plus",
+        "slug": "automate-plus",
+        "title": "AutomatePlus",
+        "subtitle": "Offline-First Multi-Platform SDET Workbench",
+        "summary": "Local Windows automation workbench built with Rust, Tauri 2, and TypeScript to compose SessionIR flows and export Web, Android, and API test suites.",
+        "description": "Desktop engineering workbench for SDETs that compiles structured SessionIR actions, locators, and assertions into runnable Playwright, Selenium, Appium, and k6 projects without cloud lock-in or telemetry.",
+        "category": "QA & Test Automation",
+        "technologies": [
+          "Rust",
+          "Tauri 2",
+          "TypeScript",
+          "Playwright",
+          "Appium",
+          "Selenium",
+          "k6"
+        ],
+        "tier": "featured",
+        "featured": true,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "released",
+        "personalContribution": "Sole author and systems architect: designed SessionIR schema, Rust/Tauri 2 native host bridge, TypeScript code generators, SHA-256 verified portable Windows ZIP packaging, and automated test suite.",
+        "problemStatement": "QA teams often maintain separate, fragile scripts across browser, Android device farm, and API load-testing tools with hidden cloud dependencies.",
+        "proposedSolution": "Unified test authoring around an offline-first SessionIR intermediate representation in a Tauri 2 + Rust desktop host that exports deterministic framework-specific code and validates local runtime prerequisites.",
+        "architectureSummary": "Native Rust/Tauri 2 control plane managing workspace filesystem isolation and runtime checks, paired with a React/TypeScript renderer and deterministic framework code generators.",
+        "implementedFeatures": [
+          "SessionIR workspace & session authoring for Web, Android, and API test flows",
+          "Multi-framework code generation (Playwright TypeScript, Selenium, Appium, k6)",
+          "Local runtime preflight gates preventing silent false-pass execution",
+          "Portable Windows x64 v1.7.1 release verified with SHA256SUMS.txt"
+        ],
+        "testingStrategy": "Unit and integration suites validating SessionIR schema transforms, code generator output parity, and preflight state transitions.",
+        "resultsAndLimitations": "Published v1.7.1 portable preview (AutomatePlus-v1.7.1-windows-x64.zip). Requires Windows 10/11 x64 and WebView2 Runtime; unsigned preview binary.",
+        "caseStudyPath": "/projects/automate-plus/",
+        "repositoryUrl": "https://github.com/Adrian463588/AutomatePlus",
+        "releaseUrl": "https://github.com/Adrian463588/AutomatePlus/releases/tag/v1.7.1",
+        "updatedAt": "2026-10-13"
+      },
+      {
+        "id": "dual-vm-observability-stack",
+        "slug": "dual-vm-observability-stack",
+        "title": "Dual-VM Monitoring & Alerting Stack",
+        "subtitle": "Prometheus, Grafana, Uptime Kuma & Terraform Infrastructure",
+        "summary": "Infrastructure monitoring and alerting using Prometheus, Grafana, Terraform, and Docker Compose.",
+        "description": "Automated infrastructure and monitoring stack separating target Nginx/Node Exporter hosts from a dedicated observability VM using Terraform, Docker Compose, and Bash provisioning.",
+        "category": "DevOps & DevSecOps",
+        "technologies": [
+          "Terraform",
+          "Docker Compose",
+          "Prometheus",
+          "Grafana",
+          "Alertmanager",
+          "Uptime Kuma",
+          "Nginx"
+        ],
+        "tier": "featured",
+        "featured": true,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "completed",
+        "personalContribution": "Authored Terraform provisioning modules, Docker Compose monitoring topology, Prometheus alert rules, Alertmanager Discord webhook routing, and deployment documentation.",
+        "problemStatement": "Co-locating monitoring tools on the same VM as the application causes observability blind spots whenever the target host faces resource exhaustion.",
+        "proposedSolution": "Separated target-vm (Nginx + Node Exporter) and monitoring-vm (Prometheus + Grafana + Alertmanager + Uptime Kuma) so outages trigger alerts independently.",
+        "caseStudyPath": "/projects/dual-vm-observability-stack/",
+        "repositoryUrl": "https://github.com/Adrian463588/Task5ManageDashboardMonitoring",
+        "updatedAt": "2026-05-13"
+      },
+      {
+        "id": "chat-buddy",
+        "slug": "chat-buddy",
+        "title": "ChatBuddy",
+        "subtitle": "Offline AI Travel Companion (Voice Translation, OCR & Local LLM)",
+        "summary": "100% offline Android travel assistant combining two-way live voice translation (Silero VAD + Whisper), CameraX live OCR overlay, sqlite-vec RAG, and llama.cpp.",
+        "description": "On-device multimodal AI assistant built in Kotlin & Jetpack Compose to handle cross-language conversation, sign/menu OCR translation, and travel RAG retrieval without mobile data.",
+        "category": "AI & Machine Learning",
+        "technologies": [
+          "Kotlin",
+          "Jetpack Compose",
+          "llama.cpp",
+          "Whisper",
+          "Silero VAD",
+          "CameraX",
+          "sqlite-vec"
+        ],
+        "tier": "featured",
+        "featured": true,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "released",
+        "personalContribution": "Architected Clean MVVM Android layers, integrated Silero VAD + Whisper ASR + offline TTS pipeline, CameraX OCR overlay, MiniLM embeddings with sqlite-vec, and llama.cpp native inference.",
+        "problemStatement": "International travelers frequently lose reliable connectivity while needing real-time bilingual voice translation and text recognition.",
+        "proposedSolution": "Stacked quantized local speech, embedding, OCR, and LLM runtimes behind an offline-first Jetpack Compose interface.",
+        "testingStrategy": "GitHub Actions android.yml verification and on-device smoke validation on Samsung Galaxy S20 Ultra (SM-G988B).",
+        "resultsAndLimitations": "Released v0.2.0 APK; requires downloading or provisioning local model packs onto device storage prior to offline inference.",
+        "caseStudyPath": "/projects/chat-buddy/",
+        "repositoryUrl": "https://github.com/Adrian463588/ChatBuddy",
+        "releaseUrl": "https://github.com/Adrian463588/ChatBuddy/releases/tag/v0.2.0",
+        "updatedAt": "2026-09-22"
+      },
+      {
+        "id": "english-prep-ai",
+        "slug": "english-prep-ai",
+        "title": "EnglishPrepAI",
+        "subtitle": "Offline TOEFL ITP, TOEFL iBT (2026) & IELTS Academic Prep",
+        "summary": "Offline Android application for TOEFL ITP, TOEFL iBT (2026), and IELTS Academic preparation using Room FTS4, Media3, Gemma 4, and Whisper ONNX.",
+        "description": "Native Kotlin & Jetpack Compose preparation platform implementing explicit structural rules for TOEFL ITP Level 1, post-2026 TOEFL iBT, and IELTS Academic without requiring INTERNET permission.",
+        "category": "Android & Mobile Development",
+        "technologies": [
+          "Kotlin",
+          "Jetpack Compose",
+          "Room FTS4",
+          "Media3",
+          "Gemma 4",
+          "Whisper ONNX",
+          "R8/ProGuard"
+        ],
+        "tier": "featured",
+        "featured": true,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "released",
+        "personalContribution": "Designed domain separation across three standardized exam formats, built Room FTS4 indexing + Media3 listening playback, integrated Gemma 4 & Whisper ONNX pipelines, and hardened R8/ProGuard & DevSecOps CI.",
+        "problemStatement": "Most exam prep apps conflate TOEFL ITP, TOEFL iBT, and IELTS scoring/question formats and fail in offline study environments.",
+        "proposedSolution": "Built an offline-only Android app with zero INTERNET permission, format-specific scoring modules, local full-text search, and on-device speech/writing evaluation.",
+        "architectureSummary": "Clean MVVM with Material 3 UI, Room FTS4 offline curriculum packs, Media3 audio engine, LiteRT-LM Gemma 4 + Whisper ONNX local scoring, and GitHub Actions android-devsecops.yml.",
+        "implementedFeatures": [
+          "Isolated TOEFL ITP Level 1 (310–677), TOEFL iBT 2026 (1–6 bands), and IELTS Academic (0–9 bands)",
+          "Offline Whisper ONNX speaking transcription and local Gemma 4 feedback",
+          "R8 minification and resource shrinking configured for release builds"
+        ],
+        "resultsAndLimitations": "Published v1.2.0 universal APK (SHA-256 checksum documented); local AI feedback is positioned as study simulation rather than official ETS/IDP grading.",
+        "caseStudyPath": "/projects/english-prep-ai/",
+        "repositoryUrl": "https://github.com/Adrian463588/EnglishPrepAI",
+        "releaseUrl": "https://github.com/Adrian463588/EnglishPrepAI/releases/tag/v1.2.0",
+        "updatedAt": "2026-11-17"
+      },
+      {
+        "id": "med-bot",
+        "slug": "med-bot",
+        "title": "MedBot",
+        "subtitle": "Offline Android Health Assistant",
+        "summary": "Local-first Android health assistant built with Kotlin, Jetpack Compose, LiteRT-LM model integrity verification, SAF storage, and clinical safety boundaries.",
+        "description": "Multi-agent triage and local medical knowledge companion running LiteRT-LM (AUTO/GPU/CPU) strictly on-device with fail-closed model state handling and Storage Access Framework isolation.",
+        "category": "AI & Machine Learning",
+        "technologies": [
+          "Kotlin",
+          "Jetpack Compose",
+          "LiteRT-LM",
+          "WorkManager",
+          "SAF",
+          "RAG"
+        ],
+        "tier": "featured",
+        "featured": true,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "active",
+        "personalContribution": "Designed multi-specialist triage prompt orchestration, built SHA-256 verified LiteRT-LM model manager over Android SAF, and enforced fail-closed clinical safety boundaries.",
+        "problemStatement": "Cloud health chatbots introduce privacy exposure for patient queries and risk unverified advice when offline or ungrounded.",
+        "proposedSolution": "Kept all inference and document retrieval local via SAF-stored .litertlm models verified by exact byte size and SHA-256 checksum before execution.",
+        "testingStrategy": "Automated verification pipeline via .github/workflows/android-verification.yml.",
+        "resultsAndLimitations": "Informational health companion only; explicitly bounded against autonomous clinical diagnosis.",
+        "caseStudyPath": "/projects/med-bot/",
+        "repositoryUrl": "https://github.com/Adrian463588/MedBot",
+        "updatedAt": "2026-08-27"
+      },
+      {
+        "id": "hsk1-vocabulary-master",
+        "slug": "hsk1-vocabulary-master",
+        "title": "HSK 1 Vocabulary Master",
+        "subtitle": "Minimalist Web App — \"Ink & Paper\" Edition",
+        "summary": "High-contrast Next.js + TypeScript Mandarin HSK Level 1 learning app with accent-insensitive search, 3D flip flashcards, and live EdgeOne deployment.",
+        "description": "Interactive study companion for HSK Level 1 Chinese vocabulary built with an editorial Ink & Paper aesthetic, debounced search across Hanzi/Pinyin/English, and responsive flashcard study mode.",
+        "category": "Frontend & Web Development",
+        "technologies": [
+          "Next.js",
+          "TypeScript",
+          "Tailwind CSS",
+          "Framer Motion"
+        ],
+        "tier": "featured",
+        "featured": true,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "released",
+        "personalContribution": "Solo developer: designed Ink & Paper design tokens, accent-insensitive Pinyin search matcher, 3D flashcard interactions, and EdgeOne static deployment.",
+        "caseStudyPath": "/projects/hsk1-vocabulary-master/",
+        "repositoryUrl": "https://github.com/Adrian463588/hsk1vocab",
+        "demoUrl": "https://hsk1vocab.edgeone.dev/",
+        "updatedAt": "2026-02-01"
+      },
+      {
+        "id": "gke-terraform-hpa-autoscaling",
+        "slug": "gke-terraform-hpa-autoscaling",
+        "title": "GKE Terraform & Memory HPA Autoscaling",
+        "subtitle": "Automated Kubernetes Cluster Provisioning & Horizontal Pod Autoscaler",
+        "summary": "Infrastructure-as-Code pipeline provisioning Google Kubernetes Engine (GKE) via Terraform and validating memory-driven HPA replica scaling (2–5 pods at 75% target).",
+        "description": "Google Kubernetes Engine autoscaling setup using Terraform cluster provisioning, Metrics Server scripts, Nginx workload manifests, and synthetic memory stress verification.",
+        "category": "DevOps & DevSecOps",
+        "technologies": [
+          "Terraform",
+          "Kubernetes",
+          "GKE",
+          "HPA",
+          "Shell",
+          "Nginx"
+        ],
+        "tier": "featured",
+        "featured": true,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "completed",
+        "personalContribution": "Wrote Terraform cluster/node-pool configs, Kubernetes deployment/service/HPA YAML manifests, Metrics Server bootstrapper, and scale-up/cooldown verification captures.",
+        "caseStudyPath": "/projects/gke-terraform-hpa-autoscaling/",
+        "repositoryUrl": "https://github.com/Adrian463588/Task12ManageKubernetesAutoscallingKubernetes",
+        "updatedAt": "2026-05-13"
+      },
+      {
+        "id": "auu-ahh-cafe-menu",
+        "slug": "auu-ahh-cafe-menu",
+        "title": "AUU AHH Cafe — DevSecOps & SRE Portfolio",
+        "subtitle": "Hardened Next.js CI/CD, Secret Scanning & Operations Runbooks",
+        "summary": "Next.js 16 + TypeScript static application demonstrating hardened GitHub Actions CI with Gitleaks, dependency auditing, SHA-pinned actions, Playwright/axe gates, and SRE runbooks.",
+        "description": "Reference DevSecOps repository combining strict supply-chain controls (SHA-pinned workflows, read-only permissions, Gitleaks history scanning) with automated browser accessibility and static artifact integrity.",
+        "category": "DevOps & DevSecOps",
+        "technologies": [
+          "Next.js 16",
+          "TypeScript",
+          "GitHub Actions",
+          "Gitleaks",
+          "Playwright",
+          "axe-core"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "active",
+        "personalContribution": "Built the static menu application alongside hardened CI security gates, supply-chain checksum checks, Playwright/axe tests, and SRE runbooks.",
+        "caseStudyPath": "/projects/auu-ahh-cafe-menu/",
+        "repositoryUrl": "https://github.com/Adrian463588/auu-ahh-cafe-menu",
+        "updatedAt": "2026-11-25"
+      },
+      {
+        "id": "demo-evershop-cypress",
+        "slug": "demo-evershop-cypress",
+        "title": "EverShop Cypress Automation Suite",
+        "subtitle": "E2E Page Object Model Framework with Allure & Jenkins/GH Actions",
+        "summary": "End-to-end Cypress v13 automation framework for EverShop e-commerce using Page Object Model, custom commands, Allure & Mochawesome reporting, and dual Jenkins/GitHub Actions CI.",
+        "description": "Modular QA automation suite covering auth, product search, and guest/authenticated checkout journeys with nightly scheduled runs and pre-commit quality hooks.",
+        "category": "QA & Test Automation",
+        "technologies": [
+          "Cypress",
+          "JavaScript",
+          "Page Object Model",
+          "Allure",
+          "Jenkins",
+          "GitHub Actions"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "active",
+        "personalContribution": "Implemented POM selectors, custom Cypress commands, auth/checkout/product specs, Jenkinsfile pipeline, and nightly CI schedules.",
+        "caseStudyPath": "/projects/demo-evershop-cypress/",
+        "repositoryUrl": "https://github.com/Adrian463588/DemoEvershopCypress",
+        "updatedAt": "2026-11-25"
+      },
+      {
+        "id": "biosignal-stress-pipeline",
+        "slug": "biosignal-stress-pipeline",
+        "title": "Biosignal Stress Modeling Pipeline",
+        "subtitle": "ECG-PPG Peak Detection, HRV/PRV Agreement & Gated ONNX Export",
+        "summary": "Reproducible Python research pipeline for biosignal preprocessing, ECG vs PPG peak alignment, HRV/PRV agreement analysis, and gated ONNX stress model export.",
+        "description": "Modular signal-processing and ML verification codebase producing quantized ONNX artifacts for wearable/mobile inference while enforcing strict dataset/identity isolation in version control.",
+        "category": "AI & Machine Learning",
+        "technologies": [
+          "Python",
+          "ONNX",
+          "Signal Processing",
+          "SciPy",
+          "pytest",
+          "Ruff",
+          "GitHub Actions"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "active",
+        "personalContribution": "Built preprocessing modules, HRV/PRV statistical alignment pipelines, gated ONNX model validation checks, pytest/ruff CI gates, and zero-PII repository guardrails.",
+        "caseStudyPath": "/projects/biosignal-stress-pipeline/",
+        "repositoryUrl": "https://github.com/Adrian463588/biosignal-stress-pipeline",
+        "updatedAt": "2026-10-25"
+      },
+      {
+        "id": "tab-sign-screen-sharing",
+        "slug": "tab-sign-screen-sharing",
+        "title": "TabSign — ScreenSharing & S-Pen Input",
+        "subtitle": "Low-Latency Windows Mirroring, W3C Pointer Injection & scrcpy",
+        "summary": "Bidirectional Windows–Android tablet bridge streaming live screens over binary WebSockets so Samsung S-Pen stylus strokes map to Win32 SendInput digital signatures.",
+        "description": "FastAPI + WebSockets + Win32 SendInput systems tool enabling natural stylus signing on web PDFs/forms alongside automated scrcpy Android-to-Windows mirroring.",
+        "category": "Desktop & Systems Engineering",
+        "technologies": [
+          "Python",
+          "FastAPI",
+          "WebSockets",
+          "Win32 API",
+          "scrcpy",
+          "W3C Pointer Events"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "released",
+        "personalContribution": "Built screen capture streamer, Win32 SendInput pointer injector with palm rejection and click deadzone filter, scrcpy lifecycle manager, and v1.5.0 release.",
+        "caseStudyPath": "/projects/tab-sign-screen-sharing/",
+        "repositoryUrl": "https://github.com/Adrian463588/ScreenSharingWindowsInput",
+        "releaseUrl": "https://github.com/Adrian463588/ScreenSharingWindowsInput/releases/tag/v1.5.0",
+        "updatedAt": "2026-10-09"
+      },
+      {
+        "id": "ledger-scope",
+        "slug": "ledger-scope",
+        "title": "LedgerScope",
+        "subtitle": "Accounting, Financial Analysis & Audit Fieldwork Platform",
+        "summary": "Full-stack bookkeeping, quarterly close, double-entry financial statement, and audit working-paper platform built with Laravel 12, PostgreSQL, React, TypeScript, and CI quality gates.",
+        "description": "Multi-role financial and audit workspace separating accounting, analysis, audit fieldwork (RCM, working papers, review notes), and client evidence portals with strict RBAC and bcmath monetary precision.",
+        "category": "Finance & FinTech",
+        "technologies": [
+          "Laravel",
+          "PHP",
+          "PostgreSQL",
+          "React",
+          "TypeScript",
+          "Vite",
+          "Cypress",
+          "Vitest"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "active",
+        "personalContribution": "Architected Laravel Sanctum RBAC backend with PHPStan/PHPUnit/Pint gates, double-entry accounting models, React/TypeScript frontend, and separate backend/frontend GitHub Actions CI.",
+        "caseStudyPath": "/projects/ledger-scope/",
+        "repositoryUrl": "https://github.com/Adrian463588/LedgerScope",
+        "updatedAt": "2026-10-09"
+      },
+      {
+        "id": "ppt-controller",
+        "slug": "ppt-controller",
+        "title": "PPTController",
+        "subtitle": "WebSocket & Android ADB Wireless Presentation Remote + Laser",
+        "summary": "MIT-licensed FastAPI + WebSocket wireless slide presenter and laser pointer controller supporting PowerPoint, Canva, Google Slides, and physical volume-button navigation.",
+        "description": "Sub-15ms LAN presentation remote pairing a Python FastAPI desktop server and transparent screen laser overlay with an Android companion APK (PPTRemote.apk).",
+        "category": "Desktop & Systems Engineering",
+        "technologies": [
+          "Python",
+          "FastAPI",
+          "WebSockets",
+          "Android ADB",
+          "Kotlin"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "released",
+        "personalContribution": "Built FastAPI WebSocket server, desktop laser overlay, anti-double-jump key debouncing, and companion Android remote APK.",
+        "caseStudyPath": "/projects/ppt-controller/",
+        "repositoryUrl": "https://github.com/Adrian463588/PPTController",
+        "releaseUrl": "https://github.com/Adrian463588/PPTController/releases/tag/v1.3.3",
+        "updatedAt": "2026-10-08"
+      },
+      {
+        "id": "video-editor-free",
+        "slug": "video-editor-free",
+        "title": "VideoEditorFree",
+        "subtitle": "Offline-First Rust, Tauri 2 & React Desktop Video Editor",
+        "summary": "Windows desktop non-linear video editor backed by an integer-tick Rust timeline IR, CPU color/LUT effects, FFmpeg pipeline, local Whisper subtitles, and Piper TTS.",
+        "description": "Desktop systems application keeping canonical timeline state in Rust crates while exposing a typed React/TypeScript UI for multi-track editing, deterministic audio ducking, and atomic project saves.",
+        "category": "Desktop & Systems Engineering",
+        "technologies": [
+          "Rust",
+          "Tauri 2",
+          "React",
+          "TypeScript",
+          "FFmpeg",
+          "Whisper",
+          "Piper TTS"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "released",
+        "personalContribution": "Engineered Rust integer-tick timeline IR, FFmpeg/ffprobe command verification, .vdeproj atomic persistence, CPU video filters/LUTs, and React/TypeScript host projection.",
+        "caseStudyPath": "/projects/video-editor-free/",
+        "repositoryUrl": "https://github.com/Adrian463588/VideoEditorFree",
+        "releaseUrl": "https://github.com/Adrian463588/VideoEditorFree/releases/tag/v0.1.0",
+        "updatedAt": "2026-08-27"
+      },
+      {
+        "id": "signal-booster",
+        "slug": "signal-booster",
+        "title": "SignalBooster",
+        "subtitle": "Android Connectivity Diagnostics, QoE Probe & Privacy Resilience",
+        "summary": "Android connectivity diagnostics app for monitoring network quality and signal performance.",
+        "description": "Local-first network diagnostics suite offering live QoE probes, crowd-band analysis, Shizuku capability inspection, and DevSecOps CI checks.",
+        "category": "Android & Mobile Development",
+        "technologies": [
+          "Kotlin",
+          "Jetpack Compose",
+          "Hilt",
+          "Shizuku",
+          "DevSecOps CI"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "active",
+        "personalContribution": "Implemented Clean Architecture layers, Hilt DI, telephony/Wi-Fi telemetry probes, and DevSecOps Git hooks & GitHub Actions CI.",
+        "caseStudyPath": "/projects/signal-booster/",
+        "repositoryUrl": "https://github.com/Adrian463588/SignalBooster",
+        "updatedAt": "2026-08-19"
+      },
+      {
+        "id": "notif-plus",
+        "slug": "notif-plus",
+        "title": "NotifPlus",
+        "subtitle": "Zero-Internet Privacy-First Notification History Archiver",
+        "summary": "Offline Android app for saving and organizing notification history locally.",
+        "description": "Privacy-respecting local notification logger and media archiver enforcing zero-internet manifest guarantees and automated DevSecOps scanning.",
+        "category": "Android & Mobile Development",
+        "technologies": [
+          "Kotlin",
+          "Jetpack Compose",
+          "Room",
+          "Hilt",
+          "Material 3",
+          "DevSecOps"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "active",
+        "personalContribution": "Built NotificationListenerService persistence in Room, per-app filter rules, Hilt DI graph, and DevSecOps security workflow.",
+        "caseStudyPath": "/projects/notif-plus/",
+        "repositoryUrl": "https://github.com/Adrian463588/NotifPlus",
+        "updatedAt": "2026-08-17"
+      },
+      {
+        "id": "techno-loyalty-program",
+        "slug": "techno-loyalty-program",
+        "title": "Employee Loyalty Program Platform",
+        "subtitle": "Token & Reward Management Monorepo (Next.js, Express, Prisma, PostgreSQL)",
+        "summary": "Role-based employee loyalty platform built for managing shift tokens, audit logs, and reward redemptions across Optel and Techno divisions.",
+        "description": "Full-stack monorepo pairing a Next.js + NextAuth frontend with an Express + Prisma + PostgreSQL API, Cypress E2E test suite, and deployment CI.",
+        "category": "Frontend & Web Development",
+        "technologies": [
+          "Next.js",
+          "TypeScript",
+          "Express",
+          "Prisma",
+          "PostgreSQL",
+          "Cypress"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "bootcamp",
+        "projectStatus": "completed",
+        "personalContribution": "Built Next.js frontend workflows, Express/Prisma API endpoints, TSV/XLSX template import handling, and Cypress test coverage.",
+        "resultsAndLimitations": "Temporary sslip.io preview endpoint from development is no longer active; source repository and architecture specs remain public.",
+        "caseStudyPath": "/projects/techno-loyalty-program/",
+        "repositoryUrl": "https://github.com/Adrian463588/TechnoLoyaltyProgram",
+        "updatedAt": "2026-08-15"
+      },
+      {
+        "id": "credit-risk-mlops",
+        "slug": "credit-risk-mlops",
+        "title": "Credit Risk MLOps System",
+        "subtitle": "End-to-End Loan Default Prediction & Monitoring Pipeline",
+        "summary": "Full MLOps lifecycle for creditworthiness and loan default prediction combining MLflow tracking, DagsHub, FastAPI serving, Docker, Prometheus, Grafana, and GitHub Actions.",
+        "description": "Production-structured machine learning operations pipeline implementing automated preprocessing CI, experiment tracking (MLflow), containerized FastAPI inference, and Prometheus/Grafana observability.",
+        "category": "Finance & FinTech",
+        "technologies": [
+          "Python",
+          "MLflow",
+          "FastAPI",
+          "Docker",
+          "Prometheus",
+          "Grafana",
+          "GitHub Actions"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "completed",
+        "personalContribution": "Built preprocessing pipelines, MLflow tracking integration, FastAPI inference service, Docker Hub image publishing, secret detection hook (detect_secrets.py), and CI/CD workflows.",
+        "caseStudyPath": "/projects/credit-risk-mlops/",
+        "repositoryUrl": "https://github.com/Adrian463588/CreditRiskPrediction",
+        "updatedAt": "2026-07-05"
+      },
+      {
+        "id": "sistem-pos-analytics",
+        "slug": "sistem-pos-analytics",
+        "title": "Sistem POS & Sales Analytics Dashboard",
+        "subtitle": "Multi-Branch F&B Analytics with Row-Level Access Control",
+        "summary": "Centralized F&B sales monitoring dashboard built with React 19, TypeScript, Recharts, Express, and SQLite3 enforcing token-scoped C-Level/Regional/Branch row-level access.",
+        "description": "Monorepo analytics dashboard visualizing multi-branch sales targets, geographic contribution, and store maturity metrics.",
+        "category": "Data Engineering & Analytics",
+        "technologies": [
+          "React 19",
+          "TypeScript",
+          "Tailwind CSS",
+          "Recharts",
+          "Express",
+          "SQLite",
+          "JWT"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "completed",
+        "personalContribution": "Built Vite/React analytics views, Express JWT row-level query isolation, and automatic database seeding.",
+        "caseStudyPath": "/projects/sistem-pos-analytics/",
+        "repositoryUrl": "https://github.com/Adrian463588/SistemPOS",
+        "updatedAt": "2026-06-19"
+      },
+      {
+        "id": "collect-bfm-srq",
+        "slug": "collect-bfm-srq",
+        "title": "CollectBFMSRQ Scoring System",
+        "subtitle": "Next.js + Go + PostgreSQL Automated Instrument Scoring",
+        "summary": "Full-stack Go + Next.js web application automating IPIP-BFM-50 and SRQ-29 questionnaire administration, real-time scoring, and CSV research export.",
+        "description": "Decoupled Next.js App Router frontend and Go PostgreSQL API automating structured psychometric scoring without exposing live study datasets.",
+        "category": "Data Engineering & Analytics",
+        "technologies": [
+          "Next.js",
+          "TypeScript",
+          "Go",
+          "PostgreSQL",
+          "Framer Motion"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "completed",
+        "personalContribution": "Built responsive questionnaire flows, automated scoring formulas, Go REST API handlers, and CSV export endpoints.",
+        "caseStudyPath": "/projects/collect-bfm-srq/",
+        "repositoryUrl": "https://github.com/Adrian463588/CollectQuestionaireBFMSRQ",
+        "updatedAt": "2026-06-07"
+      },
+      {
+        "id": "experiment-controller-web",
+        "slug": "experiment-controller-web",
+        "title": "Experiment Controller Web",
+        "subtitle": "Next.js + Go (chi/pgx) + PostgreSQL Synchronization Platform",
+        "summary": "Full-stack orchestration web app synchronizing timed protocol phases and millisecond-precision WIB (UTC+7) event markers into PostgreSQL.",
+        "description": "Next.js App Router frontend proxied to a Go chi + pgx backend for deterministic protocol pacing and timestamp logging.",
+        "category": "Research & Academic Projects",
+        "technologies": [
+          "Next.js",
+          "TypeScript",
+          "Go",
+          "chi",
+          "pgx",
+          "PostgreSQL"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "completed",
+        "personalContribution": "Built Next.js timing UI, /api-proxy integration, Go chi API routes, SQL migrations, and Makefile orchestration.",
+        "caseStudyPath": "/projects/experiment-controller-web/",
+        "repositoryUrl": "https://github.com/Adrian463588/CollectDataPPGECGWEB",
+        "updatedAt": "2026-06-07"
+      },
+      {
+        "id": "znl-kost-putri",
+        "slug": "znl-kost-putri",
+        "title": "ZNL Kost Putri Landing Page",
+        "subtitle": "Next.js 16 + shadcn/ui + Vitest Production Property Showcase",
+        "summary": "Fast, responsive Next.js 16 landing page for residential housing in Yogyakarta built with React 19, Tailwind CSS v4, shadcn/ui, Biome, Vitest, and CI.",
+        "description": "Conversion-focused web showcase highlighting room galleries, facility specs, map integration, and direct WhatsApp inquiry links.",
+        "category": "Frontend & Web Development",
+        "technologies": [
+          "Next.js 16",
+          "React 19",
+          "TypeScript",
+          "Tailwind CSS",
+          "shadcn/ui",
+          "Vitest"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "released",
+        "personalContribution": "Designed and implemented modular Next.js App Router architecture, Biome + ESLint quality checks, Vitest tests, and CI deployment.",
+        "caseStudyPath": "/projects/znl-kost-putri/",
+        "repositoryUrl": "https://github.com/Adrian463588/ZNLKostPutri",
+        "demoUrl": "https://znlkostputri.edgeone.dev/",
+        "updatedAt": "2026-06-04"
+      },
+      {
+        "id": "forum-api",
+        "slug": "forum-api",
+        "title": "ForumAPI",
+        "subtitle": "Clean Architecture Express 5 + PostgreSQL + Vitest CI/CD",
+        "summary": "Thread & comment REST API built with Express 5, PostgreSQL (pg + node-pg-migrate), JWT/bcrypt auth, Nginx reverse proxy config, Vitest/Supertest suite, and GitHub Actions CI/CD.",
+        "description": "Production-oriented Node.js backend implementing dependency injection container boundaries, automated DB migrations, Supertest integration tests, and CI/CD pipelines.",
+        "category": "Backend Engineering",
+        "technologies": [
+          "Node.js",
+          "Express 5",
+          "PostgreSQL",
+          "Vitest",
+          "Supertest",
+          "Nginx",
+          "GitHub Actions"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "completed",
+        "personalContribution": "Implemented Clean Architecture layers, database migrations, Vitest unit/integration tests, Nginx config, and ci.yml / cd.yml workflows.",
+        "caseStudyPath": "/projects/forum-api/",
+        "repositoryUrl": "https://github.com/Adrian463588/ForumAPI",
+        "updatedAt": "2026-04-03"
+      },
+      {
+        "id": "saucedemo-cypress-bdd-jenkins",
+        "slug": "saucedemo-cypress-bdd-jenkins",
+        "title": "SauceDemo BDD & Jenkins Suite",
+        "subtitle": "TypeScript Cypress + Cucumber Gherkin Automation Framework",
+        "summary": "TypeScript Cypress E2E framework combining Cucumber BDD .feature specs, strict Page Object Model, JSON fixtures, Mochawesome/Allure reports, and Jenkins CI.",
+        "description": "Structured BDD and classic Cypress test suite automating SauceDemo flows with CI/CD pipeline definitions in both Jenkinsfile and GitHub Actions.",
+        "category": "QA & Test Automation",
+        "technologies": [
+          "Cypress",
+          "TypeScript",
+          "Cucumber (BDD)",
+          "Jenkins",
+          "GitHub Actions",
+          "Allure"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "completed",
+        "personalContribution": "Authored TypeScript POM page classes, Gherkin feature definitions, step bindings, and Jenkins + GitHub Actions execution pipelines.",
+        "caseStudyPath": "/projects/saucedemo-cypress-bdd-jenkins/",
+        "repositoryUrl": "https://github.com/Adrian463588/SauceDemoJerkins",
+        "updatedAt": "2026-03-05"
+      },
+      {
+        "id": "plsql-learn",
+        "slug": "plsql-learn",
+        "title": "PL/SQL Learn",
+        "subtitle": "Interactive Oracle PL/SQL Practice & Code Challenge Platform",
+        "summary": "Database-free Next.js + TypeScript learning platform offering 289+ Oracle PL/SQL exercises (230 MCQ + 59 code challenges), structured lessons, and Recharts progress tracking.",
+        "description": "Offline-capable browser study environment storing progress and achievements in localStorage with CodeMirror SQL editing and live EdgeOne deployment.",
+        "category": "Frontend & Web Development",
+        "technologies": [
+          "Next.js",
+          "TypeScript",
+          "Tailwind CSS",
+          "CodeMirror",
+          "Recharts"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "released",
+        "personalContribution": "Solo developer: authored 289+ practice exercises across 12 PL/SQL topics, CodeMirror interactive challenge view, and client-side progress analytics.",
+        "caseStudyPath": "/projects/plsql-learn/",
+        "repositoryUrl": "https://github.com/Adrian463588/plsqllearn",
+        "demoUrl": "https://plsqllearn.edgeone.dev/",
+        "updatedAt": "2026-02-24"
+      },
+      {
+        "id": "mystical-fortune-teller",
+        "slug": "mystical-fortune-teller",
+        "title": "Mystical Fortune Teller",
+        "subtitle": "Deterministic Multi-Tradition Divination Engine",
+        "summary": "Stateless Next.js + TypeScript web app unifying Western Zodiac, Shio, BaZi, Javanese Primbon, and Feng Shui Kua calculations via a deterministic seeded RNG.",
+        "description": "Zero-database client-side engine deriving reproducible compatibility profiles from pure mathematical calendar transforms and deterministic seeds.",
+        "category": "Frontend & Web Development",
+        "technologies": [
+          "Next.js",
+          "TypeScript",
+          "Tailwind CSS",
+          "Framer Motion"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "released",
+        "personalContribution": "Solo developer: implemented deterministic seeded RNG, calendar conversion math across five cultural systems, and responsive animated UI.",
+        "caseStudyPath": "/projects/mystical-fortune-teller/",
+        "repositoryUrl": "https://github.com/Adrian463588/FortuneTeller-",
+        "demoUrl": "https://fortuneteller.edgeone.dev/",
+        "updatedAt": "2026-02-21"
+      },
+      {
+        "id": "wear-quick-notes",
+        "slug": "wear-quick-notes",
+        "title": "Wear Quick Notes",
+        "subtitle": "Voice-First Wear OS Note-Taking App (Compose + Hilt)",
+        "summary": "MIT-licensed Wear OS smartwatch app written in Kotlin, Jetpack Compose for Wear, MVVM Clean Architecture, and Hilt supporting quick voice note capture.",
+        "description": "Minimalist smartwatch note companion tailored for compact round displays and hands-free dictation.",
+        "category": "Android & Mobile Development",
+        "technologies": [
+          "Kotlin",
+          "Wear OS",
+          "Jetpack Compose",
+          "Hilt",
+          "MVVM"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "completed",
+        "personalContribution": "Built Wear OS Compose screens, voice input flow, Hilt DI wiring, and MVVM state management.",
+        "caseStudyPath": "/projects/wear-quick-notes/",
+        "repositoryUrl": "https://github.com/Adrian463588/wearquicknotes",
+        "updatedAt": "2026-01-20"
+      },
+      {
+        "id": "bookshelf-api",
+        "slug": "bookshelf-api",
+        "title": "Bookshelf API",
+        "subtitle": "5-Layer Clean Architecture Node.js / Hapi.js REST Service",
+        "summary": "Clean Architecture RESTful book collection API built with Node.js and Hapi.js, complete with query filtering, strict validation, ESLint Google style, and Postman test collection.",
+        "description": "Layered backend API implementing CRUD endpoints, read-state filtering (name, reading, finished), and structured error handling.",
+        "category": "Backend Engineering",
+        "technologies": [
+          "Node.js",
+          "Hapi.js",
+          "REST API",
+          "ESLint",
+          "Postman"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "completed",
+        "personalContribution": "Implemented 5-layer Clean Architecture routing, validation, query filters, and full Postman automated assertions.",
+        "caseStudyPath": "/projects/bookshelf-api/",
+        "repositoryUrl": "https://github.com/Adrian463588/BookShelfAPI",
+        "updatedAt": "2025-12-30"
+      },
+      {
+        "id": "go-online-shop",
+        "slug": "go-online-shop",
+        "title": "Go Online Shop Backend Service",
+        "subtitle": "Clean Architecture Marketplace REST API (Go + Gin + MySQL)",
+        "summary": "E-commerce REST API built with Go, Gin, GORM, and MySQL implementing JWT + admin RBAC middleware, auto-created stores, product uploads, and transactional stock updates.",
+        "description": "Layered Go backend separating HTTP handlers, repository persistence, domain entities, and JWT/role middleware alongside Postman test collections.",
+        "category": "Backend Engineering",
+        "technologies": [
+          "Go",
+          "Gin",
+          "GORM",
+          "MySQL",
+          "JWT",
+          "REST API"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "completed",
+        "personalContribution": "Sole developer: structured Clean Architecture packages, JWT/admin middlewares, transactional order/stock deduction logic, and Postman environment collections.",
+        "caseStudyPath": "/projects/go-online-shop/",
+        "repositoryUrl": "https://github.com/Adrian463588/GoOnlineShop",
+        "updatedAt": "2025-12-29"
+      },
+      {
+        "id": "go-cv-ai-evaluator",
+        "slug": "go-cv-ai-evaluator",
+        "title": "Go CV AI Evaluator",
+        "subtitle": "Async Goroutine Worker Pool, Embedded Vector RAG & Ollama",
+        "summary": "Golang + Gin backend evaluating candidate CVs and project reports asynchronously via Goroutine worker pools, chromem-go vector retrieval, Ollama (gemma3:4b), and MySQL.",
+        "description": "Backend AI service parsing uploaded PDF/Markdown documents via UniPDF, indexing ground-truth rubrics in embedded ChromaDB, and running async scoring jobs without external Redis queues.",
+        "category": "Backend Engineering",
+        "technologies": [
+          "Go",
+          "Gin",
+          "MySQL",
+          "GORM",
+          "Ollama",
+          "chromem-go",
+          "Goroutines"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "completed",
+        "personalContribution": "Implemented async worker pool orchestration, PDF ingestion, vector search RAG pipeline over chromem-go, and REST endpoints (/upload, /evaluate, /result/{id}).",
+        "caseStudyPath": "/projects/go-cv-ai-evaluator/",
+        "repositoryUrl": "https://github.com/Adrian463588/go-cv-ai-evaluator",
+        "updatedAt": "2025-11-17"
+      },
+      {
+        "id": "notes-app-performance-ci",
+        "slug": "notes-app-performance-ci",
+        "title": "Express Notes App CI & k6 Performance Gates",
+        "subtitle": "ESLint, Jest Coverage, SonarQube & k6 Smoke Pipeline",
+        "summary": "Express.js REST service wired with a 4-stage GitHub Actions quality gate enforcing zero ESLint warnings, Jest unit coverage, SonarQube analysis, and k6 latency thresholds.",
+        "description": "DevOps CI/CD quality-gate reference implementing automated lint, unit testing, static analysis, and k6 load testing (p95 < 400ms, < 1% error rate threshold).",
+        "category": "DevOps & DevSecOps",
+        "technologies": [
+          "Node.js",
+          "Express",
+          "Jest",
+          "ESLint",
+          "SonarQube",
+          "k6",
+          "GitHub Actions"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "completed",
+        "personalContribution": "Implemented Express REST service, Jest tests, SonarQube properties, k6 load-test scripts, and GitHub Actions workflow.",
+        "caseStudyPath": "/projects/notes-app-performance-ci/",
+        "repositoryUrl": "https://github.com/Adrian463588/notes-app-performance-testing",
+        "updatedAt": "2025-11-03"
+      },
+      {
+        "id": "gke-praktikum-gitops",
+        "slug": "gke-praktikum-gitops",
+        "title": "gke praktikum gitops",
+        "summary": "Public software repository maintained under Adrian463588/gke-praktikum-gitops.",
+        "description": "Public software repository maintained under Adrian463588/gke-praktikum-gitops.",
+        "category": "DevOps & DevSecOps",
+        "technologies": [
+          "Software Engineering"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "active",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/gke-praktikum-gitops/",
+        "repositoryUrl": "https://github.com/Adrian463588/gke-praktikum-gitops",
+        "updatedAt": "2025-10-27"
+      },
+      {
+        "id": "go-notes-restful-api",
+        "slug": "go-notes-restful-api",
+        "title": "Golang Notes RESTful API",
+        "subtitle": "Sanbercode Go Backend Capstone (Gin + JWT + PostgreSQL)",
+        "summary": "RESTful API service built with Go, Gin, PostgreSQL, SQL migrations, and JWT authentication middleware for user accounts and note management.",
+        "description": "Backend capstone implementing user registration/login, protected JWT endpoints, database migrations, and CRUD note operations.",
+        "category": "Backend Engineering",
+        "technologies": [
+          "Go",
+          "Gin",
+          "PostgreSQL",
+          "JWT",
+          "REST API"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "bootcamp",
+        "projectStatus": "completed",
+        "personalContribution": "Sole developer: designed auth/note handlers, JWT middleware, PostgreSQL schema migrations, and Postman verification flows.",
+        "caseStudyPath": "/projects/go-notes-restful-api/",
+        "repositoryUrl": "https://github.com/Adrian463588/finalproject-sb-go-70-Adrian",
+        "updatedAt": "2025-10-06"
+      },
+      {
+        "id": "tmdb-qa-testing",
+        "slug": "tmdb-qa-testing",
+        "title": "TMDB QA Automation & Manual Test Suite",
+        "subtitle": "13 Manual Test Cases, Bug Reports & Cypress Gherkin Automation",
+        "summary": "Combined manual QA audit (13 test cases identifying 5 localization and favorites bugs) and Cypress Gherkin BDD automation targeting themoviedb.org.",
+        "description": "Structured QA engineering portfolio artifact linking test plans, defect documentation, and automated Cypress scenarios for authentication, localization switching, and favorites management.",
+        "category": "QA & Test Automation",
+        "technologies": [
+          "Cypress",
+          "Cucumber (BDD)",
+          "JavaScript",
+          "Manual QA",
+          "Bug Reporting"
+        ],
+        "tier": "catalog",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "original",
+        "projectStatus": "completed",
+        "personalContribution": "Executed 13 structured manual test cases, logged 5 reproducible bugs across language switching and favorites management, and automated core regression scenarios in Cypress.",
+        "caseStudyPath": "/projects/tmdb-qa-testing/",
+        "repositoryUrl": "https://github.com/Adrian463588/TMDB-QA-Testing",
+        "updatedAt": "2024-10-24"
+      },
+      {
+        "id": "heart-rate-monitor",
+        "slug": "heart-rate-monitor",
+        "title": "HeartRateMonitor (Extended Fork)",
+        "subtitle": "Android Phone + Galaxy Watch ECG/PPG & Accelerometer Acquisition",
+        "summary": "Forked and substantially extended multi-module (:mobile, :wear, :shared) Wear OS + Android biosignal platform adding Watch accelerometer capture, Polar ECG fixes, and SAF CSV export.",
+        "description": "Fork of aditydcp/sample-wear-phone-app expanded with synchronized Watch acceleration streams, Polar H10 ECG/HR/RR lifecycle & clock repairs, ordered session controls, and DevSecOps CI history checks.",
+        "category": "Research & Academic Projects",
+        "technologies": [
+          "Kotlin",
+          "Wear OS",
+          "BLE",
+          "Polar H10",
+          "Samsung Health SDK",
+          "GitHub Actions"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "fork",
+        "projectStatus": "released",
+        "personalContribution": "Added Galaxy Watch native accelerometer recording, fixed Polar H10 startup/cancellation/clock alignment, implemented ordered phone-watch session controls & timeouts, built SAF CSV export, and added DevSecOps merge/secret CI guards.",
+        "resultsAndLimitations": "Debug releases v1.3.0 and v1.3.1 published for internal research workflows; upstream credit preserved.",
+        "caseStudyPath": "/projects/heart-rate-monitor/",
+        "repositoryUrl": "https://github.com/Adrian463588/HeartRateMonitor",
+        "releaseUrl": "https://github.com/Adrian463588/HeartRateMonitor/releases/tag/v1.3.1",
+        "updatedAt": "2026-10-13"
+      },
+      {
+        "id": "workflow-ci-smsl",
+        "slug": "workflow-ci-smsl",
+        "title": "Workflow CI SMSL",
+        "summary": "Public Python repository maintained under Adrian463588/Workflow-CI_SMSL.",
+        "description": "Public Python repository maintained under Adrian463588/Workflow-CI_SMSL.",
+        "category": "Research & Academic Projects",
+        "technologies": [
+          "Python"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/workflow-ci-smsl/",
+        "repositoryUrl": "https://github.com/Adrian463588/Workflow-CI_SMSL",
+        "updatedAt": "2026-07-04"
+      },
+      {
+        "id": "eksperimen-sml-adrian-syah-abidin",
+        "slug": "eksperimen-sml-adrian-syah-abidin",
+        "title": "Eksperimen SML AdrianSyahAbidin",
+        "summary": "Public Jupyter Notebook repository maintained under Adrian463588/Eksperimen_SML_AdrianSyahAbidin.",
+        "description": "Public Jupyter Notebook repository maintained under Adrian463588/Eksperimen_SML_AdrianSyahAbidin.",
+        "category": "Research & Academic Projects",
+        "technologies": [
+          "Jupyter Notebook"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/eksperimen-sml-adrian-syah-abidin/",
+        "repositoryUrl": "https://github.com/Adrian463588/Eksperimen_SML_AdrianSyahAbidin",
+        "updatedAt": "2026-07-04"
+      },
+      {
+        "id": "shio-calculator",
+        "slug": "shio-calculator",
+        "title": "ShioCalculator",
+        "summary": "A modern, single-page application that calculates Chinese Zodiac signs, Elements, Kua numbers, and Feng Shui lucky directions based on birth details.",
+        "description": "A modern, single-page application that calculates Chinese Zodiac signs, Elements, Kua numbers, and Feng Shui lucky directions based on birth details.",
+        "category": "AI & Machine Learning",
+        "technologies": [
+          "TypeScript"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/shio-calculator/",
+        "repositoryUrl": "https://github.com/Adrian463588/ShioCalculator",
+        "updatedAt": "2026-01-26"
+      },
+      {
+        "id": "tactical-logistics-mesh-communication-system-tlcs",
+        "slug": "tactical-logistics-mesh-communication-system-tlcs",
+        "title": "Tactical Logistics Mesh Communication System TLCS",
+        "summary": "Public Kotlin repository maintained under Adrian463588/Tactical-Logistics-Mesh-Communication-System-TLCS-.",
+        "description": "Public Kotlin repository maintained under Adrian463588/Tactical-Logistics-Mesh-Communication-System-TLCS-.",
+        "category": "Android & Mobile Development",
+        "technologies": [
+          "Kotlin"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/tactical-logistics-mesh-communication-system-tlcs/",
+        "repositoryUrl": "https://github.com/Adrian463588/Tactical-Logistics-Mesh-Communication-System-TLCS-",
+        "updatedAt": "2026-01-24"
+      },
+      {
+        "id": "signal-intelligence",
+        "slug": "signal-intelligence",
+        "title": "SignalIntelligence",
+        "summary": "Public Kotlin repository maintained under Adrian463588/SignalIntelligence.",
+        "description": "Public Kotlin repository maintained under Adrian463588/SignalIntelligence.",
+        "category": "Android & Mobile Development",
+        "technologies": [
+          "Kotlin"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/signal-intelligence/",
+        "repositoryUrl": "https://github.com/Adrian463588/SignalIntelligence",
+        "updatedAt": "2026-01-14"
+      },
+      {
+        "id": "rails-cv-evaluator",
+        "slug": "rails-cv-evaluator",
+        "title": "Rails CV Evaluator",
+        "summary": "Public Ruby repository maintained under Adrian463588/Rails-CV-Evaluator.",
+        "description": "Public Ruby repository maintained under Adrian463588/Rails-CV-Evaluator.",
+        "category": "AI & Machine Learning",
+        "technologies": [
+          "Ruby"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/rails-cv-evaluator/",
+        "repositoryUrl": "https://github.com/Adrian463588/Rails-CV-Evaluator",
+        "updatedAt": "2025-11-16"
+      },
+      {
+        "id": "digital-skola-devops-fork",
+        "slug": "digital-skola-devops-fork",
+        "title": "Digital Skola DevOps CI Fork",
+        "subtitle": "Containerized Python App & GitHub Actions Lab (Fork)",
+        "summary": "Bootcamp DevOps fork of maliqpotter/tugas-project-digital-skola-devops exercising Dockerfile builds, pytest execution, and GitHub Actions CI workflows.",
+        "description": "Public Python repository maintained under Adrian463588/tugas-project-digital-skola-devops.",
+        "category": "DevOps & DevSecOps",
+        "technologies": [
+          "Docker",
+          "Python",
+          "pytest",
+          "GitHub Actions"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "fork",
+        "projectStatus": "completed",
+        "personalContribution": "Configured CI test/build exercises and containerization tasks within the forked bootcamp workspace.",
+        "caseStudyPath": "/projects/digital-skola-devops-fork/",
+        "repositoryUrl": "https://github.com/Adrian463588/tugas-project-digital-skola-devops",
+        "updatedAt": "2025-11-03"
+      },
+      {
+        "id": "testing-github-action",
+        "slug": "testing-github-action",
+        "title": "Testing githubAction",
+        "summary": "Merupakan repository github untuk test githubaction",
+        "description": "Merupakan repository github untuk test githubaction",
+        "category": "DevOps & DevSecOps",
+        "technologies": [
+          "Dockerfile"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/testing-github-action/",
+        "repositoryUrl": "https://github.com/Adrian463588/Testing_githubAction",
+        "updatedAt": "2025-10-11"
+      },
+      {
+        "id": "sb-go-quiz3",
+        "slug": "sb-go-quiz3",
+        "title": "sb go quiz3",
+        "summary": "Public Go repository maintained under Adrian463588/sb-go-quiz3.",
+        "description": "Public Go repository maintained under Adrian463588/sb-go-quiz3.",
+        "category": "Backend Engineering",
+        "technologies": [
+          "Go"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/sb-go-quiz3/",
+        "repositoryUrl": "https://github.com/Adrian463588/sb-go-quiz3",
+        "updatedAt": "2025-09-29"
+      },
+      {
+        "id": "sb-go-batch-70-adrian",
+        "slug": "sb-go-batch-70-adrian",
+        "title": "sb go batch 70Adrian",
+        "summary": "Public Go repository maintained under Adrian463588/sb-go-batch-70Adrian.",
+        "description": "Public Go repository maintained under Adrian463588/sb-go-batch-70Adrian.",
+        "category": "Backend Engineering",
+        "technologies": [
+          "Go"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/sb-go-batch-70-adrian/",
+        "repositoryUrl": "https://github.com/Adrian463588/sb-go-batch-70Adrian",
+        "updatedAt": "2025-09-29"
+      },
+      {
+        "id": "cypress-101",
+        "slug": "cypress-101",
+        "title": "Cypress 101",
+        "summary": "Belajar Cypress QA Web Automation POM saucedemo.com dan Orange HRM",
+        "description": "Belajar Cypress QA Web Automation POM saucedemo.com dan Orange HRM",
+        "category": "QA & Test Automation",
+        "technologies": [
+          "JavaScript"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/cypress-101/",
+        "repositoryUrl": "https://github.com/Adrian463588/Cypress-101",
+        "updatedAt": "2024-10-16"
+      },
+      {
+        "id": "login-automation-nuta-cloud",
+        "slug": "login-automation-nuta-cloud",
+        "title": "Login Automation NutaCloud",
+        "summary": "Merupakan repository untuk automasi login pada nutacloud.com",
+        "description": "Merupakan repository untuk automasi login pada nutacloud.com",
+        "category": "Research & Academic Projects",
+        "technologies": [
+          "Java"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/login-automation-nuta-cloud/",
+        "repositoryUrl": "https://github.com/Adrian463588/Login-Automation-NutaCloud",
+        "updatedAt": "2024-10-07"
+      },
+      {
+        "id": "f-qae24001120-synrgy7-adr-appium-ch8",
+        "slug": "f-qae24001120-synrgy7-adr-appium-ch8",
+        "title": "F QAE24001120 synrgy7 adr Appium ch8",
+        "summary": "Merupakan repository github untuk challenge 8 bootcamp QA",
+        "description": "Merupakan repository github untuk challenge 8 bootcamp QA",
+        "category": "QA & Test Automation",
+        "technologies": [
+          "Java"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/f-qae24001120-synrgy7-adr-appium-ch8/",
+        "repositoryUrl": "https://github.com/Adrian463588/F-QAE24001120-synrgy7-adr-Appium-ch8",
+        "updatedAt": "2024-07-08"
+      },
+      {
+        "id": "f-qae24001120-synrgy7-adr-selenium-ch7",
+        "slug": "f-qae24001120-synrgy7-adr-selenium-ch7",
+        "title": "F QAE24001120 synrgy7 adr selenium ch7",
+        "summary": "Merupakan repository github untuk challenge 7 bootcamp QA",
+        "description": "Merupakan repository github untuk challenge 7 bootcamp QA",
+        "category": "QA & Test Automation",
+        "technologies": [
+          "Java"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/f-qae24001120-synrgy7-adr-selenium-ch7/",
+        "repositoryUrl": "https://github.com/Adrian463588/F-QAE24001120-synrgy7-adr-selenium-ch7",
+        "updatedAt": "2024-06-23"
+      },
+      {
+        "id": "f-qae24001120-synrgy7-adr-oop-ch5",
+        "slug": "f-qae24001120-synrgy7-adr-oop-ch5",
+        "title": "F QAE24001120 synrgy7 adr oop ch5",
+        "summary": "Merupakan repository github untuk challenge 5 bootcamp QA",
+        "description": "Merupakan repository github untuk challenge 5 bootcamp QA",
+        "category": "QA & Test Automation",
+        "technologies": [
+          "Java"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/f-qae24001120-synrgy7-adr-oop-ch5/",
+        "repositoryUrl": "https://github.com/Adrian463588/F-QAE24001120-synrgy7-adr-oop-ch5",
+        "updatedAt": "2024-05-15"
+      },
+      {
+        "id": "simple-hotel-booking-solidity",
+        "slug": "simple-hotel-booking-solidity",
+        "title": "SimpleHotelBooking Smart Contract",
+        "subtitle": "Solidity Smart Contract Prototype",
+        "summary": "Educational Ethereum smart contract (SimpleHotelBooking.sol) modeling on-chain hotel room reservation, Ether escrow, cancellation, and balance inspection.",
+        "description": "Public Solidity repository maintained under Adrian463588/ProjectBlockChain.",
+        "category": "Experiments",
+        "technologies": [
+          "Solidity",
+          "Ethereum",
+          "Smart Contracts"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Authored Solidity reservation, cancellation, and balance verification contract logic with documented security limitations.",
+        "caseStudyPath": "/projects/simple-hotel-booking-solidity/",
+        "repositoryUrl": "https://github.com/Adrian463588/ProjectBlockChain",
+        "updatedAt": "2023-12-22"
+      },
+      {
+        "id": "project-game",
+        "slug": "project-game",
+        "title": "Wrath of the Disasters",
+        "subtitle": "Unity C# 2D Side-Scrolling Action Capstone",
+        "summary": "2D side-scrolling action platformer built in Unity (C#) by Kelompok UbiLembut (UGM), featuring multi-stage elemental enemies, weapon upgrades, and physics collision systems.",
+        "description": "Academic OOP & game programming project set in Kota Gunung Kidal where players battle elemental disaster monsters across progressive stages.",
+        "category": "Research & Academic Projects",
+        "technologies": [
+          "Unity",
+          "C#",
+          "Git"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "completed",
+        "personalContribution": "Co-developer (Kelompok UbiLembut, UGM): implemented player movement/shooting controllers, stage progression, enemy/boss mechanics, and Unity build packaging.",
+        "caseStudyPath": "/projects/project-game/",
+        "repositoryUrl": "https://github.com/Adrian463588/ProjectGame",
+        "demoUrl": "https://youtu.be/XGk-1T3N3SU",
+        "updatedAt": "2023-12-15"
+      },
+      {
+        "id": "responsi-studi-kasus-1",
+        "slug": "responsi-studi-kasus-1",
+        "title": "Responsi Studi Kasus 1 (Fork)",
+        "subtitle": "UGM Software Engineering Practicum Exercise",
+        "summary": "Forked practicum repository from senpro2023/responsi-studi-kasus-1 containing Python string algorithm exercises.",
+        "description": "Public Python repository maintained under Adrian463588/responsi-studi-kasus-1.",
+        "category": "Research & Academic Projects",
+        "technologies": [
+          "Python"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "fork",
+        "projectStatus": "archived",
+        "personalContribution": "Completed practicum exercise fork submission.",
+        "caseStudyPath": "/projects/responsi-studi-kasus-1/",
+        "repositoryUrl": "https://github.com/Adrian463588/responsi-studi-kasus-1",
+        "updatedAt": "2023-06-16"
+      },
+      {
+        "id": "frontend-test",
+        "slug": "frontend-test",
+        "title": "frontend test",
+        "summary": "frontend-test",
+        "description": "frontend-test",
+        "category": "Frontend & Web Development",
+        "technologies": [
+          "TypeScript"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/frontend-test/",
+        "repositoryUrl": "https://github.com/Adrian463588/frontend-test",
+        "updatedAt": "2023-06-05"
+      },
+      {
+        "id": "proyek-akhir-kotlin-sanber",
+        "slug": "proyek-akhir-kotlin-sanber",
+        "title": "ProyekAkhirKotlin Sanber",
+        "summary": "Public Kotlin repository maintained under Adrian463588/ProyekAkhirKotlin_Sanber.",
+        "description": "Public Kotlin repository maintained under Adrian463588/ProyekAkhirKotlin_Sanber.",
+        "category": "Android & Mobile Development",
+        "technologies": [
+          "Kotlin"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/proyek-akhir-kotlin-sanber/",
+        "repositoryUrl": "https://github.com/Adrian463588/ProyekAkhirKotlin_Sanber",
+        "updatedAt": "2023-04-05"
+      },
+      {
+        "id": "around-world",
+        "slug": "around-world",
+        "title": "AroundWorld",
+        "summary": "Merupakan Submisi Proyek Akhir Kelas Belajar Membuat Aplikasi Android untuk Pemula Dicoding",
+        "description": "Merupakan Submisi Proyek Akhir Kelas Belajar Membuat Aplikasi Android untuk Pemula Dicoding",
+        "category": "Android & Mobile Development",
+        "technologies": [
+          "Kotlin"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/around-world/",
+        "repositoryUrl": "https://github.com/Adrian463588/AroundWorld",
+        "updatedAt": "2023-03-08"
+      },
+      {
+        "id": "senpro-github-action",
+        "slug": "senpro-github-action",
+        "title": "Senpro GitHub Action Lab (Fork)",
+        "subtitle": "DTETI FT UGM CI Workflow Practicum",
+        "summary": "Forked from senpro2023/senpro-github-action practicing automated GitHub Actions pipelines for a Next.js practicum project.",
+        "description": "DTETI FT UGM",
+        "category": "DevOps & DevSecOps",
+        "technologies": [
+          "Next.js",
+          "GitHub Actions"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "fork",
+        "projectStatus": "archived",
+        "personalContribution": "Completed CI workflow configuration exercises on the practicum fork.",
+        "caseStudyPath": "/projects/senpro-github-action/",
+        "repositoryUrl": "https://github.com/Adrian463588/senpro-github-action",
+        "updatedAt": "2023-02-28"
+      },
+      {
+        "id": "tugas1-sanbercode",
+        "slug": "tugas1-sanbercode",
+        "title": "tugas1 sanbercode",
+        "summary": "Tugas bootcamp devops sanbercode batch 40",
+        "description": "Tugas bootcamp devops sanbercode batch 40",
+        "category": "DevOps & DevSecOps",
+        "technologies": [
+          "Software Engineering"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/tugas1-sanbercode/",
+        "repositoryUrl": "https://github.com/Adrian463588/tugas1-sanbercode",
+        "updatedAt": "2022-12-04"
+      },
+      {
+        "id": "463588-adrian-syah-abidin-responsi-junior-project",
+        "slug": "463588-adrian-syah-abidin-responsi-junior-project",
+        "title": "463588 Adrian Syah Abidin ResponsiJuniorProject",
+        "summary": "Responsi Junior Praktikum",
+        "description": "Responsi Junior Praktikum",
+        "category": "Research & Academic Projects",
+        "technologies": [
+          "C#"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/463588-adrian-syah-abidin-responsi-junior-project/",
+        "repositoryUrl": "https://github.com/Adrian463588/463588-Adrian-Syah-Abidin-ResponsiJuniorProject",
+        "updatedAt": "2022-11-29"
+      },
+      {
+        "id": "sanber-code-laravel-web",
+        "slug": "sanber-code-laravel-web",
+        "title": "SanberCode LaravelWeb",
+        "summary": "Merupakan kumpulan tugas dan quiz bootcamp SanberCode Laravel Web Development",
+        "description": "Merupakan kumpulan tugas dan quiz bootcamp SanberCode Laravel Web Development",
+        "category": "Backend Engineering",
+        "technologies": [
+          "JavaScript"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/sanber-code-laravel-web/",
+        "repositoryUrl": "https://github.com/Adrian463588/SanberCode_LaravelWeb",
+        "updatedAt": "2022-11-22"
+      },
+      {
+        "id": "nearu-gdsc-fork",
+        "slug": "nearu-gdsc-fork",
+        "title": "NearU — Google Solution Challenge (Fork)",
+        "subtitle": "Flutter App by 4teen Team GDSC UGM",
+        "summary": "Fork of dedewanta/nearu, a Flutter mobile submission built by the 4teen Team from GDSC UGM for the Google Solution Challenge.",
+        "description": "By 4teen Team from GDSC UGM, submitted for Google Solution Challenge",
+        "category": "Android & Mobile Development",
+        "technologies": [
+          "Flutter",
+          "Dart"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "fork",
+        "projectStatus": "archived",
+        "personalContribution": "Collaborated as part of the GDSC UGM team repository fork for Google Solution Challenge.",
+        "caseStudyPath": "/projects/nearu-gdsc-fork/",
+        "repositoryUrl": "https://github.com/Adrian463588/nearu",
+        "updatedAt": "2022-03-27"
+      },
+      {
+        "id": "sistem-pakar",
+        "slug": "sistem-pakar",
+        "title": "SistemPakar",
+        "summary": "Merupakan tugas kecerdasan buatan membuat sistem pakar",
+        "description": "Merupakan tugas kecerdasan buatan membuat sistem pakar",
+        "category": "AI & Machine Learning",
+        "technologies": [
+          "Jupyter Notebook"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/sistem-pakar/",
+        "repositoryUrl": "https://github.com/Adrian463588/SistemPakar",
+        "updatedAt": "2022-03-03"
+      },
+      {
+        "id": "463588-tugas-machine-learning-kecerdasan-buatan2021",
+        "slug": "463588-tugas-machine-learning-kecerdasan-buatan2021",
+        "title": "463588 TugasMachineLearning KecerdasanBuatan2021",
+        "summary": "Public Jupyter Notebook repository maintained under Adrian463588/463588_TugasMachineLearning_KecerdasanBuatan2021.",
+        "description": "Public Jupyter Notebook repository maintained under Adrian463588/463588_TugasMachineLearning_KecerdasanBuatan2021.",
+        "category": "AI & Machine Learning",
+        "technologies": [
+          "Jupyter Notebook"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/463588-tugas-machine-learning-kecerdasan-buatan2021/",
+        "repositoryUrl": "https://github.com/Adrian463588/463588_TugasMachineLearning_KecerdasanBuatan2021",
+        "updatedAt": "2022-03-03"
+      },
+      {
+        "id": "program-shortcut-link-website",
+        "slug": "program-shortcut-link-website",
+        "title": "Program Shortcut link website",
+        "summary": "Program ini ditunjukkan untuk UTS Pemrograman Berbasis Obyek 2021.",
+        "description": "Program ini ditunjukkan untuk UTS Pemrograman Berbasis Obyek 2021.",
+        "category": "Research & Academic Projects",
+        "technologies": [
+          "C#"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/program-shortcut-link-website/",
+        "repositoryUrl": "https://github.com/Adrian463588/Program-Shortcut-link-website",
+        "updatedAt": "2021-11-05"
+      },
+      {
+        "id": "tugas-akhir-pbo",
+        "slug": "tugas-akhir-pbo",
+        "title": "Tugas Akhir PBO",
+        "summary": "Merupakan Souce Code Aplikasi pada tugas akhir PBO",
+        "description": "Merupakan Souce Code Aplikasi pada tugas akhir PBO",
+        "category": "Research & Academic Projects",
+        "technologies": [
+          "C#"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/tugas-akhir-pbo/",
+        "repositoryUrl": "https://github.com/Adrian463588/Tugas-Akhir-PBO",
+        "updatedAt": "2021-06-17"
+      },
+      {
+        "id": "afortunado",
+        "slug": "afortunado",
+        "title": "Afortunado",
+        "summary": "Public C# repository maintained under Adrian463588/Afortunado.",
+        "description": "Public C# repository maintained under Adrian463588/Afortunado.",
+        "category": "Finance & FinTech",
+        "technologies": [
+          "C#"
+        ],
+        "tier": "archive",
+        "featured": false,
+        "flagship": false,
+        "projectOrigin": "academic",
+        "projectStatus": "prototype",
+        "personalContribution": "Original public repository authored and maintained by Adrian Syah Abidin.",
+        "caseStudyPath": "/projects/afortunado/",
+        "repositoryUrl": "https://github.com/Adrian463588/Afortunado",
+        "updatedAt": "2021-06-13"
+      }
+    ]
+  },
+  "resources": [
+    {
+      "slug": "coffee-brew-ratio-extraction-calculator",
+      "title": "Coffee Brew Ratio, Extraction Yield & Recipe Scaler",
+      "kind": "tool",
+      "summary": "Brew ratio equals water mass divided by dry dose (1:W/D), while cup-only Extraction Yield (EY%) equals (Measured Beverage Mass x Measured TDS%) / Dry Dose. For multi-pour V60 recipes, Hamilton-Hare largest-remainder rounding keeps scaled pour steps equal to the exact target water mass.",
+      "path": "/resources/coffee-brew-ratio-extraction-calculator/"
+    },
+    {
+      "slug": "perfume-concentration-dilution-calculator",
+      "title": "Perfume Concentration & Dilution Batch Calculator",
+      "kind": "tool",
+      "summary": "Fragrance concentration equals (Non-Solvent Fragrance Oil Mass / Total Formula Weight) x 100%. Standard classification brackets treat >=20% as Parfum Extrait, 15%–20% as Eau de Parfum (EDP), 8%–15% as Eau de Toilette (EDT), 4%–8% as Eau de Cologne (EDC), and <4% as Eau Fraiche.",
+      "path": "/resources/perfume-concentration-dilution-calculator/"
+    },
+    {
+      "slug": "automate-plus-vs-selenium-ide-katalon",
+      "title": "AutomatePlus vs Selenium IDE vs Katalon Studio",
+      "kind": "comparison",
+      "summary": "Selenium IDE suits quick W3C browser extensions exporting raw WebDriver scripts, Katalon provides an all-in-one commercial IDE spanning Web/Mobile/API under proprietary projects, and AutomatePlus (currently v1.7.1 portable preview) compiles a local SessionIR into clean Web, Android, and API suites using Tauri 2 and Rust without cloud lock-in.",
+      "path": "/resources/automate-plus-vs-selenium-ide-katalon/"
+    },
+    {
+      "slug": "playwright-vs-cypress-cicd-tradeoffs",
+      "title": "Playwright vs Cypress in CI/CD & Cross-Origin E2E",
+      "kind": "comparison",
+      "summary": "Choose Playwright for free cross-machine parallel sharding, WebKit coverage, multi-tab or multi-origin workflows, and multi-language teams (JS/TS, Python, Java, .NET). Choose Cypress when tight in-browser time-travel component debugging inside a single JS/TS frontend repository outweighs multi-tab or paid cloud parallelization limits.",
+      "path": "/resources/playwright-vs-cypress-cicd-tradeoffs/"
+    },
+    {
+      "slug": "beanconqueror-and-filtru-alternatives-android",
+      "title": "Beanconqueror vs Filtru vs Coffee Creator on Android",
+      "kind": "alternative",
+      "summary": "Beanconqueror leads for open-source multi-brand Bluetooth scale telemetry across Android and iOS, Filtru shines for Apple Live Activities and watch haptics, and Coffee Creator serves Android 8+ users wanting native Material 3 timers, SCA CVA cupping forms, offline OCR bag extraction, and precision mass-balance calculators—while Brewfather serves beer homebrewing, not filter coffee.",
+      "path": "/resources/beanconqueror-and-filtru-alternatives-android/"
+    },
+    {
+      "slug": "quran-plus-vs-quran-com-muslim-pro-tarteel",
+      "title": "QuranPlus vs Quran.com, Muslim Pro & Tarteel",
+      "kind": "alternative",
+      "summary": "Quran for Android (Quran.com) leads as an open-source, ad-free mushaf reader; Tarteel specializes in cloud AI recitation mistake detection; Muslim Pro provides an all-in-one freemium lifestyle suite with streaming; and QuranPlus unifies 30-Juz word-by-word reading, 9-kitab Hadith FTS5 search, and local on-device RAG Q&A cleanly offline.",
+      "path": "/resources/quran-plus-vs-quran-com-muslim-pro-tarteel/"
+    },
+    {
+      "slug": "ppg-watch-stress-detection-android-architecture",
+      "title": "Wear OS PPG Stress Detection Architecture on Android",
+      "kind": "guide",
+      "summary": "In the Android Stress Detection architecture, a Wear OS watch streams single-channel Green and IR PPG waveforms to an Android phone for local feature extraction and inference (run 20260916T132736Z), while ECG serves strictly as offline research ground-truth validation inside the training pipeline—never as an app runtime input.",
+      "path": "/resources/ppg-watch-stress-detection-android-architecture/"
+    }
+  ],
+  "presetFaq": [
+    {
+      "id": "greeting",
+      "intents": [
+        "greeting",
+        "hello",
+        "halo",
+        "hi",
+        "hai",
+        "pagi",
+        "siang",
+        "sore",
+        "malam"
+      ],
+      "priority": 10,
+      "answer": {
+        "id": "Halo! Saya **Ask Adrian**, asisten AI portofolio untuk **Adrian Syah Abidin** (Software & QA Automation Engineer). Silakan tanyakan pengalaman kerja (seperti Berijalan, Qiscus, Tokopedia, atau Bitbybit), proyek unggulan, keahlian teknis, atau pendidikannya di UGM.",
+        "en": "Hello! I'm **Ask Adrian**, an AI portfolio assistant representing **Adrian Syah Abidin** (Software & QA Automation Engineer). Feel free to ask about his experience (Berijalan, Qiscus, Tokopedia, Bitbybit), featured projects, technical stack, or UGM background."
+      },
+      "links": [
+        {
+          "label": {
+            "id": "Lihat Proyek",
+            "en": "View Projects"
+          },
+          "href": "/projects/"
+        },
+        {
+          "label": {
+            "id": "Tentang & Kontak",
+            "en": "Contact"
+          },
+          "href": "/#contact"
+        }
+      ]
+    },
+    {
+      "id": "profile",
+      "intents": [
+        "siapa adrian",
+        "who is adrian",
+        "tentang adrian",
+        "about adrian",
+        "profil",
+        "introduce",
+        "perkenalan"
+      ],
+      "priority": 9,
+      "answer": {
+        "id": "**Adrian Syah Abidin** adalah Software & QA Automation Engineer asal Indonesia dengan latar belakang Teknologi Informasi di Universitas Gadjah Mada (UGM). Ia berpengalaman dalam quality engineering (Cypress, Playwright, Selenium, Appium), sistem finansial enterprise di Berijalan Techno Center (ACC Group), DevOps CI/CD, pengembangan Android Kotlin/Compose, dan riset AI terapan.",
+        "en": "**Adrian Syah Abidin** is a Software & QA Automation Engineer based in Indonesia with an Information Technology background at Universitas Gadjah Mada (UGM). He combines enterprise quality engineering, CI/CD & DevOps infrastructure, Kotlin/Jetpack Compose Android development, and applied AI systems."
+      },
+      "links": [
+        {
+          "label": {
+            "id": "About Section",
+            "en": "About Section"
+          },
+          "href": "/#about"
+        },
+        {
+          "label": {
+            "id": "LinkedIn",
+            "en": "LinkedIn"
+          },
+          "href": "https://www.linkedin.com/in/adrian-syah-abidin-0416b81b9/"
+        }
+      ]
+    },
+    {
+      "id": "berijalan",
+      "intents": [
+        "berijalan",
+        "acc",
+        "astra",
+        "unipaas",
+        "magic xpa",
+        "archer",
+        "stnk",
+        "joint finance",
+        "joint financing"
+      ],
+      "priority": 10,
+      "answer": {
+        "id": "Di **Berijalan Techno Center** (PT Cipta Sedaya Digital Indonesia / Astra Credit Companies Group), Adrian menjalani peran Trainee (Mar–Jul 2026) lalu Freelance Software Quality Control Engineer (Jul–Okt 2026). Ia mengerjakan:\n- **Archer Upgrade**: Otomasi pengujian Web dengan Cypress & Jenkins CI pada migrasi AOL UniPaaS ke React.\n- **STNK Alignment**: Pengujian fungsional manual lintas modul AOL UniPaaS dan Magic xpa.\n- **Joint Financing Parameter**: Pengujian validasi parameter pembiayaan di AOL UniPaaS.\n*(Detail kode internal, skema DB, dan formula bisnis dijaga kerahasiaannya.)*",
+        "en": "At **Berijalan Techno Center** (PT Cipta Sedaya Digital Indonesia / Astra Credit Companies Group), Adrian served as a Trainee (Mar–Jul 2026) and Freelance Software Quality Control Engineer (Jul–Oct 2026). Key sanitized engagements include:\n- **Archer Upgrade**: Cypress web test automation & Jenkins CI supporting migration from AOL UniPaaS to React.\n- **STNK Alignment**: Manual functional testing across AOL UniPaaS and Magic xpa modules.\n- **Joint Financing Parameter**: Parameter rule validation in AOL UniPaaS.\n*(Internal schemas, URLs, and proprietary business formulas are excluded per confidentiality boundaries.)*"
+      },
+      "links": [
+        {
+          "label": {
+            "id": "Pengalaman Kerja",
+            "en": "Experience"
+          },
+          "href": "/#experience"
+        },
+        {
+          "label": {
+            "id": "Archer Case Study",
+            "en": "Archer Case Study"
+          },
+          "href": "/projects/archer-upgrade/"
+        }
+      ]
+    },
+    {
+      "id": "experience",
+      "intents": [
+        "pengalaman kerja",
+        "work experience",
+        "career",
+        "karir",
+        "riwayat kerja",
+        "internship",
+        "magang",
+        "qiscus",
+        "tokopedia",
+        "bitbybit"
+      ],
+      "priority": 8,
+      "answer": {
+        "id": "Pengalaman profesional utama Adrian:\n- **Berijalan Techno Center (ACC Group)** — Software QC Engineer Freelance (Jul–Okt 2026) & Trainee (Mar–Jul 2026): Cypress, Jenkins CI, AOL UniPaaS, Magic xpa.\n- **Qiscus** — QA Engineer Intern (Jul–Okt 2025, Remote): AI Trainer & QA untuk klien AI Agent (termasuk brand Paragon: Crystallure, Oh My Glam, Paragon AI) di Web & WhatsApp.\n- **Tokopedia – ByteDance Group** — QA Engineer Intern (Feb–Jun 2025): Manual & automated regression Web/Android di Tokopedia & TikTok Shop.\n- **Bitbybit Studio – Favo Group** — QA Engineer Intern (Nov 2024–Jul 2025, Remote): QA & vulnerability assessment (X-Ray, Nuclei).",
+        "en": "Adrian's core professional roles:\n- **Berijalan Techno Center (ACC Group)** — Freelance Software QC Engineer (Jul–Oct 2026) & Trainee (Mar–Jul 2026): Cypress, Jenkins CI, AOL UniPaaS, Magic xpa.\n- **Qiscus** — QA Engineer Intern (Jul–Oct 2025, Remote): AI Trainer & QA for client AI Agent deployments (web widgets & WhatsApp).\n- **Tokopedia – ByteDance Group** — QA Engineer Intern (Feb–Jun 2025): Web & Android regression testing across Tokopedia & TikTok Shop.\n- **Bitbybit Studio – Favo Group** — QA Engineer Intern (Nov 2024–Jul 2025, Remote): Manual QA and vulnerability checks with X-Ray & Nuclei."
+      },
+      "links": [
+        {
+          "label": {
+            "id": "Detail Pengalaman",
+            "en": "View Experience"
+          },
+          "href": "/#experience"
+        },
+        {
+          "label": {
+            "id": "LinkedIn",
+            "en": "LinkedIn"
+          },
+          "href": "https://www.linkedin.com/in/adrian-syah-abidin-0416b81b9/"
+        }
+      ]
+    },
+    {
+      "id": "qa-automation",
+      "intents": [
+        "qa automation",
+        "test automation",
+        "sdet",
+        "cypress",
+        "playwright",
+        "selenium",
+        "appium",
+        "quality assurance"
+      ],
+      "priority": 8,
+      "answer": {
+        "id": "Di bidang **QA & Test Automation**, Adrian menguasai pengujian Web, Android, API, dan load testing menggunakan **Cypress**, **Playwright**, **Selenium**, **Appium**, **Cucumber (BDD)**, **Postman/Newman**, **JMeter**, serta integrasi pipeline **Jenkins CI** dan **GitHub Actions**. Ia juga membangun **AutomatePlus**, workbench desktop berbasis Rust + Tauri 2 + TypeScript untuk menyusun flow SessionIR dan mengekspor test suite Playwright/Selenium/Appium/k6.",
+        "en": "In **QA & Test Automation**, Adrian has hands-on experience across Web, Android, API, and performance testing with **Cypress**, **Playwright**, **Selenium**, **Appium**, **Cucumber (BDD)**, **Postman/Newman**, **JMeter**, plus CI integration via **Jenkins** and **GitHub Actions**. He also authored **AutomatePlus**, an offline-first Rust + Tauri 2 + TypeScript workbench generating runnable Playwright, Selenium, Appium, and k6 suites."
+      },
+      "links": [
+        {
+          "label": {
+            "id": "AutomatePlus Case Study",
+            "en": "AutomatePlus Case Study"
+          },
+          "href": "/projects/automate-plus/"
+        },
+        {
+          "label": {
+            "id": "Sumber Daya QA",
+            "en": "QA Resources"
+          },
+          "href": "/resources/"
+        }
+      ]
+    },
+    {
+      "id": "devops",
+      "intents": [
+        "devops",
+        "docker",
+        "kubernetes",
+        "k8s",
+        "terraform",
+        "ansible",
+        "prometheus",
+        "grafana",
+        "cloud infrastructure",
+        "ci/cd"
+      ],
+      "priority": 8,
+      "answer": {
+        "id": "Di bidang **DevOps & Cloud**, Adrian menyelesaikan program DevOps Engineer Digital Skola (Aug–Nov 2025) dengan nilai akhir **97.3/100**. Proyeknya mencakup provisioning GCP via **Terraform** & **Ansible**, orkestrasi **Kubernetes** (High Availability & HPA autoscaling), pipeline **Jenkins** & **GitHub Actions**, serta observability stack **Prometheus**, **Grafana**, dan **Uptime Kuma**.",
+        "en": "In **DevOps & Cloud Infrastructure**, Adrian completed Digital Skola's DevOps Engineer track (Aug–Nov 2025; final score **97.3/100**), covering **Terraform** & **Ansible** GCP provisioning, **Kubernetes** (HA & HPA autoscaling), **Jenkins** & **GitHub Actions** CI/CD, and **Prometheus/Grafana/Uptime Kuma** observability stacks."
+      },
+      "links": [
+        {
+          "label": {
+            "id": "Observability Stack",
+            "en": "Observability Stack"
+          },
+          "href": "/projects/dual-vm-observability-stack/"
+        },
+        {
+          "label": {
+            "id": "GKE HPA Project",
+            "en": "GKE HPA Project"
+          },
+          "href": "/projects/gke-terraform-hpa-autoscaling/"
+        }
+      ]
+    },
+    {
+      "id": "featured-projects",
+      "intents": [
+        "proyek unggulan",
+        "featured project",
+        "featured projects",
+        "portfolio project",
+        "proyek apa saja",
+        "what projects"
+      ],
+      "priority": 9,
+      "answer": {
+        "id": "6 proyek unggulan di portofolio Adrian:\n1. **Android Stress Detection** (Riset Flagship UGM) — Deteksi stres real-time berbasis PPG smartwatch Wear OS & Android AI.\n2. **QuranPlus** — Aplikasi Android Al-Qur'an offline-first, Hadis 9 kitab, Tahsin, dan on-device RAG.\n3. **Coffee Creator** — Asisten seduh kopi & ekstraksi berbasis ilmu penyeduhan Kotlin.\n4. **AdzanPlus** — Jadwal salat offline-first dengan modul KMP & widget Glance.\n5. **ParfumCreator** — Aplikasi Android formulasi wewangian & kalkulator konsentrasi minyak wangi.\n6. **AutomatePlus** — Workbench otomasi QA multi-platform (Rust, Tauri 2, TypeScript).",
+        "en": "Adrian's 6 Featured Projects on this portfolio:\n1. **Android Stress Detection** (Flagship UGM Research) — Real-time Wear OS + Android PPG stress detection.\n2. **QuranPlus** — Offline-first Android Quran, 9-collection Hadith, and on-device sqlite-vec RAG.\n3. **Coffee Creator** — Kotlin brewing science & extraction companion.\n4. **AdzanPlus** — Offline prayer schedule with Kotlin Multiplatform astronomy & Glance widgets.\n5. **ParfumCreator** — Android perfumery formulation & concentration calculator.\n6. **AutomatePlus** — Offline-first multi-platform SDET workbench (Rust, Tauri 2, TypeScript)."
+      },
+      "links": [
+        {
+          "label": {
+            "id": "Semua Proyek",
+            "en": "Explore All Projects"
+          },
+          "href": "/projects/"
+        },
+        {
+          "label": {
+            "id": "GitHub Adrian",
+            "en": "Adrian's GitHub"
+          },
+          "href": "https://github.com/Adrian463588"
+        }
+      ]
+    },
+    {
+      "id": "stress-detection",
+      "intents": [
+        "stress detection",
+        "deteksi stres",
+        "ppg",
+        "skripsi",
+        "thesis",
+        "wear os",
+        "smartwatch",
+        "flagship"
+      ],
+      "priority": 9,
+      "answer": {
+        "id": "Proyek riset flagship Adrian adalah **Android Stress Detection** di Universitas Gadjah Mada — sistem deteksi tingkat stres berbasis sinyal *Photoplethysmography* (PPG) dari smartwatch Wear OS ke Android dengan pemrosesan sinyal (HRV/PPG), machine learning/deep learning on-device, serta pipeline kalibrasi.\n*(Data partisipan riset maupun data mentah non-publik dijaga kerahasiaannya.)*",
+        "en": "Adrian's flagship UGM research project is **Android Stress Detection** — a Wear OS + Android wearable system detecting physiological stress from *Photoplethysmography* (PPG) signals using real-time HRV extraction and on-device ML/DL models.\n*(Participant records and unpublished raw datasets remain confidential.)*"
+      },
+      "links": [
+        {
+          "label": {
+            "id": "Studi Kasus Flagship",
+            "en": "Flagship Case Study"
+          },
+          "href": "/projects/android-stress-detection/"
+        }
+      ]
+    },
+    {
+      "id": "skills",
+      "intents": [
+        "keahlian teknis",
+        "tech stack",
+        "technical skills",
+        "skill apa",
+        "kemampuan teknis",
+        "bahasa pemrograman"
+      ],
+      "priority": 8,
+      "answer": {
+        "id": "Keahlian teknis Adrian terbagi dalam 5 pilar:\n- **Quality Engineering**: Cypress, Playwright, Selenium, Appium, Postman, JMeter, Cucumber (BDD).\n- **DevOps & Security**: Docker, Kubernetes, Terraform, Ansible, Jenkins, GitHub Actions, Prometheus, Grafana, Nuclei.\n- **Backend & FinTech**: Go (Gin), Laravel, PostgreSQL, MySQL, AOL UniPaaS, Magic xpa.\n- **Mobile Engineering**: Kotlin, Jetpack Compose, Material 3, KMP, Room, Hilt, Wear OS.\n- **Applied AI & Systems**: Python, Rust, Tauri 2, ONNX, LiteRT-LM, llama.cpp, sqlite-vec.",
+        "en": "Adrian's core engineering pillars:\n- **Quality Engineering**: Cypress, Playwright, Selenium, Appium, Postman, JMeter, Cucumber (BDD).\n- **DevOps & Security**: Docker, Kubernetes, Terraform, Ansible, Jenkins, GitHub Actions, Prometheus, Grafana, Nuclei.\n- **Backend & FinTech**: Go (Gin), Laravel, PostgreSQL, MySQL, AOL UniPaaS, Magic xpa.\n- **Mobile Engineering**: Kotlin, Jetpack Compose, Material 3, KMP, Room, Hilt, Wear OS.\n- **Applied AI & Systems**: Python, Rust, Tauri 2, ONNX, LiteRT-LM, llama.cpp, sqlite-vec."
+      },
+      "links": [
+        {
+          "label": {
+            "id": "Detail Proyek",
+            "en": "Browse Projects"
+          },
+          "href": "/projects/"
+        }
+      ]
+    },
+    {
+      "id": "education",
+      "intents": [
+        "pendidikan",
+        "education",
+        "kuliah",
+        "ugm",
+        "universitas gadjah mada",
+        "sma",
+        "lulusan",
+        "jurusan"
+      ],
+      "priority": 8,
+      "answer": {
+        "id": "Adrian menempuh studi S1 **Teknologi Informasi** (*Information Technology*) di Fakultas Teknik **Universitas Gadjah Mada (UGM)** (2020 – sekarang) dengan fokus riset PPG stress detection Android & smartwatch, serta lulusan **SMA Negeri 3 Yogyakarta** (2017 – 2020). Ia juga aktif di KMTETI FT UGM, Night Login DTETI, dan GDSC UGM.",
+        "en": "Adrian studies **Information Technology** (*Teknologi Informasi*, FT **Universitas Gadjah Mada**, 2020 – Present), focusing research on PPG-based stress detection across Android and Wear OS, following **SMA Negeri 3 Yogyakarta** (2017 – 2020). On campus he contributed to KMTETI FT UGM, Night Login DTETI, and GDSC UGM."
+      },
+      "links": [
+        {
+          "label": {
+            "id": "Bagian Education",
+            "en": "Education Section"
+          },
+          "href": "/#about"
+        }
+      ]
+    },
+    {
+      "id": "certifications",
+      "intents": [
+        "sertifikasi",
+        "certification",
+        "certificate",
+        "sertifikat",
+        "aws",
+        "comptia",
+        "alibaba",
+        "ehe"
+      ],
+      "priority": 8,
+      "answer": {
+        "id": "Sertifikasi dan kredensial terverifikasi Adrian:\n- **AWS Certified Cloud Practitioner** (Amazon Web Services)\n- **CompTIA Security+** & **CompTIA Network+**\n- **Ethical Hacking Essentials (EHE)** (EC-Council)\n- **Alibaba Cloud Certified Associate (ACA)** *(status verifikasi level sedang dikonfirmasi)*\n- Pelatihan **Kominfo Digital Talent Scholarship** (Cybersecurity, CCNA 200-301 curriculum, Cyber Novice) dan kursus Dicoding.",
+        "en": "Adrian's verified certifications and credentials:\n- **AWS Certified Cloud Practitioner** (Amazon Web Services)\n- **CompTIA Security+** & **CompTIA Network+**\n- **Ethical Hacking Essentials (EHE)** (EC-Council)\n- **Alibaba Cloud Certified Associate (ACA)** *(level confirmation pending)*\n- Plus **Kominfo Digital Talent Scholarship** programs and Dicoding ML/Data coursework."
+      },
+      "links": [
+        {
+          "label": {
+            "id": "Lihat Pengalaman & Sertifikasi",
+            "en": "View Certifications"
+          },
+          "href": "/#experience"
+        }
+      ]
+    },
+    {
+      "id": "career-contact",
+      "intents": [
+        "hire",
+        "rekrut",
+        "kontak",
+        "contact",
+        "email",
+        "linkedin",
+        "availability",
+        "karier",
+        "minat kerja",
+        "role",
+        "cv",
+        "resume"
+      ],
+      "priority": 9,
+      "answer": {
+        "id": "Adrian terbuka untuk peluang **Software Engineering**, **QA / SDET Automation**, dan **DevOps Engineering** (berbasis di Indonesia / remote).\n- Email publik: **adriansyah1230@gmail.com**\n- LinkedIn: **linkedin.com/in/adrian-syah-abidin-0416b81b9**\n- GitHub: **github.com/Adrian463588**\nUntuk CV lengkap sesuai role atau jadwal wawancara, silakan hubungi langsung melalui email atau LinkedIn di atas.",
+        "en": "Adrian is open to **Software Engineering**, **QA / SDET Automation**, and **DevOps Engineering** roles (Indonesia / remote).\n- Public Email: **adriansyah1230@gmail.com**\n- LinkedIn: **linkedin.com/in/adrian-syah-abidin-0416b81b9**\n- GitHub: **github.com/Adrian463588**\nFeel free to reach out via email or LinkedIn to request a tailored CV or schedule an interview."
+      },
+      "links": [
+        {
+          "label": {
+            "id": "Bagian Contact",
+            "en": "Contact Section"
+          },
+          "href": "/#contact"
+        },
+        {
+          "label": {
+            "id": "Kirim Email",
+            "en": "Email Adrian"
+          },
+          "href": "mailto:adriansyah1230@gmail.com"
+        }
+      ]
+    }
+  ],
+  "sourceRegistry": {
+    "githubSync": {
+      "username": "Adrian463588",
+      "syncedAt": "2026-11-25T15:54:10.655Z",
+      "totalPublicRepos": 79
+    },
+    "cvSourcesSanitized": [
+      "CV ATS Adrian QA - 2025.pdf (phone redacted)",
+      "CV ATS Adrian DevOps - 2025.pdf (phone redacted)",
+      "CV ATS Adrian BE- 2025.pdf (phone redacted)",
+      "CV ATS Adrian Game Programmer - 2025.pdf (phone redacted)",
+      "CV ATS CySec Adrian - 2025.pdf (phone redacted)"
+    ],
+    "excludedSensitiveCategories": [
+      "Private phone numbers",
+      "Residential street addresses",
+      "Age and date of birth",
+      "Government / national ID numbers (NIK/KTP/Passport)",
+      "Unapproved salary or confidential HR terms",
+      "Internal Berijalan repository paths, DB schemas, financial calculation ratios, and UAT credentials",
+      "Research participant datasets from PPG experiments"
+    ]
+  },
+  "allowlist": {
+    "internalPaths": [
+      "/",
+      "/#work",
+      "/#experience",
+      "/#about",
+      "/#contact",
+      "/projects/",
+      "/resources/",
+      "/projects/android-stress-detection/",
+      "/projects/quran-plus/",
+      "/projects/coffee-creator/",
+      "/projects/adzan-plus/",
+      "/projects/parfum-creator/",
+      "/projects/automate-plus/",
+      "/projects/dual-vm-observability-stack/",
+      "/projects/chat-buddy/",
+      "/projects/english-prep-ai/",
+      "/projects/med-bot/",
+      "/projects/hsk1-vocabulary-master/",
+      "/projects/gke-terraform-hpa-autoscaling/",
+      "/projects/auu-ahh-cafe-menu/",
+      "/projects/demo-evershop-cypress/",
+      "/projects/biosignal-stress-pipeline/",
+      "/projects/tab-sign-screen-sharing/",
+      "/projects/ledger-scope/",
+      "/projects/ppt-controller/",
+      "/projects/video-editor-free/",
+      "/projects/signal-booster/",
+      "/projects/notif-plus/",
+      "/projects/techno-loyalty-program/",
+      "/projects/credit-risk-mlops/",
+      "/projects/sistem-pos-analytics/",
+      "/projects/collect-bfm-srq/",
+      "/projects/experiment-controller-web/",
+      "/projects/znl-kost-putri/",
+      "/projects/forum-api/",
+      "/projects/saucedemo-cypress-bdd-jenkins/",
+      "/projects/plsql-learn/",
+      "/projects/mystical-fortune-teller/",
+      "/projects/wear-quick-notes/",
+      "/projects/bookshelf-api/",
+      "/projects/go-online-shop/",
+      "/projects/go-cv-ai-evaluator/",
+      "/projects/notes-app-performance-ci/",
+      "/projects/gke-praktikum-gitops/",
+      "/projects/go-notes-restful-api/",
+      "/projects/tmdb-qa-testing/",
+      "/projects/heart-rate-monitor/",
+      "/projects/workflow-ci-smsl/",
+      "/projects/eksperimen-sml-adrian-syah-abidin/",
+      "/projects/shio-calculator/",
+      "/projects/tactical-logistics-mesh-communication-system-tlcs/",
+      "/projects/signal-intelligence/",
+      "/projects/rails-cv-evaluator/",
+      "/projects/digital-skola-devops-fork/",
+      "/projects/testing-github-action/",
+      "/projects/sb-go-quiz3/",
+      "/projects/sb-go-batch-70-adrian/",
+      "/projects/cypress-101/",
+      "/projects/login-automation-nuta-cloud/",
+      "/projects/f-qae24001120-synrgy7-adr-appium-ch8/",
+      "/projects/f-qae24001120-synrgy7-adr-selenium-ch7/",
+      "/projects/f-qae24001120-synrgy7-adr-oop-ch5/",
+      "/projects/simple-hotel-booking-solidity/",
+      "/projects/project-game/",
+      "/projects/responsi-studi-kasus-1/",
+      "/projects/frontend-test/",
+      "/projects/proyek-akhir-kotlin-sanber/",
+      "/projects/around-world/",
+      "/projects/senpro-github-action/",
+      "/projects/tugas1-sanbercode/",
+      "/projects/463588-adrian-syah-abidin-responsi-junior-project/",
+      "/projects/sanber-code-laravel-web/",
+      "/projects/nearu-gdsc-fork/",
+      "/projects/sistem-pakar/",
+      "/projects/463588-tugas-machine-learning-kecerdasan-buatan2021/",
+      "/projects/program-shortcut-link-website/",
+      "/projects/tugas-akhir-pbo/",
+      "/projects/afortunado/",
+      "/resources/coffee-brew-ratio-extraction-calculator/",
+      "/resources/perfume-concentration-dilution-calculator/",
+      "/resources/automate-plus-vs-selenium-ide-katalon/",
+      "/resources/playwright-vs-cypress-cicd-tradeoffs/",
+      "/resources/beanconqueror-and-filtru-alternatives-android/",
+      "/resources/quran-plus-vs-quran-com-muslim-pro-tarteel/",
+      "/resources/ppg-watch-stress-detection-android-architecture/"
+    ],
+    "externalUrls": [
+      "https://adriansyahabidin.vercel.app",
+      "https://github.com/Adrian463588",
+      "https://www.linkedin.com/in/adrian-syah-abidin-0416b81b9/",
+      "https://medium.com/@adriansyah1230",
+      "mailto:adriansyah1230@gmail.com",
+      "https://berijalan.co.id/",
+      "https://github.com/Adrian463588/ProjectGame",
+      "https://github.com/Adrian463588/android-stress-detection",
+      "https://github.com/Adrian463588/QuranPlus",
+      "https://github.com/Adrian463588/QuranPlus/releases/tag/v1.0.13",
+      "https://github.com/Adrian463588/coffee-creator",
+      "https://github.com/Adrian463588/coffee-creator/releases/tag/v1.14.7",
+      "https://github.com/Adrian463588/AdzanPlus",
+      "https://github.com/Adrian463588/AdzanPlus/releases/tag/v2.2.1",
+      "https://github.com/Adrian463588/ParfumCreator",
+      "https://github.com/Adrian463588/ParfumCreator/releases/tag/v1.3.1",
+      "https://github.com/Adrian463588/AutomatePlus",
+      "https://github.com/Adrian463588/AutomatePlus/releases/tag/v1.7.1",
+      "https://github.com/Adrian463588/Task5ManageDashboardMonitoring",
+      "https://github.com/Adrian463588/ChatBuddy",
+      "https://github.com/Adrian463588/ChatBuddy/releases/tag/v0.2.0",
+      "https://github.com/Adrian463588/EnglishPrepAI",
+      "https://github.com/Adrian463588/EnglishPrepAI/releases/tag/v1.2.0",
+      "https://github.com/Adrian463588/MedBot",
+      "https://github.com/Adrian463588/hsk1vocab",
+      "https://hsk1vocab.edgeone.dev/",
+      "https://github.com/Adrian463588/Task12ManageKubernetesAutoscallingKubernetes",
+      "https://github.com/Adrian463588/auu-ahh-cafe-menu",
+      "https://github.com/Adrian463588/DemoEvershopCypress",
+      "https://github.com/Adrian463588/biosignal-stress-pipeline",
+      "https://github.com/Adrian463588/ScreenSharingWindowsInput",
+      "https://github.com/Adrian463588/ScreenSharingWindowsInput/releases/tag/v1.5.0",
+      "https://github.com/Adrian463588/LedgerScope",
+      "https://github.com/Adrian463588/PPTController",
+      "https://github.com/Adrian463588/PPTController/releases/tag/v1.3.3",
+      "https://github.com/Adrian463588/VideoEditorFree",
+      "https://github.com/Adrian463588/VideoEditorFree/releases/tag/v0.1.0",
+      "https://github.com/Adrian463588/SignalBooster",
+      "https://github.com/Adrian463588/NotifPlus",
+      "https://github.com/Adrian463588/TechnoLoyaltyProgram",
+      "https://github.com/Adrian463588/CreditRiskPrediction",
+      "https://github.com/Adrian463588/SistemPOS",
+      "https://github.com/Adrian463588/CollectQuestionaireBFMSRQ",
+      "https://github.com/Adrian463588/CollectDataPPGECGWEB",
+      "https://github.com/Adrian463588/ZNLKostPutri",
+      "https://znlkostputri.edgeone.dev/",
+      "https://github.com/Adrian463588/ForumAPI",
+      "https://github.com/Adrian463588/SauceDemoJerkins",
+      "https://github.com/Adrian463588/plsqllearn",
+      "https://plsqllearn.edgeone.dev/",
+      "https://github.com/Adrian463588/FortuneTeller-",
+      "https://fortuneteller.edgeone.dev/",
+      "https://github.com/Adrian463588/wearquicknotes",
+      "https://github.com/Adrian463588/BookShelfAPI",
+      "https://github.com/Adrian463588/GoOnlineShop",
+      "https://github.com/Adrian463588/go-cv-ai-evaluator",
+      "https://github.com/Adrian463588/notes-app-performance-testing",
+      "https://github.com/Adrian463588/gke-praktikum-gitops",
+      "https://github.com/Adrian463588/finalproject-sb-go-70-Adrian",
+      "https://github.com/Adrian463588/TMDB-QA-Testing",
+      "https://github.com/Adrian463588/HeartRateMonitor",
+      "https://github.com/Adrian463588/HeartRateMonitor/releases/tag/v1.3.1",
+      "https://github.com/Adrian463588/Workflow-CI_SMSL",
+      "https://github.com/Adrian463588/Eksperimen_SML_AdrianSyahAbidin",
+      "https://github.com/Adrian463588/ShioCalculator",
+      "https://github.com/Adrian463588/Tactical-Logistics-Mesh-Communication-System-TLCS-",
+      "https://github.com/Adrian463588/SignalIntelligence",
+      "https://github.com/Adrian463588/Rails-CV-Evaluator",
+      "https://github.com/Adrian463588/tugas-project-digital-skola-devops",
+      "https://github.com/Adrian463588/Testing_githubAction",
+      "https://github.com/Adrian463588/sb-go-quiz3",
+      "https://github.com/Adrian463588/sb-go-batch-70Adrian",
+      "https://github.com/Adrian463588/Cypress-101",
+      "https://github.com/Adrian463588/Login-Automation-NutaCloud",
+      "https://github.com/Adrian463588/F-QAE24001120-synrgy7-adr-Appium-ch8",
+      "https://github.com/Adrian463588/F-QAE24001120-synrgy7-adr-selenium-ch7",
+      "https://github.com/Adrian463588/F-QAE24001120-synrgy7-adr-oop-ch5",
+      "https://github.com/Adrian463588/ProjectBlockChain",
+      "https://youtu.be/XGk-1T3N3SU",
+      "https://github.com/Adrian463588/responsi-studi-kasus-1",
+      "https://github.com/Adrian463588/frontend-test",
+      "https://github.com/Adrian463588/ProyekAkhirKotlin_Sanber",
+      "https://github.com/Adrian463588/AroundWorld",
+      "https://github.com/Adrian463588/senpro-github-action",
+      "https://github.com/Adrian463588/tugas1-sanbercode",
+      "https://github.com/Adrian463588/463588-Adrian-Syah-Abidin-ResponsiJuniorProject",
+      "https://github.com/Adrian463588/SanberCode_LaravelWeb",
+      "https://github.com/Adrian463588/nearu",
+      "https://github.com/Adrian463588/SistemPakar",
+      "https://github.com/Adrian463588/463588_TugasMachineLearning_KecerdasanBuatan2021",
+      "https://github.com/Adrian463588/Program-Shortcut-link-website",
+      "https://github.com/Adrian463588/Tugas-Akhir-PBO",
+      "https://github.com/Adrian463588/Afortunado"
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+# Change: ask-adrian
+
+## Why
+Recruiters, hiring managers, and visitors want a fast bilingual (`id` / `en`) way to ask focused questions about Adrian Syah Abidin's experience, featured projects, skills, certifications, education, and research without manually scanning every route. Existing portfolio pages must stay static, fast, accessible, and unchanged in aesthetic direction.
+
+## What Changes
+- **Knowledge Base & Ingestion (`knowledge/adrian-knowledge.json`)**: Add a single canonical JSON knowledge file derived from existing `src/data/*` modules plus sanitized public-safe details from `BANKCV_MASUKKANKEGITIGNORE/` (strictly gitignored). Exclude phone numbers, street addresses, birthdates, age, identity numbers, unapproved salary data, and Berijalan confidential internals.
+- **Bilingual FAQ & Keyword RAG (`src/server/chatbot/`)**: Add deterministic bilingual FAQ matching (greeting, profile, education, experience, Berijalan, QA automation, DevOps, skills, certifications, featured projects, Android Stress Detection, career interests, résumé availability, contact) and lightweight synonym/alias knowledge retrieval.
+- **Deterministic PII & Prompt-Injection Guardrails (`src/server/chatbot/guardrails.ts`)**: Refuse requests asking for phone number, street address, age, date of birth, NIK/KTP, secret credentials, or untrusted instruction overrides before upstream inference, and sanitize outputs against allowlisted links and secret masking.
+- **Serverless Chat Route (`src/app/api/chat/route.ts`)**: Switch `next.config.ts` off strict `output: "export"` (while keeping all existing portfolio routes statically prerendered) so `POST /api/chat` runs on Vercel Node.js serverless runtime with request validation, sliding-window rate limits, atomic daily attempt budgets, and ordered provider fallback (`Groq -> Gemini -> OpenRouter Free -> Local FAQ`) across 3 server-side key slots per provider.
+- **Floating Chat UI (`src/features/chatbot/`)**: Lazy-load an accessible Obsidian & Arctic FAB (`56x56px`, bottom-right) and compact panel/mobile bottom sheet with greeting, suggested prompts, streaming text + Stop/Retry, Auto/ID/EN language toggle, Concise/Detailed toggle, `sessionStorage` persistence, and Clear Conversation.

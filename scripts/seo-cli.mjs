@@ -5,6 +5,10 @@ import ts from "typescript";
 
 const rootDir = process.cwd();
 const outDir = path.join(rootDir, "out");
+const nextAppDir = path.join(rootDir, ".next", "server", "app");
+const publicDir = path.join(rootDir, "public");
+const useOutDir = fs.existsSync(outDir);
+const buildHtmlDir = useOutDir ? outDir : nextAppDir;
 const args = new Set(process.argv.slice(2));
 
 if (args.size === 0) {
@@ -47,9 +51,10 @@ function walkHtmlFiles(dir) {
 }
 
 function toRouteFromOutHtml(fullHtmlPath) {
-  const rel = path.relative(outDir, fullHtmlPath).replaceAll(path.sep, "/");
+  const rel = path.relative(buildHtmlDir, fullHtmlPath).replaceAll(path.sep, "/");
   if (rel === "index.html") return "/";
   if (rel.endsWith("/index.html")) return `/${rel.slice(0, -"index.html".length)}`;
+  if (!useOutDir && rel.endsWith(".html")) return `/${rel.slice(0, -".html".length)}/`;
   return `/${rel}`;
 }
 
@@ -141,13 +146,14 @@ function runKeywordsSummary() {
 }
 
 function runStaticOutAudit() {
-  if (!fs.existsSync(outDir)) {
-    return { ready: false, errors: ["out/ directory does not exist; run npm run build first."], pageCount: 0 };
+  if (!fs.existsSync(buildHtmlDir)) {
+    return { ready: false, errors: ["Neither out/ nor .next/server/app exists; run npm run build first."], pageCount: 0 };
   }
-  const htmlFiles = walkHtmlFiles(outDir).filter((f) => {
-    const rel = path.relative(outDir, f).replaceAll(path.sep, "/");
+  const htmlFiles = walkHtmlFiles(buildHtmlDir).filter((f) => {
+    const rel = path.relative(buildHtmlDir, f).replaceAll(path.sep, "/");
     return (
       !rel.startsWith("_not-found") &&
+      !rel.startsWith("_global-error") &&
       !rel.startsWith("404") &&
       !rel.endsWith(".rsc.html")
     );
@@ -156,7 +162,7 @@ function runStaticOutAudit() {
   let jsonLdChecked = 0;
 
   for (const file of htmlFiles) {
-    const rel = path.relative(outDir, file).replaceAll(path.sep, "/");
+    const rel = path.relative(buildHtmlDir, file).replaceAll(path.sep, "/");
     const html = fs.readFileSync(file, "utf8");
     const titleMatch = html.match(/<title>([^<]+)<\/title>/i);
     if (!titleMatch) errors.push(`Missing <title> in ${rel}`);
@@ -182,19 +188,23 @@ function runStaticOutAudit() {
     }
   }
 
-  // Ensure gated drafts do not exist in out/ or sitemap.xml
-  const sitemapPath = path.join(outDir, "sitemap.xml");
+  // Ensure gated drafts do not exist in build output or sitemap.xml
+  const sitemapPath = useOutDir
+    ? path.join(outDir, "sitemap.xml")
+    : path.join(nextAppDir, "sitemap.xml.body");
   const sitemapXml = fs.existsSync(sitemapPath) ? fs.readFileSync(sitemapPath, "utf8") : "";
-  if (!sitemapXml) errors.push("Missing out/sitemap.xml");
+  if (!sitemapXml) errors.push("Missing build sitemap.xml");
 
   for (const r of resources) {
-    const outResPath = path.join(outDir, "resources", r.slug, "index.html");
+    const outResPath = useOutDir
+      ? path.join(outDir, "resources", r.slug, "index.html")
+      : path.join(nextAppDir, "resources", `${r.slug}.html`);
     const urlFrag = `/resources/${r.slug}/`;
     if (r.status === "published" && r.indexable) {
       if (!fs.existsSync(outResPath)) errors.push(`Missing published resource HTML: ${urlFrag}`);
       if (!sitemapXml.includes(urlFrag)) errors.push(`Missing published resource in sitemap.xml: ${urlFrag}`);
     } else {
-      if (fs.existsSync(outResPath)) errors.push(`Draft/gated resource leaked into out/: ${urlFrag}`);
+      if (fs.existsSync(outResPath)) errors.push(`Draft/gated resource leaked into build output: ${urlFrag}`);
       if (sitemapXml.includes(urlFrag)) errors.push(`Draft/gated resource leaked into sitemap.xml: ${urlFrag}`);
     }
   }
@@ -209,16 +219,19 @@ function runStaticOutAudit() {
 }
 
 function runInternalLinksAudit() {
-  if (!fs.existsSync(outDir)) {
-    return { valid: false, errors: ["out/ directory does not exist; run npm run build first."], checkedLinks: 0 };
+  if (!fs.existsSync(buildHtmlDir)) {
+    return { valid: false, errors: ["Neither out/ nor .next/server/app exists; run npm run build first."], checkedLinks: 0 };
   }
-  const htmlFiles = walkHtmlFiles(outDir);
+  const htmlFiles = walkHtmlFiles(buildHtmlDir).filter((f) => {
+    const rel = path.relative(buildHtmlDir, f).replaceAll(path.sep, "/");
+    return !rel.startsWith("_not-found") && !rel.startsWith("_global-error");
+  });
   const validRoutes = new Set(htmlFiles.map(toRouteFromOutHtml));
   const errors = [];
   let checkedLinks = 0;
 
   for (const file of htmlFiles) {
-    const rel = path.relative(outDir, file).replaceAll(path.sep, "/");
+    const rel = path.relative(buildHtmlDir, file).replaceAll(path.sep, "/");
     const html = fs.readFileSync(file, "utf8");
     for (const match of html.matchAll(/<a\s+[^>]*href="(\/[^"]*)"/gi)) {
       const rawHref = match[1];
@@ -228,7 +241,11 @@ function runInternalLinksAudit() {
       checkedLinks += 1;
       const [pathPart] = rawHref.split("#");
       const normalized = pathPart === "" ? "/" : pathPart.endsWith("/") ? pathPart : `${pathPart}/`;
-      if (!validRoutes.has(normalized) && !fs.existsSync(path.join(outDir, pathPart.replace(/^\/+/, "")))) {
+      const assetRel = pathPart.replace(/^\/+/, "");
+      const hasStaticAsset =
+        fs.existsSync(path.join(buildHtmlDir, assetRel)) ||
+        fs.existsSync(path.join(publicDir, assetRel));
+      if (!validRoutes.has(normalized) && !hasStaticAsset) {
         errors.push(`Broken internal href "${rawHref}" in ${rel}`);
       }
     }

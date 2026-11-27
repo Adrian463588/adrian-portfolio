@@ -1,6 +1,6 @@
 # Adrian Syah Abidin — Engineering Portfolio
 
-Static frontend-only engineering portfolio showcasing software work across **QA Automation / SDET**, **DevOps & DevSecOps**, **Backend & Financial Systems**, **Android & Wear OS Research**, and **On-Device Applied AI**. Built with Next.js 16 static export (`output: "export"`), strict TypeScript, Tailwind CSS v4 (`Obsidian & Arctic`), Three.js / React Three Fiber with custom GLSL shaders, GSAP, and Lenis.
+Build-ready hybrid Next.js 16 engineering portfolio showcasing software work across **QA Automation / SDET**, **DevOps & DevSecOps**, **Backend & Financial Systems**, **Android & Wear OS Research**, and **On-Device Applied AI** — enhanced with **Ask Adrian**, a privacy-guarded bilingual AI assistant. Built with Next.js 16 (statically prerendered pages + Node.js `/api/chat/` route), strict TypeScript, Tailwind CSS v4 (`Obsidian & Arctic`), Three.js / React Three Fiber with custom GLSL shaders, GSAP, and Lenis.
 
 **Production Site:** [adriansyahabidin.vercel.app](https://adriansyahabidin.vercel.app)
 
@@ -33,7 +33,8 @@ Enterprise engineering engagements at **Berijalan Techno Center — ACC Group** 
 
 ## Architecture & Stack
 
-- **Framework:** Next.js 16 (App Router, `output: "export"`, `78` static routes including `71` eligible `/projects/[slug]/` pages)
+- **Framework:** Next.js 16 (App Router, statically prerendered `/`, `/projects/`, `/projects/[slug]/`, `/resources/`, `/resources/[slug]/` routes + Node.js serverless `POST /api/chat/`)
+- **AI Portfolio Assistant (`Ask Adrian`):** Canonical knowledge base `knowledge/adrian-knowledge.json`, deterministic bilingual FAQ-first routing, PII/secret guardrails, visitor rate limits + daily budget caps, and ordered provider fallback (`Groq -> Gemini -> OpenRouter Free -> Local Fallback`; see [docs/deployment/VERCEL_ASK_ADRIAN_SETUP.md](docs/deployment/VERCEL_ASK_ADRIAN_SETUP.md))
 - **Language:** TypeScript (`strict: true`)
 - **Design Tokens & Typography:** Tailwind CSS v4 (`Obsidian & Arctic`: `#08090C`, `#15171C`, `#1C1F26`, `#F2F0EC`, `#A7ADB7`, `#65C8F5`; `Space Grotesk`, `Geist`, `Geist Mono`)
 - **3D & Shaders:** Three.js + React Three Fiber (`SpatialScene`, custom GLSL `atmosphereShader.ts` and `horizonGridShader.ts`, runtime `High` / `Balanced` / `Reduced` quality modes, WebGL & `prefers-reduced-motion` static geometry fallback)
