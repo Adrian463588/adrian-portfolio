@@ -1,29 +1,94 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowUp,
-  ArrowUpRight,
-  RotateCcw,
-  SlidersHorizontal,
-  Square,
-  Trash2,
-  X,
-} from "lucide-react";
+import { ArrowUp, ArrowUpRight, RotateCcw, SlidersHorizontal, Square, Trash2, X } from "lucide-react";
 import { SafeChatMarkdown } from "./renderSafeText";
 import { CHAT_SUGGESTED_QUESTIONS } from "./types";
 import { usePortfolioChat } from "./usePortfolioChat";
+import { AdrianMascot, type MascotState } from "./mascot/AdrianMascot";
 
 const LINK_CHIP_CLASS =
   "inline-flex min-h-[32px] min-w-0 max-w-full items-center gap-1 rounded-lg border border-white/15 bg-[#08090C] px-2.5 py-1 text-left text-[11px] font-medium text-[#65C8F5] transition-colors hover:border-[#65C8F5] hover:text-[#F2F0EC]";
 
-interface ChatWidgetProps {
-  onClose: () => void;
+interface SegmentedOption<T extends string> {
+  value: T;
+  label: string;
 }
 
-export default function ChatWidget({ onClose }: ChatWidgetProps) {
+interface SegmentedControlProps<T extends string> {
+  label: string;
+  value: T;
+  options: SegmentedOption<T>[];
+  onChange: (value: T) => void;
+}
+
+function SegmentedControl<T extends string>({
+  label,
+  value,
+  options,
+  onChange,
+}: SegmentedControlProps<T>) {
+  const activeIndex = Math.max(
+    0,
+    options.findIndex((option) => option.value === value)
+  );
+  const count = options.length;
+
+  return (
+    <div
+      role="group"
+      aria-label={label}
+      className="relative grid rounded-xl border border-white/10 bg-[#08090C] p-0.5"
+      style={{ gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))` }}
+    >
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0.5 left-0.5 rounded-[9px] border border-[#65C8F5]/45 bg-[#132939] shadow-sm transition-transform duration-200 ease-out"
+        style={{
+          width: `calc((100% - 4px) / ${count})`,
+          transform: `translateX(${activeIndex * 100}%)`,
+        }}
+      />
+      {options.map((option) => {
+        const isActive = option.value === value;
+        return (
+          <button
+            key={option.value}
+            type="button"
+            aria-pressed={isActive}
+            onClick={() => onChange(option.value)}
+            className={`relative z-10 min-h-[36px] rounded-[9px] px-2 text-center text-[11px] font-medium whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-[#65C8F5] ${
+              isActive ? "text-[#F2F0EC]" : "text-[#A7ADB7] hover:text-[#F2F0EC]"
+            }`}
+          >
+            {option.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+interface ChatWidgetProps {
+  onClose: () => void;
+  showHeaderMascot?: boolean;
+  mascotState?: MascotState;
+  reducedMotion?: boolean;
+  onMascotStateChange?: (state: MascotState) => void;
+  onRegisterMascotSlot?: (el: HTMLDivElement | null) => void;
+  onRegisterDialog?: (el: HTMLElement | null) => void;
+}
+
+export default function ChatWidget({
+  onClose,
+  showHeaderMascot = true,
+  mascotState,
+  reducedMotion = false,
+  onMascotStateChange,
+  onRegisterMascotSlot,
+  onRegisterDialog,
+}: ChatWidgetProps) {
   const {
     messages,
     settings,
@@ -38,18 +103,46 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
 
   const [inputValue, setInputValue] = useState("");
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [mascotHovered, setMascotHovered] = useState(false);
+
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const threadRef = useRef<HTMLDivElement>(null);
+  const shouldAutoScrollRef = useRef(true);
+  const prevMsgCountRef = useRef(messages.length);
+
+  const lastMessage = messages[messages.length - 1];
+  const isWaitingFirstToken = isStreaming && lastMessage?.role === "assistant" && !lastMessage.text;
+  const isRespondingTokens =
+    isStreaming && lastMessage?.role === "assistant" && Boolean(lastMessage.text);
+
+  const derivedMascotState: MascotState = isWaitingFirstToken
+    ? "thinking"
+    : isRespondingTokens
+      ? "responding"
+      : mascotHovered
+        ? "hover"
+        : "idle";
+
+  const activeMascotState = mascotState ?? derivedMascotState;
+
+  useEffect(() => {
+    onMascotStateChange?.(derivedMascotState);
+  }, [derivedMascotState, onMascotStateChange]);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
   useEffect(() => {
-    if (threadRef.current) {
+    if (messages.length > prevMsgCountRef.current && lastMessage?.role === "user") {
+      shouldAutoScrollRef.current = true;
+    }
+    prevMsgCountRef.current = messages.length;
+
+    if (shouldAutoScrollRef.current && threadRef.current) {
       threadRef.current.scrollTop = threadRef.current.scrollHeight;
     }
-  }, [messages, isStreaming]);
+  }, [messages, isStreaming, lastMessage]);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -61,10 +154,17 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose]);
 
+  const handleThreadScroll = () => {
+    const el = threadRef.current;
+    if (!el) return;
+    shouldAutoScrollRef.current = el.scrollHeight - el.scrollTop - el.clientHeight <= 56;
+  };
+
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
     const text = inputValue.trim();
     if (!text || isStreaming) return;
+    shouldAutoScrollRef.current = true;
     setInputValue("");
     void sendMessage(text);
   };
@@ -74,22 +174,29 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
 
   return (
     <section
+      ref={onRegisterDialog}
       id="ask-adrian-dialog"
       role="dialog"
       aria-labelledby="ask-adrian-title"
-      className="fixed inset-x-3 bottom-3 top-14 z-50 flex min-w-0 flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#0D0F14] text-[#F2F0EC] shadow-[0_24px_64px_rgba(0,0,0,0.75)] sm:inset-auto sm:bottom-24 sm:right-5 sm:h-[min(600px,calc(100svh-8rem))] sm:w-[min(400px,calc(100vw-2.5rem))] sm:bg-[#0D0F14]/98"
+      className="fixed inset-x-3 bottom-3 top-14 z-50 flex min-w-0 flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#0D0F14]/98 text-[#F2F0EC] shadow-[0_24px_64px_rgba(0,0,0,0.78)] backdrop-blur-md sm:inset-auto sm:bottom-5 sm:right-5 sm:h-[min(620px,calc(100svh-2.5rem))] sm:w-[min(410px,calc(100vw-2.5rem))]"
     >
       {/* Header */}
       <header className="flex shrink-0 items-center justify-between gap-2 border-b border-white/10 bg-[#15171C] px-4 py-3">
         <div className="flex min-w-0 items-center gap-3">
-          <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full border border-[#65C8F5]/50 bg-[#08090C]">
-            <Image
-              src="/images/avatar/professional-chibi.webp"
-              alt="Ask Adrian avatar"
-              width={36}
-              height={36}
-              className="h-full w-full object-cover"
-            />
+          <div
+            ref={onRegisterMascotSlot}
+            onPointerEnter={() => setMascotHovered(true)}
+            onPointerLeave={() => setMascotHovered(false)}
+            className="relative h-10 w-10 shrink-0 rounded-full"
+          >
+            {showHeaderMascot && (
+              <AdrianMascot
+                state={activeMascotState}
+                variant="header"
+                reducedMotion={reducedMotion}
+                className="h-10 w-10"
+              />
+            )}
           </div>
           <div className="min-w-0">
             <h2
@@ -99,7 +206,7 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
               Ask Adrian
             </h2>
             <p className="truncate text-[11px] text-[#A7ADB7]">
-              {displayLang === "id" ? "Asisten AI · ID" : "AI assistant · EN"}
+              {displayLang === "id" ? "Asisten AI" : "AI assistant"}
             </p>
           </div>
         </div>
@@ -121,15 +228,6 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
 
           <button
             type="button"
-            onClick={clearConversation}
-            aria-label="Clear conversation"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full text-[#A7ADB7] transition-colors hover:bg-white/5 hover:text-[#F2F0EC] focus-visible:outline-2 focus-visible:outline-[#65C8F5]"
-          >
-            <Trash2 className="h-4 w-4" aria-hidden="true" />
-          </button>
-
-          <button
-            type="button"
             onClick={onClose}
             aria-label="Close chat"
             className="inline-flex h-11 w-11 items-center justify-center rounded-full text-[#A7ADB7] transition-colors hover:bg-white/5 hover:text-[#F2F0EC] focus-visible:outline-2 focus-visible:outline-[#65C8F5]"
@@ -139,58 +237,70 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
         </div>
       </header>
 
-      {/* Collapsible Visitor Preferences (strictly no API/provider controls) */}
+      {/* Compact Animated Settings Panel */}
       {settingsOpen && (
-        <div className="shrink-0 space-y-2.5 border-b border-white/10 bg-[#15171C]/90 px-4 py-3 text-xs">
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-[#A7ADB7]">
-              {displayLang === "id" ? "Bahasa" : "Language"}
-            </span>
-            <div role="group" aria-label="Chat language" className="flex gap-1">
-              {(["auto", "id", "en"] as const).map((lang) => (
-                <button
-                  key={lang}
-                  type="button"
-                  aria-pressed={settings.language === lang}
-                  onClick={() => updateSettings({ language: lang })}
-                  className={`min-h-[34px] rounded-full px-3 text-[11px] font-medium transition-colors ${
-                    settings.language === lang
-                      ? "bg-[#65C8F5]/20 text-[#65C8F5] ring-1 ring-[#65C8F5]/40"
-                      : "bg-[#08090C] text-[#A7ADB7] hover:text-[#F2F0EC]"
-                  }`}
-                >
-                  {lang === "auto" ? "Auto" : lang === "id" ? "ID" : "EN"}
-                </button>
-              ))}
+        <div
+          data-testid="chat-settings-panel"
+          className="chat-settings-animated shrink-0 border-b border-white/10 bg-[#12151C]/95 px-4 py-3 text-xs backdrop-blur-md"
+        >
+          <div className="space-y-3">
+            <div className="space-y-1.5">
+              <span className="block text-[11px] font-medium text-[#A7ADB7]">
+                {displayLang === "id" ? "Bahasa" : "Language"}
+              </span>
+              <SegmentedControl
+                label="Language"
+                value={settings.language}
+                options={[
+                  { value: "auto", label: "Auto" },
+                  { value: "id", label: "Indonesia" },
+                  { value: "en", label: "English" },
+                ]}
+                onChange={(language) => updateSettings({ language })}
+              />
             </div>
-          </div>
 
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-[#A7ADB7]">
-              {displayLang === "id" ? "Gaya jawaban" : "Detail"}
-            </span>
-            <div role="group" aria-label="Response detail" className="flex gap-1">
-              {(["concise", "detailed"] as const).map((mode) => (
-                <button
-                  key={mode}
-                  type="button"
-                  aria-pressed={settings.detail === mode}
-                  onClick={() => updateSettings({ detail: mode })}
-                  className={`min-h-[34px] rounded-full px-3 text-[11px] font-medium transition-colors ${
-                    settings.detail === mode
-                      ? "bg-[#65C8F5]/20 text-[#65C8F5] ring-1 ring-[#65C8F5]/40"
-                      : "bg-[#08090C] text-[#A7ADB7] hover:text-[#F2F0EC]"
-                  }`}
-                >
-                  {mode === "concise"
-                    ? displayLang === "id"
-                      ? "Ringkas"
-                      : "Concise"
-                    : displayLang === "id"
-                      ? "Detail"
-                      : "Detailed"}
-                </button>
-              ))}
+            <div className="space-y-1.5">
+              <span className="block text-[11px] font-medium text-[#A7ADB7]">
+                {displayLang === "id" ? "Gaya jawaban" : "Response style"}
+              </span>
+              <SegmentedControl
+                label="Response style"
+                value={settings.detail}
+                options={[
+                  { value: "concise", label: displayLang === "id" ? "Ringkas" : "Concise" },
+                  { value: "detailed", label: displayLang === "id" ? "Detail" : "Detailed" },
+                ]}
+                onChange={(detail) => updateSettings({ detail })}
+              />
+            </div>
+
+            <div className="flex items-center justify-between gap-2 pt-0.5">
+              <span className="text-[11px] font-medium text-[#A7ADB7]">
+                {displayLang === "id" ? "Percakapan" : "Conversation"}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  clearConversation();
+                  setSettingsOpen(false);
+                }}
+                className="inline-flex min-h-[36px] items-center gap-1.5 rounded-lg border border-white/12 bg-[#08090C] px-3 py-1.5 text-[11px] font-medium text-[#F2F0EC] transition-colors hover:border-[#65C8F5]/60 hover:text-[#65C8F5] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#65C8F5]"
+              >
+                <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>{displayLang === "id" ? "Hapus obrolan" : "Clear chat"}</span>
+              </button>
+            </div>
+
+            <div className="border-t border-white/10 pt-2.5">
+              <p className="text-[11px] font-medium text-[#F2F0EC]">
+                {displayLang === "id" ? "Tentang & Privasi" : "About & Privacy"}
+              </p>
+              <p className="mt-1 text-[11px] leading-relaxed text-[#A7ADB7]">
+                {displayLang === "id"
+                  ? "Jawaban disusun berdasarkan informasi portofolio terverifikasi dan diproses oleh penyedia AI. Hindari mengirim data pribadi sensitif."
+                  : "Answers use verified portfolio data and are processed by external AI providers. Avoid sharing sensitive personal data."}
+              </p>
             </div>
           </div>
         </div>
@@ -199,6 +309,7 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
       {/* Conversation Thread */}
       <div
         ref={threadRef}
+        onScroll={handleThreadScroll}
         data-lenis-prevent
         aria-live="polite"
         className="min-w-0 flex-1 space-y-3 overflow-x-hidden overflow-y-auto px-3.5 py-4 sm:px-4"
@@ -214,14 +325,14 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
               className={`flex min-w-0 max-w-full flex-col ${isUser ? "items-end" : "items-start"}`}
             >
               <div
-                className={`box-border min-w-0 max-w-[90%] rounded-xl px-3.5 py-2.5 text-[13px] [overflow-wrap:anywhere] ${
+                className={`box-border min-w-0 max-w-[88%] rounded-2xl px-3.5 py-2.5 text-[13px] [overflow-wrap:anywhere] ${
                   isUser
-                    ? "bg-[#1C1F26] text-[#F2F0EC] ring-1 ring-white/10"
-                    : "border border-white/10 bg-[#15171C] text-[#E6E4DF]"
+                    ? "rounded-br-sm border border-[#65C8F5]/30 bg-[#0F2B3C] text-[#F2F0EC]"
+                    : "rounded-bl-sm border border-white/10 bg-[#15171C] text-[#E6E4DF]"
                 }`}
               >
                 {isEmptyStreaming ? (
-                  <p className="font-mono text-xs text-[#A7ADB7]">
+                  <p className="font-mono text-xs text-[#65C8F5]">
                     {displayLang === "id" ? "Menyusun jawaban..." : "Thinking..."}
                   </p>
                 ) : isUser ? (
@@ -232,17 +343,19 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
                   <SafeChatMarkdown text={msg.text} />
                 )}
 
-                {!isUser && !msg.isGreeting && (msg.mode === "local-faq" || msg.mode === "local-fallback") && (
-                  <p className="mt-2 min-w-0 max-w-full font-mono text-[10px] text-[#A7ADB7] [overflow-wrap:anywhere]">
-                    {msg.mode === "local-faq"
-                      ? displayLang === "id"
-                        ? "FAQ portofolio lokal"
-                        : "Verified local FAQ"
-                      : displayLang === "id"
-                        ? "Basis pengetahuan lokal"
-                        : "Local portfolio fallback"}
-                  </p>
-                )}
+                {!isUser &&
+                  !msg.isGreeting &&
+                  (msg.mode === "local-faq" || msg.mode === "local-fallback") && (
+                    <p className="mt-2 min-w-0 max-w-full font-mono text-[10px] text-[#A7ADB7] [overflow-wrap:anywhere]">
+                      {msg.mode === "local-faq"
+                        ? displayLang === "id"
+                          ? "FAQ portofolio lokal"
+                          : "Verified local FAQ"
+                        : displayLang === "id"
+                          ? "Basis pengetahuan lokal"
+                          : "Local portfolio fallback"}
+                    </p>
+                  )}
 
                 {!isUser && msg.links && msg.links.length > 0 && (
                   <div className="mt-2.5 flex min-w-0 max-w-full flex-wrap gap-1.5">
@@ -310,10 +423,10 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
         )}
       </div>
 
-      {/* Composer Footer */}
+      {/* Composer */}
       <form
         onSubmit={handleSubmit}
-        className="shrink-0 space-y-2 border-t border-white/10 bg-[#0D0F14] px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+        className="shrink-0 border-t border-white/10 bg-[#0D0F14] px-3.5 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
       >
         <div className="flex items-end gap-2">
           <label htmlFor="ask-adrian-input" className="sr-only">
@@ -332,7 +445,9 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
                 handleSubmit();
               }
             }}
-            placeholder={displayLang === "id" ? "Tanya pengalaman atau proyek..." : "Ask about Adrian..."}
+            placeholder={
+              displayLang === "id" ? "Tanya pengalaman atau proyek..." : "Ask about Adrian..."
+            }
             className="min-h-[44px] max-h-28 min-w-0 flex-1 resize-none rounded-2xl border border-white/15 bg-[#15171C] px-3.5 py-2.5 text-sm text-[#F2F0EC] placeholder:text-[#A7ADB7] focus:border-[#65C8F5] focus:outline-none"
           />
 
@@ -356,12 +471,6 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
             </button>
           )}
         </div>
-
-        <p className="text-[11px] text-[#A7ADB7]">
-          {displayLang === "id"
-            ? "Asisten AI · Berdasarkan informasi portofolio · Hindari mengirim data sensitif"
-            : "AI assistant · Based on portfolio info · Avoid sharing sensitive data"}
-        </p>
       </form>
     </section>
   );

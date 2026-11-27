@@ -1,0 +1,188 @@
+@keyframes mascot-idle-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -2.5px, 0);
+  }
+}
+
+@keyframes mascot-blink {
+  0%,
+  90%,
+  100% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  94% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  97% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+}
+
+@keyframes mascot-wave {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-18deg);
+  }
+  40% {
+    transform: rotate(10deg);
+  }
+  60% {
+    transform: rotate(-16deg);
+  }
+  80% {
+    transform: rotate(8deg);
+  }
+}
+
+@keyframes mascot-head-thinking {
+  0%,
+  100% {
+    transform: rotate(-4deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-7deg) translateY(-1px);
+  }
+}
+
+@keyframes mascot-head-responding {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  35% {
+    transform: translateY(-1.2px) rotate(1.5deg);
+  }
+  70% {
+    transform: translateY(-0.5px) rotate(-1deg);
+  }
+}
+
+@keyframes mascot-mouth-speaking {
+  0%,
+  100% {
+    transform: scaleY(0.8);
+  }
+  50% {
+    transform: scaleY(1.22);
+  }
+}
+
+@keyframes mascot-dot-pulse {
+  0%,
+  80%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-1.8px);
+  }
+}
+
+@keyframes mascot-ring-subtle {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes mascot-pill-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(8px, 0, 0) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes chat-settings-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -6px, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.mascot-svg[data-reduced-motion="false"][data-mascot-state="idle"] .mascot-body-group,
+.mascot-svg[data-reduced-motion="false"][data-mascot-state="invitation"] .mascot-body-group {
+  animation: mascot-idle-float 3.8s ease-in-out infinite;
+}
+
+.mascot-svg[data-reduced-motion="false"] .mascot-eyelids {
+  transform-origin: 40px 34px;
+  animation: mascot-blink 4.8s ease-in-out infinite;
+}
+
+.mascot-svg[data-reduced-motion="false"] .mascot-aura {
+  animation: mascot-ring-subtle 4.2s ease-in-out infinite;
+}
+
+.mascot-svg[data-reduced-motion="false"][data-mascot-state="waving"] .mascot-arm-group,
+.mascot-svg[data-reduced-motion="false"][data-mascot-state="clicked"] .mascot-arm-group {
+  transform-origin: 55px 57px;
+  animation: mascot-wave 1.15s ease-in-out infinite;
+}
+
+.mascot-svg[data-reduced-motion="false"][data-mascot-state="hover"] .mascot-head-group {
+  transform-origin: 40px 48px;
+  transform: rotate(4deg) translateY(-1px);
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.mascot-svg[data-reduced-motion="false"][data-mascot-state="clicked"] .mascot-body-group {
+  transform-origin: 40px 66px;
+  transform: scale(0.94, 1.04) translateY(-1px);
+  transition: transform 120ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.mascot-svg[data-reduced-motion="false"][data-mascot-state="thinking"] .mascot-head-group {
+  transform-origin: 40px 48px;
+  animation: mascot-head-thinking 2.2s ease-in-out infinite;
+}
+
+.mascot-svg[data-reduced-motion="false"][data-mascot-state="responding"] .mascot-head-group {
+  transform-origin: 40px 48px;
+  animation: mascot-head-responding 0.9s ease-in-out infinite;
+}
+
+.mascot-svg[data-reduced-motion="false"][data-mascot-state="responding"] .mascot-mouth-group {
+  transform-origin: 40px 44px;
+  animation: mascot-mouth-speaking 0.42s ease-in-out infinite;
+}
+
+.mascot-svg[data-reduced-motion="false"] .mascot-dot-1 {
+  animation: mascot-dot-pulse 1.2s ease-in-out infinite 0ms;
+}
+.mascot-svg[data-reduced-motion="false"] .mascot-dot-2 {
+  animation: mascot-dot-pulse 1.2s ease-in-out infinite 160ms;
+}
+.mascot-svg[data-reduced-motion="false"] .mascot-dot-3 {
+  animation: mascot-dot-pulse 1.2s ease-in-out infinite 320ms;
+}
+
+.mascot-invitation-pill {
+  animation: mascot-pill-enter 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.chat-settings-animated {
+  animation: chat-settings-enter 190ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
