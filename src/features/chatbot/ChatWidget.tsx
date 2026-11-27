@@ -16,6 +16,9 @@ import { SafeChatMarkdown } from "./renderSafeText";
 import { CHAT_SUGGESTED_QUESTIONS } from "./types";
 import { usePortfolioChat } from "./usePortfolioChat";
 
+const LINK_CHIP_CLASS =
+  "inline-flex min-h-[32px] min-w-0 max-w-full items-center gap-1 rounded-lg border border-white/15 bg-[#08090C] px-2.5 py-1 text-left text-[11px] font-medium text-[#65C8F5] transition-colors hover:border-[#65C8F5] hover:text-[#F2F0EC]";
+
 interface ChatWidgetProps {
   onClose: () => void;
 }
@@ -74,7 +77,7 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
       id="ask-adrian-dialog"
       role="dialog"
       aria-labelledby="ask-adrian-title"
-      className="fixed inset-x-3 bottom-3 top-14 z-50 flex flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#0D0F14] text-[#F2F0EC] shadow-[0_24px_64px_rgba(0,0,0,0.75)] sm:inset-auto sm:bottom-24 sm:right-5 sm:h-[min(600px,calc(100svh-8rem))] sm:w-[min(400px,calc(100vw-2.5rem))] sm:bg-[#0D0F14]/98"
+      className="fixed inset-x-3 bottom-3 top-14 z-50 flex min-w-0 flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#0D0F14] text-[#F2F0EC] shadow-[0_24px_64px_rgba(0,0,0,0.75)] sm:inset-auto sm:bottom-24 sm:right-5 sm:h-[min(600px,calc(100svh-8rem))] sm:w-[min(400px,calc(100vw-2.5rem))] sm:bg-[#0D0F14]/98"
     >
       {/* Header */}
       <header className="flex shrink-0 items-center justify-between gap-2 border-b border-white/10 bg-[#15171C] px-4 py-3">
@@ -101,7 +104,7 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex shrink-0 items-center gap-1">
           <button
             type="button"
             onClick={() => setSettingsOpen((prev) => !prev)}
@@ -198,7 +201,7 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
         ref={threadRef}
         data-lenis-prevent
         aria-live="polite"
-        className="flex-1 space-y-3 overflow-y-auto px-4 py-4"
+        className="min-w-0 flex-1 space-y-3 overflow-x-hidden overflow-y-auto px-3.5 py-4 sm:px-4"
       >
         {messages.map((msg, idx) => {
           const isUser = msg.role === "user";
@@ -208,10 +211,10 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
           return (
             <div
               key={msg.id}
-              className={`flex flex-col ${isUser ? "items-end" : "items-start"}`}
+              className={`flex min-w-0 max-w-full flex-col ${isUser ? "items-end" : "items-start"}`}
             >
               <div
-                className={`max-w-[90%] rounded-xl px-3.5 py-2.5 text-[13px] ${
+                className={`box-border min-w-0 max-w-[90%] rounded-xl px-3.5 py-2.5 text-[13px] [overflow-wrap:anywhere] ${
                   isUser
                     ? "bg-[#1C1F26] text-[#F2F0EC] ring-1 ring-white/10"
                     : "border border-white/10 bg-[#15171C] text-[#E6E4DF]"
@@ -222,13 +225,15 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
                     {displayLang === "id" ? "Menyusun jawaban..." : "Thinking..."}
                   </p>
                 ) : isUser ? (
-                  <p className="whitespace-pre-wrap leading-relaxed">{msg.text}</p>
+                  <p className="min-w-0 max-w-full whitespace-pre-wrap leading-relaxed [overflow-wrap:anywhere]">
+                    {msg.text}
+                  </p>
                 ) : (
                   <SafeChatMarkdown text={msg.text} />
                 )}
 
                 {!isUser && !msg.isGreeting && (msg.mode === "local-faq" || msg.mode === "local-fallback") && (
-                  <p className="mt-2 font-mono text-[10px] text-[#A7ADB7]">
+                  <p className="mt-2 min-w-0 max-w-full font-mono text-[10px] text-[#A7ADB7] [overflow-wrap:anywhere]">
                     {msg.mode === "local-faq"
                       ? displayLang === "id"
                         ? "FAQ portofolio lokal"
@@ -240,17 +245,17 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
                 )}
 
                 {!isUser && msg.links && msg.links.length > 0 && (
-                  <div className="mt-2.5 flex flex-wrap gap-1.5">
+                  <div className="mt-2.5 flex min-w-0 max-w-full flex-wrap gap-1.5">
                     {msg.links.map((link) =>
                       link.href.startsWith("/") ? (
                         <Link
                           key={`${msg.id}-${link.href}`}
                           href={link.href}
                           prefetch={false}
-                          className="inline-flex min-h-[32px] items-center gap-1 rounded-lg border border-white/15 bg-[#08090C] px-2.5 py-1 text-[11px] font-medium text-[#65C8F5] transition-colors hover:border-[#65C8F5] hover:text-[#F2F0EC]"
+                          className={LINK_CHIP_CLASS}
                         >
-                          <span>{link.label}</span>
-                          <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
+                          <span className="min-w-0 [overflow-wrap:anywhere]">{link.label}</span>
+                          <ArrowUpRight className="h-3 w-3 shrink-0" aria-hidden="true" />
                         </Link>
                       ) : (
                         <a
@@ -258,10 +263,10 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
                           href={link.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex min-h-[32px] items-center gap-1 rounded-lg border border-white/15 bg-[#08090C] px-2.5 py-1 text-[11px] font-medium text-[#65C8F5] transition-colors hover:border-[#65C8F5] hover:text-[#F2F0EC]"
+                          className={LINK_CHIP_CLASS}
                         >
-                          <span>{link.label}</span>
-                          <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
+                          <span className="min-w-0 [overflow-wrap:anywhere]">{link.label}</span>
+                          <ArrowUpRight className="h-3 w-3 shrink-0" aria-hidden="true" />
                         </a>
                       )
                     )}
@@ -295,9 +300,9 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
                 key={question}
                 type="button"
                 onClick={() => void sendMessage(question)}
-                className="flex min-h-[44px] w-full items-center justify-between gap-2 rounded-xl border border-white/12 bg-[#08090C] px-3.5 py-2 text-left text-[13px] text-[#F2F0EC] transition-colors hover:border-[#65C8F5] focus-visible:outline-2 focus-visible:outline-[#65C8F5]"
+                className="flex min-h-[44px] w-full min-w-0 items-center justify-between gap-2 rounded-xl border border-white/12 bg-[#08090C] px-3.5 py-2 text-left text-[13px] text-[#F2F0EC] transition-colors hover:border-[#65C8F5] focus-visible:outline-2 focus-visible:outline-[#65C8F5]"
               >
-                <span>{question}</span>
+                <span className="min-w-0 [overflow-wrap:anywhere]">{question}</span>
                 <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-[#65C8F5]" aria-hidden="true" />
               </button>
             ))}
@@ -328,7 +333,7 @@ export default function ChatWidget({ onClose }: ChatWidgetProps) {
               }
             }}
             placeholder={displayLang === "id" ? "Tanya pengalaman atau proyek..." : "Ask about Adrian..."}
-            className="min-h-[44px] max-h-28 flex-1 resize-none rounded-2xl border border-white/15 bg-[#15171C] px-3.5 py-2.5 text-sm text-[#F2F0EC] placeholder:text-[#A7ADB7] focus:border-[#65C8F5] focus:outline-none"
+            className="min-h-[44px] max-h-28 min-w-0 flex-1 resize-none rounded-2xl border border-white/15 bg-[#15171C] px-3.5 py-2.5 text-sm text-[#F2F0EC] placeholder:text-[#A7ADB7] focus:border-[#65C8F5] focus:outline-none"
           />
 
           {isStreaming ? (
