@@ -91,3 +91,16 @@
 | Unit Tests | `npm run test` (`vitest run`) | PASS | `5` files, `28/28` tests passed (`WebSite.alternateName`, `manifest.webmanifest`, SEO, calculators) |
 | Static Build & SEO CLI | `npm run build`, `npm run seo:audit`, `npm run seo:links` | PASS | `86` static pages (`/manifest.webmanifest` included), `81` indexable HTML pages checked with `icon` / `apple-touch-icon` / `manifest` tags, `1724` internal links valid |
 | Playwright E2E + `axe-core` | `npm run test:e2e` | PASS | `37/37` passed (all 10 icon/manifest routes HTTP `200`, `0` WCAG 2.2 AA violations) |
+
+---
+
+# Verification Summary — V11 Dynamic Hero Typography (`feat/dynamic-hero-typography`)
+
+| Check | Command / Tool | Result | Notes |
+|-------|----------------|--------|-------|
+| OpenSpec & FigCraft Sync | `openspec/specs/hero-typography/spec.md`, `design/portfolio.figcraft` | PASS | Archived change `2026-11-27-dynamic-hero-typography`; exported `design/exports/v3-hero-dynamic.png` |
+| Static Assets, Lint, Types & SEO CLI | `validate:assets`, `lint`, `typecheck`, `seo:validate`, `seo:audit`, `seo:links` | PASS | `39` assets, `0` lint/TS errors, `81` HTML pages + `1724` internal links verified |
+| Unit Tests (TDD) | `npm run test` (`vitest run`) | PASS | `6` files, `34/34` tests (`tests/unit/typewriter.test.tsx` `6/6`) |
+| Static Production Build | `npm run build` | PASS | `86/86` static pages (`out/`) |
+| Playwright E2E + `axe-core` | `npm run test:e2e` | PASS | `38/38` passed (`dynamic Hero typewriter` 0 CLS `320px`/`1440px`, Pause/Resume, reduced motion, 0 WCAG 2.2 AA violations) |
+| Lighthouse (`/` Desktop & Mobile) & Trace | Chrome DevTools MCP | PASS | Accessibility 100 · Best Practices 100 · SEO 100 · Agentic Browsing 100 (`57/57` passed); `LCP: 424 ms`, `CLS: 0.00` |

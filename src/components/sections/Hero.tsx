@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { MagneticSurface } from "@/components/motion/MagneticSurface";
 import { RollText } from "@/components/motion/RollText";
+import { TypewriterText } from "@/components/motion/TypewriterText";
 import { useMotion } from "@/context/MotionContext";
 
 gsap.registerPlugin(useGSAP);
@@ -51,10 +52,7 @@ export function Hero() {
             <h1 className="font-display text-[clamp(3rem,6.8vw,6.2rem)] font-bold leading-[0.98] tracking-[-0.045em] text-[#F2F0EC]">
               Adrian Syah Abidin
             </h1>
-            <p className="hero-entrance text-[clamp(1.2rem,2.2vw,1.65rem)] font-medium leading-snug text-[#F2F0EC]">
-              I build and test{" "}
-              <span className="border-b-2 border-[#65C8F5] pb-0.5">software</span>.
-            </p>
+            <TypewriterText className="hero-entrance" />
             <p className="hero-entrance max-w-2xl text-sm leading-relaxed text-[#A7ADB7] sm:text-base">
               Experience in quality engineering, test automation, and enterprise financial systems.
               Building personal projects across DevOps, software development, and applied AI.
