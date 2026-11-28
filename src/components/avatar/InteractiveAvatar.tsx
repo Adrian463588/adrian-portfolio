@@ -28,7 +28,11 @@ function loadExpression(src: string, pending: Map<string, Promise<boolean>>) {
 function SpeechBubble({ dialogue, revealed }: { dialogue: string; revealed: boolean }) {
   return (
     <div className={styles.bubbleArea}>
-      <div className={styles.bubble} data-active={Boolean(dialogue)}>
+      <div
+        className={styles.bubble}
+        data-active={Boolean(dialogue)}
+        data-easter-egg={revealed ? "true" : undefined}
+      >
         <p role="status" aria-atomic="true">
           <span key={dialogue}>{dialogue}</span>
         </p>
