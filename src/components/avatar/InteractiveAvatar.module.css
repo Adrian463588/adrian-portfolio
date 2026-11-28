@@ -48,51 +48,64 @@
   inset: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: flex-start;
-  padding: 0.875rem 0.75rem;
+  padding: 0.75rem;
   pointer-events: none;
 }
 
 .bubble {
   position: sticky;
-  inset-block-end: 0.875rem;
+  inset-block-start: 0.75rem;
+  inset-block-end: 0.75rem;
   width: max-content;
-  max-width: min(15rem, 100%);
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--border-strong);
-  border-radius: 0.75rem;
-  background: var(--bg-secondary);
+  min-height: 2.125rem;
+  max-width: min(11.5rem, 48%);
+  padding: 0.45rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0.875rem 0.875rem 0.25rem 0.875rem;
+  background: rgba(17, 19, 25, 0.92);
+  backdrop-filter: blur(8px);
   color: var(--text-primary);
-  font-size: 0.8125rem;
-  line-height: 1.5;
+  font-size: 0.78rem;
+  line-height: 1.4;
   text-align: start;
   overflow-wrap: anywhere;
+  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.65);
   opacity: 0;
+  visibility: hidden;
+}
+
+.bubble[data-easter-egg="true"] {
+  border-color: rgba(101, 200, 245, 0.55);
+  box-shadow: 0 12px 28px -8px rgba(101, 200, 245, 0.22);
 }
 
 .bubble[data-active="true"] {
   opacity: 1;
+  visibility: visible;
 }
 
 .bubble::before {
   position: absolute;
-  inset-block-start: -4px;
-  inset-inline-start: 1rem;
-  width: 7px;
-  height: 7px;
+  inset-block-end: 0.5rem;
+  inset-inline-end: -4px;
+  width: 8px;
+  height: 8px;
+  border-inline-end: inherit;
   border-block-start: inherit;
-  border-inline-start: inherit;
-  background: var(--bg-secondary);
+  background: rgba(17, 19, 25, 0.92);
   transform: rotate(45deg);
   content: "";
 }
 
 .video {
   display: inline-flex;
-  min-height: 44px;
+  min-height: 36px;
+  margin-top: 0.125rem;
   align-items: center;
   color: var(--accent);
+  font-weight: 500;
   text-decoration: underline;
   text-underline-offset: 3px;
   pointer-events: auto;
@@ -102,17 +115,32 @@
   .scale { transition: transform 180ms ease-out; }
   .target:active .scale { transform: scale(1.023); }
   .art[data-motion="idle"] { animation: float 4s ease-in-out infinite; }
+  .art[data-motion="winking"] { animation: lean 220ms ease-out; }
+  .art[data-motion="happy"] { animation: chuckle 260ms ease-out; }
   .art[data-motion="laughing"] { animation: chuckle 320ms ease-in-out; }
   .art[data-motion="surprised"] { animation: pop 200ms ease-out; }
   .art[data-motion="confused"] { animation: tilt 260ms ease-in-out; }
   .art[data-motion="angry"] { animation: shake 280ms ease-out; }
   .art[data-motion="greeting"],
   .art[data-motion="mischievous"] { animation: lean 260ms ease-in-out; }
+  .art[data-motion="rickroll"] { animation: rickroll 420ms cubic-bezier(0.34, 1.56, 0.64, 1); }
   .target[data-visible="false"] .art { animation-play-state: paused; }
   .incoming { animation: crossfade 200ms ease-out; }
   .outgoing { animation: crossfade 200ms ease-out reverse; }
-  .bubble { transform: translateY(4px); transition: opacity 180ms ease-out, transform 180ms ease-out; }
-  .bubble[data-active="true"] { transform: translateY(0); }
+  .bubble {
+    transform: translate3d(0, 6px, 0) scale(0.95);
+    transition:
+      opacity 180ms ease-out,
+      transform 180ms ease-out,
+      visibility 0s linear 180ms;
+  }
+  .bubble[data-active="true"] {
+    transform: translate3d(0, 0, 0) scale(1);
+    transition:
+      opacity 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      visibility 0s linear 0s;
+  }
   .bubble span { display: block; animation: dialogue 180ms ease-out; }
 }
 
@@ -144,6 +172,14 @@
 
 @keyframes lean {
   50% { transform: rotate(-1deg); }
+}
+
+@keyframes rickroll {
+  0% { transform: scale(1) rotate(0deg); }
+  28% { transform: translateY(-5px) scale(1.03) rotate(-1.5deg); }
+  58% { transform: translateY(0) scale(0.99) rotate(1.5deg); }
+  82% { transform: translateY(-2px) scale(1.01) rotate(-0.5deg); }
+  100% { transform: scale(1) rotate(0deg); }
 }
 
 @keyframes crossfade {
