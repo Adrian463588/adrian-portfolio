@@ -552,6 +552,9 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       "content",
       "349d8c5deaa56e9a"
     );
+    const indexNowRes = await request.get("/66f0d196e94c432d91b2984a9156e7fa.txt");
+    expect(indexNowRes.status()).toBe(200);
+    expect((await indexNowRes.text()).trim()).toBe("66f0d196e94c432d91b2984a9156e7fa");
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
       "https://adriansyahabidin.vercel.app/"

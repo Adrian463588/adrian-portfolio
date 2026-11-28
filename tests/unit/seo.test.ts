@@ -29,6 +29,7 @@ describe("SEO config, structured data, sitemap, and robots invariants", () => {
       "A11A581E33DB1EC19A9E777AA7852D6A"
     );
     expect(SITE_CONFIG.verification.yandex).toBe("349d8c5deaa56e9a");
+    expect(SITE_CONFIG.verification.indexNow).toBe("66f0d196e94c432d91b2984a9156e7fa");
     expect(Object.values(SITE_CONFIG.profiles)).toEqual([
       "https://github.com/Adrian463588",
       "https://www.linkedin.com/in/adrian-syah-abidin-0416b81b9/",
