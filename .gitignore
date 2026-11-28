@@ -50,3 +50,10 @@ knowledge/raw/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Sprint 11 source artwork and internal working files
+/.sprint-11/
+/docs/GambarSprint11/
+/docs/PRD SPRINT 11*.md
+/openspec/changes/add-interactive-about-avatar/
+/specs/012-interactive-about-avatar/

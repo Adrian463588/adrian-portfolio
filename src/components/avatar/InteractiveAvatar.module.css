@@ -1,0 +1,140 @@
+.target {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  touch-action: pan-y pinch-zoom;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.target:focus-visible {
+  z-index: 1;
+  border-radius: inherit;
+  outline-offset: -4px;
+}
+
+.scale,
+.art,
+.frame {
+  position: absolute;
+  inset: 0;
+}
+
+.scale {
+  transform: scale(1.055);
+}
+
+.base,
+.frame {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.frame {
+  pointer-events: none;
+}
+
+.outgoing {
+  opacity: 0;
+}
+
+.bubbleArea {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 0.875rem 0.75rem;
+  pointer-events: none;
+}
+
+.bubble {
+  position: sticky;
+  inset-block-end: 0.875rem;
+  width: max-content;
+  max-width: min(15rem, 100%);
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 0.75rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  text-align: start;
+  overflow-wrap: anywhere;
+  opacity: 0;
+}
+
+.bubble[data-active="true"] {
+  opacity: 1;
+}
+
+.bubble::before {
+  position: absolute;
+  inset-block-start: -4px;
+  inset-inline-start: 1rem;
+  width: 7px;
+  height: 7px;
+  border-block-start: inherit;
+  border-inline-start: inherit;
+  background: var(--bg-secondary);
+  transform: rotate(45deg);
+  content: "";
+}
+
+.video {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scale { transition: transform 180ms ease-out; }
+  .target:active .scale { transform: scale(1.023); }
+  .art[data-motion="idle"] { animation: float 4s ease-in-out infinite; }
+  .art[data-motion="angry"] { animation: shake 280ms ease-out; }
+  .art[data-motion="greeting"],
+  .art[data-motion="mischievous"] { animation: lean 260ms ease-in-out; }
+  .target[data-visible="false"] .art { animation-play-state: paused; }
+  .incoming { animation: crossfade 200ms ease-out; }
+  .outgoing { animation: crossfade 200ms ease-out reverse; }
+  .bubble { transform: translateY(4px); transition: opacity 180ms ease-out, transform 180ms ease-out; }
+  .bubble[data-active="true"] { transform: translateY(0); }
+  .bubble span { display: block; animation: dialogue 180ms ease-out; }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .target:hover:not(:active) .scale { transform: scale(1.076); }
+}
+
+@keyframes float {
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes shake {
+  25%, 75% { transform: translateX(-2px); }
+  50% { transform: translateX(2px); }
+}
+
+@keyframes lean {
+  50% { transform: rotate(-1deg); }
+}
+
+@keyframes crossfade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes dialogue {
+  from { opacity: 0; transform: translateY(3px); }
+}
