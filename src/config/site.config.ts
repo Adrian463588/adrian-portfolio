@@ -33,6 +33,7 @@ export const SITE_CONFIG = {
     google: "P4O6B5PWmL-5E0i5XRbfkOSaPcop92urgS2lk-IAZ5s",
     bing: "A11A581E33DB1EC19A9E777AA7852D6A",
     yandex: "349d8c5deaa56e9a",
+    naver: "72c4dfab684c45205f0d51e670282b4e4533bd52",
     indexNow: "66f0d196e94c432d91b2984a9156e7fa",
   },
   profiles: {
