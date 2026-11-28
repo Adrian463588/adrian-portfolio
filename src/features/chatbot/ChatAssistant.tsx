@@ -110,7 +110,7 @@ export function ChatAssistant() {
   useEffect(() => {
     if (phase === "closed" && restoreFocusRef.current) {
       restoreFocusRef.current = false;
-      fabRef.current?.focus();
+      fabRef.current?.focus({ preventScroll: true });
     }
   }, [phase]);
 

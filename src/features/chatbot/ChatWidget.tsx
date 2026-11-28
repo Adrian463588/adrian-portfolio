@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowUp, ArrowUpRight, RotateCcw, SlidersHorizontal, Square, Trash2, X } from "lucide-react";
 import { SafeChatMarkdown } from "./renderSafeText";
@@ -105,12 +105,25 @@ export default function ChatWidget({
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [mascotHovered, setMascotHovered] = useState(false);
 
+  const dialogRef = useRef<HTMLElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const threadRef = useRef<HTMLDivElement>(null);
   const shouldAutoScrollRef = useRef(true);
   const prevMsgCountRef = useRef(messages.length);
 
+  const registerDialog = useCallback((el: HTMLElement | null) => {
+    dialogRef.current = el;
+    onRegisterDialog?.(el);
+  }, [onRegisterDialog]);
+
+  const closeChat = useCallback(() => {
+    if (document.activeElement === inputRef.current) inputRef.current?.blur();
+    onClose();
+  }, [onClose]);
+
   const lastMessage = messages[messages.length - 1];
+  const onlyGreeting = messages.length <= 1;
   const isWaitingFirstToken = isStreaming && lastMessage?.role === "assistant" && !lastMessage.text;
   const isRespondingTokens =
     isStreaming && lastMessage?.role === "assistant" && Boolean(lastMessage.text);
@@ -129,8 +142,44 @@ export default function ChatWidget({
     onMascotStateChange?.(derivedMascotState);
   }, [derivedMascotState, onMascotStateChange]);
 
-  useEffect(() => {
-    inputRef.current?.focus();
+  useLayoutEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !e.isComposing) closeChat();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [closeChat]);
+
+  useLayoutEffect(() => {
+    const touchCapable = navigator.maxTouchPoints > 0 || window.matchMedia?.("(any-pointer: coarse)").matches;
+    (touchCapable ? closeRef : inputRef).current?.focus({ preventScroll: true });
+  }, []);
+
+  useLayoutEffect(() => {
+    const dialog = dialogRef.current;
+    const viewport = window.visualViewport;
+    if (!dialog || !viewport) return;
+
+    const updateViewport = () => {
+      // Leave browser zoom behavior intact. At normal scale, follow keyboard resize and panning.
+      if (viewport.scale !== 1) {
+        dialog.style.removeProperty("--chat-viewport-height");
+        dialog.style.removeProperty("--chat-viewport-bottom");
+        return;
+      }
+
+      const bottom = document.documentElement.clientHeight - viewport.offsetTop - viewport.height;
+      dialog.style.setProperty("--chat-viewport-height", `${viewport.height}px`);
+      dialog.style.setProperty("--chat-viewport-bottom", `${Math.max(0, bottom)}px`);
+    };
+
+    updateViewport();
+    viewport.addEventListener("resize", updateViewport);
+    viewport.addEventListener("scroll", updateViewport);
+    return () => {
+      viewport.removeEventListener("resize", updateViewport);
+      viewport.removeEventListener("scroll", updateViewport);
+    };
   }, []);
 
   useEffect(() => {
@@ -139,20 +188,22 @@ export default function ChatWidget({
     }
     prevMsgCountRef.current = messages.length;
 
-    if (shouldAutoScrollRef.current && threadRef.current) {
-      threadRef.current.scrollTop = threadRef.current.scrollHeight;
+    if (onlyGreeting) shouldAutoScrollRef.current = true;
+    const thread = threadRef.current;
+    if (shouldAutoScrollRef.current && thread) {
+      thread.scrollTop = onlyGreeting ? 0 : thread.scrollHeight;
     }
-  }, [messages, isStreaming, lastMessage]);
+  }, [messages, isStreaming, lastMessage, onlyGreeting]);
 
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [onClose]);
+    const thread = threadRef.current;
+    if (onlyGreeting || !thread || typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(() => {
+      if (shouldAutoScrollRef.current) thread.scrollTop = thread.scrollHeight;
+    });
+    observer.observe(thread);
+    return () => observer.disconnect();
+  }, [onlyGreeting]);
 
   const handleThreadScroll = () => {
     const el = threadRef.current;
@@ -170,18 +221,18 @@ export default function ChatWidget({
   };
 
   const suggested = CHAT_SUGGESTED_QUESTIONS[displayLang];
-  const onlyGreeting = messages.length <= 1;
 
   return (
     <section
-      ref={onRegisterDialog}
+      ref={registerDialog}
       id="ask-adrian-dialog"
       role="dialog"
       aria-labelledby="ask-adrian-title"
-      className="fixed inset-x-3 bottom-3 top-14 z-50 flex min-w-0 flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#0D0F14]/98 text-[#F2F0EC] shadow-[0_24px_64px_rgba(0,0,0,0.78)] backdrop-blur-md sm:inset-auto sm:bottom-5 sm:right-5 sm:h-[min(620px,calc(100svh-2.5rem))] sm:w-[min(410px,calc(100vw-2.5rem))]"
+      data-lenis-prevent
+      className="ask-adrian-panel fixed z-50 flex min-w-0 flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#0D0F14]/98 text-[#F2F0EC] shadow-[0_24px_64px_rgba(0,0,0,0.78)] backdrop-blur-md"
     >
       {/* Header */}
-      <header className="flex shrink-0 items-center justify-between gap-2 border-b border-white/10 bg-[#15171C] px-4 py-3">
+      <header className="ask-adrian-header flex shrink-0 items-center justify-between gap-2 border-b border-white/10 bg-[#15171C] px-4 py-2 [@media(min-height:32rem)]:sm:py-3">
         <div className="flex min-w-0 items-center gap-3">
           <div
             ref={onRegisterMascotSlot}
@@ -227,8 +278,9 @@ export default function ChatWidget({
           </button>
 
           <button
+            ref={closeRef}
             type="button"
-            onClick={onClose}
+            onClick={closeChat}
             aria-label="Close chat"
             className="inline-flex h-11 w-11 items-center justify-center rounded-full text-[#A7ADB7] transition-colors hover:bg-white/5 hover:text-[#F2F0EC] focus-visible:outline-2 focus-visible:outline-[#65C8F5]"
           >
@@ -237,196 +289,200 @@ export default function ChatWidget({
         </div>
       </header>
 
-      {/* Compact Animated Settings Panel */}
-      {settingsOpen && (
-        <div
-          data-testid="chat-settings-panel"
-          className="chat-settings-animated shrink-0 border-b border-white/10 bg-[#12151C]/95 px-4 py-3 text-xs backdrop-blur-md"
-        >
-          <div className="space-y-3">
-            <div className="space-y-1.5">
-              <span className="block text-[11px] font-medium text-[#A7ADB7]">
-                {displayLang === "id" ? "Bahasa" : "Language"}
-              </span>
-              <SegmentedControl
-                label="Language"
-                value={settings.language}
-                options={[
-                  { value: "auto", label: "Auto" },
-                  { value: "id", label: "Indonesia" },
-                  { value: "en", label: "English" },
-                ]}
-                onChange={(language) => updateSettings({ language })}
-              />
-            </div>
+      <div className="ask-adrian-body flex min-h-0 flex-1 flex-col overflow-hidden">
+        {/* Compact Animated Settings Panel */}
+        {settingsOpen && (
+          <div
+            data-testid="chat-settings-panel"
+            className="chat-settings-animated max-h-[65%] shrink-0 overflow-y-auto overscroll-contain border-b border-white/10 bg-[#12151C]/95 px-4 py-3 text-xs backdrop-blur-md"
+          >
+            <div className="space-y-3">
+              <div className="space-y-1.5">
+                <span className="block text-[11px] font-medium text-[#A7ADB7]">
+                  {displayLang === "id" ? "Bahasa" : "Language"}
+                </span>
+                <SegmentedControl
+                  label="Language"
+                  value={settings.language}
+                  options={[
+                    { value: "auto", label: "Auto" },
+                    { value: "id", label: "Indonesia" },
+                    { value: "en", label: "English" },
+                  ]}
+                  onChange={(language) => updateSettings({ language })}
+                />
+              </div>
 
-            <div className="space-y-1.5">
-              <span className="block text-[11px] font-medium text-[#A7ADB7]">
-                {displayLang === "id" ? "Gaya jawaban" : "Response style"}
-              </span>
-              <SegmentedControl
-                label="Response style"
-                value={settings.detail}
-                options={[
-                  { value: "concise", label: displayLang === "id" ? "Ringkas" : "Concise" },
-                  { value: "detailed", label: displayLang === "id" ? "Detail" : "Detailed" },
-                ]}
-                onChange={(detail) => updateSettings({ detail })}
-              />
-            </div>
+              <div className="space-y-1.5">
+                <span className="block text-[11px] font-medium text-[#A7ADB7]">
+                  {displayLang === "id" ? "Gaya jawaban" : "Response style"}
+                </span>
+                <SegmentedControl
+                  label="Response style"
+                  value={settings.detail}
+                  options={[
+                    { value: "concise", label: displayLang === "id" ? "Ringkas" : "Concise" },
+                    { value: "detailed", label: displayLang === "id" ? "Detail" : "Detailed" },
+                  ]}
+                  onChange={(detail) => updateSettings({ detail })}
+                />
+              </div>
 
-            <div className="flex items-center justify-between gap-2 pt-0.5">
-              <span className="text-[11px] font-medium text-[#A7ADB7]">
-                {displayLang === "id" ? "Percakapan" : "Conversation"}
-              </span>
-              <button
-                type="button"
-                onClick={() => {
-                  clearConversation();
-                  setSettingsOpen(false);
-                }}
-                className="inline-flex min-h-[36px] items-center gap-1.5 rounded-lg border border-white/12 bg-[#08090C] px-3 py-1.5 text-[11px] font-medium text-[#F2F0EC] transition-colors hover:border-[#65C8F5]/60 hover:text-[#65C8F5] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#65C8F5]"
-              >
-                <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
-                <span>{displayLang === "id" ? "Hapus obrolan" : "Clear chat"}</span>
-              </button>
-            </div>
+              <div className="flex items-center justify-between gap-2 pt-0.5">
+                <span className="text-[11px] font-medium text-[#A7ADB7]">
+                  {displayLang === "id" ? "Percakapan" : "Conversation"}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    clearConversation();
+                    setSettingsOpen(false);
+                  }}
+                  className="inline-flex min-h-[36px] items-center gap-1.5 rounded-lg border border-white/12 bg-[#08090C] px-3 py-1.5 text-[11px] font-medium text-[#F2F0EC] transition-colors hover:border-[#65C8F5]/60 hover:text-[#65C8F5] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#65C8F5]"
+                >
+                  <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span>{displayLang === "id" ? "Hapus obrolan" : "Clear chat"}</span>
+                </button>
+              </div>
 
-            <div className="border-t border-white/10 pt-2.5">
-              <p className="text-[11px] font-medium text-[#F2F0EC]">
-                {displayLang === "id" ? "Tentang & Privasi" : "About & Privacy"}
-              </p>
-              <p className="mt-1 text-[11px] leading-relaxed text-[#A7ADB7]">
-                {displayLang === "id"
-                  ? "Jawaban disusun berdasarkan informasi portofolio terverifikasi dan diproses oleh penyedia AI. Hindari mengirim data pribadi sensitif."
-                  : "Answers use verified portfolio data and are processed by external AI providers. Avoid sharing sensitive personal data."}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Conversation Thread */}
-      <div
-        ref={threadRef}
-        onScroll={handleThreadScroll}
-        data-lenis-prevent
-        aria-live="polite"
-        className="min-w-0 flex-1 space-y-3 overflow-x-hidden overflow-y-auto px-3.5 py-4 sm:px-4"
-      >
-        {messages.map((msg, idx) => {
-          const isUser = msg.role === "user";
-          const isLastAssistant = idx === messages.length - 1 && !isUser;
-          const isEmptyStreaming = isLastAssistant && isStreaming && !msg.text;
-
-          return (
-            <div
-              key={msg.id}
-              className={`flex min-w-0 max-w-full flex-col ${isUser ? "items-end" : "items-start"}`}
-            >
-              <div
-                className={`box-border min-w-0 max-w-[88%] rounded-2xl px-3.5 py-2.5 text-[13px] [overflow-wrap:anywhere] ${
-                  isUser
-                    ? "rounded-br-sm border border-[#65C8F5]/30 bg-[#0F2B3C] text-[#F2F0EC]"
-                    : "rounded-bl-sm border border-white/10 bg-[#15171C] text-[#E6E4DF]"
-                }`}
-              >
-                {isEmptyStreaming ? (
-                  <p className="font-mono text-xs text-[#65C8F5]">
-                    {displayLang === "id" ? "Menyusun jawaban..." : "Thinking..."}
-                  </p>
-                ) : isUser ? (
-                  <p className="min-w-0 max-w-full whitespace-pre-wrap leading-relaxed [overflow-wrap:anywhere]">
-                    {msg.text}
-                  </p>
-                ) : (
-                  <SafeChatMarkdown text={msg.text} />
-                )}
-
-                {!isUser &&
-                  !msg.isGreeting &&
-                  (msg.mode === "local-faq" || msg.mode === "local-fallback") && (
-                    <p className="mt-2 min-w-0 max-w-full font-mono text-[10px] text-[#A7ADB7] [overflow-wrap:anywhere]">
-                      {msg.mode === "local-faq"
-                        ? displayLang === "id"
-                          ? "FAQ portofolio lokal"
-                          : "Verified local FAQ"
-                        : displayLang === "id"
-                          ? "Basis pengetahuan lokal"
-                          : "Local portfolio fallback"}
-                    </p>
-                  )}
-
-                {!isUser && msg.links && msg.links.length > 0 && (
-                  <div className="mt-2.5 flex min-w-0 max-w-full flex-wrap gap-1.5">
-                    {msg.links.map((link) =>
-                      link.href.startsWith("/") ? (
-                        <Link
-                          key={`${msg.id}-${link.href}`}
-                          href={link.href}
-                          prefetch={false}
-                          className={LINK_CHIP_CLASS}
-                        >
-                          <span className="min-w-0 [overflow-wrap:anywhere]">{link.label}</span>
-                          <ArrowUpRight className="h-3 w-3 shrink-0" aria-hidden="true" />
-                        </Link>
-                      ) : (
-                        <a
-                          key={`${msg.id}-${link.href}`}
-                          href={link.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={LINK_CHIP_CLASS}
-                        >
-                          <span className="min-w-0 [overflow-wrap:anywhere]">{link.label}</span>
-                          <ArrowUpRight className="h-3 w-3 shrink-0" aria-hidden="true" />
-                        </a>
-                      )
-                    )}
-                  </div>
-                )}
-
-                {!isUser && msg.interrupted && !isStreaming && (
-                  <div className="mt-2.5 flex items-center justify-between gap-2 border-t border-white/10 pt-2">
-                    <span className="text-[11px] text-[#A7ADB7]">
-                      {displayLang === "id" ? "Jawaban terhenti" : "Incomplete response"}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={retryLast}
-                      className="inline-flex min-h-[36px] items-center gap-1 rounded-lg border border-white/15 bg-[#08090C] px-2.5 py-1 text-[11px] font-medium text-[#F2F0EC] hover:border-[#65C8F5] hover:text-[#65C8F5]"
-                    >
-                      <RotateCcw className="h-3 w-3" aria-hidden="true" />
-                      <span>{displayLang === "id" ? "Coba lagi" : "Retry"}</span>
-                    </button>
-                  </div>
-                )}
+              <div className="border-t border-white/10 pt-2.5">
+                <p className="text-[11px] font-medium text-[#F2F0EC]">
+                  {displayLang === "id" ? "Tentang & Privasi" : "About & Privacy"}
+                </p>
+                <p className="mt-1 text-[11px] leading-relaxed text-[#A7ADB7]">
+                  {displayLang === "id"
+                    ? "Jawaban disusun berdasarkan informasi portofolio terverifikasi dan diproses oleh penyedia AI. Hindari mengirim data pribadi sensitif."
+                    : "Answers use verified portfolio data and are processed by external AI providers. Avoid sharing sensitive personal data."}
+                </p>
               </div>
             </div>
-          );
-        })}
-
-        {onlyGreeting && !isStreaming && (
-          <div className="space-y-2 pt-1">
-            {suggested.map((question) => (
-              <button
-                key={question}
-                type="button"
-                onClick={() => void sendMessage(question)}
-                className="flex min-h-[44px] w-full min-w-0 items-center justify-between gap-2 rounded-xl border border-white/12 bg-[#08090C] px-3.5 py-2 text-left text-[13px] text-[#F2F0EC] transition-colors hover:border-[#65C8F5] focus-visible:outline-2 focus-visible:outline-[#65C8F5]"
-              >
-                <span className="min-w-0 [overflow-wrap:anywhere]">{question}</span>
-                <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-[#65C8F5]" aria-hidden="true" />
-              </button>
-            ))}
           </div>
         )}
+
+        {/* Conversation Thread */}
+        <div
+          ref={threadRef}
+          onScroll={handleThreadScroll}
+          role="region"
+          aria-label={displayLang === "id" ? "Riwayat obrolan" : "Chat history"}
+          aria-live="polite"
+          tabIndex={0}
+          className="ask-adrian-thread min-h-0 min-w-0 flex-1 space-y-3 overflow-x-hidden overflow-y-auto overscroll-contain px-3.5 py-3 focus-visible:-outline-offset-2 sm:px-4 sm:py-4"
+        >
+          {messages.map((msg, idx) => {
+            const isUser = msg.role === "user";
+            const isLastAssistant = idx === messages.length - 1 && !isUser;
+            const isEmptyStreaming = isLastAssistant && isStreaming && !msg.text;
+
+            return (
+              <div
+                key={msg.id}
+                className={`flex min-w-0 max-w-full flex-col ${isUser ? "items-end" : "items-start"}`}
+              >
+                <div
+                  className={`box-border min-w-0 max-w-[88%] rounded-2xl px-3.5 py-2.5 text-[13px] [overflow-wrap:anywhere] ${
+                    isUser
+                      ? "rounded-br-sm border border-[#65C8F5]/30 bg-[#0F2B3C] text-[#F2F0EC]"
+                      : "rounded-bl-sm border border-white/10 bg-[#15171C] text-[#E6E4DF]"
+                  }`}
+                >
+                  {isEmptyStreaming ? (
+                    <p className="font-mono text-xs text-[#65C8F5]">
+                      {displayLang === "id" ? "Menyusun jawaban..." : "Thinking..."}
+                    </p>
+                  ) : isUser ? (
+                    <p className="min-w-0 max-w-full whitespace-pre-wrap leading-relaxed [overflow-wrap:anywhere]">
+                      {msg.text}
+                    </p>
+                  ) : (
+                    <SafeChatMarkdown text={msg.text} />
+                  )}
+
+                  {!isUser &&
+                    !msg.isGreeting &&
+                    (msg.mode === "local-faq" || msg.mode === "local-fallback") && (
+                      <p className="mt-2 min-w-0 max-w-full font-mono text-[10px] text-[#A7ADB7] [overflow-wrap:anywhere]">
+                        {msg.mode === "local-faq"
+                          ? displayLang === "id"
+                            ? "FAQ portofolio lokal"
+                            : "Verified local FAQ"
+                          : displayLang === "id"
+                            ? "Basis pengetahuan lokal"
+                            : "Local portfolio fallback"}
+                      </p>
+                    )}
+
+                  {!isUser && msg.links && msg.links.length > 0 && (
+                    <div className="mt-2.5 flex min-w-0 max-w-full flex-wrap gap-1.5">
+                      {msg.links.map((link) =>
+                        link.href.startsWith("/") ? (
+                          <Link
+                            key={`${msg.id}-${link.href}`}
+                            href={link.href}
+                            prefetch={false}
+                            className={LINK_CHIP_CLASS}
+                          >
+                            <span className="min-w-0 [overflow-wrap:anywhere]">{link.label}</span>
+                            <ArrowUpRight className="h-3 w-3 shrink-0" aria-hidden="true" />
+                          </Link>
+                        ) : (
+                          <a
+                            key={`${msg.id}-${link.href}`}
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={LINK_CHIP_CLASS}
+                          >
+                            <span className="min-w-0 [overflow-wrap:anywhere]">{link.label}</span>
+                            <ArrowUpRight className="h-3 w-3 shrink-0" aria-hidden="true" />
+                          </a>
+                        )
+                      )}
+                    </div>
+                  )}
+
+                  {!isUser && msg.interrupted && !isStreaming && (
+                    <div className="mt-2.5 flex items-center justify-between gap-2 border-t border-white/10 pt-2">
+                      <span className="text-[11px] text-[#A7ADB7]">
+                        {displayLang === "id" ? "Jawaban terhenti" : "Incomplete response"}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={retryLast}
+                        className="inline-flex min-h-[36px] items-center gap-1 rounded-lg border border-white/15 bg-[#08090C] px-2.5 py-1 text-[11px] font-medium text-[#F2F0EC] hover:border-[#65C8F5] hover:text-[#65C8F5]"
+                      >
+                        <RotateCcw className="h-3 w-3" aria-hidden="true" />
+                        <span>{displayLang === "id" ? "Coba lagi" : "Retry"}</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+
+          {onlyGreeting && !isStreaming && (
+            <div className="space-y-2 pt-1">
+              {suggested.map((question) => (
+                <button
+                  key={question}
+                  type="button"
+                  onClick={() => void sendMessage(question)}
+                  className="flex min-h-[44px] w-full min-w-0 items-center justify-between gap-2 rounded-xl border border-white/12 bg-[#08090C] px-3.5 py-2 text-left text-[13px] text-[#F2F0EC] transition-colors hover:border-[#65C8F5] focus-visible:outline-2 focus-visible:outline-[#65C8F5]"
+                >
+                  <span className="min-w-0 [overflow-wrap:anywhere]">{question}</span>
+                  <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-[#65C8F5]" aria-hidden="true" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Composer */}
       <form
         onSubmit={handleSubmit}
-        className="shrink-0 border-t border-white/10 bg-[#0D0F14] px-3.5 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+        className="ask-adrian-composer shrink-0 border-t border-white/10 bg-[#0D0F14] px-3.5 py-2 [@media(min-height:32rem)]:sm:py-3"
       >
         <div className="flex items-end gap-2">
           <label htmlFor="ask-adrian-input" className="sr-only">
@@ -440,7 +496,7 @@ export default function ChatWidget({
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
+              if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
                 e.preventDefault();
                 handleSubmit();
               }
@@ -448,7 +504,7 @@ export default function ChatWidget({
             placeholder={
               displayLang === "id" ? "Tanya pengalaman atau proyek..." : "Ask about Adrian..."
             }
-            className="min-h-[44px] max-h-28 min-w-0 flex-1 resize-none rounded-2xl border border-white/15 bg-[#15171C] px-3.5 py-2.5 text-sm text-[#F2F0EC] placeholder:text-[#A7ADB7] focus:border-[#65C8F5] focus:outline-none"
+            className="min-h-[44px] max-h-28 min-w-0 flex-1 resize-none rounded-2xl border border-white/15 bg-[#15171C] px-3.5 py-2.5 text-sm text-[#F2F0EC] placeholder:text-[#A7ADB7] focus:border-[#65C8F5] focus:outline-none [@media(any-pointer:coarse)]:text-base"
           />
 
           {isStreaming ? (
