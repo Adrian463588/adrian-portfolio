@@ -3,8 +3,10 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { SITE_CONFIG } from "@/config/site.config";
 import {
+  INDEXNOW_ENDPOINT,
   buildIndexNowPayload,
   chunkUrls,
+  describeIndexNowStatus,
   normalizeAndFilterUrls,
   parseSitemapUrls,
   shouldTriggerIndexNowForFiles,
@@ -87,5 +89,15 @@ describe("IndexNow verification & submission helpers", () => {
     expect(
       shouldTriggerIndexNowForFiles(["src/data/project-overrides.ts", "tests/unit/projects.test.ts"])
     ).toBe(true);
+  });
+
+  it("uses the canonical /IndexNow endpoint and describes IndexNow HTTP status codes accurately", () => {
+    expect(INDEXNOW_ENDPOINT).toBe("https://api.indexnow.org/IndexNow");
+    expect(describeIndexNowStatus(200)).toMatch(/URL submitted successfully/i);
+    expect(describeIndexNowStatus(202)).toMatch(/Accepted/i);
+    expect(describeIndexNowStatus(400)).toMatch(/Invalid format/i);
+    expect(describeIndexNowStatus(403)).toMatch(/key not valid/i);
+    expect(describeIndexNowStatus(422)).toMatch(/Unprocessable Entity/i);
+    expect(describeIndexNowStatus(429)).toMatch(/Too Many Requests/i);
   });
 });
