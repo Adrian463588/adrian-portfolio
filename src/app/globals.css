@@ -143,6 +143,62 @@ button:focus-visible .roll-text-clone {
   background: rgba(101, 200, 245, 0.55);
 }
 
+.ask-adrian-panel {
+  --chat-gap: 1.25rem;
+  --chat-gap-top: max(var(--chat-gap), env(safe-area-inset-top, 0px));
+  --chat-gap-bottom: max(var(--chat-gap), env(safe-area-inset-bottom, 0px));
+  --chat-gap-left: max(var(--chat-gap), env(safe-area-inset-left, 0px));
+  --chat-gap-right: max(var(--chat-gap), env(safe-area-inset-right, 0px));
+  --chat-max-height: 38.75rem;
+  container-type: size;
+  right: var(--chat-gap-right);
+  bottom: calc(var(--chat-gap-bottom) + var(--chat-viewport-bottom, 0px));
+  width: min(25.625rem, calc(100% - var(--chat-gap-left) - var(--chat-gap-right)));
+  height: min(var(--chat-max-height), calc(var(--chat-viewport-height, 100dvh) - var(--chat-gap-top) - var(--chat-gap-bottom)));
+}
+
+@media (width < 40rem), (pointer: coarse) and (width <= 60rem) and (height <= 31.25rem) {
+  .ask-adrian-panel {
+    --chat-gap: 0.5rem;
+    --chat-max-height: 35rem;
+    left: var(--chat-gap-left);
+    width: auto;
+  }
+}
+
+@container (height < 11rem) {
+  .ask-adrian-header,
+  .ask-adrian-thread,
+  .ask-adrian-composer {
+    padding-block: 0.25rem;
+  }
+}
+
+@container (width >= 30rem) and (height < 11rem) {
+  .ask-adrian-header,
+  .ask-adrian-body {
+    width: 55%;
+  }
+
+  .ask-adrian-composer {
+    position: absolute;
+    inset: 0 0 0 auto;
+    display: grid;
+    align-content: center;
+    width: 45%;
+    border-top: 0;
+    border-left: 1px solid var(--border-subtle);
+  }
+}
+
+@media (pointer: coarse) {
+  html:has(.ask-adrian-panel),
+  html:has(.ask-adrian-panel) body {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+}
+
 /* Skip to content */
 .skip-link {
   position: absolute;
