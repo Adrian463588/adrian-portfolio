@@ -552,6 +552,11 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       "content",
       "349d8c5deaa56e9a"
     );
+    await expect(page.locator('meta[name="naver-site-verification"]')).toHaveCount(1);
+    await expect(page.locator('meta[name="naver-site-verification"]')).toHaveAttribute(
+      "content",
+      "72c4dfab684c45205f0d51e670282b4e4533bd52"
+    );
     const indexNowRes = await request.get("/66f0d196e94c432d91b2984a9156e7fa.txt");
     expect(indexNowRes.status()).toBe(200);
     expect((await indexNowRes.text()).trim()).toBe("66f0d196e94c432d91b2984a9156e7fa");

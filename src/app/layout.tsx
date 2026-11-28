@@ -83,6 +83,7 @@ export const metadata: Metadata = {
     yandex: SITE_CONFIG.verification.yandex,
     other: {
       "msvalidate.01": SITE_CONFIG.verification.bing,
+      "naver-site-verification": SITE_CONFIG.verification.naver,
     },
   },
 };
