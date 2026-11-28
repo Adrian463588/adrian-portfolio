@@ -42,67 +42,78 @@
   opacity: 0;
 }
 
-.bubbleArea {
+.externalBubble {
   position: absolute;
-  z-index: 2;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 0.75rem;
-  pointer-events: none;
-}
-
-.bubble {
-  position: sticky;
-  inset-block-start: 4.75rem;
-  inset-block-end: 0.75rem;
+  z-index: 20;
+  inset-block-end: calc(100% + 14px);
+  inset-inline-end: 0;
   width: max-content;
   min-height: 2.125rem;
-  max-width: min(11.5rem, 48%);
-  padding: 0.45rem 0.7rem;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 0.875rem 0.875rem 0.25rem 0.875rem;
-  background: rgba(17, 19, 25, 0.92);
-  backdrop-filter: blur(8px);
+  max-width: min(240px, calc(100vw - 24px));
+  padding: 0.45rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  background: rgba(15, 18, 25, 0.9);
+  backdrop-filter: blur(10px);
   color: var(--text-primary);
-  font-size: 0.78rem;
-  line-height: 1.4;
+  font-size: 0.8125rem;
+  line-height: 1.38;
   text-align: start;
   overflow-wrap: anywhere;
-  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.65);
+  box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.68);
+  pointer-events: none;
   opacity: 0;
   visibility: hidden;
 }
 
-.bubble[data-easter-egg="true"] {
-  border-color: rgba(101, 200, 245, 0.55);
-  box-shadow: 0 12px 28px -8px rgba(101, 200, 245, 0.22);
+.externalBubble[data-positioned="true"] {
+  inset: auto;
 }
 
-.bubble[data-active="true"] {
+.externalBubble[data-easter-egg="true"] {
+  border-color: rgba(101, 200, 245, 0.55);
+  box-shadow: 0 14px 32px -8px rgba(101, 200, 245, 0.22);
+}
+
+.externalBubble[data-active="true"] {
   opacity: 1;
   visibility: visible;
 }
 
-.bubble::before {
+.externalBubble::before {
   position: absolute;
-  inset-block-end: 0.5rem;
-  inset-inline-end: -4px;
   width: 8px;
   height: 8px;
-  border-inline-end: inherit;
-  border-block-start: inherit;
-  background: rgba(17, 19, 25, 0.92);
+  background: rgba(15, 18, 25, 0.9);
   transform: rotate(45deg);
   content: "";
 }
 
+.externalBubble[data-tail-side="bottom"]::before {
+  inset-block-end: -5px;
+  inset-inline-start: calc(var(--bubble-tail-offset, 50%) - 4px);
+  border-inline-end: inherit;
+  border-block-end: inherit;
+}
+
+.externalBubble[data-tail-side="top"]::before {
+  inset-block-start: -5px;
+  inset-inline-start: calc(var(--bubble-tail-offset, 50%) - 4px);
+  border-inline-start: inherit;
+  border-block-start: inherit;
+}
+
+.externalBubble[data-tail-side="left"]::before {
+  inset-inline-start: -5px;
+  inset-block-start: calc(var(--bubble-tail-offset, 22px) - 4px);
+  border-inline-start: inherit;
+  border-block-end: inherit;
+}
+
 .video {
   display: inline-flex;
-  min-height: 36px;
-  margin-top: 0.125rem;
+  min-height: 28px;
+  margin-top: 0.15rem;
   align-items: center;
   color: var(--accent);
   font-weight: 500;
@@ -127,21 +138,28 @@
   .target[data-visible="false"] .art { animation-play-state: paused; }
   .incoming { animation: crossfade 200ms ease-out; }
   .outgoing { animation: crossfade 200ms ease-out reverse; }
-  .bubble {
+
+  .externalBubble {
     transform: translate3d(0, 6px, 0) scale(0.95);
     transition:
       opacity 180ms ease-out,
-      transform 180ms ease-out,
-      visibility 0s linear 180ms;
+      transform 190ms ease-out,
+      visibility 0s linear 190ms;
   }
-  .bubble[data-active="true"] {
+  .externalBubble[data-placement="bottom-center"] {
+    transform: translate3d(0, -6px, 0) scale(0.95);
+  }
+  .externalBubble[data-placement="right-start"] {
+    transform: translate3d(-6px, 0, 0) scale(0.95);
+  }
+  .externalBubble[data-active="true"] {
     transform: translate3d(0, 0, 0) scale(1);
     transition:
       opacity 200ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      transform 230ms cubic-bezier(0.34, 1.56, 0.64, 1),
       visibility 0s linear 0s;
   }
-  .bubble span { display: block; animation: dialogue 180ms ease-out; }
+  .externalBubble span { display: block; animation: dialogue 180ms ease-out; }
 }
 
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
