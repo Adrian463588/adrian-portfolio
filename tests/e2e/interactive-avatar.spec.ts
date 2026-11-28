@@ -12,16 +12,31 @@ test("mouse hover, Enter, and Space advance only intentional activation and open
   const button = portrait(page);
   await button.hover();
   await expect(speech(page)).toHaveText("Hey, you!");
+  await expect(button.locator('img[src$="/winking.webp"]')).toBeVisible();
   await button.focus();
   await page.keyboard.press("Enter");
   await expect(speech(page)).toHaveText("Hi there!");
+  await expect(button.locator('img[src$="/greeting.webp"]')).toBeVisible();
   await page.mouse.move(0, 0);
   await button.hover();
   await expect(speech(page)).toHaveText("Hi there!");
   await page.keyboard.press("Space");
   await expect(speech(page)).toHaveText("Nice to meet you!");
-  for (let i = 0; i < 5; i++) await button.click();
-  await expect(speech(page)).toHaveText("Fine. I have a surprise for you.");
+  await expect(button.locator('img[src$="/happy.webp"]')).toBeVisible();
+
+  for (const [text, file] of [
+    ["Haha, that tickles!", "laughing.webp"],
+    ["Wait... again?", "surprised.webp"],
+    ["Hey! I'm working!", "confused.webp"],
+    ["Stop poking me!", "angry.webp"],
+    ["Fine. I have a surprise for you.", "mischievous.webp"],
+  ] as const) {
+    await button.click();
+    await expect(speech(page)).toHaveText(text);
+    const img = button.locator(`img[src$="/${file}"]`);
+    await expect(img).toBeVisible();
+    await expect.poll(() => img.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBe(1000);
+  }
   await expect(page.locator("#about").getByRole("link", { name: "Open video" })).toHaveCount(0);
 
   const [popup] = await Promise.all([context.waitForEvent("page"), button.click()]);

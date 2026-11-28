@@ -102,6 +102,9 @@
   .scale { transition: transform 180ms ease-out; }
   .target:active .scale { transform: scale(1.023); }
   .art[data-motion="idle"] { animation: float 4s ease-in-out infinite; }
+  .art[data-motion="laughing"] { animation: chuckle 320ms ease-in-out; }
+  .art[data-motion="surprised"] { animation: pop 200ms ease-out; }
+  .art[data-motion="confused"] { animation: tilt 260ms ease-in-out; }
   .art[data-motion="angry"] { animation: shake 280ms ease-out; }
   .art[data-motion="greeting"],
   .art[data-motion="mischievous"] { animation: lean 260ms ease-in-out; }
@@ -119,6 +122,19 @@
 
 @keyframes float {
   50% { transform: translateY(-3px); }
+}
+
+@keyframes chuckle {
+  25%, 75% { transform: translateY(-3px); }
+  50% { transform: translateY(0); }
+}
+
+@keyframes pop {
+  45% { transform: translateY(-3px) scale(1.015); }
+}
+
+@keyframes tilt {
+  50% { transform: rotate(1.5deg); }
 }
 
 @keyframes shake {

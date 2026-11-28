@@ -3,25 +3,16 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { ResilientImage } from "@/components/ui/ResilientImage";
+import {
+  AVATAR_EXPRESSION_STATES,
+  AVATAR_IDLE_RESET_MS,
+  AVATAR_VIDEO_URL,
+  AVATAR_WINK_STATE,
+  DEFAULT_AVATAR_IMAGE,
+} from "./avatarStates";
 import styles from "./InteractiveAvatar.module.css";
 
-const DEFAULT = "/images/avatar/about/default.webp";
-const EXPRESSIONS = [
-  { image: DEFAULT, dialogue: "", motion: "idle" },
-  { image: "/images/avatar/about/greeting.webp", dialogue: "Hi there!", motion: "greeting" },
-  { image: "/images/avatar/about/happy.webp", dialogue: "Nice to meet you!" },
-  { image: "/images/avatar/about/laughing.webp", dialogue: "Haha, that tickles!" },
-  { image: "/images/avatar/about/surprised.webp", dialogue: "Wait... again?" },
-  { image: "/images/avatar/about/confused.webp", dialogue: "Hey! I'm working!" },
-  { image: "/images/avatar/about/angry.webp", dialogue: "Stop poking me!", motion: "angry" },
-  { image: DEFAULT, dialogue: "Fine. I have a surprise for you.", motion: "mischievous" },
-  { image: "/images/avatar/about/rickroll.webp", dialogue: "You've been Rickrolled!" },
-] as const;
-
-const WINK = { image: "/images/avatar/about/winking.webp", dialogue: "Hey, you!" } as const;
-const REVEAL_STEP = EXPRESSIONS.length - 1;
-const VIDEO_URL = "https://youtu.be/dQw4w9WgXcQ";
-const IDLE_RESET_MS = 30_000;
+const REVEAL_STEP = AVATAR_EXPRESSION_STATES.length - 1;
 
 function loadExpression(src: string, pending: Map<string, Promise<boolean>>) {
   const cached = pending.get(src);
@@ -42,7 +33,7 @@ function SpeechBubble({ dialogue, revealed }: { dialogue: string; revealed: bool
           <span key={dialogue}>{dialogue}</span>
         </p>
         {revealed && (
-          <a href={VIDEO_URL} target="_blank" rel="noopener noreferrer" className={styles.video}>
+          <a href={AVATAR_VIDEO_URL} target="_blank" rel="noopener noreferrer" className={styles.video}>
             Open video
           </a>
         )}
@@ -60,12 +51,12 @@ export function InteractiveAvatar() {
   const [hovered, setHovered] = useState(false);
   const [visible, setVisible] = useState(false);
   const [frames, setFrames] = useState<{ current: string; previous: string }>({
-    current: DEFAULT,
-    previous: DEFAULT,
+    current: DEFAULT_AVATAR_IMAGE,
+    previous: DEFAULT_AVATAR_IMAGE,
   });
 
   const revealed = step === REVEAL_STEP;
-  const expression = hovered && step === 0 ? WINK : EXPRESSIONS[step];
+  const expression = hovered && step === 0 ? AVATAR_WINK_STATE : AVATAR_EXPRESSION_STATES[step];
   const requested = expression.image;
 
   useEffect(() => {
@@ -80,18 +71,25 @@ export function InteractiveAvatar() {
 
   useEffect(() => {
     let active = true;
-    const ready = requested === DEFAULT ? Promise.resolve(true) : loadExpression(requested, images.current);
+    const ready =
+      requested === DEFAULT_AVATAR_IMAGE
+        ? Promise.resolve(true)
+        : loadExpression(requested, images.current);
     void ready.then((loaded) => {
       if (!active) return;
-      const current = loaded ? requested : DEFAULT;
-      setFrames((old) => old.current === current ? old : { current, previous: old.current });
+      const current = loaded ? requested : DEFAULT_AVATAR_IMAGE;
+      setFrames((old) => (old.current === current ? old : { current, previous: old.current }));
     });
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, [requested]);
 
   useEffect(() => {
-    const next = EXPRESSIONS[step + 1]?.image;
-    if (visible && next && next !== DEFAULT) void loadExpression(next, images.current);
+    const next = AVATAR_EXPRESSION_STATES[step + 1]?.image;
+    if (visible && next && next !== DEFAULT_AVATAR_IMAGE) {
+      void loadExpression(next, images.current);
+    }
   }, [visible, step]);
 
   function activate() {
@@ -101,14 +99,14 @@ export function InteractiveAvatar() {
       cycle.current = 0;
       setStep(0);
       setHovered(false);
-    }, IDLE_RESET_MS);
+    }, AVATAR_IDLE_RESET_MS);
 
     if (cycle.current === REVEAL_STEP) return;
     cycle.current += 1;
     setStep(cycle.current);
     if (cycle.current === REVEAL_STEP) {
       // The manual link stays available because noopener returns null even when a tab opens.
-      window.open(VIDEO_URL, "_blank", "noopener,noreferrer");
+      window.open(AVATAR_VIDEO_URL, "_blank", "noopener,noreferrer");
     }
   }
 
@@ -130,9 +128,9 @@ export function InteractiveAvatar() {
         }}
       >
         <span className={styles.scale}>
-          <span className={styles.art} data-motion={"motion" in expression ? expression.motion : undefined}>
+          <span className={styles.art} data-motion={expression.motion}>
             <ResilientImage
-              src={DEFAULT}
+              src={DEFAULT_AVATAR_IMAGE}
               alt="Illustrated portrait of Adrian Syah Abidin."
               width={1000}
               height={1000}
@@ -141,18 +139,26 @@ export function InteractiveAvatar() {
               fallbackCategory="Software Engineer"
               className={styles.base}
             />
-            {[frames.previous, frames.current].filter((src) => src !== DEFAULT).map((src) => (
-              <Image
-                key={src}
-                src={src}
-                alt=""
-                width={1000}
-                height={1000}
-                unoptimized
-                draggable={false}
-                className={`${styles.frame} ${src === frames.current ? styles.incoming : frames.current === DEFAULT ? styles.outgoing : ""}`}
-              />
-            ))}
+            {[frames.previous, frames.current]
+              .filter((src) => src !== DEFAULT_AVATAR_IMAGE)
+              .map((src) => (
+                <Image
+                  key={src}
+                  src={src}
+                  alt=""
+                  width={1000}
+                  height={1000}
+                  unoptimized
+                  draggable={false}
+                  className={`${styles.frame} ${
+                    src === frames.current
+                      ? styles.incoming
+                      : frames.current === DEFAULT_AVATAR_IMAGE
+                        ? styles.outgoing
+                        : ""
+                  }`}
+                />
+              ))}
           </span>
         </span>
       </button>
