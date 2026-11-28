@@ -542,6 +542,11 @@ test.describe("Portfolio E2E, Accessibility & Resilience", () => {
       "content",
       "P4O6B5PWmL-5E0i5XRbfkOSaPcop92urgS2lk-IAZ5s"
     );
+    await expect(page.locator('meta[name="msvalidate.01"]')).toHaveCount(1);
+    await expect(page.locator('meta[name="msvalidate.01"]')).toHaveAttribute(
+      "content",
+      "A11A581E33DB1EC19A9E777AA7852D6A"
+    );
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
       "https://adriansyahabidin.vercel.app/"

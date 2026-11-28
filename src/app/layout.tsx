@@ -80,6 +80,9 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
   verification: {
     google: SITE_CONFIG.verification.google,
+    other: {
+      "msvalidate.01": SITE_CONFIG.verification.bing,
+    },
   },
 };
 
