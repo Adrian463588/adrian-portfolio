@@ -5,8 +5,22 @@ import { pathToFileURL } from "node:url";
 
 export const DEFAULT_SITE_ORIGIN = "https://adriansyahabidin.vercel.app";
 export const DEFAULT_INDEXNOW_KEY = "66f0d196e94c432d91b2984a9156e7fa";
-export const INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow";
+export const INDEXNOW_ENDPOINT = "https://api.indexnow.org/IndexNow";
 export const MAX_URLS_PER_BATCH = 10_000;
+
+const INDEXNOW_STATUS_REASONS = new Map([
+  [200, "Ok - URL submitted successfully"],
+  [202, "Accepted - Key validation pending or queued for processing"],
+  [400, "Bad request - Invalid format"],
+  [403, "Forbidden - Key not valid (key not found or file mismatch)"],
+  [422, "Unprocessable Entity - URLs do not belong to host or key schema mismatch"],
+  [429, "Too Many Requests - Potential spam / rate limited"],
+]);
+
+/** Map IndexNow HTTP status code to official protocol diagnostic reason. */
+export function describeIndexNowStatus(status) {
+  return INDEXNOW_STATUS_REASONS.get(status) ?? `HTTP ${status}`;
+}
 
 const SITE_CONTENT_PREFIXES = ["src/", "public/"];
 const SITE_CONTENT_FILES = new Set(["next.config.ts", "vercel.json"]);
@@ -250,14 +264,15 @@ async function runCli() {
     });
 
     const responseText = (await res.text()).trim();
+    const statusReason = describeIndexNowStatus(res.status);
     if (!res.ok) {
       throw new Error(
-        `IndexNow submission failed (batch ${idx + 1}/${batches.length}): HTTP ${res.status} ${responseText}`
+        `IndexNow submission failed (batch ${idx + 1}/${batches.length}): HTTP ${res.status} (${statusReason})${responseText ? ` - ${responseText}` : ""}`
       );
     }
 
     console.log(
-      `[indexnow] Batch ${idx + 1}/${batches.length} accepted: HTTP ${res.status} (${payload.urlList.length} URL(s))${responseText ? ` - ${responseText}` : ""}`
+      `[indexnow] Batch ${idx + 1}/${batches.length} accepted: HTTP ${res.status} (${statusReason}) — ${payload.urlList.length} URL(s)${responseText ? ` - ${responseText}` : ""}`
     );
   }
 }
