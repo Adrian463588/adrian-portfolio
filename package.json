@@ -21,7 +21,8 @@
     "seo:audit": "node scripts/seo-cli.mjs --audit",
     "seo:keywords": "node scripts/seo-cli.mjs --keywords",
     "seo:links": "node scripts/seo-cli.mjs --links",
-    "seo:report": "node scripts/seo-cli.mjs --report"
+    "seo:report": "node scripts/seo-cli.mjs --report",
+    "seo:indexnow": "node scripts/submit-indexnow.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

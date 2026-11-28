@@ -1,0 +1,61 @@
+name: IndexNow Production Submission
+
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: "Optional comma-separated URLs or paths (new, updated, or deleted). Leave empty to submit sitemap.xml."
+        required: false
+        type: string
+      dry_run:
+        description: "Print IndexNow payload without sending HTTP POST"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: indexnow-${{ github.event.deployment.sha || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  submit-indexnow:
+    name: Submit URLs to IndexNow
+    runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event.deployment_status.state == 'success' &&
+        github.event.deployment.environment == 'Production'
+      )
+    steps:
+      - name: Checkout deployed commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha || github.ref }}
+          fetch-depth: 2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Submit IndexNow URLs
+        env:
+          INPUT_URLS: ${{ inputs.urls }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          args=()
+          if [ "${{ github.event_name }}" = "deployment_status" ]; then
+            args+=(--ci-filter)
+          fi
+          if [ -n "$INPUT_URLS" ]; then
+            args+=(--urls "$INPUT_URLS")
+          fi
+          if [ "$INPUT_DRY_RUN" = "true" ]; then
+            args+=(--dry-run)
+          fi
+          node scripts/submit-indexnow.mjs "${args[@]}"
