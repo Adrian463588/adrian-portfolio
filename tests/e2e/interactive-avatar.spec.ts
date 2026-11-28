@@ -57,6 +57,21 @@ test("mouse hover, Enter, and Space advance only intentional activation and open
   });
   expect(placement).toEqual({ inBounds: true, topHalf: true, leftSide: true });
 
+  // Verify sticky bubble clears fixed top Navbar even when portrait is partially scrolled up
+  await button.evaluate((el) => window.scrollBy({
+    top: el.getBoundingClientRect().top + 10,
+    behavior: "instant",
+  }));
+  const stickyCleared = await speech(page).evaluate((el) => {
+    const bubble = el.parentElement!.getBoundingClientRect();
+    const nav = document.querySelector("header")?.getBoundingClientRect();
+    return {
+      belowNavbar: nav ? bubble.top >= nav.bottom - 1 : true,
+      visibleInViewport: bubble.top >= 0 && bubble.bottom <= window.innerHeight,
+    };
+  });
+  expect(stickyCleared).toEqual({ belowNavbar: true, visibleInViewport: true });
+
   await button.click({ clickCount: 3 });
   expect(context.pages()).toHaveLength(2);
   expect(new URL(page.url()).pathname).toBe("/");
