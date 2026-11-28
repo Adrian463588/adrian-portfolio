@@ -1,6 +1,13 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ChibiShowcase } from "@/components/avatar/ChibiShowcase";
+import {
+  AVATAR_EXPRESSION_STATES,
+  AVATAR_IDLE_RESET_MS,
+  AVATAR_VIDEO_URL,
+  AVATAR_WINK_STATE,
+  DEFAULT_AVATAR_IMAGE,
+} from "@/components/avatar/avatarStates";
 
 vi.mock("@/hooks/useMotionCapabilities", () => ({
   useMotionCapabilities: () => ({ reducedMotion: false, canHover: true }),
@@ -24,8 +31,37 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-describe("About avatar", () => {
-  it("advances all eight steps and requests one secure tab per cycle", async () => {
+describe("About avatar state config & expression lifecycle", () => {
+  it("defines unique assets for every expression state without reusing default.webp for mischievous", () => {
+    expect(DEFAULT_AVATAR_IMAGE).toBe("/images/avatar/about/default.webp");
+    expect(AVATAR_VIDEO_URL).toBe(video);
+    expect(AVATAR_IDLE_RESET_MS).toBe(30_000);
+    expect(AVATAR_WINK_STATE.image).toBe("/images/avatar/about/winking.webp");
+    expect(AVATAR_WINK_STATE.dialogue).toBe("Hey, you!");
+
+    expect(AVATAR_EXPRESSION_STATES).toHaveLength(9);
+    const nonDefaultImages = [...AVATAR_EXPRESSION_STATES.slice(1).map((s) => s.image), AVATAR_WINK_STATE.image];
+    expect(nonDefaultImages).not.toContain(DEFAULT_AVATAR_IMAGE);
+    expect(new Set(nonDefaultImages).size).toBe(9);
+    expect(AVATAR_EXPRESSION_STATES[7].image).toBe("/images/avatar/about/mischievous.webp");
+  });
+
+  it("shows winking on mouse hover without incrementing click count", async () => {
+    render(<ChibiShowcase />);
+    expect(dialogue().textContent).toBe("");
+
+    fireEvent.pointerEnter(avatar(), { pointerType: "mouse" });
+    expect(dialogue()).toHaveTextContent("Hey, you!");
+
+    fireEvent.pointerLeave(avatar(), { pointerType: "mouse" });
+    expect(dialogue().textContent).toBe("");
+
+    fireEvent.click(avatar());
+    expect(dialogue()).toHaveTextContent("Hi there!");
+    await act(async () => {});
+  });
+
+  it("advances all eight steps cleanly and requests one secure tab per cycle", async () => {
     const open = vi.spyOn(window, "open").mockReturnValue(null);
     render(<ChibiShowcase />);
     expect(dialogue().textContent).toBe("");
