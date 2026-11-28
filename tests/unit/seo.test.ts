@@ -17,7 +17,7 @@ import sitemap from "@/app/sitemap";
 import manifest from "@/app/manifest";
 
 describe("SEO config, structured data, sitemap, and robots invariants", () => {
-  it("uses explicit production host with verified Search Console and Bing tokens and public profiles", () => {
+  it("uses explicit production host with verified Search Console, Bing, and Yandex tokens and public profiles", () => {
     expect(SITE_CONFIG.url).toBe("https://adriansyahabidin.vercel.app");
     expect(SITE_CONFIG.locale).toBe("en_US");
     expect(SITE_CONFIG.language).toBe("en");
@@ -28,6 +28,7 @@ describe("SEO config, structured data, sitemap, and robots invariants", () => {
     expect(SITE_CONFIG.verification.bing).toBe(
       "A11A581E33DB1EC19A9E777AA7852D6A"
     );
+    expect(SITE_CONFIG.verification.yandex).toBe("349d8c5deaa56e9a");
     expect(Object.values(SITE_CONFIG.profiles)).toEqual([
       "https://github.com/Adrian463588",
       "https://www.linkedin.com/in/adrian-syah-abidin-0416b81b9/",
