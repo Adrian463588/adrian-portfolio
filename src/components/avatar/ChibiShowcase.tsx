@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { ResilientImage } from "@/components/ui/ResilientImage";
+import { InteractiveAvatar } from "./InteractiveAvatar";
 import { useMotionCapabilities } from "@/hooks/useMotionCapabilities";
 import { cn } from "@/lib/utils";
 
@@ -62,18 +62,9 @@ export function ChibiShowcase({ compact = false, className }: ChibiShowcaseProps
         className="pointer-events-none absolute -inset-3 -z-10 rounded-[36px] bg-gradient-to-br from-[#65C8F5]/16 via-transparent to-[#F2F0EC]/10 blur-xl transition-opacity duration-500 group-hover:opacity-100"
       />
 
-      <figure className="relative overflow-hidden rounded-[30px] border border-white/10 bg-[#15171C] shadow-[0_24px_60px_-24px_rgba(0,0,0,0.9)]">
-        <div className="relative aspect-square w-full overflow-hidden rounded-[30px]">
-          <ResilientImage
-            src="/images/avatar/professional-chibi.webp"
-            alt="Illustrated portrait of Adrian Syah Abidin."
-            width={1000}
-            height={1000}
-            loading="eager"
-            fallbackTitle="Adrian Syah Abidin"
-            fallbackCategory="Software Engineer"
-            className="h-full w-full scale-[1.055] object-cover transition-transform duration-500 ease-out group-hover:scale-[1.07]"
-          />
+      <figure className="relative overflow-clip rounded-[30px] border border-white/10 bg-[#15171C] shadow-[0_24px_60px_-24px_rgba(0,0,0,0.9)]">
+        <div className="relative aspect-square w-full overflow-clip rounded-[30px]">
+          <InteractiveAvatar />
 
           {/* Directional pointer spotlight */}
           {interactive && (
