@@ -17,13 +17,16 @@ import sitemap from "@/app/sitemap";
 import manifest from "@/app/manifest";
 
 describe("SEO config, structured data, sitemap, and robots invariants", () => {
-  it("uses explicit production host with verified Search Console token and public profiles", () => {
+  it("uses explicit production host with verified Search Console and Bing tokens and public profiles", () => {
     expect(SITE_CONFIG.url).toBe("https://adriansyahabidin.vercel.app");
     expect(SITE_CONFIG.locale).toBe("en_US");
     expect(SITE_CONFIG.language).toBe("en");
     expect(SITE_CONFIG.alternateNames).toContain("Adrian.");
     expect(SITE_CONFIG.verification.google).toBe(
       "P4O6B5PWmL-5E0i5XRbfkOSaPcop92urgS2lk-IAZ5s"
+    );
+    expect(SITE_CONFIG.verification.bing).toBe(
+      "A11A581E33DB1EC19A9E777AA7852D6A"
     );
     expect(Object.values(SITE_CONFIG.profiles)).toEqual([
       "https://github.com/Adrian463588",
